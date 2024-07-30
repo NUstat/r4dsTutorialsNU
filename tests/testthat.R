@@ -1,4 +1,4 @@
 library(testthat)
-library(r4ds.tutorials)
+library(r4dsTutorialsNU)
 
-test_check("r4ds.tutorials")
+test_check("r4dsTutorialsNU")
