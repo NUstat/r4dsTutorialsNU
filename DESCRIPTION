@@ -1,4 +1,4 @@
-Package: r4ds.tutorials
+Package: r4dsTutorialsNU
 Title: Tutorials for "R for Data Science"
 Version: 0.2.0.9006
 Authors@R: 
@@ -52,6 +52,9 @@ Suggests:
     writexl,
     Lahman
 Config/testthat/edition: 3  
-Remotes: PPBDS/tutorial.helpers
-BugReports: https://github.com/PPBDS/r4ds.tutorials/issues
-URL: https://ppbds.github.io/r4ds.tutorials/, https://github.com/PPBDS/r4ds.tutorials
+Remotes: 
+    PPBDS/tutorial.helpers,
+    NUstat/tutorialExtras,
+    rstudio/gradethis
+BugReports: https://github.com/NUstat/r4dsTutorialsNU/issues
+URL: https://NUstat.github.io/r4dsTutorialsNU/, https://github.com/NUstat/r4dsTutorialsNU
