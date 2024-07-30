@@ -19,7 +19,9 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Imports:
-    tutorial.helpers
+    tutorial.helpers,
+    tutorialExtras,
+    gradethis
 Suggests:
     arrow,
     babynames,
@@ -39,10 +41,10 @@ Suggests:
     nycflights13,
     palmerpenguins,
     patchwork,
+    r4ds.tutorials,
     readxl,
     reprex,
     repurrrsive,
-    rsconnect,
     rvest,
     socviz,
     testthat (>= 3.0.0),
