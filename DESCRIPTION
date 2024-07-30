@@ -46,6 +46,7 @@ Suggests:
     readxl,
     reprex,
     repurrrsive,
+    rsconnect,
     rvest,
     socviz,
     testthat (>= 3.0.0),
