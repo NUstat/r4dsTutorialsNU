@@ -1,6 +1,5 @@
 ---
 title: Introduction
-author: Danielle Sass (David Kane)
 tutorial:
   id: introduction
 output:
@@ -12,9 +11,11 @@ runtime: shiny_prerendered
 description: Tutorial for Introduction
 ---
 
+<!-- Modification of r4ds.tutorials author: David Kane -->
+
 ```{r setup, include = FALSE}
+
 library(learnr)
-library(tutorial.helpers)
 library(tidyverse)
 library(gradethis)
 library(sortable)
