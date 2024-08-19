@@ -1,15 +1,18 @@
 ---
 title: Data transformation
-author: David Kane
 tutorial:
   id: data-transformation
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 3: Data transformation'
 ---
+
+
+<!-- Modification of r4ds.tutorials author: David Kane -->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -17,6 +20,10 @@ library(tutorial.helpers)
 library(tidyverse)
 library(nycflights13)
 library(Lahman)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
@@ -26,12 +33,30 @@ options(tutorial.exercise.timelimit = 60,
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+<!-- ```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")} -->
+<!-- ``` -->
+
+
+```{r, context = "server"}
+grade_server("grade")
 ```
 
-<!-- There are plenty of exercises in this chapter. We could add them here or make another tutorial: `data-transformation-exercises`. -->
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
 
-<!-- This help page --- https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html --- has lots of great stuff. Should find a way to mention it lots of items from this help page throughout this tutorial, maybe in the select() questions.  -->
+```{r}
+grade_button_ui(id = "grade")
+```
+
 
 ## Introduction
 ### 
@@ -40,15 +65,38 @@ This tutorial covers [Chapter 3: Data transformation](https://r4ds.hadley.nz/dat
 
 The goal of this chapter is to give you an overview of all the key tools for transforming a data frame. We’ll start with functions that operate on rows and then columns of a data frame, then circle back to talk more about the pipe, an important tool that you use to combine verbs.
 
-## Rows
-### 
-
-The most important verbs that operate on rows of a dataset are `filter()`, which changes which rows are present without changing their order, and `arrange()`, which changes the order of the rows without changing which are present. Both functions only affect the rows. The columns are left unchanged.
-
+###
 
 ### Exercise 1
 
 Load the **tidyverse** package with the `library()` command.
+
+```{r intro-1, exercise = TRUE}
+
+```
+
+```{r intro-1-hint-1, eval = FALSE}
+library(...)
+```
+
+```{r intro-1-solution, exercise.reveal_solution = FALSE}
+library(tidyverse)
+```
+
+```{r intro-1-check}
+grade_this_code()
+```
+
+
+### 
+
+Take careful note of the conflicts message that’s printed when you load the **tidyverse**. It tells you that **dplyr** versions of some functions now take precedence over functions with the same name in base R. If you want to use the base version of these functions after loading **dplyr**, you’ll need to use their full names: `stats::filter()` and `stats::lag()`. So far we’ve mostly ignored which package a function comes from because most of the time it doesn’t matter. However, knowing the package can help you find help and find related functions, so when we need to be precise about which package a function comes from, we’ll use the same syntax as R: `package.name::function_name()`.
+
+## Rows
+
+### Exercise 1
+
+Load the **nycflights13** package by using the `library()` command. Then print out `flights` by just writing its name. This is the same thing as issuing a `print(flights)` command.
 
 ```{r rows-1, exercise = TRUE}
 
@@ -56,164 +104,114 @@ Load the **tidyverse** package with the `library()` command.
 
 ```{r rows-1-hint-1, eval = FALSE}
 library(...)
-```
-
-```{r rows-1-test, include = FALSE}
-library(tidyverse)
-```
-
-### 
-
-Take careful note of the conflicts message that’s printed when you load the **tidyverse**. It tells you that **dplyr** versions of some functions now take precedence over functions with the same name in base R. If you want to use the base version of these functions after loading **dplyr**, you’ll need to use their full names: `stats::filter()` and `stats::lag()`. So far we’ve mostly ignored which package a function comes from because most of the time it doesn’t matter. However, knowing the package can help you find help and find related functions, so when we need to be precise about which package a function comes from, we’ll use the same syntax as R: `package.name::function_name()`.
-
-### Exercise 2
-
-Load the **nycflights13** package by using the `library()` command. We use the terms "library" and "package" interchangeably, as we do the terms "function" and "command." This is somewhat sloppy but very common.
-
-```{r rows-2, exercise = TRUE}
-
-```
-
-```{r rows-2-hint-1, eval = FALSE}
-library(...)
-```
-
-```{r rows-2-test, include = FALSE}
-library(nycflights13)
-```
-
-### 
-
-Many R packages are "data" packages, meaning that they don't contain functions. Instead, they just have data. In this case, **nycflights13** includes 5 tibbles, covering all the flights that left the three biggest NYC-area airports in 2013.
-
-### Exercise 3
-
-Bring up the help page for **nycflights13** by running `help(package = "nycflights13")`. Copy/paste the names and the 2-3 word descriptions of the 5 data sets.
-
-```{r rows-3}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
-```
-
-### 
-
-`nycflights13::flights` contains all `r scales::comma(nrow(nycflights13::flights))` flights that departed from New York City in 2013. The data comes from the US Bureau of Transportation Statistics.
-
-
-
-### Exercise 4
-
-Print out `flights` by just writing its name. This is the same thing as issuing a `print(flights)` command.
-
-```{r rows-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r rows-4-hint-1, eval = FALSE}
 flights
 ```
 
-```{r rows-4-test, include = FALSE}
+```{r rows-1-solution, exercise.reveal_solution = FALSE}
+library(nycflights)
 flights
+```
+
+```{r rows-1-check}
+grade_this_code()
 ```
 
 ### 
 
 `flights` is a tibble, a special type of data frame used by the tidyverse to avoid some common gotchas. The most important difference between tibbles and data frames is the way tibbles print; they are designed for large datasets, so they only show the first few rows and only the columns that fit on one screen.
 
-### Exercise 5
 
-Run `glimpse(flights)`.
+```{r rows-1b}
+quiz(
+  caption = "",
+  question_text("What function provides an easy way to see all variables and variable types which is particularly useful for large datasets?",
+          answer_fn(function(value){
+            if (str_remove_all(str_to_lower(value), " ") %in% 
+                c("glimpse", 
+                  "glimpse()")) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) ) }),
+           allow_retry = TRUE)
+)
+```
 
-```{r rows-5, exercise = TRUE}
+### Exercise 2
+
+```{r rows-2}
+quiz(
+  caption = "",
+  question_text("What function allows you to keep rows based on the values of a column?",
+          answer_fn(function(value){
+            if (str_remove_all(str_to_lower(value), " ") %in% 
+                c("filter", 
+                  "filter()")) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) ) }),
+           allow_retry = TRUE)
+)
+```
+
+###
+
+The pipe, ` |>`, takes the thing on its left and passes it along to the function on its right.
+
+###
+
+`filter()` changes which rows are present without changing their order. 
+
+###
+
+Pipe `flights` to `filter(dep_delay > 120)` 
+
+```{r rows-2b, exercise = TRUE}
 
 ```
 
-```{r rows-5-hint-1, eval = FALSE}
-glimpse(...)
-```
-
-```{r rows-5-test, include = FALSE}
-glimpse(flights)
-```
-
-### 
-
-`glimpse()` is more convenient than `print()` for tibbles with lots of variables. You can use `print(flights, width = Inf)` if you want to see all the variables as columns.
-
-### Exercise 6
-
-The pipe, ` |>`, takes the thing on its left and passes it along to the function on its right. Pipe `flights` to `print()`.
-
-```{r rows-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r rows-6-hint-1, eval = FALSE}
+```{r rows-2b-hint-1, eval = FALSE}
 flights |> 
-  ...()
+  filter(...)
 ```
 
-```{r rows-6-test, include = FALSE}
+```{r rows-2b-solution, exercise.reveal_solution = FALSE}
 flights |>
-  print()
+  filter(dep_delay > 120)
+```
+
+```{r rows-2b-check}
+grade_this_code()
 ```
 
 ### 
 
 The easiest way to pronounce the pipe is “then”. So, in words we would describe the above code as "flights then print."
 
-### Exercise 7
-
-`filter()` changes which rows are present without changing their order. Pipe `flights` to `filter(dep_delay > 120)` 
-
-```{r rows-7, exercise = TRUE}
-
-```
-
-```{r rows-7-hint-1, eval = FALSE}
-flights |> 
-  filter(...)
-```
-
-```{r rows-7-test, include = FALSE}
-flights |>
-  filter(dep_delay > 120)
-```
-
-### 
-
 Note that only `r scales::comma(nrow(nycflights13::flights |> filter(dep_delay > 120)))` rows remain after we filter for such a long departure delay. Why do we only see 1,000 rows here? Because Quarto, by default, only keeps 1,000 rows for display purposes.
 
-### Exercise 8
+###
 
 Continue the pipe with `nrow()`.
 
 
-```{r rows-8, exercise = TRUE}
+```{r rows-2c, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r rows-8-hint-1, eval = FALSE}
+```{r rows-2c-hint-1, eval = FALSE}
 flights |>
   filter(dep_delay > 120) |> 
   ...
 ```
 
-```{r rows-8-test, include = FALSE}
+```{r rows-2c-solution, exercise.reveal_solution = FALSE}
 flights |>
   filter(dep_delay > 120) |> 
   nrow()
+```
+
+```{r rows-2c-check}
+grade_this_code()
 ```
 
 ### 
@@ -221,11 +219,183 @@ flights |>
 It is often useful to, temporarily add a simple function to the end of a pipe to confirm that the resulting tibble is what we expect it to be. Then, we remove that function and go back to working on the pipe.
 
 
-### Exercise 9
-
-Remove `nrow()` from the pipe.
+### Exercise 3
 
 You can use boolean logic when filtering. For example, `&` means *and* and `|` means *or*. Pipe `flights` to `filter()` with the argument set to `month == 1 & day == 1` to get all the flights on the first day of January.
+
+```{r rows-3, exercise = TRUE}
+
+```
+
+```{r rows-3-hint-1, eval = FALSE}
+flights |> 
+  filter(... & day == 1)
+```
+
+```{r rows-3-solution, exercise.reveal_solution = FALSE}
+flights |>
+  filter(month == 1 & day == 1)
+```
+
+```{r rows-3-check}
+grade_this_code()
+```
+
+### 
+
+Instead of `&`, you could have used a simple comma, `,`, because `filter()` treats statements separated by commas as all being required. For example, `filter(month == 1, day == 1)` would produce the same set of rows as this example.
+
+###
+
+### Exercise 4
+
+```{r common-error-1}
+quiz(
+  caption = "",
+  # question_wordbank("Indicate whether the lines of code will run successfully or produce an error.",choices = c("the state of a variable when you measure it",
+  #              "the rows of a data frame"
+  #              ),
+  #      arrange = "ordered",
+  #      box = 8,
+  #      answer(c("success", "error"), correct = TRUE),
+  #      allow_retry = TRUE)
+  question("Which of the following will only include flights that departed on January 1.",
+       answer(htmltools::img(src="images/common_error_1.png", height = 70, width = 250), correct = TRUE),
+       answer(htmltools::img(src="images/common_error_2.png", height = 50, width = 250)),
+       answer(htmltools::img(src="images/common_error_3.png", height = 50, width = 250), correct = TRUE),
+       answer(htmltools::img(src="images/common_error_4.png", height = 50, width = 250)),
+       answer(htmltools::img(src="images/common_error_5.png", height = 50, width = 250)),
+       random_answer_order = TRUE,
+       allow_retry = TRUE),
+  question("Which of the following will only include flights that departed on February or March.",
+       answer(htmltools::img(src="images/common_error_or_1.png", height = 50, width = 250)),
+       answer(htmltools::img(src="images/common_error_or_2.png", height = 50, width = 250)),
+       answer(htmltools::img(src="images/common_error_or_3.png", height = 50, width = 250), correct = TRUE),
+       answer(htmltools::img(src="images/common_error_or_4.png", height = 50, width = 250)),
+       answer(htmltools::img(src="images/common_error_or_5.png", height = 50, width = 250), correct = TRUE),
+       random_answer_order = TRUE,
+       allow_retry = TRUE)
+  
+)
+```
+
+
+### Exercise 5
+
+When you run `filter()`, **dplyr** executes the filtering operation, creating a new data frame, and then prints it. It doesn’t modify the existing flights dataset because **dplyr** functions never modify their inputs.
+
+Create a new object, `jan1` which is the result of filtering `flights` to just including flights from January 1. In other words, put `jan1 <- ` in front of the code for Exercise 3 (`flights |> filter(month == 1 & day == 1)`).
+
+```{r rows-5, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r rows-5-hint-1, eval = FALSE}
+... <- flights |> 
+  filter(month == 1 & day == 1)
+```
+
+```{r rows-5-solution, exercise.reveal_solution = FALSE}
+jan1 <- flights |>
+  filter(month == 1 & day ==1)
+```
+
+```{r rows-5-check}
+grade_this_code()
+```
+
+### 
+
+The most common workflow is to build a pipe of commands, each time checking that the pipe generates the answer you expect. Only at the end of the process would you assign the result to a permanent object.
+
+### Exercise 6
+
+`arrange()` changes the order of the rows based on the value of the columns. It takes a data frame and a set of column names (or more complicated expressions) to order by. If you provide more than one column name, each additional column will be used to break ties in the values of preceding columns. 
+
+###
+
+Pipe `flights` to `arrange()`, passing in the arguments `year, month, day, dep_time`.
+
+```{r rows-6, exercise = TRUE}
+
+```
+
+```{r rows-6-hint-1, eval = FALSE}
+flights |> 
+  arrange(...)
+```
+
+```{r rows-6-solution, exercise.reveal_solution = FALSE}
+flights |>
+  arrange(year, month, day, dep_time)
+```
+
+```{r rows-6-check}
+grade_this_code()
+```
+
+### 
+
+The first flight of the year was United -- the `carrier` was "UA".
+
+### Exercise 7
+
+You can use `desc()` on a column inside of `arrange()` to re-order the data frame based on that column in descending (big-to-small) order. Pipe `flights` to `arrange()` with `desc(dep_delay)` as its argument.
+
+```{r rows-7, exercise = TRUE}
+
+```
+
+```{r rows-7-hint-1, eval = FALSE}
+flights |> 
+  arrange(...(dep_delay))
+```
+
+```{r rows-7-solution, exercise.reveal_solution = FALSE}
+flights |>
+  arrange(desc(dep_delay))
+```
+
+```{r rows-7-check}
+grade_this_code()
+```
+
+### 
+
+Note that the number of rows has not changed – we’re only arranging the data, we’re not filtering it.
+
+### Exercise 8
+
+Although `filter()` and `arrange()` are the most commonly used **dplyr** commands for working with rows, other functions are also useful. `distinct()` finds all the unique rows in a dataset, so in a technical sense, it primarily operates on the rows. Pipe `flights` to `distinct()` with no arguments.
+
+```{r rows-8, exercise = TRUE}
+
+```
+
+```{r rows-8-hint-1, eval = FALSE}
+flights |> 
+  ...()
+```
+
+```{r rows-8-solution, exercise.reveal_solution = FALSE}
+flights |>
+  distinct()
+```
+
+```{r rows-8-check}
+grade_this_code()
+```
+
+### 
+
+Each row in `flights` is already distinct so we get back the same number of rows as we started with.  
+
+
+### Exercise 9
+
+Most of the time, however, you’ll want the distinct combination of some variables, so you can also optionally supply column names. Pipe `flights` to `distinct()` with the argument `origin`.
 
 ```{r rows-9, exercise = TRUE}
 
@@ -235,21 +405,28 @@ You can use boolean logic when filtering. For example, `&` means *and* and `|` m
 
 ```{r rows-9-hint-1, eval = FALSE}
 flights |> 
-  filter(... & day == 1)
+  distinct(...)
 ```
 
-```{r rows-9-test, include = FALSE}
+```{r rows-9-solution, exercise.reveal_solution = FALSE}
 flights |>
-  filter(month == 1 & day == 1)
+  distinct(origin)
 ```
 
+```{r rows-9-check}
+grade_this_code()
+```
 ### 
 
-Instead of `&`, you could have used a simple comma, `,`, because `filter()` treats statements separated by commas as all being required. For example, `filter(month == 1, day == 1)` would produce the same set of rows as this example.
+There are only three distinct values for the `origin` variable because `flights` only contains data for the departures from the three major airports around New York City.
 
 ### Exercise 10
 
-Pipe `flights` to `filter()` with the same argument as Exercise 9, but use a comma (`,`) instead of `&`. It should produce the same set of rows.
+`distinct()`, like most **dplyr** functions, can accept more than one variable as an argument. 
+
+It is often handy to keep values for all the other variables when using `distinct()`. 
+
+Pipe `flights` to `distinct()` with the argument `(origin, dest)` and also add the `.keep_all` argument with a value of `TRUE`.
 
 ```{r rows-10, exercise = TRUE}
 
@@ -259,248 +436,43 @@ Pipe `flights` to `filter()` with the same argument as Exercise 9, but use a com
 
 ```{r rows-10-hint-1, eval = FALSE}
 flights |> 
-  filter(month == 1 ... day == 1)
-```
-
-```{r rows-10-test, include = FALSE}
-flights |>
-  filter(month == 1, day == 1)
-```
-
-### 
-
-When you’re starting out with R, the easiest mistake to make is to use `=` instead of `==` when testing for equality. `filter()` will let you know when this happens.
-
-### Exercise 11
-
-There’s a useful shortcut when you’re combining `|` and `==`: `%in%`. It keeps rows where the variable equals one of the values on the right. Pipe `flights` to `filter()` with the argument `month %in% c(1, 2)`.
-
-```{r rows-11, exercise = TRUE}
-
-```
-
-```{r rows-11-hint-1, eval = FALSE}
-flights |> 
-  filter(month ... c(1, 2))
-```
-
-```{r rows-11-test, include = FALSE}
-flights |>
-  filter(month %in% c(1, 2))
-```
-
-One common mistake is writing “or” statements like you would in English:
-
-````
-flights |> 
-  filter(month == 1 | 2)
-````
-
-### 
-
-This “works”, in the sense that it doesn’t throw an error, but it doesn’t do what you want because `|` first checks the condition `month == 1` and then checks the condition 2, which is not a sensible condition to check.
-
-### Exercise 12
-
-When you run `filter()`, **dplyr** executes the filtering operation, creating a new data frame, and then prints it. It doesn’t modify the existing flights dataset because **dplyr** functions never modify their inputs.
-
-Create a new object, `jan1` which is the result of filtering `flights` to just including flights from January 1. In other words, put `jan1 <- ` in front of the code for Exercise 9 (`flights |> filter(month == 1 & day == 1)`).
-
-```{r rows-12, exercise = TRUE}
-
-```
-
-```{r rows-12-hint-1, eval = FALSE}
-... <- flights |> 
-  filter(month == 1 & day == 1)
-```
-
-```{r rows-12-test, include = FALSE}
-jan1 <- flights |>
-  filter(month == 1 & day ==1)
-```
-
-### 
-
-The most common workflow is to build a pipe of commands, each time checking that the pipe generates the answer you expect. Only at the end of the process would you assign the result to a permanent object.
-
-### Exercise 13
-
-Use the same code from the previous Exercise but, this time, create the `jan1` object at the end of the pipe, rather than the beginning. In other words, place `-> jan1` after the call to `filter()`.
-
-```{r rows-13, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r rows-13-hint-1, eval = FALSE}
-flights |> 
-  filter(month == 1 & day == 1) -> ...
-```
-
-```{r rows-13-test, include = FALSE}
-flights |>
-  filter(month ==1 & day == 1) -> jan1
-```
-
-### 
-
-The assignment is usually placed at the start of the pipe, but the result is the same if the assignment is at the end.
-
-### Exercise 14
-
-`arrange()` changes the order of the rows based on the value of the columns. It takes a data frame and a set of column names (or more complicated expressions) to order by. If you provide more than one column name, each additional column will be used to break ties in the values of preceding columns. 
-
-Pipe `flights` to `arrange()`, passing in the arguments `year, month, day, dep_time`.
-
-```{r rows-14, exercise = TRUE}
-
-```
-
-```{r rows-14-hint-1, eval = FALSE}
-flights |> 
-  arrange(...)
-```
-
-```{r rows-14-test, include = FALSE}
-flights |>
-  arrange(year, month, day, dep_time)
-```
-
-### 
-
-The first flight of the year was United -- the `carrier` was "UA".
-
-### Exercise 15
-
-You can use `desc()` on a column inside of `arrange()` to re-order the data frame based on that column in descending (big-to-small) order. Pipe `flights` to `arrange()` with `desc(dep_delay)` as its argument.
-
-```{r rows-15, exercise = TRUE}
-
-```
-
-```{r rows-15-hint-1, eval = FALSE}
-flights |> 
-  arrange(...(dep_delay))
-```
-
-```{r rows-15-test, include = FALSE}
-flights |>
-  arrange(desc(dep_delay))
-```
-
-### 
-
-Note that the number of rows has not changed – we’re only arranging the data, we’re not filtering it.
-
-### Exercise 16
-
-Although `filter()` and `arrange()` are the most commonly used **dplyr** commands for working with rows, other functions are also useful. `distinct()` finds all the unique rows in a dataset, so in a technical sense, it primarily operates on the rows. Pipe `flights` to `distinct()` with no arguments.
-
-```{r rows-16, exercise = TRUE}
-
-```
-
-```{r rows-16-hint-1, eval = FALSE}
-flights |> 
-  ...()
-```
-
-```{r rows-16-test, include = FALSE}
-flights |>
-  distinct()
-```
-
-### 
-
-Each row in `flights` is already distinct so we get back the same number of rows as we started with.  
-
-
-### Exercise 17
-
-Most of the time, however, you’ll want the distinct combination of some variables, so you can also optionally supply column names. Pipe `flights` to `distinct()` with the argument `origin`.
-
-```{r rows-17, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r rows-17-hint-1, eval = FALSE}
-flights |> 
-  distinct(...)
-```
-
-```{r rows-17-test, include = FALSE}
-flights |>
-  distinct(origin)
-```
-
-### 
-
-There are only three distinct values for the `origin` variable because `flights` only contains data for the departures from the three major airports around New York City.
-
-### Exercise 18
-
-`distinct()`, like most **dplyr** functions, can accept more than one variable as an argument. Pipe `flights` to `distinct()` with the argument `(origin, dest)`.
-
-```{r rows-18, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r rows-18-hint-1, eval = FALSE}
-flights |> 
-  distinct(origin, ...)
-```
-
-```{r rows-18-test, include = FALSE}
-flights |>
-  distinct(origin, dest)
-```
-
-### Exercise 19
-
-It is often handy to keep values for all the other variables when using `distinct()`. Run the same command as above, but add the `.keep_all` argument with a value of `TRUE`.
-
-```{r rows-19, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r rows-19-hint-1, eval = FALSE}
-flights |> 
   distinct(origin, dest, .keep_all = ...)
 ```
 
-```{r rows-19-test, include = FALSE}
+```{r rows-10-solution, exercise.reveal_solution = FALSE}
 flights |>
   distinct(origin, dest, .keep_all = TRUE)
+```
+
+
+```{r rows-10-check}
+grade_this_code()
 ```
 
 ### 
 
 Now, the dataset should show where the planes lifted off, and where they landed, along with everything else. 
 
-### Exercise 20
+### Exercise 11
 
 If you want to find the number of occurrences instead, you’re better off swapping `distinct()` for `count()`, and with the `sort = TRUE` argument you can arrange them in descending order of number of occurrences. Pipe `flights` to `count()` with `origin, dest, sort = TRUE` as the arguments.
 
-```{r rows-20, exercise = TRUE}
+```{r rows-11, exercise = TRUE}
 
 ```
 
-```{r rows-20-hint-1, eval = FALSE}
+```{r rows-11-hint-1, eval = FALSE}
 flights |>
   count(origin, dest, ... = TRUE)
 ```
 
-```{r rows-20-test, include = FALSE}
+```{r rows-11-solution, exercise.reveal_solution = FALSE}
 flights |>
   count(origin, dest, sort = TRUE)
+```
+
+```{r rows-11-check}
+grade_this_code()
 ```
 
 ### 

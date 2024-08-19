@@ -1,0 +1,352 @@
+---
+title: Workflow basics
+tutorial:
+  id: workflow-basics
+output:
+  learnr::tutorial:
+    progressive: yes
+    allow_skip: yes
+    css: ["css/nu-theme.css"]
+runtime: shiny_prerendered
+description: 'Tutorial for Chapter 2: Workflow basics'
+---
+
+<!-- Modification of r4ds.tutorials author: David Kane -->
+
+```{r setup, include = FALSE}
+library(learnr)
+#library(tutorial.helpers)
+library(tidyverse)
+library(knitr)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
+
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(out.width = '90%')
+options(tutorial.exercise.timelimit = 60, 
+        tutorial.storage = "local")
+```
+
+```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
+```
+
+<!-- ```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")} -->
+<!-- ``` -->
+
+```{r, context = "server"}
+grade_server("grade")
+```
+
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+
+
+## Introduction
+### 
+
+This tutorial covers [Chapter 2 Workflow: basics](https://r4ds.hadley.nz/workflow-basics.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn how to use the assignment operator, perform basic math, add comments to code, use good naming conventions, and use basic functions.
+
+
+## Coding basics
+
+### Exercise 1
+
+Assign `2 * 8` to the variable `x`.
+
+```{r coding-basics-1a, exercise = TRUE}
+
+```
+
+```{r coding-basics-1a-hint-1, eval = FALSE}
+___ <- __ * ___
+x
+```
+
+```{r coding-basics-1a-solution, exercise.reveal_solution = FALSE}
+x <- 2 * 8
+```
+
+```{r coding-basics-1a-check}
+grade_this_code()
+```
+
+
+###
+
+Copy the previous code and on the next line use the `sqrt()` function to take the square root of `x`.
+
+```{r coding-basics-1b, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r coding-basics-1b-hint-1, eval = FALSE}
+x <- 2 * 8
+sqrt(...)
+```
+
+```{r coding-basics-1b-solution, exercise.reveal_solution = FALSE}
+x <- 2 * 8
+sqrt(x)
+```
+
+```{r coding-basics-1b-check}
+grade_this_code()
+```
+
+###
+
+The shortcut key for running a single line of code is `Command/Ctrl + Enter`. 
+
+* `Command/Ctrl + Enter` will run just the code at the LINE in which the cursor is located. This is probably the single most commonly used shortcut key because it is very handy to execute your code line-by-line.
+
+* `Command/Ctrl + Shift + Enter` will run ALL the code in the code chunk.
+
+
+Copy the previous code chunk and practice using the shortcut keys to run code. When finished, click submit.
+
+```{r coding-basics-1c, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r coding-basics-1c-hint-1, eval = FALSE}
+x <- 2 * 8
+sqrt(...)
+```
+
+```{r coding-basics-1c-solution, exercise.reveal_solution = FALSE}
+x <- 2 * 8
+sqrt(x)
+```
+
+```{r coding-basics-1c-check}
+grade_this_code()
+```
+
+
+### Exercise 2
+
+Assign the vector `c(2, 4, 6, 8)` to the variable `even`. 
+
+```{r coding-basics-2a, exercise = TRUE}
+
+```
+
+```{r coding-basics-2a-hint-1, eval = FALSE}
+___ <- c(2, 4, 6, 8)
+```
+
+```{r coding-basics-2a-solution, exercise.reveal_solution = FALSE}
+even <- c(2, 4, 6, 8)
+```
+
+```{r coding-basics-2a-check}
+grade_this_code()
+```
+
+###
+
+Copy the previous code and on the next line perform an operation on the variable `even` such that the result is the vector `1 2 3 4`.
+
+```{r coding-basics-2b, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r coding-basics-2b-hint-1, eval = FALSE}
+even <- c(2, 4, 6, 8)
+even ___ ___
+```
+
+```{r coding-basics-2b-solution, exercise.reveal_solution = FALSE}
+even <- c(2, 4, 6, 8)
+even / 2
+```
+
+```{r coding-basics-2b-check}
+grade_this({
+  if (identical(.result, c(1, 2, 3, 4))) {
+    pass("Great work!")
+  }
+  fail()
+})
+```
+
+
+
+## Comments
+
+```{r comments}
+quiz(
+  caption = "",
+  question_text("What is the operator that creates a comment in a code chunk?",
+       answer(c("#"), correct = TRUE),
+       allow_retry = TRUE),
+  question("Comments should...",
+       answer("explain why something is happening in your code", correct = TRUE),
+       answer("explain what is happening in your code"),
+       answer("explain how a function of your code works"),
+       answer("explain every single line of code"),
+       answer("explain your overall plan of attack and record important insights", correct = TRUE),
+       allow_retry = TRUE),
+  question("What is the 'shortcut' for commenting out multiple lines at once?",
+       answer("ctrl/cmd + shift + c", correct = TRUE),
+       answer("ctrl/cmd + shift + m"),
+       answer("alt + -"),
+       answer("alt + c"),
+       answer("alt + #"),
+       answer("ctrl/cmd + shift + #"),
+       allow_retry = TRUE)
+)
+```
+
+## What's in a name
+
+Edit the below code such that the variable names follow snake case naming convention.
+
+
+```{r naming-1, exercise = TRUE}
+VariableOne <- 1
+variable.two <- 2
+helloWorld <- "Greetings"
+oneword <- "word"
+```
+
+```{r naming-1-hint-1, eval = FALSE}
+snake_case_is_lowercase_and_underscores_separate_words
+```
+
+```{r naming-1-solution, exercise.reveal_solution = FALSE}
+variable_one <- 1
+variable_two <- 2
+hello_world <- "Greetings"
+one_word <- "word"
+```
+
+```{r naming-1-check}
+grade_this_code()
+```
+
+
+## Calling functions
+
+Use the `seq()` function to create a sequence from 1 to 10.
+
+```{r calling_fun-1, exercise = TRUE}
+
+```
+
+```{r calling_fun-1-hint-1, eval = FALSE}
+seq(___, ___)
+```
+
+```{r calling_fun-1-solution, exercise.reveal_solution = FALSE}
+seq(1, 10)
+```
+
+```{r calling_fun-1-check}
+grade_this_code()
+```
+
+###
+
+Copy the previous code chunk and this time within `seq` set the `by` argument to `2`. This will create a sequence of every other number `1 3 5 7 9`.
+
+```{r calling_fun-2, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r calling_fun-2-hint-1, eval = FALSE}
+seq(1, 10, by = 2)
+```
+
+```{r calling_fun-2-solution, exercise.reveal_solution = FALSE}
+seq(1, 10, by = 2)
+```
+
+```{r calling_fun-2-check}
+grade_this_code()
+```
+
+###
+
+Copy the previous code chunk and store the vector as the variable `my_seq`. Then on the next line take the `sum` of `my_seq`
+
+```{r calling_fun-3, exercise = TRUE}
+
+```
+
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r calling_fun-3-hint-1, eval = FALSE}
+my_seq <- seq(1, 10, by = 2)
+
+___(___)
+```
+
+```{r calling_fun-3-solution, exercise.reveal_solution = FALSE}
+my_seq <- seq(1, 10, by = 2)
+
+sum(my_seq)
+```
+
+```{r calling_fun-3-check}
+grade_this_code()
+```
+
+###
+
+An alternative way to create a sequence is by simply specifying `#:#`. Use this notation to create a sequence from 1 to 10.
+
+```{r calling_fun-4, exercise = TRUE}
+
+```
+
+```{r calling_fun-4-hint-1, eval = FALSE}
+1:10
+```
+
+```{r calling_fun-4-solution, exercise.reveal_solution = FALSE}
+1:10
+```
+
+```{r calling_fun-4-check}
+grade_this_code()
+```
+
+## Summary
+### 
+
+This tutorial covered [Chapter 2 Workflow: basics](https://r4ds.hadley.nz/workflow-basics.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to use the assignment operator, perform basic math, add comments to code, use good naming conventions, and use basic functions.
+
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
+```

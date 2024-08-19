@@ -37,7 +37,11 @@ plot_geom <- penguins |>
 
 ```
 
-<!-- Summary should have a second, very brief paragraph (just a sentence or two) with further readings. Those readings should also have been knowledge dropped earlier, -->
+```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
+```
+
+<!-- ```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")} -->
+<!-- ``` -->
 
 ```{r, context = "server"}
 grade_server("grade")
