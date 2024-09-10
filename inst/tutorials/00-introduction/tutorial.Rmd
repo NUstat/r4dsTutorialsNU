@@ -260,10 +260,6 @@ In data science, it's always a good idea to explore the data before you use it. 
 diamonds
 ```
 
-<!-- ```{r running-code-2a-test, include = FALSE} -->
-<!-- diamonds -->
-<!-- ``` -->
-
 ```{r running-code-2a-solution, exercise.reveal_solution = FALSE}
 diamonds
 ```
@@ -283,10 +279,6 @@ When we type the name of a tibble in the R Console, we are implicitly using the 
 ```{r running-code-2b-hint-1, eval = FALSE}
 print(...)
 ```
-
-<!-- ```{r running-code-2b-test, include = FALSE} -->
-<!-- print(diamonds) -->
-<!-- ``` -->
 
 ```{r running-code-2b-solution, exercise.reveal_solution = FALSE}
 print(diamonds)
@@ -309,10 +301,6 @@ Print out the first three rows of `diamonds`. Note that the number of rows print
 ```{r running-code-2c-hint-1, eval = FALSE}
 print(dataset, n = ?)
 ```
-
-<!-- ```{r running-code-2c-test, include = FALSE} -->
-<!-- print(diamonds, n = 3) -->
-<!-- ``` -->
 
 ```{r running-code-2c-solution, exercise.reveal_solution = FALSE}
 print(diamonds, n = 3)
@@ -364,10 +352,6 @@ Now use `glimpse()` to examine the `diamonds` data set. To learn more about the 
 ___(dataset)
 ```
 
-<!-- ```{r running-code-3-test, include = FALSE} -->
-<!-- glimpse(diamonds) -->
-<!-- ``` -->
-
 ```{r running-code-3-solution, exercise.reveal_solution = FALSE}
 glimpse(diamonds)
 ```
@@ -393,10 +377,6 @@ Run `summary()` on `diamonds`.
 ```{r running-code-4-hint-1, eval = FALSE}
 summary(...)
 ```
-
-<!-- ```{r running-code-4-test, include = FALSE} -->
-<!-- summary(diamonds) -->
-<!-- ``` -->
 
 ```{r running-code-4-solution, exercise.reveal_solution = FALSE}
 summary(diamonds)
@@ -447,10 +427,6 @@ Use the double colon to run the `clean_names()` function on the `diamonds` datas
 package::function_name(...)
 ```
 
-<!-- ```{r running-code-6-test, include = FALSE} -->
-<!-- janitor::clean_names(diamonds) -->
-<!-- ``` -->
-
 ```{r running-code-6-solution, exercise.reveal_solution = FALSE}
 janitor::clean_names(diamonds)
 ```
@@ -476,11 +452,6 @@ As a simple example, re-do the previous problem but this time "pipe" the `diamon
 data |> 
   package::function_name()
 ```
-
-<!-- ```{r running-code-7-test, include = FALSE} -->
-<!-- diamonds |>  -->
-<!--   janitor::clean_names() -->
-<!-- ``` -->
 
 ```{r running-code-7-solution, exercise.reveal_solution = FALSE}
 diamonds |> 

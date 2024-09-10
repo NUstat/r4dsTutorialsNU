@@ -40,9 +40,6 @@ plot_geom <- penguins |>
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-<!-- ```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")} -->
-<!-- ``` -->
-
 ```{r, context = "server"}
 grade_server("grade")
 ```
@@ -88,8 +85,6 @@ quiz(
            allow_retry = TRUE)
 )
 ```
-
-###
 
 
 ### Exercise 2
@@ -179,6 +174,8 @@ intro_p <- penguins |>
 intro_p
 ```
 
+###
+
 But before doing so we need to understand our dataset and take it a few steps at a time.
 
 ### Exercise 1
@@ -248,16 +245,16 @@ plot1 <- penguins |>
 plot1
 ```
 
-```{r first-steps-3a, exercise = TRUE}
+```{r first-steps-3, exercise = TRUE}
 
 ```
 
-```{r first-steps-3a-hint-1, eval = FALSE}
+```{r first-steps-3-hint-1, eval = FALSE}
 ggplot(data = ___, mapping = aes(x = ___, y = ___)) +
   geom_*()
 ```
 
-```{r first-steps-3a-solution, exercise.reveal_solution = FALSE}
+```{r first-steps-3-solution, exercise.reveal_solution = FALSE}
 ggplot(
   data = penguins,
   mapping = aes(x = flipper_length_mm, y = body_mass_g)
@@ -265,7 +262,7 @@ ggplot(
   geom_point()
 ```
 
-```{r first-steps-3a-check}
+```{r first-steps-3-check}
 grade_this_code()
 ```
 
@@ -273,27 +270,29 @@ grade_this_code()
 
 Note the warning message. There are two problematic data points in the `penguins` data set. In a real data science project, we would investigate these further. For this tutorial, we will just discard them.
 
+###
 
 `drop_na()` removes any row with NA values for any of the variables. If you provide `drop_na()` with the name of a variable as an argument, it will only remove rows that have an NA value for that variable.
 
+### Exercise 4
 
 Copy your previous code chunk only this time pipe your data into the `drop_na()` function and then pipe the result into your plot.
 
 
 `data |> function() |> ggplot(aes(...)) + geom_*`
 
-```{r first-steps-3b, exercise = TRUE}
+```{r first-steps-4, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r first-steps-3b-hint-1, eval = FALSE}
+```{r first-steps-4-hint-1, eval = FALSE}
 penguins |>
   ...
 ```
 
-```{r first-steps-3b-solution, exercise.reveal_solution = FALSE}
+```{r first-steps-4-solution, exercise.reveal_solution = FALSE}
 penguins |> 
   drop_na() |> 
   ggplot(
@@ -304,7 +303,7 @@ penguins |>
 ```
 
 
-```{r first-steps-3b-check}
+```{r first-steps-4-check}
 grade_this_code()
 ```
 
@@ -319,7 +318,7 @@ grade_this_code()
 In the realm of data analysis, a fundamental concept is the notion of a variable. A variable represents a quantity, quality, or property that can be measured or observed. Variables can take different forms, depending on the nature of the data being studied. They can be numeric or categorical, continuous or discrete, qualitative or quantitative. 
 
 
-### Exercise 4
+### Exercise 5
 
 We will now take a few more advanced steps to create the following graphic.
 
@@ -338,7 +337,7 @@ plot2
 
 But first let's check our understanding of the new additions.
 
-```{r first-steps-Q4}
+```{r first-steps-5-q}
 quiz(
   caption = "",
   question("Which layer is color defined in?",
@@ -373,13 +372,13 @@ quiz(
 
 Now start by copying your previous code chunk and adding `color = species` within `aes()` and adding the `geom_smooth()` layer using `+` with `method` equal to `"lm"` within the call to `geom_smooth()`. 
 
-```{r first-steps-4, exercise = TRUE}
+```{r first-steps-5, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r first-steps-4-hint-1, eval = FALSE}
+```{r first-steps-5-hint-1, eval = FALSE}
 penguins |>
   drop_na() |> 
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -389,7 +388,7 @@ penguins |>
 ```
 
 
-```{r first-steps-4-hint-2, eval = FALSE}
+```{r first-steps-5-hint-2, eval = FALSE}
 penguins |>
   drop_na() |>
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -399,7 +398,7 @@ penguins |>
   geom_smooth(... = "lm")
 ```
 
-```{r first-steps-4-solution, exercise.reveal_solution = FALSE}
+```{r first-steps-5-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -409,22 +408,22 @@ penguins |>
     geom_smooth(method = "lm") 
 ```
 
-```{r first-steps-4-check}
+```{r first-steps-5-check}
 grade_this_code()
 ```
 
 
-### Exercise 5
+### Exercise 6
 
 Now that we have the data points, lets add the title, subtitle, and labels. Copy the previous code, add a new layer using `+` and run `labs()`. Within labs, set `title` equal to `"Body mass and flipper length"`, `subtitle` equal to `"Dimensions for Adelie, Chinstrap, and Gentoo Penguins"`, `x` equal to `"Flipper length (mm)"`, and `y` equal to `"Body mass (g)"`.
 
-```{r first-steps-5a, exercise = TRUE}
+```{r first-steps-6, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r first-steps-5a-hint-1, eval = FALSE}
+```{r first-steps-6-hint-1, eval = FALSE}
 penguins |>
   drop_na() |>
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -438,7 +437,7 @@ penguins |>
           )
 ```
 
-```{r first-steps-5a-solution, exercise.reveal_solution = FALSE}
+```{r first-steps-6-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -453,22 +452,23 @@ penguins |>
 ```
 
 
-```{r first-steps-5a-check}
+```{r first-steps-6-check}
 grade_this_code()
 ```
 
-### 
+
+### Exercise 7
 
 Notice the legend looks a little different than our final goal. We forgot one minor thing which is capitalizing the legend, we can do so by typing a comma and setting `color` equal to "Species" in quotes.
 
-```{r first-steps-5b, exercise = TRUE}
+```{r first-steps-7, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 
-```{r first-steps-5b-solution, exercise.reveal_solution = FALSE}
+```{r first-steps-7-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -484,22 +484,22 @@ penguins |>
 ```
 
 
-```{r first-steps-5b-check}
+```{r first-steps-7-check}
 grade_this_code()
 ```
 
 
-### Exercise 6
+### Exercise 8
 
 Not all individuals perceive colors the same due to color blindness or other color vision differences. To help, we can map `species` to the `shape` aesthetic, in addition to the `color` aesthetic, within `geom_point()`. Don't forget to adjust the legend label so that only one legend appears.
 
-```{r first-steps-6a, exercise = TRUE}
+```{r first-steps-8, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r first-steps-6a-hint-1, eval = FALSE}
+```{r first-steps-8-hint-1, eval = FALSE}
 penguins |>
   drop_na() |>
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -514,7 +514,7 @@ penguins |>
          ... = "Species")
 ```
 
-```{r first-steps-6a-solution, exercise.reveal_solution = FALSE}
+```{r first-steps-8-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -531,11 +531,12 @@ penguins |>
 ```
 
 
-```{r first-steps-6a-check}
+```{r first-steps-8-check}
 grade_this_code()
 ```
 
-### 
+
+### Exercise 9
 
 In addition to the built-in shapes, `ggplot()` also allows for custom shapes to be created and used in plots. This can be useful for creating unique visualizations or for incorporating custom symbols or logos into a plot.
 
@@ -543,13 +544,13 @@ In addition to the built-in shapes, `ggplot()` also allows for custom shapes to 
 
 Finally, improve the color palette to be colorblind safe by adding the `scale_color_colorblind()` function from the `ggthemes` package.
 
-```{r first-steps-6b, exercise = TRUE}
+```{r first-steps-9, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r first-steps-6b-solution, exercise.reveal_solution = FALSE}
+```{r first-steps-9-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
   ggplot(mapping = aes(x = flipper_length_mm, 
@@ -567,7 +568,7 @@ penguins |>
   
 ```
 
-```{r first-steps-6b-check}
+```{r first-steps-9-check}
 grade_this_code()
 ```
 
@@ -612,6 +613,10 @@ quiz(
 
 
 ## Visualizing distributions
+
+A distribution of a variable allows us to observe the possible values of a variable and how often they occur.
+
+###
 
 ### Exercise 1
 
@@ -673,74 +678,74 @@ Let's extend our knowledge to find the proportion of each penguins `species` on 
 
 To integrate another categorical variable, set `fill` to `species` within `aes()` in `ggplot()`.
 
-```{r vis-dist-3a, exercise = TRUE}
+```{r vis-dist-3, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r vis-dist-3a-hint-1, eval = FALSE}
+```{r vis-dist-3-hint-1, eval = FALSE}
 ggplot(penguins, aes(x = ..., fill = ...)) +
   geom_bar()
 ```
 
 
-```{r vis-dist-3a-solution, exercise.reveal_solution = FALSE}
+```{r vis-dist-3-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = island, fill = species)) +
   geom_bar()
 ```
 
-```{r vis-dist-3a-check}
-grade_this_code()
-```
-
-
-###
-
-Sometimes it is more beneficial to look at percentages. To find the percentages of each penguins species on each island, run `position = "fill"` within `geom_bar()`.
-
-```{r vis-dist-3b, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r vis-dist-3b-hint-1, eval = FALSE}
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(position = ...)
-```
-
-
-```{r vis-dist-3b-solution, exercise.reveal_solution = FALSE}
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(position = "fill")
-```
-
-```{r vis-dist-3b-check}
+```{r vis-dist-3-check}
 grade_this_code()
 ```
 
 
 ### Exercise 4
 
-Use a histogram to visualize the distribution of `body_mass_g`.
+Sometimes it is more beneficial to look at percentages. To find the percentages of each penguins species on each island, run `position = "fill"` within `geom_bar()`.
 
-```{r vis-dist-4a, exercise = TRUE}
+```{r vis-dist-4, exercise = TRUE}
 
 ```
 
-```{r vis-dist-4a-hint-1, eval = FALSE}
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r vis-dist-4-hint-1, eval = FALSE}
+ggplot(penguins, aes(x = island, fill = species)) +
+  geom_bar(position = ...)
+```
+
+
+```{r vis-dist-4-solution, exercise.reveal_solution = FALSE}
+ggplot(penguins, aes(x = island, fill = species)) +
+  geom_bar(position = "fill")
+```
+
+```{r vis-dist-4-check}
+grade_this_code()
+```
+
+
+### Exercise 5
+
+Use a histogram to visualize the distribution of `body_mass_g`.
+
+```{r vis-dist-5, exercise = TRUE}
+
+```
+
+```{r vis-dist-5-hint-1, eval = FALSE}
 ggplot(penguins, ...) +
   geom_*()
 ```
 
 
-```{r vis-dist-4a-solution, exercise.reveal_solution = FALSE}
+```{r vis-dist-5-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = body_mass_g)) +
   geom_histogram()
 ```
 
-```{r vis-dist-4a-check}
+```{r vis-dist-5-check}
 grade_this_code()
 ```
 
@@ -748,55 +753,55 @@ grade_this_code()
 
 A continuous variable is a variable that can take on any value within a certain range or interval. Examples include time, distance, weight, height, temperature, or any other quantity that can be measured on a numerical scale.
 
-### 
+### Exercise 6
 
 Within `geom_histogram()`, set `bins` to 20.
 
-```{r vis-dist-4b, exercise = TRUE}
+```{r vis-dist-6, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r vis-dist-4b-hint-1, eval = FALSE}
+```{r vis-dist-6-hint-1, eval = FALSE}
 ... +
   geom_histogram(bins = ...)
 ```
 
-```{r vis-dist-4b-solution, exercise.reveal_solution = FALSE}
+```{r vis-dist-6-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = body_mass_g)) +
   geom_histogram(bins = 20)
 ```
 
-```{r vis-dist-4b-check}
+```{r vis-dist-6-check}
 grade_this_code()
 ```
 
-### 
+### Exercise 7
 
 Now, remove the `bins` and set `binwidth` to 200 and see the difference.
 
-```{r vis-dist-4c, exercise = TRUE}
+```{r vis-dist-7, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r vis-dist-4c-hint-1, eval = FALSE}
+```{r vis-dist-7-hint-1, eval = FALSE}
 ... +
   geom_histogram(binwidth = ...)
 ```
 
-```{r vis-dist-4c-solution, exercise.reveal_solution = FALSE}
+```{r vis-dist-7-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = body_mass_g)) +
   geom_histogram(binwidth = 200)
 ```
 
-```{r vis-dist-4c-check}
+```{r vis-dist-7-check}
 grade_this_code()
 ```
 
-```{r vis-dist-4d}
+```{r vis-dist-7-q}
 quiz(
   caption = "",
   question_text("In your own words what is the difference between bins and binwidth.",
@@ -812,29 +817,29 @@ quiz(
 ```
 
 
-### Exercise 5
+### Exercise 8
 
 An alternate way to visualize the distributions of data on a continuous variable is to use `geom_density()`, which is smoothed-out-version of a histogram.
 
 Create a density plot that displays the distribution of body mass.
 
 
-```{r vis-dist-5, exercise = TRUE}
+```{r vis-dist-8, exercise = TRUE}
 
 ```
 
-```{r vis-dist-5-hint-1, eval = FALSE}
+```{r vis-dist-8-hint-1, eval = FALSE}
 ggplot(penguins, ...) +
   geom_*()
 ```
 
 
-```{r vis-dist-5-solution, exercise.reveal_solution = FALSE}
+```{r vis-dist-8-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = body_mass_g)) +
   geom_density()
 ```
 
-```{r vis-dist-5-check}
+```{r vis-dist-8-check}
 grade_this_code()
 ```
 
@@ -844,54 +849,54 @@ The `geom_density()` function can be customized using various arguments, such as
 
 Density plots are useful for visualizing the distribution of a continuous variable, especially when you have a large number of data points. They can be used to identify the location and spread of the data, as well as any outliers or skewness in the distribution.
 
-### Exercise 6
+### Exercise 9
 
 Let's extend our knowledge to create a plot displaying the distribution of body masses of these penguins, taking into consideration the species of the penguin.
 
 Within `aes()` set both `color` and `fill` to `species`.
 
-```{r vis-dist-6a, exercise = TRUE}
+```{r vis-dist-9, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r vis-dist-6a-hint-1, eval = FALSE}
+```{r vis-dist-9-hint-1, eval = FALSE}
 ggplot(penguins, aes(x = body_mass_g, color = ..., fill = ...)) +
   geom_density()
 ```
 
-```{r vis-dist-6a-solution, exercise.reveal_solution = FALSE}
+```{r vis-dist-9-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = body_mass_g, color = species, fill = species)) +
   geom_density()
 ```
 
-```{r vis-dist-6a-check}
+```{r vis-dist-9-check}
 grade_this_code()
 ```
 
 
-###
+### Exercise 10
 
 To make the graph transparent, add `alpha = 0.5` within `geom_density()` call.
 
-```{r vis-dist-6b, exercise = TRUE}
+```{r vis-dist-10, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r vis-dist-6b-hint-1, eval = FALSE}
+```{r vis-dist-10-hint-1, eval = FALSE}
 ... +
   geom_density(alpha = ...)
 ```
 
-```{r vis-dist-6b-solution, exercise.reveal_solution = FALSE}
+```{r vis-dist-10-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = body_mass_g, color = species, fill = species)) +
   geom_density(alpha = 0.5)
 ```
 
-```{r vis-dist-6b-check}
+```{r vis-dist-10-check}
 grade_this_code()
 ```
 
@@ -934,7 +939,7 @@ grade_this_code()
 
 ###
 
-```{r vis-relation-Q}
+```{r vis-relation-1-q}
 quiz(
   caption = "",
   question_wordbank("Use the plot above to answer which species has the...",choices = c("largest median weight",
@@ -1042,7 +1047,7 @@ facet_p
 
 Fill in the blanks to complete the following steps. Start with the `penguins` data and drop the observations containing `NA`. Then map the appropriate variables to `x`, `y`, `color`, and `shape`.
 
-```{r vis-relation-4a, exercise = TRUE}
+```{r vis-relation-4, exercise = TRUE}
 ___ |> 
   ___ |> 
   ggplot(aes(x = ___, y = ___)) +
@@ -1050,7 +1055,7 @@ ___ |>
 ```
 
 
-```{r vis-relation-4a-solution, exercise.reveal_solution = FALSE}
+```{r vis-relation-4-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |> 
   ggplot(aes(x = flipper_length_mm, 
@@ -1060,28 +1065,28 @@ penguins |>
 ```
 
 
-```{r vis-relation-4a-check}
+```{r vis-relation-4-check}
 grade_this_code()
 ```
 
 
-### 
+### Exercise 5
 
 To facet your plot by a single variable, run `facet_wrap()`. The first argument of `facet_wrap()` is `island`, which you create with `~` followed by the variable name. The variable that you pass to `facet_wrap()` should be categorical.
 
 
-```{r vis-relation-4b, exercise = TRUE}
+```{r vis-relation-5, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r vis-relation-4b-hint-1, eval = FALSE}
+```{r vis-relation-5-hint-1, eval = FALSE}
 ... +
   facet_wrap(...)
 ```
 
-```{r vis-relation-4b-solution, exercise.reveal_solution = FALSE}
+```{r vis-relation-5-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |> 
   ggplot(aes(x = flipper_length_mm, 
@@ -1092,11 +1097,11 @@ penguins |>
 ```
 
 
-```{r vis-relation-4b-check}
+```{r vis-relation-5-check}
 grade_this_code()
 ```
 
-### 
+### Exercise 6
 
 The arguments `ncol` and `nrow` can be used to control the layout of the facet panels. `ncol` sets the number of columns in the grid of panels, and `nrow` sets the number of rows. By default, `facet_wrap()` tries to create a square grid of panels that fits all the subplots.
 
@@ -1108,18 +1113,18 @@ You can use the `scales` argument within `facet_wrap()` to control the scale of 
 
 Copy the previous plot and set `ncol = 1` to display the panels in one column and set `scales = free_y` to allow each panel to have its own y-axis scale.
 
-```{r vis-relation-4c, exercise = TRUE}
+```{r vis-relation-6, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r vis-relation-4c-hint-1, eval = FALSE}
+```{r vis-relation-6-hint-1, eval = FALSE}
 ... +
   facet_wrap(~island, ncol = ..., scales = ...)
 ```
 
-```{r vis-relation-4c-solution, exercise.reveal_solution = FALSE}
+```{r vis-relation-6-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |> 
   ggplot(aes(x = flipper_length_mm, 
@@ -1132,7 +1137,7 @@ penguins |>
 ```
 
 
-```{r vis-relation-4c-check}
+```{r vis-relation-6-check}
 grade_this_code()
 ```
 
@@ -1154,20 +1159,23 @@ Once you’ve made a plot, you might want to get it out of R by saving it as an 
 ### Exercise 1
 
 Before we save a plot we need to make one. Start a pipe with `penguins` to `drop_na()` and on to `ggplot()`. 
-Add `aes()` within `ggplot()` and specify `x` to `flipper_length_mm` and `y` to `body_mass_g`. Add the appropriate `geom` layer for a scatterplot.
 
-```{r saving-plots-1a, exercise = TRUE}
+Add `aes()` within `ggplot()` and specify `x` to `flipper_length_mm` and `y` to `body_mass_g`. 
+
+Add the appropriate `geom` layer for a scatterplot.
+
+```{r saving-plots-1, exercise = TRUE}
 
 ```
 
-```{r saving-plots-1a-hint-1, eval = FALSE}
+```{r saving-plots-1-hint-1, eval = FALSE}
 penguins |> 
   ...() |> 
   ggplot(aes(...)) +
   geom_()
 ```
 
-```{r saving-plots-1a-solution, exercise.reveal_solution = FALSE}
+```{r saving-plots-1-solution, exercise.reveal_solution = FALSE}
 penguins |> 
   drop_na() |> 
   ggplot(aes(x = flipper_length_mm, 
@@ -1176,12 +1184,12 @@ penguins |>
 ```
 
 
-```{r saving-plots-1a-check}
+```{r saving-plots-1-check}
 grade_this_code()
 ```
 
 
-### 
+### Exercise 2
 
 By default, `ggsave()` will save the **last plot** that you ran.
 
@@ -1193,23 +1201,23 @@ When you save plots using `ggsave()`, it will save your plot to your working dir
 
 Use the `ggsave()` function and set the `filename` to `"penguin_plot.png"`.
 
-```{r saving-plots-1b, exercise = TRUE}
+```{r saving-plots-2, exercise = TRUE}
 
 ```
 
-```{r saving-plots-1b-hint-1, eval = FALSE}
+```{r saving-plots-2-hint-1, eval = FALSE}
 ggsave(filename = ...)
 ```
 
-```{r saving-plots-1b-solution, exercise.reveal_solution = FALSE}
+```{r saving-plots-2-solution, exercise.reveal_solution = FALSE}
 ggsave(filename = "penguin_plot.png")
 ```
 
-```{r saving-plots-1b-check}
+```{r saving-plots-2-check}
 grade_this_code()
 ```
 
-### Exercise 2
+### Exercise 3
 
 Allowing `ggsave` to default to the last ran plot can sometimes cause you to erroneously save the wrong plot out. Assigning a plot to a variable provides flexibility and reusability in your code. It allows you to easily refer to the plot for further modifications or reuse it in different contexts without recreating the entire plot.
 
@@ -1217,7 +1225,7 @@ Allowing `ggsave` to default to the last ran plot can sometimes cause you to err
 
 Assign the whole plot to a variable `plot_geom` using `<-`.
 
-```{r saving-plots-2a, exercise = TRUE}
+```{r saving-plots-3, exercise = TRUE}
 penguins |>   
   drop_na() |>
   ggplot(aes(x = flipper_length_mm, 
@@ -1225,9 +1233,9 @@ penguins |>
     geom_point()
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
+<!-- <button onclick = "transfer_code(this)">Copy previous code</button> -->
 
-```{r saving-plots-2a-hint-1, eval = FALSE}
+```{r saving-plots-3-hint-1, eval = FALSE}
 ... <- penguins |>   
   drop_na() |>
   ggplot(aes(x = flipper_length_mm, 
@@ -1235,7 +1243,7 @@ penguins |>
     geom_point()
 ```
 
-```{r saving-plots-2a-solution, exercise.reveal_solution = FALSE}
+```{r saving-plots-3-solution, exercise.reveal_solution = FALSE}
 plot_geom <- penguins |>   
   drop_na() |>
   ggplot(aes(x = flipper_length_mm, 
@@ -1244,27 +1252,27 @@ plot_geom <- penguins |>
 ```
 
 
-```{r saving-plots-2a-check}
+```{r saving-plots-3-check}
 grade_this_code()
 ```
 
-### 
+### Exercise 4
 
-This time within `ggsave()`, set `filename` to `"penguin_plot.png"` and then set `plot` to `plot_geom` which was our plot that we made previously.
+Now this time use `ggsave()`, set `filename` to `"penguin_plot.png"`, and then set `plot` to `plot_geom` which was our plot that we made previously.
 
-```{r saving-plots-2b, exercise = TRUE}
+```{r saving-plots-4, exercise = TRUE}
 
 ```
 
-```{r saving-plots-2b-hint-1, eval = FALSE}
+```{r saving-plots-4-hint-1, eval = FALSE}
 ggsave(filename = ..., plot = ...)
 ```
 
-```{r saving-plots-2b-solution, exercise.reveal_solution = FALSE}
+```{r saving-plots-4-solution, exercise.reveal_solution = FALSE}
 ggsave(filename = "penguin_plot.png", plot = plot_geom)
 ```
 
-```{r saving-plots-2b-check}
+```{r saving-plots-4-check}
 grade_this_code()
 ```
 ### 

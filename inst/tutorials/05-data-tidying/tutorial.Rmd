@@ -1,6 +1,5 @@
 ---
 title: Data tidying
-author: Miriam Heiss and David Kane
 tutorial:
   id: data-tidying
 output:
@@ -11,12 +10,18 @@ runtime: shiny_prerendered
 description: 'Tutorial for Chapter 5: Data tidying'
 ---
 
+<!-- Modification of r4ds.tutorials author: Miriam Heiss and David Kane -->
+
 ```{r setup, include = FALSE}
 library(learnr)
 library(tidyverse)
 library(tutorial.helpers)
 library(babynames)
 library(socviz)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
@@ -51,21 +56,26 @@ car_names <- c(`f` = "Front Wheel Drive",
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+
+```{r, context = "server"}
+grade_server("grade")
 ```
 
-<!-- DK: 
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
 
-There are a couple of open-ended questions early in the tutorial. Do they work? 
-
-Clean up babynames example.
-
-Add some of the images from the chapter.
-
-
--->
-
-
+```{r}
+grade_button_ui(id = "grade")
+```
 
 
 ## Introduction

@@ -33,10 +33,6 @@ options(tutorial.exercise.timelimit = 60,
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-<!-- ```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")} -->
-<!-- ``` -->
-
-
 ```{r, context = "server"}
 grade_server("grade")
 ```
@@ -91,6 +87,7 @@ The goal of this chapter is to give you an overview of all the key tools for tra
 <!-- Take careful note of the conflicts message that’s printed when you load the **tidyverse**. It tells you that **dplyr** versions of some functions now take precedence over functions with the same name in base R. If you want to use the base version of these functions after loading **dplyr**, you’ll need to use their full names: `stats::filter()` and `stats::lag()`. So far we’ve mostly ignored which package a function comes from because most of the time it doesn’t matter. However, knowing the package can help you find help and find related functions, so when we need to be precise about which package a function comes from, we’ll use the same syntax as R: `package.name::function_name()`. -->
 
 ## Rows
+###
 
 ### Exercise 1
 
@@ -120,7 +117,7 @@ grade_this_code()
 
 ###
 
-```{r rows-1b}
+```{r rows-1-q}
 quiz(
   caption = "",
   question_text("What function provides an easy way to print the data such that you see all variables and variable types which is particularly useful for large datasets?",
@@ -136,7 +133,7 @@ quiz(
 
 ### Exercise 2
 
-```{r rows-2}
+```{r rows-2-q}
 quiz(
   caption = "",
   question_text("What function allows you to keep rows based on the values of a column?",
@@ -162,21 +159,21 @@ The pipe, ` |>`, takes the thing on its left and passes it along to the function
 
 Pipe `flights` to `filter(dep_delay > 120)` 
 
-```{r rows-2b, exercise = TRUE}
+```{r rows-2, exercise = TRUE}
 
 ```
 
-```{r rows-2b-hint-1, eval = FALSE}
+```{r rows-2-hint-1, eval = FALSE}
 flights |> 
   filter(...)
 ```
 
-```{r rows-2b-solution, exercise.reveal_solution = FALSE}
+```{r rows-2-solution, exercise.reveal_solution = FALSE}
 flights |>
   filter(dep_delay > 120)
 ```
 
-```{r rows-2b-check}
+```{r rows-2-check}
 grade_this_code()
 ```
 
@@ -186,55 +183,27 @@ The easiest way to pronounce the pipe is “then”. So, in words we would descr
 
 Note that only `r scales::comma(nrow(nycflights13::flights |> filter(dep_delay > 120)))` rows remain after we filter for such a long departure delay. Why do we only see 1,000 rows here? Because Quarto, by default, only keeps 1,000 rows for display purposes.
 
-###
+### Exercise 3
 
 Continue the pipe with `nrow()`.
 
-
-```{r rows-2c, exercise = TRUE}
-
-```
-
-<!-- why doesn't this work? -->
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r rows-2c-hint-1, eval = FALSE}
-flights |>
-  filter(dep_delay > 120) |> 
-  ...
-```
-
-```{r rows-2c-solution, exercise.reveal_solution = FALSE}
-flights |>
-  filter(dep_delay > 120) |> 
-  nrow()
-```
-
-```{r rows-2c-check}
-grade_this_code()
-```
-
-### 
-
-It is often useful to, temporarily add a simple function to the end of a pipe to confirm that the resulting tibble is what we expect it to be. Then, we remove that function and go back to working on the pipe.
-
-
-### Exercise 3
-
-You can use boolean logic when filtering. For example, `&` means *and* and `|` means *or*. Pipe `flights` to `filter()` with the argument set to `month == 1 & day == 1` to get all the flights on the first day of January.
 
 ```{r rows-3, exercise = TRUE}
 
 ```
 
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
 ```{r rows-3-hint-1, eval = FALSE}
-flights |> 
-  filter(... & day == 1)
+flights |>
+  filter(dep_delay > 120) |> 
+  ...
 ```
 
 ```{r rows-3-solution, exercise.reveal_solution = FALSE}
 flights |>
-  filter(month == 1 & day == 1)
+  filter(dep_delay > 120) |> 
+  nrow()
 ```
 
 ```{r rows-3-check}
@@ -243,11 +212,38 @@ grade_this_code()
 
 ### 
 
-Instead of `&`, you could have used a simple comma, `,`, because `filter()` treats statements separated by commas as all being required. For example, `filter(month == 1, day == 1)` would produce the same set of rows as this example.
+It is often useful to, temporarily add a simple function to the end of a pipe to confirm that the resulting tibble is what we expect it to be. Then, we remove that function and go back to working on the pipe.
+
 
 ### Exercise 4
 
-```{r common-error-1}
+You can use boolean logic when filtering. For example, `&` means *and* and `|` means *or*. Pipe `flights` to `filter()` with the argument set to `month == 1 & day == 1` to get all the flights on the first day of January.
+
+```{r rows-4, exercise = TRUE}
+
+```
+
+```{r rows-4-hint-1, eval = FALSE}
+flights |> 
+  filter(... & day == 1)
+```
+
+```{r rows-4-solution, exercise.reveal_solution = FALSE}
+flights |>
+  filter(month == 1 & day == 1)
+```
+
+```{r rows-4-check}
+grade_this_code()
+```
+
+### 
+
+Instead of `&`, you could have used a simple comma, `,`, because `filter()` treats statements separated by commas as all being required. For example, `filter(month == 1, day == 1)` would produce the same set of rows as this example.
+
+###
+
+```{r rows-4-q}
 quiz(
   caption = "",
   # question_wordbank("Indicate whether the lines of code will run successfully or produce an error.",choices = c("the state of a variable when you measure it",
@@ -282,13 +278,14 @@ quiz(
 
 When you run `filter()`, **dplyr** executes the filtering operation, creating a new data frame, and then prints it. It doesn’t modify the existing flights dataset because **dplyr** functions never modify their inputs.
 
+###
+
 Create a new object, `jan1` which is the result of filtering `flights` to just including flights from January 1. In other words, put `jan1 <- ` in front of the code for Exercise 3 (`flights |> filter(month == 1 & day == 1)`).
 
 ```{r rows-5, exercise = TRUE}
 
 ```
 
-<!-- Why doesn't this work? -->
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r rows-5-hint-1, eval = FALSE}
@@ -322,7 +319,7 @@ Pipe `flights` to `arrange()`, passing in the arguments `year, month, day, dep_t
 ```
 
 ```{r rows-6-hint-1, eval = FALSE}
-flights |> 
+flights |>
   arrange(...)
 ```
 
@@ -482,7 +479,7 @@ In modern code, arguments to **dplyr** functions are proceeded with dots, `.`, i
 ## Columns
 ### 
 
-```{r columns-0}
+```{r columns-0-q}
 quiz(
   caption = "",
   question_wordbank("Match the function name with what it accomplishes.",choices = c(
@@ -566,7 +563,7 @@ You can also use `.after` to add after a variable, and in both `.before` and `.a
 
 ###
 
-```{r columns-2b}
+```{r columns-2-q}
 quiz(
   caption = "",
   question("Which of the following lines of code will place the new variables between `day` and `dep_time`?",
@@ -683,8 +680,6 @@ Tidyverse selections implement a dialect of R where operators make it easy to se
 * `c()` for combining selections.
 
 
-
-
 ### Exercise 6
 
 We can also check the characteristics of the columns and then use that information to decide which to keep. Pipe `flights` to `select()`. Within `select()`, insert `where(is.character)`.
@@ -729,7 +724,7 @@ print(flights_mod)
 ```
 
 
-```{r column-6b}
+```{r column-6-q}
 quiz(
   caption = "",
   question("Using the `flights_mod` dataset, which of the following will only keep the variables dep_time, sched_dep_time, arr_time, and sched_arr_time?",
@@ -839,6 +834,8 @@ Complete the following sequence of pipes.
 - We don't want to deal with 20 variables. Pipe the current code to `select()` with the argument `year:day, dep_delay, arr_delay, carrier, flight, gain`.
 - Then `arrange()` with the largest `gain` on top using `desc()`
 
+###
+
 The standard rhythm of good data science is to examine the result of each function line-by-line before piping in the next function.
 
 ```{r the-pipe-1, exercise = TRUE}
@@ -879,6 +876,8 @@ So far you’ve learned about functions that work with rows and columns. **dplyr
 
 Imagine that we want to know what the average, or mean, departure delay is. We need to apply the function for calculating an average in R, `mean()`, to the variable for departure delay, which is `dep_delay`. The function `summarize()` applies a function like `mean()` to a variable like `dep_delay` within the **dplyr** framework.
 
+###
+
 Pipe `flights` into `summarize()`, with `mean(dep_delay)` as the argument.
 
 ```{r groups-1, exercise = TRUE}
@@ -906,6 +905,8 @@ The result was a tibble with 1 row and 1 column. Like `filter()`, `arrange()`, `
 ### Exercise 2
 
 The prior result was `NA` because there are some missing values in the `dep_delay` variable. Almost all statistical functions in R produce an `NA` result by default if any of the input values are `NA`. We can ignore the `NA` values when using `mean()` by adding `na.rm = TRUE` to `mean()`.
+
+###
 
 Add the argument `na.rm = TRUE` to `mean()`. Don't forget to separate the arguments with commas.
 
@@ -1034,8 +1035,6 @@ grade_this_code()
 ### 
 
 Note that the letter `n` does two completely different things in this code. First, it is the name of a new variable which we have created. Second, it refers to a function, `n()`, which calculates the total number of rows in the tibble for each group.
-
-<!-- DK: Add a bunch more summarize examples, using other example functions from the ?summarize page? -->
 
 ### Exercise 6
 
