@@ -6,6 +6,7 @@ output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 5: Data tidying'
 ---
@@ -48,9 +49,6 @@ cms_pivoted <- cms_patient_experience |>
 car_names <- c(`f` = "Front Wheel Drive",
                `4` = "4 Wheel Drive",
                `r` = "Rear Wheel Drive")
-
-
-
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
