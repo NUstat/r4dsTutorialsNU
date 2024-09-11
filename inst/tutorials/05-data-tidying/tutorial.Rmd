@@ -95,103 +95,36 @@ You can represent the same underlying data in multiple ways by organizing values
 
 ### Exercise 1
 
-In the console, load in the *tidyverse* package. Copy and paste the loading message (the thing with the conflicts and check marks) into the box below.
+The following tables show Tuberculosis cases in three countries: China, Brazil, and Afghanistan.
 
-```{r tidy-data-1}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
+```{r echo=FALSE,out.width="30%", out.height="40%",fig.show='hold'}
+knitr::include_graphics(c("images/table1.png","images/table2.png","images/table3.png"))
+
 ```
 
 ### 
 
-**dplyr** has all your basic data transformation functions like `mutate()`, `filter()`, and `summarise()`. **readr** allows you to read data that is in the form of a csv, tsv, or spreadsheet.
-
-### Exercise 2
-
-Copy and paste the third line of the loading message into the box below.
-
-```{r tidy-data-2}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
-```
-
-It should have [ggplot2](https://ggplot2.tidyverse.org/) and [tibble](https://tibble.tidyverse.org/). 
-
-### 
-
-**ggplot2** is how we make plots and maps in R. You provide the data, tell **ggplot2** how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details. The **tibble** package allows you to create tibbles, a kind of data frame that is lazy and surly: it does less (i.e. it doesn't change variable names or types, and doesn't do partial matching) and complains more (e.g. when a variable does not exist).
-
-
-### Exercise 3
-
-Copy and paste the 4th line of the loading message into the box below. 
-
-```{r tidy-data-3}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
-```
-
-### 
-
-It should show [**lubridate**](https://lubridate.tidyverse.org/) and [**tidyr**](https://tidyr.tidyverse.org/)
-
-### 
-
-**lubridate** is a more intuitive way to change and make dates in R, and allows for all of the quirks that our time has (such as leap days and daylight savings) that computers and programs don't understand. The **tidyr** package is the most important package for this tutorial. It makes sure that you have **Tidy Data**. The three main rules for having tidy data are: 
-
-1. Each variable is a column; each column is a variable.
-2. Each observation is a row; each row is an observation.
-3. Each value is a cell; each cell is a single value.
-
-
-### Exercise 4
-
-Run the code provided in the box below.
-
-```{r tidy-data-4, exercise = TRUE}
-table1
-table2
-table3
-```
-
-```{r tidy-data-4-test, include = FALSE}
-table1
-table2
-table3
-```
-
-### 
-
-These tables show Tuberculosis cases in three countries: China, Brazil, and Afghanistan.
 
 They all show the same data (country, year, population, cases), but one of them is going to be way easier to work with. Let's see if we can identify the "tidy" table.
 
-### Exercise 5
+###
 
 Let's  take a look at `table2` first. Type and run `table2` in the box below to see it.
 
-```{r tidy-data-5, exercise = TRUE}
+```{r tidy-data-1, exercise = TRUE}
 
 ```
 
-```{r tidy-data-5-hint-1, eval = FALSE}
+```{r tidy-data-1-hint-1, eval = FALSE}
 table2
 ```
 
-```{r tidy-data-5-test, include = FALSE}
+```{r tidy-data-1-solution, exercise.reveal_solution = FALSE}
 table2
+```
+
+```{r tidy-data-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -199,7 +132,7 @@ table2
 `table2` is a tibble with 4 columns and 12 rows. Let's see if the rules apply.
 
 
-### Exercise 6
+### Exercise 2
 
 These are the rules for tidy data: 
 
@@ -213,18 +146,13 @@ In the column `type`, it switches in between `cases` and `population`. In the co
 
 ### 
 
-Using the three rules, answer the questions below.
+Using the three rules, answer the question below.
 
-
-### Exercise 7
-
-```{r tidy-data-7}
-question_text("Are all the possible variables columns?",
-	message = "No",
-	answer(NULL, correct = TRUE),
-	allow_retry = FALSE,
-	incorrect = NULL,
-	rows = 3)
+```{r tidy-data-2-q}
+question("Are all the possible variables columns?",
+	answer("Yes"),
+	answer("No", correct = TRUE),
+	allow_retry = TRUE)
 ```
 
 ### 
@@ -232,20 +160,24 @@ question_text("Are all the possible variables columns?",
 All the possible variables are `country`, `year`, `cases`, and `population`. The `type` column has two of the variables that are not observations, breaking the first two rules. The `count` column has observations that switch between cases and population, because there is no `cases` or `population` column.
 
 
-### Exercise 8
+### Exercise 3
 
 Now let's look at `table3`. Type and run `table3` in the box below to see it.
 
-```{r tidy-data-8, exercise = TRUE}
+```{r tidy-data-3, exercise = TRUE}
 
 ```
 
-```{r tidy-data-8-hint-1, eval = FALSE}
+```{r tidy-data-3-hint-1, eval = FALSE}
 table3
 ```
 
-```{r tidy-data-8-test, include = FALSE}
+```{r tidy-data-3-solution, exercise.reveal_solution = FALSE}
 table3
+```
+
+```{r tidy-data-3-check}
+grade_this_code()
 ```
 
 ### 
@@ -257,44 +189,48 @@ Now, this looks like a very nice dataset with 3 columns and 6 rows, but it break
 3. Each value is a cell; each cell is a single value.
 
 
-### Exercise 9
+### Exercise 4
 
 Using the three rules, answer the question below.
 
-```{r tidy-data-9}
-question_text("Are all the cells a single value?",
-	message = "No",
-	answer(NULL, correct = TRUE),
-	allow_retry = FALSE,
-	incorrect = NULL,
-	rows = 3)
+```{r tidy-data-4-q}
+question("Are all the cells a single value?",
+	answer("Each cell is a single value.", correct = TRUE),
+	answer("Each variable is a column"),
+	answer("Each observation is a row"),
+	random_answer_order = TRUE,
+	allow_retry = TRUE)
 ```
 
 ### 
 
 Each of the cells in the `rate` column are not a single observation. They are `population` divided by `cases`, so in order for the data to be considered tidy, we would need to separate those columns.
 
-### Exercise 10
+### Exercise 5
 
 Let's look at `table1`. Type and run `table1` in the box below to see it.
 
-```{r tidy-data-10, exercise = TRUE}
+```{r tidy-data-5, exercise = TRUE}
 
 ```
 
-```{r tidy-data-10-hint-1, eval = FALSE}
+```{r tidy-data-5-hint-1, eval = FALSE}
 table1
 ```
 
-```{r tidy-data-10-test, include = FALSE}
+```{r tidy-data-5-solution, exercise.reveal_solution = FALSE}
 table1
+```
+
+```{r tidy-data-5-check}
+grade_this_code()
 ```
 
 ### 
 
 `table1` is a tibble with 4 columns and 6 rows. Let's see if the rules apply.
 
-### Exercise 11
+### Exercise 6
 
 As a refresher, these are the rules for tidy data: 
 
@@ -307,104 +243,69 @@ As a refresher, these are the rules for tidy data:
 Using the three rules, answer the questions below.
 
 
-```{r tidy-data-11}
-question_text("Are all the rules true in this data?",
-	message = "Yes",
-	answer(NULL, correct = TRUE),
-	allow_retry = FALSE,
-	incorrect = NULL,
-	rows = 3)
+```{r tidy-data-6}
+question("Are all the rules true in this data?",
+	answer("Yes", correct = TRUE),
+	answer("No"),
+	allow_retry = TRUE)
 ```
 
 ### 
 
 This is a very good example of a tidy dataset. All the variables are columns. All the columns are variables. All the observations are rows, all the rows are observations, all the values are cells, and all the cells are single values.
 
-### Exercise 12
+### Exercise 7
 
-<!-- DK: What an ugly plot! But this is what the book has . . . -->
+dplyr, ggplot2, and all the other packages in the tidyverse are designed to work with tidy data.
 
-Using the tidy data from `table1`, we are going to make this plot: 
+Using `table1` add a new variable `rate` which is equal to `cases / population * 10000`.
 
-```{r echo = FALSE}
-plot1 <- ggplot(data = table1, mapping = aes(x = year, y = cases)) +
-  geom_line(aes(group = country)) +
-  geom_point(aes(color = country, shape = country)) +
-  scale_x_continuous(breaks = c(1999, 2000)) +
-  scale_y_continuous(labels = scales::comma) +
-  labs(title = "Tuberculosis cases in three countries",
-       subtitle = "Between 1999 and 2000",
-       x = "Year",
-       y = "Number of cases",
-       color = "Country",
-       shape = "Country")
 
-plot1
-```
-
-### 
-
-Start making a plot with `ggplot`. Use `table1` as your data.
-
-```{r tidy-data-12, exercise = TRUE}
+```{r tidy-data-7, exercise = TRUE}
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r tidy-data-12-hint-1, eval = FALSE}
-ggplot(data = ...)
+```{r tidy-data-7-hint-1, eval = FALSE}
+table1 |>
+  mutate(... = ...)
 ```
 
-```{r tidy-data-12-test, include = FALSE}
-ggplot(data = table1)
+```{r tidy-data-7-solution, exercise.reveal_solution = FALSE}
+table1 |>
+  mutate(rate = cases / population * 10000)
 ```
 
-As usual, a call to `ggplot()` with an aesthetic or geom results in a blank plotting square.
+```{r tidy-data-7-check}
+grade_this_code()
+```
 
-### Exercise 13
+### Exercise 8
+
+Make a plot with `ggplot`. 
+
+Use `table1` as your data.
 
 Add `aes()` with the `x` argument set to `year` and `y` set to `cases`.
 
-```{r tidy-data-13, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-
-```{r tidy-data-13-hint-1, eval = FALSE}
-ggplot(... = ..., 
-       mapping = aes(x = ..., y = ...))
-```
-
-```{r tidy-data-13-test, include = FALSE}
-ggplot(data = table1,
-       mapping = aes(x = year, y = cases))
-```
-
-Providing the `aes()` generates axis titles and and axis labels. 
-
-### Exercise 14
-
 Add `geom_line()` to your plot too.
 
-```{r tidy-data-14, exercise = TRUE}
+```{r tidy-data-8, exercise = TRUE}
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-
-```{r tidy-data-14-hint-1, eval = FALSE}
-ggplot(...(...)) + 
+```{r tidy-data-8-hint-1, eval = FALSE}
+ggplot(..., aes(...)) + 
   geom_...()
 ```
 
-```{r tidy-data-14-test, include = FALSE}
+```{r tidy-data-8-solution, exercise.reveal_solution = FALSE}
 ggplot(data = table1,
        mapping = aes(x = year, y = cases)) +
   geom_line()
+```
+
+```{r tidy-data-8-check}
+grade_this_code()
 ```
 
 ### 
@@ -417,76 +318,82 @@ We clearly don't want to connect the data points in this way.
 > “Tidy datasets are all alike, but every messy dataset is messy in its own way.”
 > — Hadley Wickham
 
-### Exercise 15
+### Exercise 9
 
-In `geom_line()`, we need to mess around with a couple things in order to get three separate lines instead of one big "N" on our plot. We need to add an `aes` inside of `geom_line(), with group equaling country (inside parenthesis).
+In `geom_line()`, we need to mess around with a couple things in order to get three separate lines instead of one big "N" on our plot. We need to add an `aes` inside of `geom_line()`, with `group` equaling `country`.
 
-```{r tidy-data-15, exercise = TRUE}
+```{r tidy-data-9, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 
-```{r tidy-data-15-hint-1, eval = FALSE}
+```{r tidy-data-9-hint-1, eval = FALSE}
 ... + 
   geom_line(aes(... = country))
 ```
 
-```{r tidy-data-15-test, include = FALSE}
+```{r tidy-data-9-solution, exercise.reveal_solution = FALSE}
 ggplot(data = table1,
        mapping = aes(x = year, y = cases)) +
   geom_line(aes(group = country))
 ```
 
+```{r tidy-data-9-check}
+grade_this_code()
+```
+
 The `group` aesthetic causes **ggplot2** to create separate lines for each value of `country`, which is what we want.
 
-### Exercise 16
+### Exercise 10
 
-Now, we need to add a second `geom`, `geom_point()`. Inside `geom_point()` we need another aesthetic, this time with color and shape both equaling `country`. This will make three distinctive lines that you can clearly see which one is which.
+Now, let's improve the plot by adding a second `geom`, `geom_point()`. Inside `geom_point()` we need another aesthetic, this time with `color` and `shape` both equaling `country`. This will make three distinctive lines that you can clearly see which one is which.
 
-```{r tidy-data-16, exercise = TRUE}
+```{r tidy-data-10, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 
-```{r tidy-data-16-hint-1, eval = FALSE}
+```{r tidy-data-10-hint-1, eval = FALSE}
 ... +
   geom_point(aes(color = ..., shape = ...))
 ```
 
-```{r tidy-data-16-test, include = FALSE}
+```{r tidy-data-10-solution, exercise.reveal_solution = FALSE}
 ggplot(data = table1,
        mapping = aes(x = year, y = cases)) +
   geom_line(aes(group = country)) +
   geom_point(aes(color = country, shape = country))
 ```
 
+```{r tidy-data-10-check}
+grade_this_code()
+```
+
 ### 
 
 Technically you could tell before, but this will make it easier to see which one is which. When a categorical variable is mapped to an aesthetic, `ggplot()` will automatically assign a unique value of the aesthetic to each unique level of the variable, a process known as scaling.
 
-### Exercise 17
+### Exercise 11
 
-Let's fix the x and y axes
+Let's fix the x axis, we need to make just two breaks, 1999 and 2000. To do this, we will need to add a layer (using `+`). The layer we are going to add is `scale_x_continuous()`. We need to change what the breaks are, using `breaks = c(1999, 2000)`.
 
-For the x axis, we need make just two breaks, 1999 and 2000. To do this, we will need to add a layer (using `+`). The layer we are going to add is `scale_x_continuous()`. We need to change what the breaks are, using `breaks = c(1999, 2000)`.
-
-```{r tidy-data-17, exercise = TRUE}
+```{r tidy-data-11, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 
-```{r tidy-data-17-hint-1, eval = FALSE}
+```{r tidy-data-11-hint-1, eval = FALSE}
 ... +
   scale_x_continuous(breaks = c(..., ....))
 ```
 
-```{r tidy-data-17-test, include = FALSE}
+```{r tidy-data-11-solution, exercise.reveal_solution = FALSE}
 ggplot(data = table1,
        mapping = aes(x = year, y = cases)) +
   geom_line(aes(group = country)) +
@@ -494,81 +401,13 @@ ggplot(data = table1,
   scale_x_continuous(breaks = c(1999, 2000))
 ```
 
+```{r tidy-data-11-check}
+grade_this_code()
+```
+
+###
+
 The family of `scale_*` functions allows for fine-grained control of our plot axes.
-
-### Exercise 18
-
-To add commas to the y axis, we will use `scale_y_continuous()` on another layer. Inside of the parenthesis, we will use `labels = scales::comma`. 
-
-```{r tidy-data-18, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r tidy-data-18-hint-1, eval = FALSE}
-... +
-  scale_y_continuous(... = scales::comma)
-```
-
-```{r tidy-data-18-test, include = FALSE}
-ggplot(data = table1,
-       mapping = aes(x = year, y = cases)) +
-  geom_line(aes(group = country)) +
-  geom_point(aes(color = country, shape = country)) +
-  scale_x_continuous(breaks = c(1999, 2000)) +
-  scale_y_continuous(labels = scales::comma)
-```
-
-`breaks` determines which labels are used. `labels` specifies how those labels are displayed.
-
-
-### Exercise 19
-
-The last step is to add labels to our plot. Reminder: This is what your plot should look like.
-
-```{r}
-plot1
-```
-
-### 
-
-```{r tidy-data-19, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-
-```{r tidy-data-19-hint-1, eval = FALSE}
-... +
-  labs(title = "...",
-       subtitle = "...",
-       x = "...",
-       y = "..."
-       color = "Country",
-       shape = "Country")
-```
-
-```{r tidy-data-19-test, include = FALSE}
-ggplot(data = table1,
-       mapping = aes(x = year, y = cases)) +
-  geom_line(aes(group = country)) +
-  geom_point(aes(color = country, shape = country)) +
-  scale_x_continuous(breaks = c(1999, 2000)) +
-  scale_y_continuous(labels = scales::comma) +
-  labs(title = "Tuberculosis cases in three countries",
-       subtitle = "Between 1999 and 2000",
-       x = "Year",
-       y = "Number of cases",
-       color = "Country",
-       shape = "Country")
-```
-
-### 
-
-To add labels to the key on the side, you will need to label both the shape and the color "Country" (as that is what the key is telling us)
-
 
 ## Lengthening Data
 ### 
@@ -587,8 +426,12 @@ For this section, we will need to use the `billboard` dataset. Type and run `bil
 billboard
 ```
 
-```{r lengthening-data-1-test, include = FALSE}
+```{r lengthening-data-1-solution, exercise.reveal_solution = FALSE}
 billboard
+```
+
+```{r lengthening-data-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -611,11 +454,14 @@ billboard |>
   pivot_longer(... = starts_with("..."))
 ```
 
-```{r lengthening-data-2-test, include = FALSE}
+```{r lengthening-data-2-solution, exercise.reveal_solution = FALSE}
 billboard |>
   pivot_longer(cols = starts_with("wk"))
 ```
 
+```{r lengthening-data-2-check}
+grade_this_code()
+```
 ### 
 
 `cols` specifies which columns need to be pivoted, i.e. which columns aren’t variables. This argument uses the same syntax as `select()` so here we could use `!c(artist, track, date.entered)` or `contains("wk")`
@@ -639,13 +485,16 @@ billboard |>
                values_to = "...")
 ```
 
-```{r lengthening-data-3-test, include = FALSE}
+```{r lengthening-data-3-solution, exercise.reveal_solution = FALSE}
 billboard |>
   pivot_longer(cols = starts_with("wk"),
                names_to = "week",
                values_to = "rank")
 ```
 
+```{r lengthening-data-3-check}
+grade_this_code()
+```
 ### 
 
 `names_to` names the variable stored in the column names, we named that variable `week`. `values_to` names the variable stored in the cell values, we named that variable `rank`.
@@ -669,12 +518,16 @@ billboard |>
              ... = TRUE)
 ```
 
-```{r lengthening-data-4-test, include = FALSE}
+```{r lengthening-data-4-solution, exercise.reveal_solution = FALSE}
 billboard |>
   pivot_longer(cols = starts_with("wk"),
              names_to = "week",
              values_to = "rank",
              values_drop_na = TRUE)
+```
+
+```{r lengthening-data-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -700,7 +553,7 @@ We do this by continuing our pipe with `mutate()`. Inside of `mutate()`, we can 
   mutate(... = parse_number(week))
 ```
 
-```{r lengthening-data-5-test, include = FALSE}
+```{r lengthening-data-5-solution, exercise.reveal_solution = FALSE}
 billboard |>
   pivot_longer(cols = starts_with("wk"),
              names_to = "week",
@@ -709,6 +562,9 @@ billboard |>
   mutate(week = parse_number(week))
 ```
 
+```{r lengthening-data-5-check}
+grade_this_code()
+```
 ### 
 
 With `mutate()` we can convert character strings to numbers. This way of using `mutate()` doesn't create a new column, but changes an existing column. `parse_number()` is a handy function that will extract the first number from a string, ignoring all other text.
@@ -729,7 +585,7 @@ billboard_longer <- billboard |>
   ...
 ```
 
-```{r lengthening-data-6-test, include = FALSE}
+```{r lengthening-data-6-solution, exercise.reveal_solution = FALSE}
 billboard_longer <- billboard |>
   pivot_longer(cols = starts_with("wk"),
              names_to = "week",
@@ -738,160 +594,15 @@ billboard_longer <- billboard |>
   mutate(week = parse_number(week))
 ```
 
-### 
-
-This will make it easier to make this dataset into a plot. With `billboard_longer`, we don't have to pipe the entire process into `ggplot()`.
-
-### 
-
-We are going to be making this plot:
-
-```{r echo = FALSE}
-plot2 <- billboard_longer |> 
-  ggplot(aes(x = week, y = rank, group = track)) + 
-  geom_line(alpha = 0.25) + 
-  scale_y_reverse()+
-  labs(title = "Billboard top 100 rankings in the year 2000",
-       subtitle = "Over the course of 76 Weeks",
-       x = "Week",
-       y = "Rank")
-
-plot2
+```{r lengthening-data-6-check}
+grade_this_code()
 ```
-
-### Exercise 7
-
-Pipe `bilboard_longer` to `ggplot()`. Add `aes()`, with `x` equal `week`, `y` equal `rank`, and `group`  equal `track`. Add `geom_line()`.
-
-```{r lengthening-data-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r lengthening-data-7-hint-1, eval = FALSE}
-billboard_longer |> 
-  ggplot(aes(x = ..., 
-             y = ..., 
-             group = ...)) +
-    ...
-```
-
-```{r lengthening-data-7-test, include = FALSE}
-billboard_longer |> 
-  ggplot(aes(x = week, 
-             y = rank, 
-             group = track)) +
-    geom_line()
-```
-
-### 
-
-Interesting. Spend time looking at your data, at every stage of plot creation. 
-
-### Exercise 8
-
-Inside `geom_line()` we need to change the opacity of the lines using `alpha`. We will set it to 0.25.
-
-```{r lengthening-data-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r lengthening-data-8-hint-1, eval = FALSE}
-... +
-  geom_line(alpha = ...)
-```
-
-```{r lengthening-data-8-test, include = FALSE}
-billboard_longer |> 
-  ggplot(aes(x = week, 
-             y = rank, 
-             group = track)) +
-    geom_line(alpha = 0.25)
-```
-
-### 
-
-Using `alpha` to increase transparency makes seeing patterns easier.
-
-### Exercise 9
-
-<!-- DK: Awkward -->
-
-This plot is deceiving. This plot seems to tell us that so many songs get the top place, because so many lines are concentrated there. But rankings go from 100 (lowest) to 1 (highest), so we should probably flip this plot upside down.
-
-### 
-
-We do this with `scale_y_reverse()`. That will put 1 at the top and 100 at the bottom.
-
-```{r lengthening-data-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r lengthening-data-9-hint-1, eval = FALSE}
-... +
-  scale_y_reverse()
-```
-
-```{r lengthening-data-9-test, include = FALSE}
-billboard_longer |> 
-  ggplot(aes(x = week, 
-             y = rank, 
-             group = track)) +
-    geom_line(alpha = 0.25) +
-    scale_y_reverse()
-```
-
-### Exercise 10
-
-Now, we need to add labels. Reminder: This is what your plot should look like
-
-```{r}
-plot2
-```
-
-### 
-
-```{r lengthening-data-10, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r lengthening-data-10-hint-1, eval = FALSE}
-... + 
-  labs(title = ...,
-       subtitle = ...,
-       x = ...,
-       y = ...)
-```
-
-```{r lengthening-data-10-test, include = FALSE}
-billboard_longer |> 
-  ggplot(aes(x = week, 
-             y = rank, 
-             group = track)) +
-    geom_line(alpha = 0.25) +
-    scale_y_reverse() +
-    labs(title = "Billboard top 100 rankings in the year 2000",
-         subtitle = "Over the course of 76 Weeks",
-         x = "Week",
-         y = "Rank")
-```
-
-### 
-
-Now you know how to pivot wide datasets, and when to pivot. Now, we need to learn about what we need to do with the really datasets.
-
 
 ## Widening Data
-### 
 
-<!-- DK: Whole section is tough to follow. Need more explanations of what the tibble means and how we are changing it. -->
+Now, we need to learn about what we need to do with the really long datasets that need to be widened.
+
+### 
 
 `pivot_wider()` makes datasets wider by increasing columns and reducing rows. It helps when one observation is spread across multiple rows. This seems to arise less commonly in the wild, but it does seem to crop up a lot when dealing with governmental data, such as the Census.
 
@@ -902,31 +613,19 @@ For this section, we'll be using the dataset `cms_patient_experience`, a patient
 
 ### Exercise 1
 
-In the Console, look up the help page for **tidyr** using `?` before the package name. Copy and paste the Description from the help page into the box below.
+In the Console, look up the help page for `cms_patient_experience` by using `?` before the name. Copy and paste the "Usage" section.
 
-```{r widening-data-1}
+```{r widening-data-1-q}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+         answer_fn(function(value){
+            if (str_remove_all(
+              str_remove_all(str_to_lower(value), " "), 
+              "\n") %in% 
+                c("cms_patient_experiencecms_patient_care")) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) ) }),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 8)
-```
-
-### 
-
-Putting a question mark before a package name is a shortcut to looking up the help page. You could always go to the help pane in the bottom left corner, and search for "tidyr," but `?tidyr` is quicker. 
-
-### Exercise 2
-
-Look up the help page for `cms_patient_experience` using a question mark in front of it, just as you did with `tidyr`. Copy and paste the "Usage" section.
-
-```{r widening-data-2}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
 	rows = 5)
 ```
 
@@ -936,32 +635,75 @@ This gives you all the information for this data. What package it comes from, wh
 
 This data comes from the package **tidyr**, so we won't need any other libraries other than the **tidyverse**.
 
-### Exercise 3
+### Exercise 2
 
 Let's take a look at our data.
 
 Type `cms_patient_experience` and hit "Run Code". 
 
-```{r widening-data-3, exercise = TRUE}
+```{r widening-data-2, exercise = TRUE}
 
 ```
 
-```{r widening-data-3-hint-1, eval = FALSE}
+```{r widening-data-2-hint-1, eval = FALSE}
 cms_patient_experience
 ```
 
-```{r widening-data-3-test, include = FALSE}
+```{r widening-data-2-solution, exercise.reveal_solution = FALSE}
 cms_patient_experience
+```
+
+```{r widening-data-2-check}
+grade_this_code()
 ```
 
 ### 
 
 `cms_patient_experience` is a tibble with 5 columns and 500 observations. 
 
+### 
+
+This data is not tidy! In the columns `measure_cd` and `measure_title`, we have 6 repeating rows that would work much better as separate columns.
+
+### Exercise 3
+
+Pipe `cms_patient_experience` into `distinct()` with the variables `measure_cd` and `measure_title`.
+
+```{r widening-data-3, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r widening-data-3-hint-1, eval = FALSE}
+cms_patient_experience |> 
+  distinct(measure_cd, measure_title)
+```
+
+```{r widening-data-3-solution, exercise.reveal_solution = FALSE}
+cms_patient_experience |> 
+  distinct(measure_cd, measure_title)
+```
+
+```{r widening-data-3-check}
+grade_this_code()
+```
+
+###
+
+From this we can see that there are 6 distinct row that repeat within our data frame and also that `measure_title` uniquely identifies each `measure_cd`.
+
+###
+
+We want to tidy this data frame by making each `measure_cd` it's own column with the value set to `prf_rate`.
+
 ### Exercise 4
 
-We will want to see 12 rows so we can see how this data is not tidy. You can do that with the function `print()`. Inside `print()` we need to specify `x` and `n`. `x` will be the data, and `n` will be the number of rows we see. Run `print()` with `x` equal to `cms_patient_experience` and `n` equal to `12`.
+`pivot_wider()` includes many of the same arguments as `pivot_longer()`. Remember how we used `names_to` and `values_to` to make more columns from all the extra rows? Well, for `pivot_wider()`, we just have to do the opposite. We will use `names_to` and `values_to` to add more columns to this dataset.
 
+###
+
+Pipe `cms_patient_experience` to `pivot_wider()`, setting `names_from` equal to `measure_cd` and `values_from` equal to `prf_rate`.
 
 ```{r widening-data-4, exercise = TRUE}
 
@@ -970,24 +712,33 @@ We will want to see 12 rows so we can see how this data is not tidy. You can do 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r widening-data-4-hint-1, eval = FALSE}
-print(x = ..., 
-      ... = 12)
+cms_patient_experience |> 
+  pivot_wider(... = measure_cd,
+              values_from = ...)
 ```
 
-```{r widening-data-4-test, include = FALSE}
-print(x = cms_patient_experience, 
-      n = 12)
+```{r widening-data-4-solution, exercise.reveal_solution = FALSE}
+cms_patient_experience |> 
+  pivot_wider(names_from = measure_cd,
+              values_from = prf_rate)
 ```
 
-### 
+```{r widening-data-4-check}
+grade_this_code()
+```
 
-This data is not tidy! In the column `measure_cd`, we have 5 repeating rows that would work much better as separate columns.
+###
+
+Notice that while this increased the number of columns it still does not look quite right. The length remained at 500 observations.
+
 
 ### Exercise 5
 
-`pivot_wider()` includes many of the same arguments as `pivot_longer()`. Remember how we used `names_to` and `values_to` to make more columns from all the extra rows? Well, for `pivot_wider()`, we just have to do the opposite. We will use `names_to` and `values_to` to add more columns to this dataset.
+This data looks a little bit tidier, but there are still repeated rows in `org_nm` and `org_pac_id`. The reason they are still repeating is because of the `measure_title` variable. There are many ways we could resolve this issue.
 
-Pipe `cms_patient_experience` to `pivot_wider()`, setting `names_from` equal to `measure_cd` and `values_from` equal to `prf_rate`.
+###
+
+Let's tell `pivot_wider` to uniquely identify the rows in every column (getting rid of duplicates). The columns we need to target are `org_pac_id` and `org_nm`. We can tell `pivot_wider()` to target these rows by adding `id_cols = starts_with("org")` to `pivot_wider()`.
 
 ```{r widening-data-5, exercise = TRUE}
 
@@ -997,913 +748,26 @@ Pipe `cms_patient_experience` to `pivot_wider()`, setting `names_from` equal to 
 
 ```{r widening-data-5-hint-1, eval = FALSE}
 cms_patient_experience |> 
-  pivot_wider(... = measure_cd,
-              values_from = ...)
-```
-
-```{r widening-data-5-test, include = FALSE}
-cms_patient_experience |> 
-  pivot_wider(names_from = measure_cd,
-              values_from = prf_rate)
-```
-
-<!-- DK: Explain what we see. -->
-
-
-### Exercise 6
-
-This data looks a little bit tidier, but there are still repeated rows in `org_nm`. We need to tell `pivot_wider` to uniquely identify the rows in every column (getting rid of duplicates). The columns we need to target are `org_pac_id` and `org_nm`. We can tell `pivot_wider()` to target these rows by adding `id_cols = starts_with("org")` to `pivot_wider()`.
-
-```{r widening-data-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r widening-data-6-hint-1, eval = FALSE}
-cms_patient_experience |> 
   pivot_wider(names_from = measure_cd,
               values_from = prf_rate,
               id_cols = ...)
 ```
 
-```{r widening-data-6-test, include = FALSE}
+```{r widening-data-5-solution, exercise.reveal_solution = FALSE}
 cms_patient_experience |> 
   pivot_wider(names_from = measure_cd,
               values_from = prf_rate,
               id_cols = starts_with("org"))
 ```
 
+```{r widening-data-5-check}
+grade_this_code()
+```
+
 ### 
 
 This will get rid of any duplicate rows in the columns that start with "org'. And as we can see, there are many duplicates. `id_cols` cut the row count from 500 to 95.
 
-
-## More Plots
-### 
-
-Let's finish this tutorial by making some nice plots.
-
-## Plot 1
-### 
-
-Let's make this scatterplot using `geom_point()`.
-
-```{r aesthetic-mappings-advanced-0}
-plot_1 <- ggplot(data = diamonds,
-                   mapping = aes(x = price,
-                                 y = carat,
-                                 color = clarity)) +
-  geom_point(size = .25, alpha = .5) +
-  scale_x_log10() +
-  labs(title = "Diamond Carat and Price",
-       subtitle = "3+ carat diamonds are rare and of low quality",
-       x = "Price",
-       y =  "Carat",
-       color = "Clarity",
-       caption = "Source: R datasets")
-
-plot_1
-```
-
-### Exercise 1
-
-Type `?diamonds` to look at the help page for the `diamonds` tibble. If you cannot run it in your code chunk below, run it in your Console. Remember to load `library(tidyverse)` beforehand.
-
-```{r plot-1-1, exercise = TRUE}
-
-```
-
-```{r plot-1-1-hint-1, eval = FALSE}
-?diamonds
-```
-
-### 
-
-The `diamonds` dataset is a collection of data that contains information about diamonds, including their carat weight, cut, color, clarity, and price for analysis and modeling purposes.
-
-### Exercise 2
-
-Explore the `diamonds` dataset. Since we are looking at the "carats" and "clarity" categories, copy and paste the definitions for "carats" and "clarity" below.
-
-```{r plot-1-2}
-  question_text(NULL,
-    answer(NULL, correct = TRUE),
-    allow_retry = TRUE,
-    try_again_button = "Edit Answer",
-    incorrect = NULL,
-    rows = 3)
-```
-
-### Exercise 3
-
-Start a new pipe with `diamonds`. Select the columns `carat`, `price`, and `clarity`.
-
-```{r plot-1-3, exercise = TRUE}
-
-```
-
-```{r plot-1-3-hint-1, eval = FALSE}
-diamonds |>
-  select(..., ..., ...)
-```
-
-### Exercise 4
-
-Continue your pipe and add `ggplot()`. Map `price` to the x-axis and `carat` to the y-axis.
-
-```{r plot-1-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-1-4-hint-1, eval = FALSE}
-... |>
-  ggplot(mapping = aes(x = ...,
-                       y = ...))
-```
-
-### 
-
-If you want to add any themes to your plots check out: [**ggplot2**](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html) contains all aesthetic specifications that are possible for the data. In addition, [**ggplot2: elegant graphics**](https://ggplot2-book.org/) provides all possible aesthetics that any user will use.
-
-### Exercise 5
-
-Add the `geom_point()` layer. Within `aes()` set `clarity` to `color`.
-
-```{r plot-1-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-1-5-hint-1, eval = FALSE}
-geom_point() is a layer so use + to add it
-```
-
-```{r plot-1-5-hint-2, eval = FALSE}
-... |>
-  ggplot(mapping = aes(x = ...,
-                       y = ...,
-                       color = ...)) +
-  geom_point()
-```
-
-### 
-
-`ggplot()` contains two specific uses: color and shape. We often use color when we are dealing with a vast amount of data. When compared to color, shape can only use up to 6 discrete values, meaning that we cannot utilize shape to its fullest with more data.
-
-### Exercise 6
-
-There are several ways to minimize overplotting. One such way is through the use of `alpha`. In `geom_point()` set `alpha` to 0.5.
-
-```{r plot-1-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-1-6-hint-1, eval = FALSE}
-... +
-  geom_point(alpha = ...)
-```
-
-### 
-
-With the use of alpha we can control the transparency of the dots.
-
-### Exercise 7
-
-Now, within `geom_point()` set `size` to .25.
-
-```{r plot-1-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-1-7-hint-1, eval = FALSE}
-... +
-  geom_point(alpha = ...,
-             size = ...)
-```
-
-### 
-
-Size controls the diameter of the points. The default diameter size is 1.
-
-### Exercise 8
-
-Use the layer `scale_x_log10()` function to make the scale of the plot logarithmic.
-
-```{r plot-1-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-1-8-hint-1, eval = FALSE}
-Remembder you are adding a layers here so use +
-```
-
-```{r plot-1-8-hint-2, eval = FALSE}
-... +
-  scale_x_log10()
-```
-
-### 
-
-Remember: a logarithmic scale means that each increment increases by a factor of the base of the logarithm. In our case, that's base 10. We want to implement the use of a logarithmic scale here because we want to be able to visualize all of our data without having any of it too close to each other.
-
-### Exercise 9
-
-To finish your plot, use `labs()` to give the graph a title, subtitle, axis labels, legend label, and caption of your choosing. To set the legend label, use the argument `color`.
-
-Reminder: This is what your plot should look like.
-
-```{r}
-plot_1
-```
-
-```{r plot-1-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-1-9-hint-1, eval = FALSE}
-... +
-  labs(...,
-       color = "Clarity",
-       ...)
-```
-
-### 
-
-Now we know how to minimize over-plotting, it will come in handy in future graphs. Another way to minimize the over-plotting is through `geom_jitter()`.
-
-## Plot 2
-### 
-
-Let's create the following histogram.
-
-```{r}
-plot_2 <- mpg |> 
-  mutate(year = as.character(year)) |> 
-  ggplot(aes(cty, fill = year)) +
-  geom_histogram(bins = 6,
-                 color = "black") +
-  labs(title = "Histogram of City Fuel Efficiency in 1999 and 2008 Models", 
-       subtitle = "1999 had more models of high city fuel efficiency", 
-       x = "City MPG", 
-       y = "Count",
-       fill = "Year",
-       caption = "Source: EPA") 
-
-plot_2
-```
-
-### Exercise 1
-
-Run `?mpg` in the code chunk below. 
-
-```{r plot-2-1, exercise = TRUE}
-
-```
-
-This dataset is about fuel economy of cars from the Environmental Protection Agency.
-
-### Exercise 2
-
-Run `glimpse()` on the mpg data set. Take a look at the different variables available.
-
-```{r plot-2-2, exercise = TRUE}
-
-```
-
-```{r plot-2-2-hint-1, eval = FALSE}
-glimpse(...)
-```
-
-### 
-
-The variables that we care about are `year` and `cty`. Year indicates the year of manufacture, and `cty` indicates the city miles per gallon.
-
-### Exercise 3
-
-Use the `$` to extract the column `year` as a vector.
-
-```{r plot-2-3, exercise = TRUE}
-
-```
-
-```{r plot-2-3-hint-1, eval = FALSE}
-mpg$...
-```
-
-### 
-
-Notice that there are only two different years, 1999 and 2008.
-
-### Exercise 4
-
-Start a new pipe with `mpg`. Use `mutate()` and the function `as.character()` to change the `year` column from a numeric variable to a character variable.
-
-```{r plot-2-4, exercise = TRUE}
-
-```
-
-```{r plot-2-4-hint-1, eval = FALSE}
-...  |> 
-  mutate(... = as.character(...))
-```
-
-### 
-
-We make this change so that we can use year as a fill color when we plot. We use the `as.character()` function to convert an object into its character representation for textual manipulation or analysis.
-
-### Exercise 5
-
-Select the columns `year` and `cty`.
-
-```{r plot-2-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-5-hint-1, eval = FALSE}
-...  |> 
-  select(..., ...)
-```
-
-### Exercise 6
-
-Continue your pipe and add `ggplot()`. Map `cty` to the x-axis and `year` to `fill`.
-
-```{r plot-2-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-6-hint-1, eval = FALSE}
-... |> 
-  ggplot(aes(x = ..., fill = ...))
-```
-
-### 
-
-We don't have to use `mapping = aes()` because it is in the variable spot for mapping, meaning we don't have to specify `mapping = aes()`. Again, you should not see anything. The `geom` layer is what displays objects on the plot.
-
-### Exercise 7
-
-Now, we will add a geom layer. Add the layer `geom_histogram()`. 
-
-```{r plot-2-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-7-hint-1, eval = FALSE}
-geom_histogram() is a layer so use + to add it
-```
-
-```{r plot-2-7-hint-2, eval = FALSE}
-...|> 
-  ... +
-  ...()
-```
-
-### 
-
-You may notice that there are too many "bins" for our liking. There can be too many bins if the number chosen for a histogram or other visualizations is too high compared to the size of data, which results in loss of clarity. We'll change this now.
-
-### Exercise 8
-
-Within `geom_histogram()` set the number of `bins` to 6.
-
-```{r plot-2-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-8-hint-1, eval = FALSE}
-... +
-  geom_histogram(bins = ...)
-```
-
-You can change the width of each bin with the `binwidth` argument. We won't be doing that now, but you can do that in future plots. Read more about [**binwidth**](https://r-graphics.org/recipe-quick-histogram) and how it can be used.
-
-### Exercise 9
-
-Within `geom_histogram()` set  `color` to `"black"`. 
-
-```{r plot-2-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-9-hint-1, eval = FALSE}
-... +
-  geom_histogram(bins = 6, 
-                 color = ...)
-```
-
-Remember, `color` only changes the outline of the bars. If you want to change the fill, use `fill`. 
-
-### Exercise 10
-
-To finish your plot, use `labs()` to give the graph a title, subtitle, axis labels, legend labels, and caption of your choosing. To change the legend labels use the argument `fill`. 
-
-```{r plot-2-10, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-10-hint-1, eval = FALSE}
-... +
-  labs(..., 
-       fill = "Year",
-       ...)
-```
-
-Reminder: This is what your graph should look like. 
-
-```{r show-hist-p}
-plot_2
-```
-
-<!-- DK: Fix above. -->
-
-### 
-
-In the previous graph we used `color` to change the legend labels, while here we used `fill`. The argument within labels matches the argument you use within `ggplot()`. `color` is used for objects like lines and points. `fill` is used for larger shapes. 
-
-**ggplot2** provides a vast amount of opportunities, however, there are a countless number of plots that can be made through different geoms and extensions. Check out some [possible options](https://exts.ggplot2.tidyverse.org/gallery/) for any future implementations or possibilities. 
-
-## Plot 3
-### 
-
-Let's make the same plot, using a related function, `geom_col()`. Unlike `geom_bar()`, you have to specify the value for the y-axis when using this function. 
-
-```{r make-col-p}
-plot_3 <- mpg |> 
-  select(drv, fl, class) |>
-  summarize(total = n(),
-            .by = c(drv, fl, class)) |> 
-  ggplot(aes(x = fl, 
-             y = total, 
-             fill = class)) +
-    geom_col() +
-    facet_wrap(~ drv,
-               labeller = as_labeller(car_names)) +
-    labs(title = "The Fuel Type Of Cars Based On Their Class Type",
-         subtitle = "Higher Proportion of 4 Wheel and Front Wheel Drive Participants",
-         x = "Fuel Type",
-         y = "Number of Participants",
-         fill = "Class")
-plot_3
-```
-
-### Exercise 1
-
-Start a pipe with `mpg`. Select the columns `drv`, `fl` and `class`. 
-
-```{r plot-3-1, exercise = TRUE}
-
-```
-
-```{r plot-3-1-hint-1, eval = FALSE}
-mpg |> 
-  select(..., ..., ...)
-```
-
-### Exercise 2
-
-Copy/paste the previous code. Use `summarize()` to create a new table with the column `total` which is equal to the function `n()`. 
-
-```{r plot-3-2, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-3-2-hint-1, eval = FALSE}
-... |> 
-  summarize(total = ...)
-```
-
-```{r plot-3-2-hint-2, eval = FALSE}
-... |> 
-  summarize(total = n())
-```
-
-### Exercise 3
-
-Add a `.by` argument to `summarize()` with the values set to `drv`, `fl`, and `class`. You need to place these three values with a vector using `c()`. 
-
-```{r plot-3-3, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-3-3-hint-1, eval = FALSE}
-... |> 
-  summarize(total = n(),
-            .by = c(..., ..., ...))  
-```
-
-### Exercise 4
-
-Continue your pipe with `ggplot()`. Map the variable `fl` to the x-axis. Map `total` to the `y` axis. Add the layer `geom_col()`.
-
-```{r plot-3-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-3-4-hint-1, eval = FALSE}
-ggplot(aes(x = ..., 
-           y = ...) +
-  ...()
-```
-
-### 
-
-`geom_col()` will automatically take the three to four values for each `fl` in the `total` column and stack them to form one bar. This behavior is from the fact that the `position` argument for `geom_col()` is set by default to "stack". 
-
-### Exercise 5
-
-Now, map `class` to `fill`.
-
-```{r plot-3-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-3-5-hint-1, eval = FALSE}
-ggplot(data = ... , 
-          aes(x = ..., 
-              y = ...,
-              fill = ...) +
-  geom_col()
-```
-
-### Exercise 6
-
-Add the layer `facet_wrap()` and facet by the variable `drv`. 
-
-```{r plot-3-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-3-6-hint-1, eval = FALSE}
-... + 
-  facet_wrap(~ ...)
-```
-
-### 
-
-The `facet_wrap()` function arranges the panels in a grid, wrapping them onto multiple rows and columns. It is useful for visualizing and comparing subsets of data simultaneously.
-
-### Exercise 7
-
-<!-- DK: Check that this works. -->
-
-We want to change the labels of the facet_wrap that we just created. We can do this by setting `labeller` to `as_labeller(car_names)`. Note: `car_names` has already been created for you.
-
-```{r plot-3-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-3-7-hint-1, eval = FALSE}
-facet_wrap(~ drv,
-           ... = as_labeller(...)) +
-```
-
-### 
-
-Through the `as_labeller()` function we are able to change the labels of `facet_wrap()`.
-
-### Exercise 8
-
-To finish your plot, use `labs()` to give the graph a title, subtitle, axes labels, legend labels, and caption of your choosing.
-
-Reminder: This is what your plot should look like.
-
-```{r}
-plot_3
-```
-
-```{r plot-3-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-3-8-hint-1, eval = FALSE}
-... +
-  labs(..., 
-       fill = "...",
-       ...)
-```
-
-### 
-
-Through this we are able to view our data with a `facet_wrap` which splits a plot into subplots that each display one subset of the data based on a categorical variable.
-
-
-
-## Babynames
-### 
-
-The `babynames` data set comes from the SSA (Social Security Administration). After 1986, all baby's were required to be given a social security number. This data contains all the names, year born, and sex of the babies. The number of names is counted and is converted into a proportion. We will be using this data to analyze the popularity of top 10 names each year.
-
-### 
-
-Let's create this graph:
-
-<!-- DK: Change sex to Sex in legend title; change F/M to Female and Male in legend body; place Male on top. A couple of steps should be separated out into separate questions. Deal with "## Selecting by prop" message by changing top_n(n = 10) to top_n(n = 10, wt = prop). Split into three questions to build this -->
-
-```{r message = FALSE}
-baby_p <- babynames |>
-  group_by(year, sex) |> 
-  top_n(n = 10) |>
-  ungroup() |> 
-  summarise(total = sum(prop), .by = c(sex, year)) |>
-  ggplot(mapping = aes(x = year, y = total, color = sex)) +
-    geom_point() +
-    scale_y_continuous(labels = scales::percent) +
-    labs(title = "Total Popularity of Top 10 Names",
-         subtitle = "The most popular names are beccoming much less popular",
-         x = "Year",
-         y = "Top 10 Names as Percentage of All Names") 
-
-baby_p
-```
-
-### Exercise 1
-
-Use `library()` to load the **babynames** package.
-
-```{r babynames-1, exercise = TRUE}
-
-```
-
-```{r babynames-1-hint-1, eval = FALSE}
-library(...)
-```
-
-```{r babynames-1-test, include = FALSE}
-library(babynames)
-```
-
-### 
-
-Learn more about the package from its [website](http://hadley.github.io/babynames/).
-
-### Exercise 2
-
-Recall that your Console and the exercise code chunks for this tutorial use different R sessions. The fact that you loaded **babynames** in an exercise code chunk does not mean that it is loaded in your Console.
-
-In your Console, after loading the **babynames** package, look up the help page for the `babynames` tibble with `?babynames`. Copy/paste the "Format" paragraph.
-
-```{r babynames-2}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
-```
-
-### 
-
-The variable `prop` is more subtle than it might, at first, appear. It is the proportion, **within a given `year` and `sex`**, of the total number of babies who have that given name. 
-
-
-### Exercise 3
-
-Run `summary()` on the `babynames` tibble.
-
-```{r babynames-3, exercise = TRUE}
-
-```
-
-```{r babynames-3-hint-1, eval = FALSE}
-summary(...)
-```
-
-```{r babynames-3-test, include = FALSE}
-
-```
-
-### 
-
-Note that we have no missing values.
-
-### Exercise 4
-
-Print out `babynames`
-
-```{r babynames-4, exercise = TRUE}
-
-```
-
-```{r babynames-4-hint-1, eval = FALSE}
-babynames
-```
-
-```{r babynames-4-test, include = FALSE}
-
-```
-
-### 
-
-There are almost 2 million observations.
-
-### Exercise 5
-
-Pipe `babynames` to `group_by(year, sex)`. This will lead future commands in the pipe to do all calculations on a per year/sex basis, at least until we `ungroup()` the data.
-
-```{r babynames-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r babynames-5-hint-1, eval = FALSE}
-babynames |> 
-  group_by(year, sex) 
-```
-
-```{r babynames-5-test, include = FALSE}
-
-```
-
-### 
-
-Modern R code rarely uses `group_by()` anymore, prefering to `.by`/`by` arguments to *Tidyverse* functions like `summarise()`. 
-
-
-### Exercise 6
-
-Continue the pipe with `top_n(n = 10)`.
-
-```{r babynames-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r babynames-6-hint-1, eval = FALSE}
-... |> 
-  top_n(n = 10)
-```
-
-```{r babynames-6-test, include = FALSE}
-
-```
-
-### 
-
-This pulls out the 10 most popular names, for each year and, within each year, for each sex.
-
-Note that there should be 2,760 rows in the resulting tibble: 138 years times 10 names times 2 sexes. Instead we have 2,761 rows. Can you figure out why? Does it mess up our plot?
-
-### Exercise 7
-
-<!-- DK: No ungroup()! -->
-
-Continue the pipe with `ungroup()`.
-
-```{r babynames-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r babynames-7-hint-1, eval = FALSE}
-... |> 
-  ungroup()
-```
-
-```{r babynames-7-test, include = FALSE}
-
-```
-
-### 
-
-One reason that `group_by()` is being phased out is that, unless you remember to `ungroup()` in the pipe, you will get weird results and/or errors. `ungroup()` removes the grouping variables which you had placed on the tibble previously.
-
-
-### Exercise 8
-
-Continue the pipe with `summarise()`, using the argument `total = sum(prop)`.
-
-```{r babynames-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r babynames-8-hint-1, eval = FALSE}
-... |>
-  summarise(total = sum(prop))
-```
-
-```{r babynames-8-test, include = FALSE}
-
-```
-
-### 
-
-This produces a somewhat nonsense result. The sum of all the values of `prop` for all these years and both sexes does not really mean anything.
-
-### Exercise 9
-
-Edit the call to the `summarise()` by adding `.by` argument with value `c(sex`, `year`). 
-
-```{r babynames-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r babynames-9-hint-1, eval = FALSE}
-... |> 
-  summarise(total = sum(prop), .by = c(...))
-```
-
-```{r babynames-9-test, include = FALSE}
-
-```
-
-### 
-
-This generates the data which we want to plot.
-
-### Exercise 10
-
-Continue your pipe with `ggplot()`. Within `aes()`, map `year` to the x-axis, `total` to the y-axis, and `sex` to color. Also add `geom_point()`.
-
-```{r babynames-10, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r babynames-10-hint-1, eval = FALSE}
-...|>
-  ggplot(mapping = aes(x = ..., y = ..., color = ...)) +
-    geom_point()
-```
-
-```{r babynames-10-test, include = FALSE}
-
-```
-
-### Exercise 11
-
-To finish your plot, use `labs()` to give the graph a title, subtitle, and axis labels. 
-
-```{r babynames-11, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r babynames-11-hint-1, eval = FALSE}
-... +
-  labs(...)
-```
-
-```{r babynames-11-test, include = FALSE}
-
-```
-
-Reminder: This is what your plot should look like.
-
-```{r show-baby}
-baby_p
-```
-
-### 
-
-Can you see where that extra row we ignored earlier in the analysis messes things up for one point in the male set in the 1880s?
 
 ## Summary
 ### 
@@ -1919,5 +783,12 @@ Key functions included [`pivot_longer()`](https://tidyr.tidyverse.org/reference/
 
 Read the [*Pivot*](https://tidyr.tidyverse.org/articles/pivot.html) vignette for more details.
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
 ```
