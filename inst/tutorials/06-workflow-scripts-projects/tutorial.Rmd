@@ -162,7 +162,7 @@ quiz(
 ## Projects
 ###
 
-In the previous section we created a folder that contains a script. However, how do we guarantee when we exit out of R Studio and re-open it that we will be working in the correct directory?
+In the previous section we created a folder that contains a script. However, how do we guarantee when we exit out of RStudio and re-open it that we will be working in the correct directory?
 
 R has a powerful notion of the working directory. This is where R looks for files that you ask it to load, and where it will put any files that you ask it to save.
 
@@ -198,6 +198,7 @@ More info on paths can be found on the [UC Berkeley website](https://people.isch
 Good data scientists keep their work organized. You should place your work in different [RStudio projects](https://docs.posit.co/ide/user/ide/guide/code/projects.html), which are simply folders (that is, directories) on your computer with some helper files. Each separate RStudio project is a folder within your main folder for your R work, i.e.,  `/Users/dkane/Desktop/projects/`. We use the terms "RStudio project" and "R project" interchangeably. 
 
 ###
+
 **Read all of the instructions before starting this exercise.**
 
 You will be locked out of this tutorial while making your project.
@@ -227,7 +228,7 @@ Click "Create Project."
 
 Now that you have read all the directions, we can go through the steps.
 
-But note that, when you create the new project **You will need to restart the tutorial**. Your R session will be located in this new project. For the rest of this tutorial, we will be working in `r4ds_tutorials``.
+But note that, when you create the new project **You will need to restart the tutorial**. Your R session will be located in this new project. For the rest of this tutorial, we will be working in `r4ds_tutorials`.
 
 ### 
 
@@ -250,7 +251,7 @@ question_text(NULL,
 
 ### 
 
-Creating/opening an R project moves the R session to that directory.
+Creating/opening an R project moves the R session to that directory. For example:
 
 
 ````
@@ -261,11 +262,50 @@ Creating/opening an R project moves the R session to that directory.
 
 As you advance in your data science skills you may also create projects from GitHub.
 
+
+### Exercise 3
+
+Going forward it is good practice to make sure you are always working in a project anytime you use RStudio.
+
+###
+
+We recommend opening RStudio by using your `.Rproj` file within the project folder. Navigate to your project directory on your computer and double click the .Rproj file shown below to open RStudio
+
+
+```{r}
+include_graphics("images/existing_project_3.png")
+```
+
+###
+
+You can check which project you are working on by looking in the upper right corner of RStudio.
+
+```{r}
+include_graphics("images/existing_project_4.png")
+```
+
+###
+
+```{r projects-3}
+question_text("Are you currently working in an R Project?",
+    answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+    allow_retry = TRUE,
+    correct = "Submitted",
+    try_again_button = "Edit Answer",
+    incorrect = NULL,
+    rows = 3)
+```
+
 ## Summary
 
 ### 
 
-This tutorial covered [Chapter 6 Workflow: scripts and projects](https://r4ds.hadley.nz/workflow-style.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned...
+This tutorial covered [Chapter 6 Workflow: scripts and projects](https://r4ds.hadley.nz/workflow-style.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned two essential tools for organizing your code: scripts and projects.
 
 Once you are finished:
 

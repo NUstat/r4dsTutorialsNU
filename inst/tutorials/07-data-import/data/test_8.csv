@@ -1,0 +1,4 @@
+logical,numeric,date,string
+TRUE,1,2021-01-15,abc
+FALSE,4.5,2021-02-15,def
+TRUE,Inf,2021-02-16,ghi
