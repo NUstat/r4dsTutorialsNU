@@ -1,15 +1,18 @@
 ---
 title: Getting help
-author: David Kane
 tutorial:
   id: getting-help
 output:
   learnr::tutorial:
     progressive: yes
-    'allow_skip:': yes
+    allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 8: Getting help'
 ---
+
+
+<!-- Modification of r4ds.tutorials author: David Kane -->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -17,6 +20,10 @@ library(tutorial.helpers)
 library(tidyverse)
 library(knitr)
 library(reprex)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -25,13 +32,26 @@ options(tutorial.exercise.timelimit = 60,
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+
+```{r, context = "server"}
+grade_server("grade")
 ```
 
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
 
-<!-- DK: This is not bad. But isn't there more we should be doing? -->
-
-<!-- Try to get Posit to maintain an always open thread for practice. -->
+```{r}
+grade_button_ui(id = "grade")
+```
 
 ## Introduction
 ### 
@@ -67,9 +87,15 @@ If you get stuck, start with Google. Typically adding “R” to a query is enou
 
 Run the query "how to make a boxplot in R" in Google or in your favorite search engine. What is the URL of the top (non-sponsored) result?
 
-```{r google-is-your-frien-1}
+```{r google-is-your-friend-1}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+	answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+	correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -84,9 +110,15 @@ Google is particularly useful for error messages. If you get an error message an
 
 Adding package names like “tidyverse” or “ggplot2” will help narrow down the results to code that will feel more familiar to you. Consider “how to make a boxplot in R” vs. “how to make a boxplot in R with ggplot2”. Copy the URL for top result to this new search.
 
-```{r google-is-your-frien-2}
+```{r google-is-your-friend-2}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+	answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+	correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -103,9 +135,15 @@ Another useful forum is [RStudio Community](https://community.rstudio.com/) whic
 
 Copy/paste the URL for the most recent topic (the one after the default "Welcome to the RStudio Community!").
 
-```{r google-is-your-frien-3}
+```{r google-is-your-friend-3}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+	answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+	correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -121,114 +159,82 @@ It's basically like Stack Overflow but specifically focused on R.
 
 The documentation for R is excellent. You can access it with using either `?` or the `help()` command. Run `help(geom_point)` in the Console, then copy-paste the "Description" section into the space below.
 
-```{r google-is-your-frien-4}
+```{r google-is-your-friend-4}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+	answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+	correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
 	rows = 3)
 ```
 
-Sometimes, you may need to use a double question mark --- `??function_name` --- if the function is part of a package you don't have installed. RStudio will prompt you to try `??` if `?` doesn't work. 
+Sometimes, you may need to use a double question mark --- `??function_name` --- if the function is part of a package you don't have loaded. RStudio will prompt you to try `??` if `?` doesn't work. 
 
 
 ## Making a reprex
 ### 
 
-<!-- DK: make this more like the reprex example in the chapter? -->
-
 If your googling doesn’t find anything useful, it’s a really good idea to prepare a reprex, short for minimal **repr**oducible **ex**ample. A good reprex makes it easier for other people to help you, and often you’ll figure out the problem yourself in the course of making it. 
+
+
 
 ### Exercise 1
 
+First, we need to make a **reproducible example**.
+
 So let's go over [creating our own question](https://reprex.tidyverse.org/articles/articles/learn-reprex.html) and posting it to Posit Community, with the correct context.
 
-### 
+Open a new R Script file. This R Script should be in your current R project folder. Save your R Script file and name it `example_reprex.R`.
 
-Create a simple plot using the `ggplot()` function by setting `data` to `mtcars` then mapping `x` to `cyl` and `y` to `mpga` using the `aes()` function. Then add the `geom_col()` function so that the graph can actually be shown as a bar graph.
-
-**This code will fail** when you press "Run Code."
-
-```{r making-a-reprex-1, exercise = TRUE}
-ggplot(data = mtcars, 
-       mapping = aes(x = cyl, y = mpga)) +
-  geom_col()
-```
-
-### 
-
-Let's use this error as the basis for creating a reproducible example.
-
-### Exercise 2
-
-First, we need to make a **reproducible example**
-
-We'll do this by bringing our code into an R Script file.
-
-### 
-
-Copy the code created in the previous exercise and paste it into a new R Script file. This R Script should be in your current R project folder. Save your R Script file and name it `script.R`.
-
-### 
-
-Try to run this code without loading any libraries.
+###
 
 It is a good idea to restart R with `Command/Ctrl + Shift + 0`. This will unload any currently loaded libraries and ensuring that you are starting from scratch.
 
-### 
+###
 
-Run `list.files()` in the Console. CP/CR.
+Type the following lines of code into your R Script 
 
-```{r making-a-reprex-2}
+`ggplot(mtcars, aes(x = cyl, y = mpga)) +`
+<br> &nbsp; `geom_col()`
+
+###
+
+**This code will fail** when you press "Run Code."
+
+###
+
+As you can see, there is an error about us not loading **tidyverse** and as such not having the `ggplot()` function available in our R script.
+
+This is why its important to include any necessary libraries in your example or people trying to help you will be missing key components of your code.
+
+###
+
+Let's fix that. Load **tidyverse** using the `library()` command at the top of `example_reprex.R`. 
+
+Then run the code and **paste the first line of the error message below**.
+
+```{r making-a-reprex-1}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+          answer_fn(function(value){
+            if (str_remove_all(str_to_lower(value), " ") %in% 
+                c("Errorin`geom_col()`:")) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) ) }),
+	correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
 	rows = 3)
 ```
 
-### 
 
-**Always bring your code into an R Script file before doing anything else.**
-
-This is because an R Script file is like an independent environment: there's no text, no setup chunks, and no weird formatting errors. It's just your code in its cleanest, plainest format. That means that it's easy to reproduce errors without R Markdown text interfering.
-
-### Exercise 3
-
-As you can see, there is an error, but not the one we saw when running this code interactively.
-
-Instead, it's an error about us not loading **tidyverse** and as such not having the `ggplot()` function available in our R script.
-
-This is why its important to include any necessary libraries in your example or people trying to help you will be missing key components of your code.
-
-### 
-
-Let's fix that. Load **tidyverse** using the `library()` command at the top of `script.R`.
-
-Then run the code and make sure that you're getting an `object not found` error rather than a `ggplot() not found` error.
-
-### 
-
-From the Console, run `show_file("script.R")`. CP/CR.
-
-Obviously, this command will fail if you have not loaded the **tutorial.helpers** package.
-
-```{r making-a-reprex-3}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 5)
-```
-
-### 
-
-The best way to think about this is trying to help a relative solve a tech problem over the phone - except you are the relative. If you don't want the helper to start pulling their hair out, you need to show every relevant detail and state everything that you are doing.
-
-### Exercise 4
+### Exercise 2
 
 Let's talk about some conventions for a reproducible example.
 
@@ -242,11 +248,11 @@ If you don't get the same error, you just answered your own question: the proble
 
 ### 
 
-Run `data()` in your console and copy and paste the names of the first three datasets that appear.
+Run `data()` in your console and copy and paste the name of the first dataset that appears.
 
-```{r making-a-reprex-4}
+```{r making-a-reprex-2}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+	answer("AirPassengers", correct = TRUE),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -257,7 +263,7 @@ question_text(NULL,
 
 All of these datasets are built into R, so people can easily help you when looking at your reproducible example. Notice that if you keep scrolling down the "R data sets" page, you will eventually see `mtcars`.
 
-### Exercise 5
+###
 
 The end goal when you ask a question is that the helper doesn't have to do *anything* to answer your question. They don't have to load it into R, they don't have to run the program, they can just look at your code and say "here is where you messed up".
 
@@ -269,24 +275,11 @@ Load the `reprex` library into your R session by using the `library()` command i
 
 ### 
 
-Run `search()` in the console and copy and paste the output below. `"package:reprex"` should be included in it.
-
-```{r making-a-reprex-5}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
-```
-
-### 
-
 A `reprex`, or **reproducible example**, is a code snippet that contains the output of every function as a comment, making it easy to show off code and its output without making it hard to copy-paste and run in its own session. You can learn more about reprex and its uses [here](https://reprex.tidyverse.org/).
 
-### Exercise 6
+### Exercise 3
 
-Now let's create a reprex. Select all the text in your Script file. Then go to "Addins" at the top of RStudio. 
+Now let's create a reprex. Select all the text in your `example_reprex.R` Script file. Then go to "Addins" at the top of RStudio. 
 
 ### 
 
@@ -298,9 +291,15 @@ Then click Render.
 
 Your Reprex is now copied to your clipboard. You can also see it in the "Viewer" tab in the bottom right. Simply paste it below. 
 
-```{r making-a-reprex-6}
+```{r making-a-reprex-3}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -311,19 +310,24 @@ question_text(NULL,
 
 Notice that when you go to "Render Reprex", you can tailor your reprex for different places. For example, you can tailor it for GitHub, or you can tailor it as a Slack Message. Keep this in mind when creating your reprex depending on where you want to post it and ask your question. 
 
-### Exercise 7
+### Exercise 4
 
 That isn't the only way to create a reprex however...
 
-Copy all of the code in `script.R` onto your clipboard  then run `reprex()` in the Console.
+Copy all of the code in `example_reprex.R` onto your clipboard then run `reprex()` in the Console.
 
 ### 
 
 This should have copied the reprex onto your clipboard. Paste the reprex text below.
 
-```{r making-a-reprex-7}
+```{r making-a-reprex-4}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -338,25 +342,10 @@ See [here](https://www.garrickadenbuie.com/blog/shrtcts-reprex-to-issue/) to lea
 
 [This video](https://reprex.tidyverse.org/articles/learn-reprex.html) is another very useful resource.
 
-### Exercise 8
+###
 
 There are a variety of on-line communities at which you might post your question and the accompanying reprex. We recommend [Posit Community](https://forum.posit.co/). 
 
-Go to [this thread](https://forum.posit.co/t/thread-for-students-posting-practice-reprexes-please-do-not-answer-them/187087) and post your reprex as a reply. 
-
-Copy/paste the URL for your reply below.
-
-
-```{r making-a-reprex-8-ex}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
-```
-
-If that post is not accepting your reply, don't worry about it. Posit closes off threads after a few weeks. Just skip this question.
 
 ## Investing in yourself
 ### 
@@ -367,9 +356,15 @@ You should also spend some time preparing yourself to solve problems before they
 
 Keep up with news about the *Tidyverse* by reading the [tidyverse blog](https://www.tidyverse.org/blog/). Paste the URL for the latest post here.
 
-```{r investing-in-yoursel-1}
+```{r investing-in-yourself-1}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+	answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+	correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -380,9 +375,15 @@ question_text(NULL,
 
 To keep up with the R community more broadly, we recommend reading [R Weekly](https://rweekly.org/): it’s a community effort to aggregate the most interesting news in the R community each week. Paste the URL for the latest issue below.
 
-```{r investing-in-yoursel-2}
+```{r investing-in-yourself-2}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+	answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+	correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -395,6 +396,12 @@ question_text(NULL,
 This tutorial covered material from [Chapter 8 Workflow: getting help](https://r4ds.hadley.nz/workflow-help.html) in [*R for Data Science (2e)*](https://r4ds.hadley.nz/quarto.html) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. This tutorial gave you a basic understanding of how to search for help and create reproducible examples. The most important lesson was to make extensive use of generative artificial intelligence, generally via large language models (LLMs) like [ChatGPT](https://chat.openai.com/) or [Bard](https://bard.google.com/chat).
 
 
+Once you are finished:
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
 ```
+
