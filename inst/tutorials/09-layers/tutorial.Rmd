@@ -1,15 +1,17 @@
 ---
 title: Layers
-author: David Kane
 tutorial:
   id: layers
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 9: Layers'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane -->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -17,6 +19,11 @@ library(tutorial.helpers)
 library(tidyverse)
 library(ggridges)
 library(maps)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
+
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -32,8 +39,27 @@ polling_data <- read_csv("data/vis4_polling_data.csv",
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+
+```{r, context = "server"}
+grade_server("grade")
 ```
+
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
 
 <!-- Make the plots cooler! Add links to  https://ggplot2-book.org/. And https://socviz.co/. Or maybe put these in case studies. Love this one: https://socviz.co/groupfacettx.html#histograms. -->
 
@@ -54,7 +80,6 @@ We’ll start with a deeper dive into aesthetic mappings.
 
 Load up the **tidyverse** library.
 
-
 ```{r aesthetic-mappings-1, exercise = TRUE}
 
 ```
@@ -63,8 +88,12 @@ Load up the **tidyverse** library.
 library(...)
 ```
 
-```{r aesthetic-mappings-1-test, include = FALSE}
+```{r aesthetic-mappings-1-solution, exercise.reveal_solution = FALSE}
 library(tidyverse)
+```
+
+```{r aesthetic-mappings-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -83,8 +112,12 @@ Run `glimpse()` on `mpg`.
 glimpse(...)
 ```
 
-```{r aesthetic-mappings-2-test, include = FALSE}
+```{r aesthetic-mappings-2-solution, exercise.reveal_solution = FALSE}
 glimpse(mpg)
+```
+
+```{r aesthetic-mappings-2-check}
+grade_this_code()
 ```
 
 ### 
@@ -100,28 +133,41 @@ The `mpg` tibble bundled with the **ggplot2** package contains 234 observations 
 
 ### Exercise 3
 
-Run `ggplot()`, setting the first argument, `data`, equal to `mpg`.
+Run `ggplot()`.
+
+- Set the first argument, `data`, equal to `mpg`.
+
+- Set the second argument, `mapping`, equal to the `aes()` function, setting the `x` argument to `displ` and the `y` argument to equal `hwy`.  
+
+- Add `geom_point()`
 
 ```{r aesthetic-mappings-3, exercise = TRUE}
 
 ```
 
 ```{r aesthetic-mappings-3-hint-1, eval = FALSE}
-ggplot(data = ...)
+ggplot(data = ..., mapping = ...) +
+  ...()
 ```
 
-```{r aesthetic-mappings-3-test, include = FALSE}
-ggplot(data = mpg)
+```{r aesthetic-mappings-3-solution, exercise.reveal_solution = FALSE}
+ggplot(mpg, aes(x = displ, 
+                y = hwy)) +
+  geom_point()
+```
+
+```{r aesthetic-mappings-3-check}
+grade_this_code()
 ```
 
 ### 
 
-Note that this just creates an empty area in which a plot can be placed. Because `data` is the first argument, we don't need to include it. We get the same result with `ggplot(mpg)`.
+A scatter plot like this is the most common way to look at data. If there is a lot of overlap among the data points, you may want to use [`geom_jitter()`](https://ggplot2.tidyverse.org/reference/geom_jitter.html) to separate the points.
 
 
 ### Exercise 4
 
-Continue the code by setting the `mapping` argument equal to the `aes()` function, setting the `x` argument to `displ` and the `y` argument to equal `hwy`.  
+Set the `color` argument within `aes()` to `class`. Each point will have a color based on the `class` of the car.
 
 ```{r aesthetic-mappings-4, exercise = TRUE}
 
@@ -130,23 +176,30 @@ Continue the code by setting the `mapping` argument equal to the `aes()` functio
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r aesthetic-mappings-4-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = ..., 
-                ... = hwy))
+ggplot(mpg, aes(x = displ, 
+                y = hwy, 
+                color = ...)) +
+  geom_point()
 ```
 
-```{r aesthetic-mappings-4-test, include = FALSE}
+```{r aesthetic-mappings-4-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
-                y = hwy))
+                y = hwy,
+                color = class)) +
+  geom_point()
+```
+
+```{r aesthetic-mappings-4-check}
+grade_this_code()
 ```
 
 ### 
 
-We want to visualize the relationship between the car's engine size and fuel efficiency on the highway. Because we have not added a geom, no data is plotted. But the axes are now labelled because R knows the range of the `displ` and `hwy` variables.
-
+The plot is much richer, even though it isn't any larger, because we have used color to incorporate information about the type of car. Notice how the SUVs cluster in the lower right. Their engines are (mostly) bigger, and they all get worse gas mileage.
 
 ### Exercise 5
 
-Add `geom_point()` --- don't forget the `+` after the call to `ggplot()` --- to see the actual data.
+Replace the `color` argument with the `shape` argument within `aes()`. Set the value to `class`, as before. Each point will have a shape based on the `class` of the car.
 
 ```{r aesthetic-mappings-5, exercise = TRUE}
 
@@ -156,71 +209,20 @@ Add `geom_point()` --- don't forget the `+` after the call to `ggplot()` --- to 
 
 ```{r aesthetic-mappings-5-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, 
-                y = hwy)) +
-  ...()
-```
-
-```{r aesthetic-mappings-5-test, include = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) +
-  geom_point()
-```
-
-### 
-
-A scatter plot like this is the most common way to look at data. If there is a lot of overlap among the data points, you may want to use [`geom_jitter()`](https://ggplot2.tidyverse.org/reference/geom_jitter.html) to separate the points.
-
-
-### Exercise 6
-
-Set the `color` argument within `aes()` to `class`. Each point will have a color based on the `class` of the car.
-
-```{r aesthetic-mappings-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r aesthetic-mappings-6-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                color = ...)) +
-  geom_point()
-```
-
-```{r aesthetic-mappings-6-test, include = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy,
-                color = class)) +
-  geom_point()
-```
-
-### 
-
-The plot is much richer, even though it isn't any larger, because we have used color to incorporate information about the type of car. Notice how the SUVs cluster in the lower right. Their engines are (mostly) bigger, and they all get worse gas mileage.
-
-### Exercise 7
-
-Replace the `color` argument with the `shape` argument within `aes()`. Set the value to `class`, as before. Each point will have a shape based on the `class` of the car.
-
-```{r aesthetic-mappings-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r aesthetic-mappings-7-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
                 y = hwy, 
                 shape = ...)) +
   geom_point()
 ```
 
-```{r aesthetic-mappings-7-test, include = FALSE}
+```{r aesthetic-mappings-5-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy,
                 shape = class)) +
   geom_point()
+```
+
+```{r aesthetic-mappings-5-check}
+grade_this_code()
 ```
 
 When class is mapped to shape, we get two warnings:
@@ -235,28 +237,32 @@ When class is mapped to shape, we get two warnings:
 
 Since `ggplot()` will only use six shapes at a time, by default, additional groups will go unplotted when you use the `shape` aesthetic. The second warning is related – there are 62 SUVs in the dataset and they’re not plotted.
 
-### Exercise 8
+### Exercise 6
 
 Replace the `shape` argument with the `size` argument within `aes()`. Set the value to `class`, as before. Each point will have a size based on the `class` of the car.
 
-```{r aesthetic-mappings-8, exercise = TRUE}
+```{r aesthetic-mappings-6, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r aesthetic-mappings-8-hint-1, eval = FALSE}
+```{r aesthetic-mappings-6-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy, 
                 size = ...)) +
   geom_point()
 ```
 
-```{r aesthetic-mappings-8-test, include = FALSE}
+```{r aesthetic-mappings-6-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy,
                 size = class)) +
   geom_point()
+```
+
+```{r aesthetic-mappings-6-check}
+grade_this_code()
 ```
 
 You should see a warning message:
@@ -270,28 +276,32 @@ Using size for a discrete variable is not advised.
 Mapping an unordered discrete (categorical) variable, like `class`, to an ordered aesthetic, like `size` is generally not a good idea because it implies a ranking that does not in fact exist, hence the warning.
 
 
-### Exercise 9
+### Exercise 7
 
 Replace the `size` argument with the `alpha` argument within `aes()`. Set the value to `class`, as before. Each point will have a transparency based on the `class` of the car.
 
-```{r aesthetic-mappings-9, exercise = TRUE}
+```{r aesthetic-mappings-7, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r aesthetic-mappings-9-hint-1, eval = FALSE}
+```{r aesthetic-mappings-7-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy, 
                 alpha = ...)) +
   geom_point()
 ```
 
-```{r aesthetic-mappings-9-test, include = FALSE}
+```{r aesthetic-mappings-7-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy,
                 alpha = class)) +
   geom_point()
+```
+
+```{r aesthetic-mappings-7-check}
+grade_this_code()
 ```
 
 You should see a warning message, as above:
@@ -305,26 +315,30 @@ Using alpha for a discrete variable is not advised.
 Once you map an aesthetic, **ggplot2** takes care of the rest. It selects a reasonable scale to use with the aesthetic, and it constructs a legend that explains the mapping between levels and values. For x and y aesthetics, **ggplot2** does not create a legend, but it creates an axis line with tick marks and a label. The axis line provides the same information as a legend; it explains the mapping between locations and values.
 
 
-### Exercise 10
+### Exercise 8
 
 You can also set the visual properties of your geom manually as an argument of your geom function (outside of `aes()`) instead of relying on a variable mapping to determine the appearance. Remove the `alpha` argument from your code and add `color = "blue"` **within** the call to `geom_point()`.
 
-```{r aesthetic-mappings-10, exercise = TRUE}
+```{r aesthetic-mappings-8, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r aesthetic-mappings-10-hint-1, eval = FALSE}
+```{r aesthetic-mappings-8-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = ..., 
                 y = hwy)) + 
   geom_point(color = "...")
 ```
 
-```{r aesthetic-mappings-10-test, include = FALSE}
+```{r aesthetic-mappings-8-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy)) + 
   geom_point(color = "blue")
+```
+
+```{r aesthetic-mappings-8-check}
+grade_this_code()
 ```
 
 ### 
@@ -342,7 +356,15 @@ So far we have discussed aesthetics that we can map or set in a scatterplot, whe
 
 ### Exercise 1
 
-To change the geom in your plot, change the geom function that you add to `ggplot()`. Let's start with the plot which we were just working with. (You need to copy this code by hand from the previous question because this is a new Section.) Use `color = "blue"` removed from the call to `geom_point()`. 
+To change the geom in your plot, change the geom function that you add to `ggplot()`. 
+
+Run `ggplot()`
+
+- Set the first argument equal to `mpg`.
+
+- Set the second argument equal to the `aes()` function, setting the `x` argument to `displ` and the `y` argument to equal `hwy`.  
+
+- This time add `geom_smooth()`.
 
 ```{r geometric-objects-1, exercise = TRUE}
 
@@ -351,22 +373,48 @@ To change the geom in your plot, change the geom function that you add to `ggplo
 ```{r geometric-objects-1-hint-1, eval = FALSE}
 ggplot(..., aes(x = displ, 
                 y = hwy)) + 
-  geom_point()
+  geom_smooth()
 ```
 
-```{r geometric-objects-1-test, include = FALSE}
+```{r geometric-objects-1-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
-  geom_point()
+                y = hwy)) +
+  geom_smooth()
+```
+
+```{r geometric-objects-1-check}
+grade_this_code()
 ```
 
 ### 
 
-Every geom function in **ggplot2** takes a mapping argument, either defined locally in the geom layer or globally in the `ggplot()` layer. 
+<!-- Every geom function in **ggplot2** takes a mapping argument, either defined locally in the geom layer or globally in the `ggplot()` layer.  -->
+
+<!-- ### -->
+
+This plot contain the same `x` variable, the same `y` variable, and describes the same data as our scatterplot in the last section. But the plots are not identical. Each plot uses a different geometric object, geom, to represent the data.
+
+### 
+
+Not every aesthetic works with every geom. You could set the shape of a point, but you couldn’t set the “shape” of a line. If you try, **ggplot2** will silently ignore that aesthetic mapping. 
 
 ### Exercise 2
 
-Replace `geom_point()` with `geom_smooth()`. Both plots contain the same `x` variable, the same `y` variable, and both describe the same data. But the plots are not identical. Each plot uses a different geometric object, geom, to represent the data.
+Note the message which gets displayed when calling `geom_smooth()`.
+
+````
+`geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+````
+
+**ggplot2** thinks that `method = 'loess'` and `formula = 'y ~ x'` are good default values, but it wants to be sure that you are aware of them. 
+
+###
+
+First, add `method = 'loess'` to the `geom_smooth()` call.
+
+Second, add `formula = 'y ~ x'`. 
+
+Third, add `se = FALSE`.
 
 ```{r geometric-objects-2, exercise = TRUE}
 
@@ -377,28 +425,35 @@ Replace `geom_point()` with `geom_smooth()`. Both plots contain the same `x` var
 ```{r geometric-objects-2-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy)) + 
-  ...()
+  geom_smooth(... = 'loess', 
+              ... = 'y ~ x',
+              se = ...)
 ```
 
-```{r geometric-objects-2-test, include = FALSE}
+```{r geometric-objects-2-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy)) + 
-  geom_smooth()
+  geom_smooth(method = 'loess', 
+              formula = 'y ~ x',
+              se = FALSE)
+```
+
+```{r geometric-objects-2-check}
+grade_this_code()
 ```
 
 ### 
 
-Not every aesthetic works with every geom. You could set the shape of a point, but you couldn’t set the “shape” of a line. If you try, **ggplot2** will silently ignore that aesthetic mapping. 
+By explicitly defining the `method` and `formula` in your code the message goes away, which you should do.
+
+### 
+
+The `se`, which stands for "standard error," determines whether or not error bars around the line are included. By default, the value of `se` is `TRUE`. We set it to `FALSE` here in order to make the graphic less cluttered.
+
 
 ### Exercise 3
 
-Note the message which gets displayed when calling `geom_smooth()`.
-
-````
-`geom_smooth()` using method = 'loess' and formula = 'y ~ x'
-````
-
-`geom_smooth()` is informing us of the values which it is using, by default, for the `method` and `formula` arguments. Add `method = 'loess'` to the `geom_smooth()` call.
+You can set the `linetype` of a line. `geom_smooth()` will draw a different line, with a different `linetype`, for each unique value of the variable that you map to `linetype`. Within the call to `aes()`, add `linetype = drv`.
 
 ```{r geometric-objects-3, exercise = TRUE}
 
@@ -408,30 +463,35 @@ Note the message which gets displayed when calling `geom_smooth()`.
 
 ```{r geometric-objects-3-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
-  geom_smooth(... = 'loess')
+                y = hwy, 
+                linetype = ...)) + 
+  geom_smooth(method = 'loess', 
+              formula = 'y ~ x',
+              se = FALSE)
 ```
 
-```{r geometric-objects-3-test, include = FALSE}
+```{r geometric-objects-3-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
-  geom_smooth(method = 'loess')
+                y = hwy, 
+                linetype = drv)) + 
+  geom_smooth(method = 'loess', 
+              formula = 'y ~ x',
+              se = FALSE)
+```
+
+```{r geometric-objects-3-check}
+grade_this_code()
 ```
 
 ### 
 
-Note how the message has changed.
-
-````
-`geom_smooth()` using formula = 'y ~ x'
-````
-
-**ggplot2** thinks that `method = 'loess'` and `formula = 'y ~ x'` are good default values, but it wants to be sure that you are aware of them. So, it will keep telling you about them until you make the choice explicitly in your code, which you should do.
+Here, `geom_smooth()` separates the cars into three lines based on their `drv` value, which describes a car’s drive train. One line describes all of the points that have a `4` value. One line describes all of the points that have an `f` value. And one line describes all of the points that have an `r` value. Here, `4` stands for four-wheel drive, `f` for front-wheel drive, and `r` for rear-wheel drive.
 
 ### Exercise 4
 
-Make two more additions to the call to `geom_smooth()`. First, add `formula = 'y ~ x'` to remove the message. Second, add `se = FALSE`. 
+If this sounds strange, we can make it clearer by overlaying the lines on top of the raw data. To do this, simply add a call to `geom_point()` in between `ggplot()` and `geom_smooth()`. Don't forget to separate different lines with `+`.
 
+Also set `color = drv` within `aes()`.
 
 ```{r geometric-objects-4, exercise = TRUE}
 
@@ -441,28 +501,43 @@ Make two more additions to the call to `geom_smooth()`. First, add `formula = 'y
 
 ```{r geometric-objects-4-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
-  geom_smooth(method = 'loess', 
-              ... = 'y ~ x',
-              se = ...)
-```
-
-```{r geometric-objects-4-test, include = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
+                y = hwy, 
+                linetype = drv,
+                color = ...)) + 
+  ...() +
   geom_smooth(method = 'loess', 
               formula = 'y ~ x',
               se = FALSE)
 ```
 
+```{r geometric-objects-4-solution, exercise.reveal_solution = FALSE}
+ggplot(mpg, aes(x = displ, 
+                y = hwy, 
+                linetype = drv,
+                color = drv)) + 
+  geom_point() +
+  geom_smooth(method = 'loess', 
+              formula = 'y ~ x',
+              se = FALSE)
+```
+
+```{r geometric-objects-4-check}
+grade_this_code()
+```
+
 ### 
 
-The `se`, which stands for "standard error," determines whether or not error bars around the line are included. By default, the value of `se` is `TRUE`. We set it to `FALSE` here in order to make the graphic less cluttered.
-
+Notice that this plot contains two geoms in the same graph.
 
 ### Exercise 5
 
-You can set the `linetype` of a line. `geom_smooth()` will draw a different line, with a different `linetype`, for each unique value of the variable that you map to `linetype`. Within the call to `aes()`, add `linetype = drv`.
+The `aes()` values cascade across all the geom's, unless and until we change them ourselves. 
+
+Notice that `geom_point()` simply ignores `linetype` because that is not a valid aesthetic for a point.
+
+It would be more appropriate to define `linetype` locally within the `geom_smooth()` call (instead of globally).
+
+Set `linetype = drv` within the `aes()` of the call to `geom_smooth()`.
 
 ```{r geometric-objects-5, exercise = TRUE}
 
@@ -473,113 +548,12 @@ You can set the `linetype` of a line. `geom_smooth()` will draw a different line
 ```{r geometric-objects-5-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy, 
-                linetype = ...)) + 
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
-```
-
-```{r geometric-objects-5-test, include = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                linetype = drv)) + 
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
-```
-
-### 
-
-Here, `geom_smooth()` separates the cars into three lines based on their `drv` value, which describes a car’s drive train. One line describes all of the points that have a `4` value. One line describes all of the points that have an `f` value. And one line describes all of the points that have an `r` value. Here, `4` stands for four-wheel drive, `f` for front-wheel drive, and `r` for rear-wheel drive.
-
-### Exercise 6
-
-Replace `linetype = drv` with `color = drv` within `aes()`.
-
-
-```{r geometric-objects-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geometric-objects-6-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                ... = drv)) + 
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
-```
-
-```{r geometric-objects-6-test, include = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                color = drv)) + 
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
-```
-
-### 
-
-The `geom_smooth()` geom is applied to each category of color separately. With one call to a geom, we get three different plots, all on the same graph. There are no front-wheel drive cars with a `displ` value greater than 5, so the green line does not extend to the right-side of the graphic. 
-
-### Exercise 7
-
-If this sounds strange, we can make it clearer by overlaying the lines on top of the raw data. To do this, simply add a call to `geom_point()` in between `ggplot()` and `geom_smooth()`. Don't forget to separate different lines with `+`.
-
-
-```{r geometric-objects-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geometric-objects-7-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                color = drv)) + 
-  ...() +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
-```
-
-```{r geometric-objects-7-test, include = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                color = drv)) + 
-  geom_point() +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
-```
-
-### 
-
-Notice that this plot contains two geoms in the same graph.
-
-
-### Exercise 8
-
-The `aes()` values cascade across all the geom's, unless and until we change them ourselves. To see this, add `aes(linetype = drv)` to the call to `geom_smooth()`.
-
-```{r geometric-objects-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r geometric-objects-8-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
                 color = drv)) + 
   ... +
   geom_smooth(...(linetype = ...))
 ```
 
-```{r geometric-objects-8-test, include = FALSE}
+```{r geometric-objects-5-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy, 
                 color = drv)) + 
@@ -590,23 +564,25 @@ ggplot(mpg, aes(x = displ,
               aes(linetype = drv))
 ```
 
-Compared to the previous plot, the `linetype` now varies by `drv`.
+```{r geometric-objects-5-check}
+grade_this_code()
+```
 
 ### 
 
 Many geoms, like `geom_smooth()`, use a single geometric object to display multiple rows of data. For these geoms, you can set the `group` aesthetic to a categorical variable to draw multiple objects. 
 
-### Exercise 9
+### Exercise 6
 
 The explore the use of the `group` aesthetic, begin with our standard plot, which uses just `aes(x = displ, y = hwy)` in the call to `ggplot()` and just `method = 'loess'`,  `formula = 'y ~ x'`, and `se = FALSE` in the call to `geom_smooth()`.
 
-```{r geometric-objects-9, exercise = TRUE}
+```{r geometric-objects-6, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r geometric-objects-9-hint-1, eval = FALSE}
+```{r geometric-objects-6-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy)) +
   geom_smooth(method = ..., 
@@ -614,7 +590,7 @@ ggplot(mpg, aes(x = displ,
               se = ...)
 ```
 
-```{r geometric-objects-9-test, include = FALSE}
+```{r geometric-objects-6-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy)) +
   geom_smooth(method = 'loess', 
@@ -622,23 +598,27 @@ ggplot(mpg, aes(x = displ,
               se = FALSE)
 ```
 
+```{r geometric-objects-6-check}
+grade_this_code()
+```
+
 ### 
 
 Note how the line extends across the full range of `displ` because we are not splitting up the geom for different values of `drv`.
 
-### Exercise 10
+### Exercise 7
 
 **ggplot2** will draw a separate object for each unique value of the grouping variable. In practice, **ggplot2** will automatically group the data for these geoms whenever you map an aesthetic to a discrete variable (as in the `linetype` example).
 
 Add `aes(group = drv)` to the call to `geom_smooth()`.
 
-```{r geometric-objects-10, exercise = TRUE}
+```{r geometric-objects-7, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r geometric-objects-10-hint-1, eval = FALSE}
+```{r geometric-objects-7-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth(method = 'loess', 
               formula = 'y ~ x',
@@ -646,7 +626,7 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
               ...(group = ...))
 ```
 
-```{r geometric-objects-10-test, include = FALSE}
+```{r geometric-objects-7-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth(method = 'loess', 
               formula = 'y ~ x',
@@ -654,22 +634,24 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
               aes(group = drv))
 ```
 
+```{r geometric-objects-7-check}
+grade_this_code()
+```
 ### 
 
 It is convenient to rely on this feature because the `group` aesthetic by itself does not add a legend or distinguishing features to the geoms.
 
-### Exercise 11
+### Exercise 8
 
 Switch `group = drv` to `color = drv` and add `show.legend = FALSE` to the call to `geom_smooth()`.
 
-
-```{r geometric-objects-11, exercise = TRUE}
+```{r geometric-objects-8, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r geometric-objects-11-hint-1, eval = FALSE}
+```{r geometric-objects-8-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth(method = 'loess', 
               formula = 'y ~ x',
@@ -678,7 +660,7 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
               ... = FALSE)
 ```
 
-```{r geometric-objects-11-test, include = FALSE}
+```{r geometric-objects-8-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth(method = 'loess', 
               formula = 'y ~ x',
@@ -687,12 +669,16 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
               show.legend = FALSE)
 ```
 
+```{r geometric-objects-8-check}
+grade_this_code()
+```
+
 ### 
 
 It is sometimes difficult to know if the `color` aesthetic should be set in the `ggplot()` call or in the call to the individual geom. Experiment!
 
 
-### Exercise 12
+### Exercise 9
 
 To explore some of these concepts, let's construct this plot:
 
@@ -714,36 +700,39 @@ geom_p
 Begin with `ggplot(mpg, aes(x = displ, y = hwy))` and use `geom_point()`. 
 
 
-```{r geometric-objects-12, exercise = TRUE}
+```{r geometric-objects-9, exercise = TRUE}
 
 ```
 
-```{r geometric-objects-12-hint-1, eval = FALSE}
+```{r geometric-objects-9-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = ...)) + 
   ...()
 ```
 
-```{r geometric-objects-12-test, include = FALSE}
+```{r geometric-objects-9-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point()
 ```
 
+```{r geometric-objects-9-check}
+grade_this_code()
+```
 ### 
 
 The easiest way to build a complex plot is *interactively*. Add one line. See how it looks. Add another line. And so on.
 
 
-### Exercise 13
+### Exercise 10
 
 Add a second call to `geom_point()`. In that call, set `data` equal to `mpg |> filter(class == "2seater")` and `color` equal to `"red"`.
 
-```{r geometric-objects-13, exercise = TRUE}
+```{r geometric-objects-10, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r geometric-objects-13-hint-1, eval = FALSE}
+```{r geometric-objects-10-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
   geom_point(
@@ -752,7 +741,7 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   )
 ```
 
-```{r geometric-objects-13-test, include = FALSE}
+```{r geometric-objects-10-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
   geom_point(
@@ -761,26 +750,28 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   )
 ```
 
+```{r geometric-objects-10-check}
+grade_this_code()
+```
 ### 
 
 By default, calls to geoms use whatever values for the `data` argument have been given previously. But, the `data` argument can also be changed. In this case, the second call to `geom_point()` only applies to the five rows for which `class` is "2seater".
 
-### Exercise 14
+### Exercise 11
 
 Add a third call to `geom_point()`, setting `data` equal to `mpg |> filter(class == "2seater")`, `color` equal to `"red"` (as in the previous call), `shape` equal to `"circle open"`, and `size` equal to `3`.
 
-
-```{r geometric-objects-14, exercise = TRUE}
+```{r geometric-objects-11, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r geometric-objects-14-hint-1, eval = FALSE}
+```{r geometric-objects-11-hint-1, eval = FALSE}
 
 ```
 
-```{r geometric-objects-14-test, include = FALSE}
+```{r geometric-objects-11-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
   geom_point(
@@ -795,65 +786,73 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   )
 ```
 
+```{r geometric-objects-11-check}
+grade_this_code()
+```
 ### 
 
-We need the two extra calls to `geom_point()` because the first one makes the centeral point red while the second makes the red circle around it.
+We need the two extra calls to `geom_point()` because the first one makes the central point red while the second makes the red circle around it.
 
-### Exercise 15
+### Exercise 12
 
 Geoms are the fundamental building blocks of ggplot2. You can completely transform the look of your plot by changing its geom, and different geoms can reveal different features of your data. 
 
-Make a new plot by hitting "Run Code".
+Make a new plot by hitting "Submit Code".
 
-```{r geometric-objects-15, exercise = TRUE}
+```{r geometric-objects-12, exercise = TRUE}
 ggplot(mpg, aes(x = hwy)) +
   geom_histogram(binwidth = 2)
 ```
 
-```{r geometric-objects-15-hint-1, eval = FALSE}
+```{r geometric-objects-12-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = hwy)) +
   geom_histogram(binwidth = 2)
 ```
 
-```{r geometric-objects-15-test, include = FALSE}
+```{r geometric-objects-12-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = hwy)) +
   geom_histogram(binwidth = 2)
 ```
 
+```{r geometric-objects-12-check}
+grade_this_code()
+```
 ### 
 
 The histogram reveals that the distribution of highway mileage is bimodal and right skewed. You can see a similar plot if you replace `geom_histogram(binwidth = 2)` with `geom_density()`.
 
-### Exercise 16
+### Exercise 13
 
-Hit "Run Code" to create a boxplot with the same data.
+Replace `geom_histogram(binwidth = 2)` with `geom_boxplot()` to create a boxplot with the same data.
 
-```{r geometric-objects-16, exercise = TRUE}
-ggplot(mpg, aes(x = hwy)) +
-  geom_boxplot()
+```{r geometric-objects-13, exercise = TRUE}
+
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r geometric-objects-16-hint-1, eval = FALSE}
+```{r geometric-objects-13-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = hwy)) +
   geom_boxplot()
 ```
 
-```{r geometric-objects-16-test, include = FALSE}
+```{r geometric-objects-13-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = hwy)) +
   geom_boxplot()
 ```
 
+```{r geometric-objects-13-check}
+grade_this_code()
+```
 ### 
 
 `geom_boxplot()` helps to highlight the two outlier data points. **ggplot2** provides more than 40 geoms but these don’t cover all possible plots one could make. If you need a different geom, look at extension packages first to see if someone else has already implemented it (see https://exts.ggplot2.tidyverse.org/gallery/ for a sampling).
 
-### Exercise 17
+### Exercise 14
 
-The [**ggridges** package](https://wilkelab.org/ggridges) is useful for making ridgeline plots, which can be useful for visualizing the density of a numerical variable for different levels of a categorical variable. Hit "Run Code" to see an example.
+The [**ggridges** package](https://wilkelab.org/ggridges) is useful for making ridgeline plots, which can be useful for visualizing the density of a numerical variable for different levels of a categorical variable. Hit "Submit Code" to see an example.
 
-```{r geometric-objects-17, exercise = TRUE}
+```{r geometric-objects-14, exercise = TRUE}
 library(ggridges)
 
 ggplot(mpg, aes(x = hwy, y = drv, fill = drv, color = drv)) +
@@ -862,16 +861,19 @@ ggplot(mpg, aes(x = hwy, y = drv, fill = drv, color = drv)) +
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r geometric-objects-17-hint-1, eval = FALSE}
+```{r geometric-objects-14-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = hwy, y = drv, fill = drv, color = drv)) +
   geom_density_ridges(alpha = 0.5, show.legend = FALSE)
 ```
 
-```{r geometric-objects-17-test, include = FALSE}
+```{r geometric-objects-14-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = hwy, y = drv, fill = drv, color = drv)) +
   geom_density_ridges(alpha = 0.5, show.legend = FALSE)
 ```
 
+```{r geometric-objects-14-check}
+grade_this_code()
+```
 ### 
 
 The best place to get a comprehensive overview of all of the geoms **ggplot2** offers, as well as all functions in the package, is the [reference page](https://ggplot2.tidyverse.org/reference). To learn more about any single geom, use the help (e.g., `?geom_smooth`).
@@ -882,9 +884,13 @@ The best place to get a comprehensive overview of all of the geoms **ggplot2** o
 
 Facets, created with functions like `facet_wrap()` and `facet_grid()`, are the easiest way to create plot "multiples," copies of the same plot for each value of a third variable.
 
+In Chapter 1 you learned that `facet_wrap()` is used to facet your plot by a single variable. The first argument of `facet_wrap()` is a formula, which you create with `~` followed by a variable name. The variable that you pass to `facet_wrap()` should be categorical, i.e., either character or factor.
+
 ### Exercise 1
 
-Start with our usual basic scatter plot, `displ` versus `hwy` from the `mpg` tibble.
+Start with our usual basic scatterplot, `displ` versus `hwy` from the `mpg` tibble.
+
+Add `facet_wrap(~cyl)` to the end of your scatterplot code. Don't forget the `+` after `geom_point()`.
 
 ```{r facets-1, exercise = TRUE}
 
@@ -893,24 +899,30 @@ Start with our usual basic scatter plot, `displ` versus `hwy` from the `mpg` tib
 ```{r facets-1-hint-1, eval = FALSE}
 ggplot(mpg, aes(... = displ, 
                 y = ...)) + 
-  ...()
+  ...() + 
+  facet_wrap(~ ...)
 ```
 
-```{r facets-1-test, include = FALSE}
+```{r facets-1-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy)) + 
-  geom_point()
+  geom_point() + 
+  facet_wrap(~cyl)
+```
+
+```{r facets-1-check}
+grade_this_code()
 ```
 
 ### 
 
-To facet your plot by a single variable, use `facet_wrap()`. The first argument of `facet_wrap()` is a formula, which you create with `~` followed by a variable name. The variable that you pass to `facet_wrap()` should be categorical, i.e., either character or factor.
-
+[`facet_wrap()`](https://ggplot2.tidyverse.org/reference/facet_wrap.html) wraps a 1d sequence of panels into 2d. This is generally a better use of screen space than `facet_grid()` because most displays are roughly rectangular.
 
 ### Exercise 2
 
-Add `facet_wrap(~cyl)` to the end of your plot code. Don't forget the `+` after `geom_point()`.
+To facet your plot with the combination of two variables, switch from `facet_wrap()` to `facet_grid()`. The first argument of `facet_grid()` is also a formula, but now it’s a double sided formula: rows ~ cols. 
 
+Replace `facet_wrap(~cyl)` with `facet_grid(drv ~ cyl)`.
 
 ```{r facets-2, exercise = TRUE}
 
@@ -922,26 +934,29 @@ Add `facet_wrap(~cyl)` to the end of your plot code. Don't forget the `+` after 
 ggplot(mpg, aes(x = displ, 
                 y = hwy)) + 
   geom_point() + 
-  facet_wrap(~ ...)
+  facet_...(... ~ cyl)
 ```
 
-```{r facets-2-test, include = FALSE}
+```{r facets-2-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, 
                 y = hwy)) + 
   geom_point() + 
-  facet_wrap(~cyl)
+  facet_grid(drv ~ cyl)
+```
+
+```{r facets-2-check}
+grade_this_code()
 ```
 
 ### 
 
-[`facet_wrap()`](https://ggplot2.tidyverse.org/reference/facet_wrap.html) wraps a 1d sequence of panels into 2d. This is generally a better use of screen space than `facet_grid()` because most displays are roughly rectangular.
+By default each of the facets share the same scale and range for x and y axes. This is useful when you want to compare data across facets but it can be limiting when you want to visualize the relationship within each facet better. 
 
 ### Exercise 3
 
-To facet your plot with the combination of two variables, switch from `facet_wrap()` to `facet_grid()`. The first argument of `facet_grid()` is also a formula, but now it’s a double sided formula: rows ~ cols. 
+Setting the scales argument in a faceting function to "free" will allow for different axis scales across both rows and columns, "free_x" will allow for different scales across rows, and "free_y" will allow for different scales across columns.
 
-Replace `facet_wrap(~cyl)` with `facet_grid(drv ~ cyl)`.
-
+Add `scales = "free_y"` to the call to `facet_grid()`. Don't forget the comma after `drv ~ cyl`.
 
 ```{r facets-3, exercise = TRUE}
 
@@ -950,47 +965,20 @@ Replace `facet_wrap(~cyl)` with `facet_grid(drv ~ cyl)`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r facets-3-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
-  geom_point() + 
-  facet_...(... ~ cyl)
-```
-
-```{r facets-3-test, include = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
-  geom_point() + 
-  facet_grid(drv ~ cyl)
-```
-
-### 
-
-By default each of the facets share the same scale and range for x and y axes. This is useful when you want to compare data across facets but it can be limiting when you want to visualize the relationship within each facet better. 
-
-### Exercise 4
-
-Setting the scales argument in a faceting function to "free" will allow for different axis scales across both rows and columns, "free_x" will allow for different scales across rows, and "free_y" will allow for different scales across columns.
-
-Add `scales = "free_y"` to the call to `facet_grid()`. Don't forget the comma after `drv ~ cyl`.
-
-```{r facets-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r facets-4-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
   facet_grid(drv ~ cyl, ... = ...)
 ```
 
-```{r facets-4-test, include = FALSE}
+```{r facets-3-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
   facet_grid(drv ~ cyl, scales = "free_y")
 ```
 
+```{r facets-3-check}
+grade_this_code()
+```
 ### 
 
 [`facet_wrap()`](https://ggplot2.tidyverse.org/reference/facet_wrap.html) and 
@@ -1003,117 +991,64 @@ Instead of simply plotting data, it is sometimes useful to calculate a statistic
 
 ### Exercise 1
 
-The `diamonds` dataset is part of the **ggplot2** package. Type `diamonds` and hit "Run Code".
+The `diamonds` dataset is part of the **ggplot2** package. 
+
+The `diamonds` dataset contains information on about 54,000 diamonds, including the `price`, `carat`, `color`, `clarity`, and `cut` of each diamond. 
+
+###
+
+1. Pipe `diamonds` into `ggplot()`. (Recall, instead of passing in `diamonds` as the first argument to `ggplot()`, we can "pipe" it in with the `|>` symbol.)
+
+2. Add `aes(x = cut)` to the class to `ggplot()`.
+
+3. Add `geom_bar()` as the geom. Don't forget the `+` after the call to `ggplot()`.
 
 ```{r statistical-transformations-1, exercise = TRUE}
 
 ```
 
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
 ```{r statistical-transformations-1-hint-1, eval = FALSE}
-diamonds
-```
-
-```{r statistical-transformations-1-test, include = FALSE}
-diamonds
-```
-
-### 
-
-The diamonds dataset contains information on about 54,000 diamonds, including the `price`, `carat`, `color`, `clarity`, and `cut` of each diamond. 
-
-### Exercise 2
-
-Pipe `diamonds` into `ggplot()`.
-
-
-```{r statistical-transformations-2, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r statistical-transformations-2-hint-1, eval = FALSE}
 diamonds |> 
+  ...(aes(...)) + 
   ...()
 ```
 
-```{r statistical-transformations-2-test, include = FALSE}
-diamonds |> 
-  ggplot()
-```
-
-### 
-
-Instead of passing in `diamonds` as the first argument to `ggplot()`, we can "pipe" it in with the `|>` symbol. Recall that `|>` does exactly that, take the object in the left side --- in this case `diamonds` --- and pass it as the value of the first argument to the thing on the right side, in this case `ggplot()`.
-
-### Exercise 3
-
-Add `aes(x = cut)` to the class to `ggplot()`.
-
-```{r statistical-transformations-3, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r statistical-transformations-3-hint-1, eval = FALSE}
-diamonds |> 
-  ggplot(aes(... = cut))
-```
-
-```{r statistical-transformations-3-test, include = FALSE}
-diamonds |> 
-  ggplot(aes(x = cut))
-```
-
-### 
-
-The plot has no data but the x-axis is correctly labelled with all the possible values of the variable `cut`.
-
-
-### Exercise 4
-
-Add `geom_bar()` as the geom. Don't forget the `+` after the call to `ggplot()`.
-
-```{r statistical-transformations-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r statistical-transformations-4-hint-1, eval = FALSE}
-diamonds |> 
-  ggplot(aes(x = cut)) + 
-  ...()
-```
-
-```{r statistical-transformations-4-test, include = FALSE}
+```{r statistical-transformations-1-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   ggplot(aes(x = cut)) + 
   geom_bar()
+```
+
+```{r statistical-transformations-1-check}
+grade_this_code()
 ```
 
 ### 
 
 On the x-axis, the chart displays cut, a variable from diamonds. On the y-axis, it displays count, but count is not a variable in diamonds! It is a "statistical transformation" which **ggplot2** has calculated for us.
 
-### Exercise 5
+### Exercise 2
 
 Pipe `diamonds` into `count(cut)`.
 
-```{r statistical-transformations-5, exercise = TRUE}
+```{r statistical-transformations-2, exercise = TRUE}
 
 ```
 
-```{r statistical-transformations-5-hint-1, eval = FALSE}
+```{r statistical-transformations-2-hint-1, eval = FALSE}
 
 ```
 
-```{r statistical-transformations-5-test, include = FALSE}
+```{r statistical-transformations-2-solution, exercise.reveal_solution = FALSE}
 diamonds |>
   count(cut)
 ```
 
+```{r statistical-transformations-2-check}
+grade_this_code()
+```
 ### 
 
 Many graphs, like scatterplots, plot the raw values of your dataset. Other graphs, like bar charts, calculate new values to plot:
@@ -1124,92 +1059,102 @@ Many graphs, like scatterplots, plot the raw values of your dataset. Other graph
 
 * Boxplots compute the five-number summary of the distribution and then display that summary as a specially formatted box.
 
-
-
-### Exercise 6
+### Exercise 3
 
 `count()` outputs a tibble with values of the variable(s) you selected, along with the number of observations corresponding to each value. We can pipe this output directly into `ggplot()`, along with `aes(x = cut, y = n)`.
 
-```{r statistical-transformations-6, exercise = TRUE}
+```{r statistical-transformations-3, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r statistical-transformations-6-hint-1, eval = FALSE}
+```{r statistical-transformations-3-hint-1, eval = FALSE}
 diamonds |>
   count(cut) |>
   ggplot(aes(x = ..., ... = n))
 ```
 
-```{r statistical-transformations-6-test, include = FALSE}
+```{r statistical-transformations-3-solution, exercise.reveal_solution = FALSE}
 diamonds |>
   count(cut) |>
   ggplot(aes(x = cut, y = n))
 ```
 
+```{r statistical-transformations-3-check}
+grade_this_code()
+```
 ### 
 
 The algorithm used to calculate new values for a graph is called a "stat," short for statistical transformation. In this case, we are calculating the stat by hand, and then using the calculated value `n` to make a plot.
 
-
-### Exercise 7
+### Exercise 4
 
 Add `geom_bar(stat = 'identity')` to the pipeline.
 
-```{r statistical-transformations-7, exercise = TRUE}
+```{r statistical-transformations-4, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r statistical-transformations-7-hint-1, eval = FALSE}
+```{r statistical-transformations-4-hint-1, eval = FALSE}
 
 ```
 
-```{r statistical-transformations-7-test, include = FALSE}
+```{r statistical-transformations-4-solution, exercise.reveal_solution = FALSE}
 diamonds |>
   count(cut) |>
   ggplot(aes(x = cut, y = n)) +
   geom_bar(stat = 'identity')
 ```
 
+```{r statistical-transformations-4-check}
+grade_this_code()
+```
 ### 
 
 The result is the same as the much-more-straight-forward usage of `geom_bar()` which we created above.
 
-### Exercise 8
+### Exercise 5
 
-<!-- DK: Split up this question and the next into a couple of steps, perhaps. -->
+You might want to override the default mapping from transformed variables to aesthetics. For example, you might want to display a bar chart of proportions, rather than counts.
 
-You might want to override the default mapping from transformed variables to aesthetics. For example, you might want to display a bar chart of proportions, rather than counts. Hit "Run Code".
+To do this, set `y = after_stat(prop)` and `group = 1`.
 
-```{r statistical-transformations-8, exercise = TRUE}
-ggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) + 
+```{r statistical-transformations-5, exercise = TRUE}
+ggplot(diamonds, aes(x = cut, y = ___, group = ___)) + 
   geom_bar()
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r statistical-transformations-8-hint-1, eval = FALSE}
+```{r statistical-transformations-5-hint-1, eval = FALSE}
 ggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) + 
   geom_bar()
 ```
 
-```{r statistical-transformations-8-test, include = FALSE}
+```{r statistical-transformations-5-solution, exercise.reveal_solution = FALSE}
 ggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) + 
   geom_bar()
 ```
 
+```{r statistical-transformations-5-check}
+grade_this_code()
+```
 ### 
 
-To find the possible variables that can be computed by the stat, look for the section titled “computed variables” in the [help](https://ggplot2.tidyverse.org/reference/geom_bar.html) for `geom_bar()`.
+To find the possible variables that can be computed by the stat, look for the section titled “Computed variables” in the [help](https://ggplot2.tidyverse.org/reference/geom_bar.html) for `geom_bar()`.
 
-### Exercise 9
+###
 
-You might want to draw greater attention to the statistical transformation in your code. For example, you might use stat_summary(), which summarizes the y values for each unique x value, to draw attention to the summary that you’re computing. Hit "Run Code".
+Setting `group`, is used to override the default grouping of `cut`. If we did not set this argument it would instead set each proportion to 100% because the proportion of Fair in Fair is 100%, etc.
 
-```{r statistical-transformations-9, exercise = TRUE}
+### Exercise 6
+
+You might want to draw greater attention to the statistical transformation in your code. For example, you might use stat_summary(), which summarizes the y values for each unique x value, to draw attention to the summary that you’re computing. Hit "Submit Code".
+
+```{r statistical-transformations-6, exercise = TRUE}
 ggplot(diamonds) + 
   stat_summary(
     aes(x = cut, y = depth),
@@ -1221,7 +1166,7 @@ ggplot(diamonds) +
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r statistical-transformations-9-hint-1, eval = FALSE}
+```{r statistical-transformations-6-hint-1, eval = FALSE}
 ggplot(diamonds) + 
   stat_summary(
     aes(x = cut, y = depth),
@@ -1231,7 +1176,7 @@ ggplot(diamonds) +
   )
 ```
 
-```{r statistical-transformations-9-test, include = FALSE}
+```{r statistical-transformations-6-solution, exercise.reveal_solution = FALSE}
 ggplot(diamonds) + 
   stat_summary(
     aes(x = cut, y = depth),
@@ -1241,6 +1186,9 @@ ggplot(diamonds) +
   )
 ```
 
+```{r statistical-transformations-6-check}
+grade_this_code()
+```
 ### 
 
 **ggplot2** provides more than 20 stats for you to use. Each stat is a function, so you can get help in the usual way, e.g., `?stat_bin`.
@@ -1252,7 +1200,7 @@ There’s one more piece of magic associated with bar charts. You can color a ba
 
 ### Exercise 1
 
-Create a plot which starts with `ggplot(mpg, aes(x = drv, color = drv))` and then adds, after a `+`, `geom_bar()`.
+Create a plot which starts with `ggplot(mpg, aes(x = drv, fill = drv))` and then adds, after a `+`, `geom_bar()`.
 
 
 ```{r position-adjustments-1, exercise = TRUE}
@@ -1260,22 +1208,30 @@ Create a plot which starts with `ggplot(mpg, aes(x = drv, color = drv))` and the
 ```
 
 ```{r position-adjustments-1-hint-1, eval = FALSE}
-ggplot(mpg, aes(... = drv, color = drv)) + 
+ggplot(mpg, aes(... = drv, fill = drv)) + 
   ...()
 ```
 
-```{r position-adjustments-1-test, include = FALSE}
-ggplot(mpg, aes(x = drv, color = drv)) + 
+```{r position-adjustments-1-solution, exercise.reveal_solution = FALSE}
+ggplot(mpg, aes(x = drv, fill = drv)) + 
   geom_bar()
 ```
 
+```{r position-adjustments-1-check}
+grade_this_code()
+```
 ### 
 
-This is a basic bar chart, but with the edges of each bar colored according to the value of `drv`.
+This is a basic bar chart, but with the inside of each bar colored according to the value of `drv`. If instead we used `color` the border of each bar would have been colored.
+
+### 
+
+It may seem strange to use `drv` as the argument to both `x` and to `fill`. Yet this is a common approach. The two arguments are doing two different things but, in this case, both of those things are associated with `drv`. 
 
 ### Exercise 2
 
-Change `color = drv` to `fill = drv`.
+Change `fill = drv` to `fill = class`.
+
 
 ```{r position-adjustments-2, exercise = TRUE}
 
@@ -1284,24 +1240,25 @@ Change `color = drv` to `fill = drv`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r position-adjustments-2-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = drv, ... = drv)) + 
+ggplot(mpg, aes(x = drv, fill = ...)) + 
   geom_bar()
 ```
 
-```{r position-adjustments-2-test, include = FALSE}
-ggplot(mpg, aes(x = drv, fill = drv)) + 
+```{r position-adjustments-2-solution, exercise.reveal_solution = FALSE}
+ggplot(mpg, aes(x = drv, fill = class)) + 
   geom_bar()
 ```
 
+```{r position-adjustments-2-check}
+grade_this_code()
+```
 ### 
 
-It may seem strange to use `drv` as the argument to both `x` and to `fill`. Yet this is a common approach. The two arguments are doing two different things but, in this case, both of those things are associated with `drv`. 
-
+Note what happens if you map the fill aesthetic to another variable, like `class`: the bars are automatically stacked. Each colored rectangle represents a combination of `drv` and `class`.
 
 ### Exercise 3
 
-Change `fill = drv` to `fill = class`.
-
+The stacking is performed automatically using the position adjustment specified by the position argument. If you don’t want a stacked bar chart, you can use one of three other options: "identity", "dodge" or "fill". To explore, take the previous plot and add `alpha = 1/5, position = "identity"` to the call to `geom_bar()`.
 
 ```{r position-adjustments-3, exercise = TRUE}
 
@@ -1310,22 +1267,30 @@ Change `fill = drv` to `fill = class`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r position-adjustments-3-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = drv, fill = ...)) + 
-  geom_bar()
+ggplot(mpg, aes(x = drv, fill = class)) + 
+  geom_bar(alpha = ..., ... = "identity")
 ```
 
-```{r position-adjustments-3-test, include = FALSE}
+```{r position-adjustments-3-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = drv, fill = class)) + 
-  geom_bar()
+  geom_bar(alpha = 1/5, position = "identity")
+```
+
+```{r position-adjustments-3-check}
+grade_this_code()
 ```
 
 ### 
 
-Note what happens if you map the fill aesthetic to another variable, like `class`: the bars are automatically stacked. Each colored rectangle represents a combination of `drv` and `class`.
+`position = "identity"` will place each object exactly where it falls in the context of the graph. This is not very useful for bars, because it overlaps them. To see that overlapping we either need to make the bars slightly transparent by setting alpha to a small value.
+
+### 
+
+The identity position adjustment is more useful for 2d geoms, like points, where it is the default.
 
 ### Exercise 4
 
-The stacking is performed automatically using the position adjustment specified by the position argument. If you don’t want a stacked bar chart, you can use one of three other options: "identity", "dodge" or "fill". To explore, take the previous plot and add `alpha = 1/5, position = "identity"` to the call to `geom_bar()`.
+`position = "fill"` works like stacking, but makes each set of stacked bars the same height. Use the same code, but remove `fill = NA` and replace `"identity"` with `"fill"`.
 
 ```{r position-adjustments-4, exercise = TRUE}
 
@@ -1334,22 +1299,25 @@ The stacking is performed automatically using the position adjustment specified 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r position-adjustments-4-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = drv, fill = class)) + 
-  geom_bar(alpha = ..., ... = "identity")
+
 ```
 
-```{r position-adjustments-4-test, include = FALSE}
+```{r position-adjustments-4-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = drv, fill = class)) + 
-  geom_bar(alpha = 1/5, position = "identity")
+  geom_bar(position = "fill")
+```
+
+```{r position-adjustments-4-check}
+grade_this_code()
 ```
 
 ### 
 
-`position = "identity"` will place each object exactly where it falls in the context of the graph. This is not very useful for bars, because it overlaps them. To see that overlapping we either need to make the bars slightly transparent by setting alpha to a small value.
+This makes it easier to compare proportions across groups. 
 
 ### Exercise 5
 
-We can achieve a similar effect by `fill = NA` instead of `alpha = 1/5` in the class to `geom_bar()`.
+`position = "dodge"` places overlapping objects directly beside one another.  Replace `"fill"` with `"dodge"`.
 
 ```{r position-adjustments-5, exercise = TRUE}
 
@@ -1358,82 +1326,43 @@ We can achieve a similar effect by `fill = NA` instead of `alpha = 1/5` in the c
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r position-adjustments-5-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = drv, color = class)) + 
-  geom_bar(... = NA, position = "identity")
-```
-
-```{r position-adjustments-5-test, include = FALSE}
-ggplot(mpg, aes(x = drv, color = class)) + 
-  geom_bar(fill = NA, position = "identity")
-```
-
-### 
-
-The identity position adjustment is more useful for 2d geoms, like points, where it is the default.
-
-### Exercise 6
-
-`position = "fill"` works like stacking, but makes each set of stacked bars the same height. Use the same code, but remove `fill = NA` and replace `"identity"` with `"fill"`.
-
-```{r position-adjustments-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r position-adjustments-6-hint-1, eval = FALSE}
-
-```
-
-```{r position-adjustments-6-test, include = FALSE}
-ggplot(mpg, aes(x = drv, fill = class)) + 
-  geom_bar(position = "fill")
-```
-
-### 
-
-This makes it easier to compare proportions across groups. 
-
-### Exercise 7
-
-`position = "dodge"` places overlapping objects directly beside one another.  Replace `"fill"` with `"dodge"`.
-
-```{r position-adjustments-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r position-adjustments-7-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = drv, fill = class)) + 
   geom_bar(position = ...)
 ```
 
-```{r position-adjustments-7-test, include = FALSE}
+```{r position-adjustments-5-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = drv, fill = class)) + 
   geom_bar(position = "dodge")
+```
+
+```{r position-adjustments-5-check}
+grade_this_code()
 ```
 
 ### 
 
 This makes it easier to compare individual values.
 
-### Exercise 8
+### Exercise 6
 
 There’s one other type of adjustment that’s not useful for bar charts, but can be very useful for scatterplots. Recall our first scatterplot. Did you notice that the plot displays only 126 points, even though there are 234 observations in the dataset? Starting with our usual `ggplot(mpg, aes(x = displ, y = hwy))`, add `geom_point(position = "jitter")`
 
-```{r position-adjustments-8, exercise = TRUE}
+```{r position-adjustments-6, exercise = TRUE}
 
 ```
 
-```{r position-adjustments-8-hint-1, eval = FALSE}
+```{r position-adjustments-6-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point(... = "jitter")
 ```
 
-```{r position-adjustments-8-test, include = FALSE}
+```{r position-adjustments-6-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point(position = "jitter")
+```
+
+```{r position-adjustments-6-check}
+grade_this_code()
 ```
 
 ### 
@@ -1459,8 +1388,12 @@ Load the `maps` package with `library()`.
 library(...)
 ```
 
-```{r coordinate-systems-1-test, include=FALSE}
+```{r coordinate-systems-1-solution, exercise.reveal_solution = FALSE}
 library(maps)
+```
+
+```{r coordinate-systems-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -1469,7 +1402,7 @@ The **maps** package includes the area of each matching region in the map is com
 
 ### Exercise 2
 
-Hit "Run Code" to create an object with data for New Zealand and then create a plot.
+Hit "Submit Code" to create an object with data for New Zealand and then create a plot.
 
 ```{r coordinate-systems-2, exercise = TRUE}
 nz <- map_data("nz")
@@ -1486,11 +1419,15 @@ ggplot(nz, aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "white", color = "black")
 ```
 
-```{r coordinate-systems-2-test, include=FALSE}
+```{r coordinate-systems-2-solution, exercise.reveal_solution = FALSE}
 nz <- map_data("nz")
 
 ggplot(nz, aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "white", color = "black")
+```
+
+```{r coordinate-systems-2-check}
+grade_this_code()
 ```
 
 ### 
@@ -1512,22 +1449,78 @@ We don’t have the space to discuss maps extensively in this tutorial but you c
   coord_quickmap()
 ```
 
-```{r coordinate-systems-3-test, include=FALSE}
+```{r coordinate-systems-3-solution, exercise.reveal_solution = FALSE}
+nz <- map_data("nz")
+
 ggplot(nz, aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "white", color = "black") +
   coord_quickmap()
 ```
 
-### 
+```{r coordinate-systems-3-check}
+grade_this_code()
+```
+
+### Exercise 4
 
 `coord_polar()` uses polar coordinates. Polar coordinates reveal an interesting connection between a bar chart and a Coxcomb chart.
 
-<!-- DK: The above is not well-explained! And leaves out the last two plots from this section. -->
+Consider this bar chart of the `diamonds` dataset that shows the count of each `clarity`.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(
+    mapping = aes(x = clarity, fill = clarity), 
+    show.legend = FALSE,
+    width = 1
+  ) + 
+  theme(aspect.ratio = 1)
+```
+
+###
+
+Add on `coord_polar()` to the end of the plot, don't forget to use the `+` operator.
+
+```{r coordinate-systems-4, exercise = TRUE}
+ggplot(data = diamonds) + 
+  geom_bar(
+    mapping = aes(x = clarity, fill = clarity), 
+    show.legend = FALSE,
+    width = 1
+  ) + 
+  theme(aspect.ratio = 1)
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r coordinate-systems-4-hint-1, eval = FALSE}
+ggplot(data = diamonds) + 
+  geom_bar(
+    mapping = aes(x = clarity, fill = clarity), 
+    show.legend = FALSE,
+    width = 1
+  ) + 
+  theme(aspect.ratio = 1) +
+  ...()
+```
+
+```{r coordinate-systems-4-solution, exercise.reveal_solution = FALSE}
+ggplot(data = diamonds) + 
+  geom_bar(
+    mapping = aes(x = clarity, fill = clarity), 
+    show.legend = FALSE,
+    width = 1
+  ) + 
+  theme(aspect.ratio = 1) +
+  coord_polar()
+```
+
+```{r coordinate-systems-4-check}
+grade_this_code()
+```
 
 ## The layered grammar of graphics
 ### 
-
-<!-- DK: There is more text, but no code, in this chapter. Maybe add some simple copy/paste questions and then include that extra text? Or maybe take one of the examples and use it here, while discussing the grammar of graphics? -->
 
 Consider this overview:
 
@@ -1550,329 +1543,16 @@ Our new template takes seven parameters, the bracketed words that appear in the 
 The seven parameters in the template compose the grammar of graphics, a formal system for building plots. The [grammar of graphics](https://vita.had.co.nz/papers/layered-grammar.pdf) is based on the insight that you can uniquely describe any plot as a combination of a dataset, a geom, a set of mappings, a stat, a position adjustment, a coordinate system, a faceting scheme, and a theme.
 
 
-
-
-## Biden Approval
-### 
-
-Let's finish this tutorial with a graphic. We will plot Joe Biden's approval rating from January through June 2021, the first ~6 months of his term. We will explore different types of `geom_smooth()`.
-
-### 
-
-We will be attempting to recreate this plot below.
-
-<!-- DK: Too long subtitle. Did not explain use of "\n". Don't mention year this is from. -->
-
-```{r}
-biden_p <- ggplot(data = polling_data, 
-       mapping = aes(x = createddate,
-                     y = rate,
-                     color = approval_type)) +
-  geom_point(alpha = 0.5) + 
-  geom_smooth(method = "gam",
-              formula = y ~ s(x, bs = "cs"),
-              se = TRUE) +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  theme(legend.position = "bottom") +
-  labs(x = "Month",
-       y = "Percent",
-       title = "Biden's Approval Rating For First Half of 2021",
-       subtitle = "While Biden's approval rating has stayed relatively static, his disapproval rating \nhas been rising.",
-       color = "",
-       caption = "Source: Five Thirty Eight Data")
-
-biden_p
-```
-
-### Exercise 1
-
-We will first explore the file that contains this data. Run `summary()` on `polling_data` in the console below.
-
-```{r plot-2-1, exercise = TRUE}
-
-```
-
-```{r plot-2-1-hint-1, eval = FALSE}
-summary(...)
-```
-
-### 
-
-This data was taken from the fivethirtyeight website. 
-
-### Exercise 2
-
-Write down the name of the three variables.
-
-```{r plot-2-2}
-question_text(NULL,
-	message = "createddate, rate, approval_type",
-	answer(NULL,
-	correct = TRUE),
-	allow_retry = FALSE,
-	incorrect = NULL,
-	rows = 6)
-```
-
-### 
-
-`createddate` stands for the day the poll was finished. `rate` is the % of approval or disapproval, and `approval_type` indicates whether or not the rate is approval or disapproval.
-
-### Exercise 3
-
-We will get started building the plot. Start the function `ggplot()`, and set the argument `data` to `polling_data`.
-
-```{r plot-2-3, exercise = TRUE}
-
-```
-
-```{r plot-2-3-hint-1, eval = FALSE}
-ggplot(data = ...)
-```
-
-### 
-
-Remember: you should not see a plot here as you have not mapped anything, nor do you have a geom layer. 
-
-### Exercise 4
-
-Now, map `createddate` to the x-axis, and map `rate` to the y-axis.
-
-```{r plot-2-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-4-hint-1, eval = FALSE}
-ggplot(data = polling_data,
-       mapping = aes(x = ...,
-                     y = ...))
-```
-
-### 
-
-`createddate` is a date column, and `rate` is a double column.
-
-### Exercise 5
-
-We want to be able to see both Joe Biden's approval and disapproval rate. Therefore, we'll change the color of the dots depending on whether the dot represents an approval/disapproval rating. Set `color` to `approval_type`.
-
-```{r plot-2-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-5-hint-1, eval = FALSE}
-ggplot(data = polling_data,
-       mapping = aes(x = createddate,
-                     y = rate,
-                     color = ...))
-```
-
-### 
-
-Every geom function in ggplot2 takes a mapping argument, either defined locally in the geom layer or globally in the `ggplot()` layer. However, not every aesthetic works with every geom. Now we're ready to start building the plot.
-
-### Exercise 6
-
-Next, we will add the points to the graph. Add the layer `geom_point()`.
-
-```{r plot-2-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-6-hint-1, eval = FALSE}
-ggplot(data = polling_data,
-       mapping = aes(x = createddate,
-                     y = rate,
-                     color = approval_type)) +
-  ...()
-```
-
-### 
-
-Currently, we have a bit of overplotting. We will rectify this in the next code chunk.
-
-### Exercise 7
-
-In the `geom_point()` layer set the argument `alpha` to 0.5.
-
-```{r plot-2-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-7-hint-1, eval = FALSE}
-ggplot(data = ...,
-       mapping = aes(x = ...,
-                     y = ...,
-                     color = ...)) +
-  geom_point(alpha = ...)
-```
-
-### 
-
-Good! Now you should be able to see more distinct points.
-
-### Exercise 8
-
-We want to see the trend line for Biden's approval/disapproval ratings throughout his term. Add the layer of `geom_smooth().`
-
-```{r plot-2-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-8-hint-1, eval = FALSE}
-... + 
-  ...()
-```
-
-### 
-
-If you just add this layer, you will get a few warning messages. We will fix this in the following exercises. If you place mappings in a geom function, `ggplot2` will treat them as local mappings for the layer. It will use these mappings to extend or overwrite the global mappings for that layer only. This makes it possible to display different aesthetics in different layers.
-
-### Exercise 9
-
-Within `geom_smooth()`, set the `method` argument to "gam". We use "gam" since there is a large quantity of data points.
-
-```{r plot-2-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-9-hint-1, eval = FALSE}
-... + 
-  geom_smooth(method = ...)
-```
-
-### 
-
-"gam" stands for **generalized additive model**. It is a modified form of a linear model. If you are curious to learn more, [GAMs in R](https://noamross.github.io/gams-in-r-course/chapter1) is a good resource.
-
-### Exercise 10
-
-Within `geom_smooth()` set `formula` to `y ~ s(x, bs = "cs")`.
-
-```{r plot-2-10, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-10-hint-1, eval = FALSE}
-... + 
-  geom_smooth(method = "gam",
-              formula = ...)
-```
-
-### 
-
-Just like `y ~ x` indicates a relationship between x and y, `y ~ s(x, bs = "cs")` indicates a "generalized additive model" relationship. With a generalized additive model we are able to handle large data.
-
-### Exercise 11
-
-Set `se = TRUE`.
-
-```{r plot-2-11, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-11-hint-1, eval = FALSE}
-... + 
-  geom_smooth(method = "gam",
-              formula = y ~ s(x, bs = "cs"),
-              se = ...)
-```
-
-### 
-
-With `se` we are able to create a margin of error that makes our data more accurate.
-
-### Exercise 12
-
-Next, we want to change the labels on the graph so they are in percentage format. Use scale_y_continuous to do so. Set the `labels` argument to `scales::percent_format(accuracy = 1)`.
-
-```{r plot-2-12, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-12-hint-1, eval = FALSE}
-...+
-  scale_y_continuous(labels = ...)
-```
-
-### 
-
-We use scale_y_continuous when we want to modify the y-axis for continuous data. [This documentation here](https://ggplot2.tidyverse.org/reference/scale_continuous.html) will tell you more, and all the possible arguments you can use with `scale_y_continuous`
-
-### Exercise 13
-
-Currently our legend is to the right of the graph. Let's change the way that we see our legend. Add `theme()` to the pipe and set `legend.position` to "bottom".
-
-```{r plot-2-13, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-13-hint-1, eval = FALSE}
-+ 
-  theme(...="bottom")
-```
-
-### 
-
-With the help of `legend.position`. We have the ability to set it to the `left`, `right`, `top`, and `bottom` based on how we would like to see it within our graph.
-
-### Exercise 14
-
-Finally, use `labs()` to add an appropriate heading, subtitle, caption, etc. 
-
-Reminder - your graph should look like this:
-
-```{r}
-biden_p
-```
-
-```{r plot-2-14, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r plot-2-14-hint-1, eval = FALSE}
-... +
-  labs(x = ...,
-       y = ...,
-       title = ...,
-       subtitle = ...,
-       color = ...,
-       caption = ...)
-```
-
-### 
-
-Good! Now you have a plot of Biden's approval rating for the first six months of his term.
-
-
-
-
 ## Summary
 ### 
 
 This tutorial covered [Chapter 9: Layers](https://r4ds.hadley.nz/layers.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to use [**ggplot2**](https://ggplot2.tidyverse.org/) and related packages to create persuasive graphics. Key functions included [`geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html),  [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html), and  [`facet_wrap()`](https://ggplot2.tidyverse.org/reference/facet_wrap.html).
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
 ```
