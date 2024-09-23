@@ -181,8 +181,6 @@ grade_button_ui(id = "grade")
 ```
 
 
-<!-- Do the last two fancy graphics belong here? Not both of them! They are too long, and this is not a short tutorial already. But where to put them? -->
-
 <!-- The below links should be dropped at least once, if not twice. -->
 
 <!-- https://ggplot2.tidyverse.org/ -->
