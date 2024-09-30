@@ -276,7 +276,7 @@ Note the warning message. There are two problematic data points in the `penguins
 
 ### Exercise 4
 
-Copy your previous code chunk only this time pipe your data into the `drop_na()` function and then pipe the result into your plot.
+Copy and modify your previous code chunk so this time you pipe your data into the `drop_na()` function and then pipe the result into your plot.
 
 
 `data |> function() |> ggplot(aes(...)) + geom_*`
@@ -296,7 +296,6 @@ penguins |>
 penguins |> 
   drop_na() |> 
   ggplot(
-  data = penguins,
   mapping = aes(x = flipper_length_mm, y = body_mass_g)
 ) +
   geom_point()
