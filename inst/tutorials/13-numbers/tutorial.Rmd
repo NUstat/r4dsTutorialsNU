@@ -1,21 +1,27 @@
 ---
 title: Numbers
-author: Srihith Garlapati
 tutorial:
   id: numbers
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 13: Numbers'
 ---
+
+<!-- Modification of r4ds.tutorials author: Srihith Garlapati -->
 
 ```{r setup, include = FALSE}
 library(learnr)
 library(tutorial.helpers)
 library(tidyverse)
 library(nycflights13)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
@@ -46,14 +52,21 @@ repetition <- tibble(
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+```{r, context = "server"}
+grade_server("grade")
 ```
 
-<!-- Luit: -->
-
-<!-- Edit Knowledge drops as needed. -->
-<!-- Go on to tutorials 14 and 15.    -->
-
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
 
 
 ## Introduction

@@ -6,18 +6,17 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/PPBDS/r4ds.tutorials/workflows/R-CMD-check/badge.svg)](https://github.com/PPBDS/r4ds.tutorials/actions)
+status](https://github.com/NUstat/r4dsTutorialsNU/workflows/R-CMD-check/badge.svg)](https://github.com/NUstat/r4dsTutorialsNU/actions)
 <!-- badges: end -->
 
 ## About this package
 
-**r4ds.tutorials** provides tutorials for [*R for Data Science
+**r4dsTutorialsNU** provides tutorials for [*R for Data Science
 (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine
-Çetinkaya-Rundel, and Garrett Grolemund. These tutorials assume that you
-have some experience working with the tools provided by the
-**[tutorial.helpers](https://ppbds.github.io/tutorial.helpers/)**
-package. As long as you have completed the “Getting Started” tutorial
-from that package, you should be fine.
+Çetinkaya-Rundel, and Garrett Grolemund. These tutorials are
+modifications of the *r4ds.tutorials* package developed by David Kane.
+Changes include grading the assignment and condensing and re-organizing
+select chapters.
 
 The main audience for these tutorials is instructors teaching
 introductory data science and their students. Instructors want students
@@ -40,25 +39,15 @@ the class to do these tutorials and half to simply complete the reading,
 the half completing the tutorials would perform much better for the rest
 of the course.
 
-Note that most of the tutorials follow the associated chapters from [*R
-for Data Science (2e)*](https://r4ds.hadley.nz/). This is *not* true,
-however, for these tutorials: Introduction, RStudio and Code, RStudio
-and Github, Terminal, and Quarto. In those tutorials, we cover material
-which we feel belongs in any introductory data science course.
-
 ## Installation
 
-To install the package from CRAN:
-
-``` r
-install.packages("r4ds.tutorials")
-```
+This package is not available on CRAN.
 
 You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-remotes::install_github("PPBDS/r4ds.tutorials")
+remotes::install_github("NUstat/r4dsTutorialsNU")
 ```
 
 If R offers you the option to update some packages, you should do so.
@@ -71,7 +60,7 @@ Then **restart your R session** or **restart RStudio**.
 In order to access the tutorials, start by loading the package.
 
 ``` r
-library(r4ds.tutorials)
+library(r4dsTutorialsNU)
 ```
 
 You can access the tutorials via the Tutorial tab in the top right
@@ -92,11 +81,11 @@ Then **remember to restart your R session** after installing the
 package.
 
 Because tutorials within the Tutorial pane are sorted in alphabetical
-order by the name of the package, the **r4ds.tutorials** will be toward
+order by the name of the package, the **r4dsTutorialsNU** will be toward
 the bottom. **Warning**: There will usually be a bunch of **learnr**
 tutorials at the top of the Tutorial pane. Ignore those. They have
 nothing to do with this package. All tutorials from this package are
-labelled as **r4ds.tutorials**. If you don’t see any tutorials, try
+labelled as **r4dsTutorialsNU**. If you don’t see any tutorials, try
 clicking the “Home” button – the little house symbol with the thin red
 roof in the upper right.
 

@@ -1,16 +1,18 @@
 ---
 title: Logical vectors
-author: David Kane, Zayan Farooq, and Rajarshi Mandal
 tutorial:
   id: logical-vectors
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 12: Logical vectors'
 ---
 
+
+<!-- Modification of r4ds.tutorials author: David Kane, Zayan Farooq, and Rajarshi Mandal -->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -20,6 +22,10 @@ library(nycflights13)
 
 library(socviz)
 library(ggthemes)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
@@ -29,10 +35,22 @@ options(tutorial.exercise.timelimit = 60,
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+
+```{r, context = "server"}
+grade_server("grade")
 ```
 
-<!-- DK: Change the Public Exercise to make a public plot.  -->
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
 
 ## Introduction
 ### 

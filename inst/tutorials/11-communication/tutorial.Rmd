@@ -110,19 +110,6 @@ question_text("Name:",
               allow_retry = FALSE )
 ```
 
-```{r}
-grade_button_ui(id = "grade")
-```
-
-<!-- Clark feedback -->
-
-<!-- Legend Layout ex 4 extraneous "." in directions for typing in left -->
-
-<!-- More Zooming ex 19 on "object 'x_scale' not found" for each scale when you just add them -->
-
-<!-- Themes before ex 1 "we will be creating this graph" then no graph displayed -->
-
-<!-- Themes right at end reminder this is what plot should look like and nothing is there -->
 
 ## Introduction
 ### 
@@ -3180,4 +3167,10 @@ Once you are finished:
 
 ```{r}
 grade_print_ui("grade")
+```
+
+## Check Grade
+
+```{r}
+grade_button_ui(id = "grade")
 ```
