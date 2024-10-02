@@ -141,7 +141,7 @@ Run `?palmerpenguins` in the Console after loading in the package. After doing s
 
 ```{r introduction-4}
 question_text(NULL,
-	answer("Includes measurements for penguin species, island in Palmer Archipelago, size (flipper length, body mass, bill dimensions), and sex. This is a subset of penguins_raw.", correct = TRUE),
+	answer("Size measurements, clutch observations, and blood isotope ratios for adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Data were collected and made available by Dr. Kristen Gorman and the Palmer Station Long Term Ecological Research (LTER) Program.", correct = TRUE),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -159,17 +159,17 @@ In this Section, we will create this plot:
 ```{r}
 intro_p <- penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm,
-                       y = body_mass_g)) +
-    geom_point(mapping = aes(color = species,
-                             shape = species)) +
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+    geom_point(mapping = aes(color = species, shape = species)) +
     geom_smooth(method = "lm", formula = y ~ x) +
-    labs(title = "Body mass and flipper length",
-         subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-         x = "Flipper length (mm)",
-         y = "Body mass (g)",
-         color = "Species",
-         shape = "Species")
+    labs(
+      title = "Body mass and flipper length",
+      subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+      x = "Flipper length (mm)",
+      y = "Body mass (g)",
+      color = "Species",
+      shape = "Species"
+    )
 
 intro_p
 ```
@@ -237,9 +237,9 @@ Start by creating the following graphic:
 
 ```{r}
 #| warning: false
+
 plot1 <- penguins |>
-  ggplot(mapping = aes(x = flipper_length_mm,
-                       y = body_mass_g)) +
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
     geom_point()
 
 plot1
@@ -272,7 +272,7 @@ Note the warning message. There are two problematic data points in the `penguins
 
 ###
 
-`drop_na()` removes any row with NA values for any of the variables. If you provide `drop_na()` with the name of a variable as an argument, it will only remove rows that have an NA value for that variable.
+`drop_na()` removes any row with `NA` values for any of the variables. If you provide `drop_na()` with the name of a variable as an argument, it will only remove rows that have an `NA` value for that variable.
 
 ### Exercise 4
 
@@ -295,9 +295,7 @@ penguins |>
 ```{r first-steps-4-solution, exercise.reveal_solution = FALSE}
 penguins |> 
   drop_na() |> 
-  ggplot(
-  mapping = aes(x = flipper_length_mm, y = body_mass_g)
-) +
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
   geom_point()
 ```
 
@@ -323,9 +321,15 @@ We will now take a few more advanced steps to create the following graphic.
 
 ```{r}
 #| warning: false
+#| message: false
+
 plot2 <- penguins |>
-  ggplot(mapping = aes(x = flipper_length_mm,
-                       y = body_mass_g)) +
+  ggplot(
+    mapping = aes(
+      x = flipper_length_mm,
+      y = body_mass_g
+      )
+    ) +
     geom_point(aes(color = species)) +
     geom_smooth(method = "lm")
 
@@ -369,7 +373,7 @@ quiz(
 
 ###
 
-Now start by copying your previous code chunk and adding `color = species` within `aes()` and adding the `geom_smooth()` layer using `+` with `method` equal to `"lm"` within the call to `geom_smooth()`. 
+Now start by copying your previous code chunk, then appropriately add the aesthetic mapping of `color` to the variable `species` within the `geom_point()` layer. After that, add a `geom_smooth()` layer using `+` with `method` equal to `"lm"` within the call to `geom_smooth()`. 
 
 ```{r first-steps-5, exercise = TRUE}
 
@@ -380,31 +384,25 @@ Now start by copying your previous code chunk and adding `color = species` withi
 ```{r first-steps-5-hint-1, eval = FALSE}
 penguins |>
   drop_na() |> 
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g, 
-                       color = ...)) +
-    geom_point()
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = ...))
 ```
 
 
 ```{r first-steps-5-hint-2, eval = FALSE}
 penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g, 
-                       color = species)) +
-  geom_point() +
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
   geom_smooth(... = "lm")
 ```
 
 ```{r first-steps-5-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g,
-                       color = species)) +
-    geom_point() +
-    geom_smooth(method = "lm") 
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm") 
 ```
 
 ```{r first-steps-5-check}
@@ -425,29 +423,28 @@ Now that we have the data points, lets add the title, subtitle, and labels. Copy
 ```{r first-steps-6-hint-1, eval = FALSE}
 penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g)) +
-    geom_point(mapping = aes(color = species, ... = species)) +
-    geom_smooth(method = "lm") + 
-    labs( ... = "text",
-          ... = "text",
-          ... = "text",
-          ... = "text"
-          )
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm") +
+  labs( ... = "text",
+        ... = "text",
+        ... = "text",
+        ... = "text"
+  )
 ```
 
 ```{r first-steps-6-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g)) +
-    geom_point(mapping = aes(color = species, 
-                             shape = species)) +
-    geom_smooth(method = "lm") +
-    labs(title = "Body mass and flipper length",
-         subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-         x = "Flipper length (mm)",
-         y = "Body mass (g)")
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Body mass and flipper length",
+    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+    x = "Flipper length (mm)",
+    y = "Body mass (g)"
+  )
 ```
 
 
@@ -458,7 +455,7 @@ grade_this_code()
 
 ### Exercise 7
 
-Notice the legend looks a little different than our final goal. We forgot one minor thing which is capitalizing the legend, we can do so by typing a comma and setting `color` equal to "Species" in quotes.
+Notice the legend title looks a little different than our final goal. We forgot one minor thing which is capitalizing the legend, we can do so by typing a comma and setting `color` equal to `"Species"`.
 
 ```{r first-steps-7, exercise = TRUE}
 
@@ -470,16 +467,16 @@ Notice the legend looks a little different than our final goal. We forgot one mi
 ```{r first-steps-7-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g)) +
-    geom_point(mapping = aes(color = species, 
-                             shape = species)) +
-    geom_smooth(method = "lm") +
-    labs(title = "Body mass and flipper length",
-         subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-         x = "Flipper length (mm)",
-         y = "Body mass (g)",
-         color = "Species")
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Body mass and flipper length",
+    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+    x = "Flipper length (mm)",
+    y = "Body mass (g)",
+    color = "Species"
+  )
 ```
 
 
@@ -501,32 +498,33 @@ Not all individuals perceive colors the same due to color blindness or other col
 ```{r first-steps-8-hint-1, eval = FALSE}
 penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g)) +
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
   geom_point(mapping = aes(color = species, ... = species)) +
   geom_smooth(method = "lm") +
-  labs(title = "Body mass and flipper length",
-         subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-         x = "Flipper length (mm)",
-         y = "Body mass (g)",
-         color = "Species",
-         ... = "Species")
+  labs(
+    title = "Body mass and flipper length",
+    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+    x = "Flipper length (mm)",
+    y = "Body mass (g)",
+    color = "Species",
+    ... = "Species"
+  )
 ```
 
 ```{r first-steps-8-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g)) +
-    geom_point(mapping = aes(color = species, 
-                             shape = species)) +
-    geom_smooth(method = "lm")  +
-  labs(title = "Body mass and flipper length",
-         subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-         x = "Flipper length (mm)",
-         y = "Body mass (g)",
-         color = "Species",
-         shape = "Species")
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(mapping = aes(color = species, shape = species)) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Body mass and flipper length",
+    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+    x = "Flipper length (mm)",
+    y = "Body mass (g)",
+    color = "Species",
+    shape = "Species"
+  )
 ```
 
 
@@ -541,7 +539,13 @@ In addition to the built-in shapes, `ggplot()` also allows for custom shapes to 
 
 ###
 
-Finally, improve the color palette to be colorblind safe by adding the `scale_color_colorblind()` function from the `ggthemes` package.
+At this point we have recreated the initial plot we were aiming for:
+
+```{r}
+intro_p
+```
+
+However, we could improve the color palette to be colorblind safe by adding the `scale_color_colorblind()` function from the `ggthemes` package. This is a useful tool to have in order to potentially increase audience accessibility for graphics that we construct or to assist those that might have colorblindness to visually explore data. 
 
 ```{r first-steps-9, exercise = TRUE}
 
@@ -552,17 +556,17 @@ Finally, improve the color palette to be colorblind safe by adding the `scale_co
 ```{r first-steps-9-solution, exercise.reveal_solution = FALSE}
 penguins |>
   drop_na() |>
-  ggplot(mapping = aes(x = flipper_length_mm, 
-                       y = body_mass_g)) +
-    geom_point(mapping = aes(color = species, 
-                             shape = species)) +
-    geom_smooth(method = "lm")  +
-  labs(title = "Body mass and flipper length",
-         subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-         x = "Flipper length (mm)",
-         y = "Body mass (g)",
-         color = "Species",
-         shape = "Species") +
+  ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(mapping = aes(color = species, shape = species)) +
+  geom_smooth(method = "lm")  +
+  labs(
+    title = "Body mass and flipper length",
+    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+    x = "Flipper length (mm)",
+    y = "Body mass (g)",
+    color = "Species",
+    shape = "Species"
+  ) +
   scale_color_colorblind()
   
 ```
@@ -572,18 +576,14 @@ grade_this_code()
 ```
 
 
-Reminder: This is what our graph should look like
-
-```{r}
-intro_p
-```
-
-
 ## ggplot2 Calls
 
 Which of the following lines of code will produce this graphic? Select all that apply.
 
 ```{r}
+#| warning: false
+#| message: false
+
 ggplot(
   data = penguins,
   mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)
@@ -958,7 +958,7 @@ quiz(
 
 Previously, we saw that we can define a `title`, `x`, `y` label within the `labs()` function. There are other functions, such as `ggtitle()`, `xlab()`, and `ylab()` that can be used to modify specific plot labels without affecting others. It's important to choose the appropriate function for your needs depending on the level of customization you require.
 
-Copy the previous plot, then add `ggtitle()` to define the title as "Body Mass Distribution of Palmer Penguins by Species: A Boxplot Analysis"; followed by `xlab()` to define the x label as `Species`; followed by the `ylab()` to define the y label as"Body Mass(g)"
+Copy the previous plot, then add `ggtitle()` to define the title as `"Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis"`; followed by `xlab()` to define the x label as `"Species"`; followed by the `ylab()` to define the y label as `"Body Mass (g)"`.
 
 ```{r vis-relation-2, exercise = TRUE}
 
@@ -977,9 +977,9 @@ Copy the previous plot, then add `ggtitle()` to define the title as "Body Mass D
 ```{r vis-relation-2-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = species, y = body_mass_g)) +
   geom_boxplot() +
-  ggtitle("Body Mass Distribution of Palmer Penguins by Species: A Boxplot Analysis") +
+  ggtitle("Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis") +
   xlab("Species") +
-  ylab("Body Mass(g)")
+  ylab("Body Mass (g)")
 ```
 
 ```{r vis-relation-2-check}
@@ -1012,9 +1012,9 @@ Sometimes it is useful to change the color of the outliers to make them easier t
 ```{r vis-relation-3-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = species, y = body_mass_g)) +
   geom_boxplot(varwidth = TRUE, outlier.color = "red") +
-  ggtitle("Body Mass Distribution of Palmer Penguins by Species: A Boxplot Analysis") +
+  ggtitle("Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis") +
   xlab("Species") +
-  ylab("Body Mass(g)")
+  ylab("Body Mass (g)")
 ```
 
 ```{r vis-relation-3-check}
@@ -1110,7 +1110,7 @@ You can use the `scales` argument within `facet_wrap()` to control the scale of 
 
 ###
 
-Copy the previous plot and set `ncol = 1` to display the panels in one column and set `scales = free_y` to allow each panel to have its own y-axis scale.
+Copy the previous plot and set `ncol = 1` to display the panels in one column and set `scales = "free_y"` to allow each panel to have its own y-axis scale.
 
 ```{r vis-relation-6, exercise = TRUE}
 
@@ -1177,9 +1177,8 @@ penguins |>
 ```{r saving-plots-1-solution, exercise.reveal_solution = FALSE}
 penguins |> 
   drop_na() |> 
-  ggplot(aes(x = flipper_length_mm, 
-             y = body_mass_g)) +
-    geom_point()
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point()
 ```
 
 
@@ -1227,9 +1226,8 @@ Assign the whole plot to a variable `plot_geom` using `<-`.
 ```{r saving-plots-3, exercise = TRUE}
 penguins |>   
   drop_na() |>
-  ggplot(aes(x = flipper_length_mm, 
-             y = body_mass_g)) +
-    geom_point()
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point()
 ```
 
 <!-- <button onclick = "transfer_code(this)">Copy previous code</button> -->
@@ -1237,17 +1235,15 @@ penguins |>
 ```{r saving-plots-3-hint-1, eval = FALSE}
 ... <- penguins |>   
   drop_na() |>
-  ggplot(aes(x = flipper_length_mm, 
-             y = body_mass_g)) +
-    geom_point()
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point()
 ```
 
 ```{r saving-plots-3-solution, exercise.reveal_solution = FALSE}
 plot_geom <- penguins |>   
   drop_na() |>
-  ggplot(aes(x = flipper_length_mm, 
-             y = body_mass_g)) +
-    geom_point()
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point()
 ```
 
 
