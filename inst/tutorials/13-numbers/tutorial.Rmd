@@ -6,6 +6,7 @@ output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    exercise.pipe: "|>"
     css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 13: Numbers'
@@ -3092,5 +3093,17 @@ This tutorial covered [Chapter 13: Numbers](https://r4ds.hadley.nz/numbers.html)
 
 
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
+```
+
+## Check Grade
+
+```{r}
+grade_button_ui(id = "grade")
 ```

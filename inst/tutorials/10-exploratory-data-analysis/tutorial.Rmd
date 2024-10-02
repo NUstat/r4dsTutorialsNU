@@ -176,11 +176,6 @@ question_text("Name:",
               allow_retry = FALSE )
 ```
 
-```{r}
-grade_button_ui(id = "grade")
-```
-
-
 <!-- The below links should be dropped at least once, if not twice. -->
 
 <!-- https://ggplot2.tidyverse.org/ -->
@@ -2073,4 +2068,10 @@ Once you are finished:
 
 ```{r}
 grade_print_ui("grade")
+```
+
+## Check Grade
+
+```{r}
+grade_button_ui(id = "grade")
 ```
