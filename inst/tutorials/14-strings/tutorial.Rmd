@@ -1,15 +1,17 @@
 ---
 title: Strings
-author: Anish Bellamkonda and David Kane
 tutorial:
   id: strings
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 14: Strings'
 ---
+
+<!-- Modification of r4ds.tutorials author: Anish Bellamkonda and David Kane -->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -17,6 +19,11 @@ library(tutorial.helpers)
 library(tidyverse)
 library(babynames)
 library(gghighlight)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
+
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -49,18 +56,28 @@ x3 <- "text\n\x82\xb1\x82\xf1\x82\xc9\x82\xbf\x82\xcd"
 
 u <- c("\u00fc", "u\u0308")
 
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+
+```{r, context = "server"}
+grade_server("grade")
 ```
 
-<!-- Do we really need all the objects created above? Probably less error prone to just create these objects in the exercise code chunk in which they will be used. -->
-
-<!-- Non-English text is missing because we could not get it to work. Figure that out and add it. -->
-
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
 
 ## Introduction
 ### 
@@ -79,153 +96,196 @@ We’ve created strings in passing earlier in the book but didn’t discuss the 
 
 ### Exercise 1
 
-Type `this is a string` in double quotes and assign it to a variable named `string1` using `<-`.
+Type `this is a string` in double quotes and assign it to a variable named `str1` using `<-`.
 
 ```{r creating-a-string-1, exercise = TRUE}
 
 ```
 
 ```{r creating-a-string-1-hint-1, eval = FALSE}
-string1 <- "..."
+str1 <- "..."
 ```
 
-```{r creating-a-string-1-test, include = FALSE}
-string1 <- "This is a string"
+```{r creating-a-string-1-solution, exercise.reveal_solution = FALSE}
+str1 <- "this is a string"
+```
+
+```{r creating-a-string-1-check}
+grade_this_code()
 ```
 
 ### 
 
 Now there’s no difference in behavior between the single quotes and double quotes, but in the interests of consistency, the [*Tidyverse*](https://style.tidyverse.org/syntax.html#character-vectors) style guide recommends using `"`, unless the string itself contains double quotes.
 
+###
+
+In the console, if you forget to close a quote, you’ll see `+`: the continuation prompt. If this happens to you and you can’t figure out which quote to close, press Escape to cancel and try again.
+
 ### Exercise 2
 
-<!-- Maybe this exercise should be done in the Console itself for safety? -->
+Assign the string `str2` to be `hello "world"`.
 
-Now type `hello world` with one double quote, the other missing, and assign to `str2`. 
+The code `"hello "world""` won't work in RStudio due to a syntax error. Without the proper escape character, RStudio will interpret the second double quote as the end of the string, resulting in a syntax error.
+
+Instead use a single quote around the string.
 
 ```{r creating-a-string-2, exercise = TRUE}
 
 ```
 
 ```{r creating-a-string-2-hint-1, eval = FALSE}
-str2 <- ...
+str2 <- 'hello "world"'
 ```
 
-```{r creating-a-string-2-test, include = FALSE}
-str2 <- "hello world"
+```{r creating-a-string-2-solution, exercise.reveal_solution = FALSE}
+str2 <- 'hello "world"'
 ```
+
+```{r creating-a-string-2-check}
+grade_this_code()
+```
+
+###
+
+If you are including quotes within a string, use a single quote around the string. This way, the double quotes will be visible within the string.
 
 ### 
 
-Now you'll get a error to close the quotes. In the console, if you forget to close a quote, you’ll see `+`: the continuation prompt. If this happens to you and you can’t figure out which quote to close, press Escape to cancel and try again.
+If you wanted to include single quotes in a string you could put the outer quotes as double quotes.
 
 ### Exercise 3
 
-Now type `hello "world"` in double quotes and use another pair of double quotes on `world` and assign to `str3`. 
+Now create a new variable `x` and set it `n` using `<-` in a string format using double quotes. Then on a new line call x.
 
 ```{r creating-a-string-3, exercise = TRUE}
 
 ```
 
 ```{r creating-a-string-3-hint-1, eval = FALSE}
-str3 <- "..."
-```
-
-<!-- Note that we don't have a test case for this question because the "correct" anwer is supposed to produce an error. But, if we test that error, the tutorial fails to build. Using `error = TRUE` as a code chunk option did not solve the problem. Not sure what to do. -->
-
-### 
-
-The code `str3 <- "hello "world""` doesn't work in RStudio due to a syntax error. Without the proper escape character, RStudio will interpret the second double quote as the end of the string, resulting in a syntax error.
-
-### Exercise 4
-
-In the previous exercise, we encountered a syntax error when trying to assign the string `str3 <- "hello "world""` in RStudio. To fix this error, we can modify the code by changing the outer double quotes to single quotes, while keeping the inner double quotes intact. This way, the double quotes will be visible within the string.
-
-```{r creating-a-string-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r creating-a-string-4-hint-1, eval = FALSE}
-str3 <- 'hello "world"'
-```
-
-```{r creating-a-string-4-test, include = FALSE}
-str3 <- 'hello "world"'
-```
-
-### 
-
-If you wanted to include single quotes in a string you could put the outer quotes as double quotes.
-
-### Exercise 5
-
-New create a new variable `x` and set it `n` using `<-` in a string format using double quotes. Then on a new line call x.
-
-```{r creating-a-string-5, exercise = TRUE}
-
-```
-
-```{r creating-a-string-5-hint-1, eval = FALSE}
 x <- "n"
 x
 ```
 
-```{r creating-a-string-5-test, include = FALSE}
+```{r creating-a-string-3-solution, exercise.reveal_solution = FALSE}
 x <- "n"
 x
+```
+
+```{r creating-a-string-3-check}
+grade_this_code()
 ```
 
 ### 
 
 R shows the whole string as a vector, which is why we don't see 'n' without quotes.
 
-### Exercise 6
+### Exercise 4
 
 To view only the string and not the quotes, lets load the [`stringr`](https://stringr.tidyverse.org/) library using `library()`.
 
-```{r creating-a-string-6, exercise = TRUE}
+```{r creating-a-string-4, exercise = TRUE}
 
 ```
 
-```{r creating-a-string-6-hint-1, eval = FALSE}
+```{r creating-a-string-4-hint-1, eval = FALSE}
 library(...)
 ```
 
-```{r creating-a-string-6-test, include = FALSE}
+```{r creating-a-string-4-solution, exercise.reveal_solution = FALSE}
 library(stringr)
+```
+
+```{r creating-a-string-4-check}
+grade_this_code()
 ```
 
 ### 
 
 The **stringr** library is a part of the [*Tidyverse*](https://www.tidyverse.org/). We can just load the **tidyverse** library and the **stringr** library will be automatically loaded. 
 
-### Exercise 7
+### Exercise 5
 
 To utilize the variable `x` that we previously set, let's type `str_view()` and specify `x` as the argument.
 
-```{r creating-a-string-7, exercise = TRUE}
+```{r creating-a-string-5, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r creating-a-string-7-hint-1, eval = FALSE}
+```{r creating-a-string-5-hint-1, eval = FALSE}
 str_view(...)
 ```
 
-```{r creating-a-string-7-test, include = FALSE}
+```{r creating-a-string-5-solution, exercise.reveal_solution = FALSE}
 str_view(x)
+```
+
+```{r creating-a-string-5-check}
+grade_this_code()
 ```
 
 ### 
 
 The printed representation of a string is not the same as the string itself because the printed representation shows the escapes. To see the raw contents of the string, we use `str_view()`
 
-### Exercise 8
+### Exercise 6
 
 To perform the same action with single quotes, let's create a new variable `y` and assign it the value `"'"` using the `<-` operator. Then, on a new line, type `str_view()` and pass `y` as the argument.
+
+```{r creating-a-string-6, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r creating-a-string-6-hint-1, eval = FALSE}
+y <- ...
+str_view(...)
+```
+
+```{r creating-a-string-6-solution, exercise.reveal_solution = FALSE}
+y <- "'"
+str_view(y)
+```
+
+```{r creating-a-string-6-check}
+grade_this_code()
+```
+
+
+### Exercise 7
+
+There's another way to include quotes in a string. To include a literal single or double quote, you can use the backslash `\` to escape it. For example, `"\""` will return `'"'`.
+
+Let's create a string with one single quote and assign it to the variable `single_quote`. Then, on a new line, type `str_view()` and pass `single_quote` as the argument.
+
+```{r creating-a-string-7, exercise = TRUE}
+
+```
+
+```{r creating-a-string-7-hint-1, eval = FALSE}
+single_quote <- '\''
+str_view(...)
+```
+
+```{r creating-a-string-7-solution, exercise.reveal_solution = FALSE}
+single_quote <- '\''
+str_view(single_quote)
+```
+
+```{r creating-a-string-7-check}
+grade_this_code()
+```
+
+### 
+
+You might wonder what do you do if you wanted to include a literal backslash in your string. We'll see how in next exercise.
+
+### Exercise 8
+
+To include a literal backlash in your string, it is pretty simple and all you need to do is have two backslashes in a string to have one literal one. So just type two backslashes in a string and run it within `str_view()`.
 
 ```{r creating-a-string-8, exercise = TRUE}
 
@@ -234,44 +294,48 @@ To perform the same action with single quotes, let's create a new variable `y` a
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r creating-a-string-8-hint-1, eval = FALSE}
-y <- ...
-str_view(...)
+str_view("...")
 ```
 
-```{r creating-a-string-8-test, include = FALSE}
-y <- "'"
-str_view(y)
+```{r creating-a-string-8-solution, exercise.reveal_solution = FALSE}
+str_view("\\")
 ```
 
-### 
+```{r creating-a-string-8-check}
+grade_this_code()
+```
 
 ### Exercise 9
 
-There's another way to include quotes in a string. To include a literal single or double quote, you can use the backslash `\` to escape it. For example, `"\""` will return `'"'`.
+If you find yourself dealing with a complex situation where you have many backslashes and quotes to include, it can become confusing to keep track of them. 
 
-Let's create a string with one single quote and assign it to the variable `single_quote`. Then, on a new line, type `str_view()` and pass `single_quote` as the argument.
+To illustrate this problem, let's create a variable called tricky and set it to `""double_quote <- \"\\\"\" # or '\"'
+single_quote <- '\\'' # or \"'\""`
 
 ```{r creating-a-string-9, exercise = TRUE}
 
 ```
 
 ```{r creating-a-string-9-hint-1, eval = FALSE}
-single_quote <- '\''
-str_view(...)
+tricky <- ...
 ```
 
-```{r creating-a-string-9-test, include = FALSE}
-single_quote <- '\''
-str_view(single_quote)
+```{r creating-a-string-9-solution, exercise.reveal_solution = FALSE}
+tricky <- "double_quote <- \"\\\"\" # or '\"'
+single_quote <- '\\'' # or \"'\""
+```
+
+```{r creating-a-string-9-check}
+grade_this_code()
 ```
 
 ### 
 
-You might wonder what do you do if you wanted to include a literal backslash in your string. We'll see how in next exercise.
+That’s a lot of backslashes! (This is sometimes called [leaning toothpick syndrome](https://en.wikipedia.org/wiki/Leaning_toothpick_syndrome).)
 
 ### Exercise 10
 
-To include a literal backlash in your string, it is pretty simple and all you need to do is have two backslashes in a string to have one literal one. So just type two backslashes in a string and run it within `str_view()`.
+Let's copy the previous code and then type `str_view()` with `tricky` set as the argument.
 
 ```{r creating-a-string-10, exercise = TRUE}
 
@@ -280,90 +344,48 @@ To include a literal backlash in your string, it is pretty simple and all you ne
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r creating-a-string-10-hint-1, eval = FALSE}
-str_view("...")
-```
-
-```{r creating-a-string-10-test, include = FALSE}
-str_view("\\")
-```
-
-### 
-
-### Exercise 11
-
-If you find yourself dealing with a complex situation where you have many backslashes and quotes to include, it can become confusing to keep track of them. 
-
-To illustrate this problem, let's create a variable called tricky and set it to `""double_quote <- \"\\\"\" # or '\"'
-single_quote <- '\\'' # or \"'\""`
-
-```{r creating-a-string-11, exercise = TRUE}
-
-```
-
-```{r creating-a-string-11-hint-1, eval = FALSE}
-tricky <- ...
-```
-
-### 
-
-```{r creating-a-string-11-test, include = FALSE}
-tricky <- "double_quote <- \"\\\"\" # or '\"'
-single_quote <- '\\'' # or \"'\""
-```
-
-### 
-
-That’s a lot of backslashes! (This is sometimes called [leaning toothpick syndrome](https://en.wikipedia.org/wiki/Leaning_toothpick_syndrome).)
-
-### Exercise 12
-
-Let's copy the previous code and then type `str_view()` with `tricky` set as the argument.
-
-```{r creating-a-string-12, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r creating-a-string-12-hint-1, eval = FALSE}
 tricky <- ...
 str_view(tricky)
 ```
 
-### 
-
-```{r creating-a-string-12-test, include = FALSE}
+```{r creating-a-string-10-solution, exercise.reveal_solution = FALSE}
 tricky <- "double_quote <- \"\\\"\" # or '\"'
 single_quote <- '\\'' # or \"'\""
 str_view(tricky)
+```
+
+```{r creating-a-string-10-check}
+grade_this_code()
 ```
 
 ### 
 
 After running the code, we should expect to see `double_quote <- "\"" # or '"' single_quote <- '\'' # or "'"` as the output. However, creating a string representation like this can be extremely confusing due to the excessive use of backslashes and quotes. In the next exercise, we will explore a solution to this problem.
 
-### Exercise 13
+### Exercise 11
 
 Let's copy the previous code and modify tricky to be `r"(double_quote <- "\"" # or '"' single_quote <- '\'' # or "'")"`. Afterward, run `str_view()` with `tricky` as the argument.
 
 With the updated string, which contains fewer quotes and backslashes, we might wonder if we will still obtain the same result as before.
 
-```{r creating-a-string-13, exercise = TRUE}
+```{r creating-a-string-11, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r creating-a-string-13-hint-1, eval = FALSE}
+```{r creating-a-string-11-hint-1, eval = FALSE}
 tricky <- ...
 str_view(tricky)
 ```
 
-### 
-
-```{r creating-a-string-13-test, include = FALSE}
+```{r creating-a-string-11-solution, exercise.reveal_solution = FALSE}
 tricky <- r"(double_quote <- "\"" # or '"' single_quote <- '\'' # or "'")"
 str_view(tricky)
+```
+
+```{r creating-a-string-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -372,13 +394,65 @@ To solve the issue, we utilized a raw string, which is a specific type of string
 
 Typically, a raw string starts with `r"(, ends with )"`, and allows for any text representation. However, if the string contains )", alternatives like `r"[]"` or `r"{}"` can be used. Furthermore, you can add dashes to ensure unique opening and closing pairs, such as `r"--()--"`, `r"---()---"`, and so on. Raw strings offer flexibility to handle any text without problems.
 
-### Exercise 14
+### Exercise 12
 
 Besides `\"`, `\'`, and `\\`, there are a few other special characters that can be useful. The most common ones are `\n` for a new line and `\t` for a tab.
 
 Now let's observe how `str_view()` handles these special characters.
 
 To do that, let's create a new variable called x1 and set it as a vector with the following elements: `"one\ntwo"`, `"one\ttwo"`, `"\u00b5"`, `"\U0001f604"`.
+
+```{r creating-a-string-12, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r creating-a-string-12-hint-1, eval = FALSE}
+x1 <- c(...)
+```
+
+```{r creating-a-string-12-solution, exercise.reveal_solution = FALSE}
+x1 <- c("one\ntwo", "one\ttwo", "\u00b5", "\U0001f604")
+```
+
+```{r creating-a-string-12-check}
+grade_this_code()
+```
+
+### 
+
+If you want to check out a complete list of other special characters, check out in [Quotes](https://rdrr.io/r/base/Quotes.html).
+
+### Exercise 13
+
+Run `x1`.
+
+```{r creating-a-string-13, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r creating-a-string-13-hint-1, eval = FALSE}
+x1
+```
+
+```{r creating-a-string-13-solution, exercise.reveal_solution = FALSE}
+x1
+```
+
+```{r creating-a-string-13-check}
+grade_this_code()
+```
+
+### 
+
+All we get is the same as what we types and dosen't actually take all the special characters that we put except the smiley face.
+
+### Exercise 14
+
+Now run `x1` with `str_view()` as the argument.
 
 ```{r creating-a-string-14, exercise = TRUE}
 
@@ -387,57 +461,15 @@ To do that, let's create a new variable called x1 and set it as a vector with th
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r creating-a-string-14-hint-1, eval = FALSE}
-x1 <- c(...)
-```
-
-### 
-
-```{r creating-a-string-14-test, include = FALSE}
-x1 <- c("one\ntwo", "one\ttwo", "\u00b5", "\U0001f604")
-```
-
-### 
-
-If you want to check out a complete list of other special characters, check out in [Quotes](https://rdrr.io/r/base/Quotes.html).
-
-### Exercise 15
-
-Run `x1`.
-
-```{r creating-a-string-15, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r creating-a-string-15-hint-1, eval = FALSE}
-x1
-```
-
-```{r creating-a-string-15-test, include = FALSE}
-x1
-```
-
-### 
-
-All we get is the same as what we types and dosen't actually take all the special characters that we put except the smiley face.
-
-### Exercise 16
-
-Now run `x1` with `str_view()` as the argument.
-
-```{r creating-a-string-16, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r creating-a-string-16-hint-1, eval = FALSE}
 str_view(x1)
 ```
 
-```{r creating-a-string-16-test, include = FALSE}
+```{r creating-a-string-14-solution, exercise.reveal_solution = FALSE}
 str_view(x1)
+```
+
+```{r creating-a-string-14-check}
+grade_this_code()
 ```
 
 ### 
@@ -466,10 +498,12 @@ The first function we will learn is `str_c()`.
 str_c(...,...)
 ```
 
-### 
-
-```{r creating-many-strings-from-dat-1-test, include = FALSE}
+```{r creating-many-strings-from-dat-1-solution, exercise.reveal_solution = FALSE}
 str_c("x","y")
+```
+
+```{r creating-many-strings-from-dat-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -492,15 +526,16 @@ Copy previous code and change the argument to `str_c("Hello", c("Precptor","Anis
 str_c(..., c(...))
 ```
 
-### 
-
-```{r creating-many-strings-from-dat-2-test, include = FALSE}
+```{r creating-many-strings-from-dat-2-solution, exercise.reveal_solution = FALSE}
 str_c("Hello ", c("Precptor","Anish"))
+```
+
+```{r creating-many-strings-from-dat-2-check}
+grade_this_code()
 ```
 
 ### 
 
- 
 Based from the result we can see that `str_c()` is vectorized, which means it can take multiple arguments and combine them element-wise. 
  
 ### Exercise 3
@@ -517,10 +552,12 @@ To demonstrate the usage of `str_c()` on a data set, let's create a tibble. Crea
 ... <- tibble(...=c(...))
 ```
 
-### 
-
-```{r creating-many-strings-from-dat-3-test, include = FALSE}
+```{r creating-many-strings-from-dat-3-solution, exercise.reveal_solution = FALSE}
 df <- tibble(name = c("Flora", "Preceptor", "Terra", NA))
+```
+
+```{r creating-many-strings-from-dat-3-check}
+grade_this_code()
 ```
 
 ### 
@@ -541,18 +578,17 @@ Run `df` to see the data frame.
 ...
 ```
 
-### 
-
-```{r creating-many-strings-from-dat-4-test, include = FALSE}
+```{r creating-many-strings-from-dat-4-solution, exercise.reveal_solution = FALSE}
 df
+```
+
+```{r creating-many-strings-from-dat-4-check}
+grade_this_code()
 ```
 
 ### 
 
 the tibble has one column named "name." The first three rows contain the names "Flora," "David," and "Terra," respectively. However, the fourth row has an NA value, which typically represents missing or unknown data. 
-
-<!-- AB: should i use this, There are so many functions you could use for a tibble like `select()` which drops columns from a tibble, `filter()` whch drops rows based on certain conditions and more. -->
-
 
 ### Exercise 5
 
@@ -569,11 +605,13 @@ Let's modify the tibble by first piping the tibble `df` to the `mutate()` functi
   mutate(... = ...("...",name,"..."))
 ```
 
-### 
-
-```{r creating-many-strings-from-dat-5-test, include = FALSE}
+```{r creating-many-strings-from-dat-5-solution, exercise.reveal_solution = FALSE}
 df |>
   mutate(greeting = str_c("Hi ", name, "!"))
+```
+
+```{r creating-many-strings-from-dat-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -594,10 +632,12 @@ Let's create a variable named `df1` and set it to `tibble(name = c("Flora","Prec
 ... <- tibble(...=c(...))
 ```
 
-### 
-
-```{r creating-many-strings-from-dat-6-test, include = FALSE}
+```{r creating-many-strings-from-dat-6-solution, exercise.reveal_solution = FALSE}
 df1 <- tibble(name = c("Flora","Preceptor","Terra",NA))
+```
+
+```{r creating-many-strings-from-dat-6-check}
+grade_this_code()
 ```
 
 ### 
@@ -619,11 +659,13 @@ df1 |>
   ...(greeting = ...())
 ```
 
-### 
-
-```{r creating-many-strings-from-dat-7-test, test = FALSE}
+```{r creating-many-strings-from-dat-7-solution, exercise.reveal_solution = FALSE}
 df1 |>
   mutate(greeting = str_glue("Hi {name} !"))
+```
+
+```{r creating-many-strings-from-dat-7-check}
+grade_this_code()
 ```
 
 ### 
@@ -646,8 +688,12 @@ Type `str_flatten()` and within it have a vector of strings like this `c("x","y"
 str_flatten(...)
 ```
 
-```{r creating-many-strings-from-dat-8-test, include = FALSE}
+```{r creating-many-strings-from-dat-8-solution, exercise.reveal_solution = FALSE}
 str_flatten(c("x","y","z"))
+```
+
+```{r creating-many-strings-from-dat-8-check}
+grade_this_code()
 ```
 
 ### 
@@ -668,8 +714,12 @@ What if you want commas after every letter. Copy the previous code and within th
 str_flatten(c(...),...)
 ```
 
-```{r creating-many-strings-from-dat-9-test, include = FALSE}
+```{r creating-many-strings-from-dat-9-solution, exercise.reveal_solution = FALSE}
 str_flatten(c("x","y","z"), ",")
+```
+
+```{r creating-many-strings-from-dat-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -690,8 +740,12 @@ Let's fix the grammar of the string we got in previous exercise, copy the previo
 str_flatten(c(...),..., last = ...)
 ```
 
-```{r creating-many-strings-from-dat-10-test, include = FALSE}
+```{r creating-many-strings-from-dat-10-solution, exercise.reveal_solution = FALSE}
 str_flatten(c("x","y","z"), ",", last = ", and ")
+```
+
+```{r creating-many-strings-from-dat-10-check}
+grade_this_code()
 ```
 
 ### 
@@ -712,8 +766,12 @@ Let's now use `str_flatten()` with `summarize()`. Run `df2` to have a quick look
 df2
 ```
 
-```{r creating-many-strings-from-dat-11-test, include = FALSE}
+```{r creating-many-strings-from-dat-11-solution, exercise.reveal_solution = FALSE}
 df2
+```
+
+```{r creating-many-strings-from-dat-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -735,9 +793,13 @@ df2 |>
   summarize(...)
 ```
 
-```{r creating-many-strings-from-dat-12-test, include = FALSE}
+```{r creating-many-strings-from-dat-12-solution, exercise.reveal_solution = FALSE}
 df2 |>
   summarize(fruit = str_flatten(fruit, ", "))
+```
+
+```{r creating-many-strings-from-dat-12-check}
+grade_this_code()
 ```
 
 ### 
@@ -759,9 +821,13 @@ Within `summarize()` add `.by = name`.
   summarize(...,.by = ...)
 ```
 
-```{r creating-many-strings-from-dat-13-test, include = FALSE}
+```{r creating-many-strings-from-dat-13-solution, exercise.reveal_solution = FALSE}
 df2 |>
     summarize(fruit = str_flatten(fruit, ", "), .by = name)
+```
+
+```{r creating-many-strings-from-dat-13-check}
+grade_this_code()
 ```
 
 ### 
@@ -796,8 +862,12 @@ Create a new tibble using `tibble()`, create a column `x` and set it to be a vec
 df1 <- tibble(... = c())
 ```
 
-```{r extracting-data-from-strings-1-test, include = FALSE}
+```{r extracting-data-from-strings-1-solution, exercise.reveal_solution = FALSE}
 df1 <- tibble(x = c("a,b,c", "d,e", "f"))
+```
+
+```{r extracting-data-from-strings-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -820,10 +890,14 @@ df1 |>
   separate_longer_delim(...,... = ",")
 ```
 
-```{r extracting-data-from-strings-2-test, include = FALSE}
+```{r extracting-data-from-strings-2-solution, exercise.reveal_solution = FALSE}
 df1 <- tibble(x = c("a,b,c", "d,e", "f"))
 df1 |>  
   separate_longer_delim(x,delim = ",")
+```
+
+```{r extracting-data-from-strings-2-check}
+grade_this_code()
 ```
 
 ### 
@@ -844,8 +918,12 @@ Sometimes distinct numbers within a string are not separated by commas or spaces
 df2 <- tibble(... = c())
 ```
 
-```{r extracting-data-from-strings-3-test, include = FALSE}
+```{r extracting-data-from-strings-3-solution, exercise.reveal_solution = FALSE}
 df2 <- tibble(x = c("1211", "131", "21"))
+```
+
+```{r extracting-data-from-strings-3-check}
+grade_this_code()
 ```
 
 ### 
@@ -869,10 +947,14 @@ df2 |>
   separate_longer_position(x, ... = ...)
 ```
 
-```{r extracting-data-from-strings-4-test, include = FALSE}
+```{r extracting-data-from-strings-4-solution, exercise.reveal_solution = FALSE}
 df2 <- tibble(x = c("1211", "131", "21"))
 df2 |> 
   separate_longer_position(x, width = 1)
+```
+
+```{r extracting-data-from-strings-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -898,8 +980,12 @@ Create a `tibble()`, set `x` as the name of the column and set `x` equal to a ve
 df3 <- tibble(x = c(...))
 ```
 
-```{r extracting-data-from-strings-5-test, include = FALSE}
+```{r extracting-data-from-strings-5-solution, exercise.reveal_solution = FALSE}
 df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
+```
+
+```{r extracting-data-from-strings-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -926,13 +1012,18 @@ df3 |>
   )
 ```
 
-```{r extracting-data-from-strings-6-test, include = FALSE}
+```{r extracting-data-from-strings-6-solution, exercise.reveal_solution = FALSE}
 df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
+
 df3 |> 
   separate_wider_delim(
   x,
   delim = ".",
   names = c("code", "Edition", "year"))
+```
+
+```{r extracting-data-from-strings-6-check}
+grade_this_code()
 ```
 
 ### 
@@ -959,7 +1050,7 @@ df3 |>
   )
 ```
 
-```{r extracting-data-from-strings-7-test, include = FALSE}
+```{r extracting-data-from-strings-7-solution, exercise.reveal_solution = FALSE}
 df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
 df3 |> 
   separate_wider_delim(
@@ -968,7 +1059,9 @@ df3 |>
   names = c("code", NA, "year"))
 ```
 
-### 
+```{r extracting-data-from-strings-7-check}
+grade_this_code()
+```
 
 ### Exercise 8
 
@@ -984,10 +1077,13 @@ Create a `tibble()`, set `x` as the name of the column and set `x` equal to a ve
 df4 <- tibble(x = c(...))
 ```
 
-```{r extracting-data-from-strings-8-test, include = FALSE}
+```{r extracting-data-from-strings-8-solution, exercise.reveal_solution = FALSE}
 df4 <- tibble(x = c("202215TX", "202122LA", "202325CA"))
 ```
 
+```{r extracting-data-from-strings-8-check}
+grade_this_code()
+```
 ### 
 
 `separate_wider_position()` works a little differently because you typically want to specify the width of each column. So you give it a named integer vector, where the name gives the name of the new column, and the value is the number of characters it occupies. You can omit values from the output by not naming them
@@ -1011,13 +1107,17 @@ df4 <- tibble(x = c(...))
   )
 ```
 
-```{r extracting-data-from-strings-9-test, include = FALSE}
+```{r extracting-data-from-strings-9-solution, exercise.reveal_solution = FALSE}
 df4 <- tibble(x = c("202215TX", "202122LA", "202325CA"))
 df4 |>  
   separate_wider_position(
   x, 
   widths = c(year = 4, age = 2, state = 2)
   )
+```
+
+```{r extracting-data-from-strings-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -1041,8 +1141,12 @@ Create a `tibble()`, set `x` as the name of the column and set `x` equal to a ve
 df <- tibble(x = c(...))
 ```
 
-```{r extracting-data-from-strings-10-test, include = FALSE}
+```{r extracting-data-from-strings-10-solution, exercise.reveal_solution = FALSE}
 df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+```
+
+```{r extracting-data-from-strings-10-check}
+grade_this_code()
 ```
 
 ### 
@@ -1051,42 +1155,22 @@ In response to not having the same number of pieces, there are two possible prob
 
 ### Exercise 11
 
-Copy the previous code and start pipe with `df` to `separate_wider_delim()`, within the function, type `x`, then set the `delim` to `"-"` and finally set the names to a vector which looks like `c("x", "y", "z")`.
+Try running the following code chunk. You’ll notice that we get an error, but the error gives us some suggestions on how you might proceed. Let’s start by debugging the problem.
+
+Within `separate_wider_delim()` add the argument `too_few` to be `"debug"`. Assign this code to a variable `debug`. At the end on a new line call `debug` to print the result.
 
 ```{r extracting-data-from-strings-11, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r extracting-data-from-strings-11-hint-1, eval = FALSE}
-df <- tibble(x = c(...))
-... |> 
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+df |>
   separate_wider_delim(
     x,
-    ... = "-",
-    ... = c("x", "y", "z")
+    delim = "-",
+    names = c("x", "y", "z")
   )
 ```
 
-<!-- Add error test, once we learn how to do it. -->
-
-### 
-
-You’ll notice that we get an error, but the error gives us some suggestions on how you might proceed. Let’s start by debugging the problem
-
-### Exercise 12
-
-Copy the previous code and within `separate_wider_delim()` add `too_few` to be `"debug"`. Also create a variable `debug` and set it to the pipe then at the end call `debug`.
-
-```{r extracting-data-from-strings-12, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r extracting-data-from-strings-12-hint-1, eval = FALSE}
-df <- tibble(x = c(...))
+```{r extracting-data-from-strings-11-hint-1, eval = FALSE}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
 debug <- ... |> 
   separate_wider_delim(
     x,
@@ -1097,7 +1181,7 @@ debug <- ... |>
 ...
 ```
 
-```{r extracting-data-from-strings-12-test, include = FALSE}
+```{r extracting-data-from-strings-11-solution, exercise.reveal_solution = FALSE}
 df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
 debug <- df |>  
   separate_wider_delim(
@@ -1109,59 +1193,114 @@ debug <- df |>
 debug
 ```
 
+```{r extracting-data-from-strings-11-check}
+grade_this_code()
+```
+
 ### 
 
 When you use the debug mode, you get three extra columns added to the output: `x_ok`, `x_pieces`, and `x_remainder` (if you separate a variable with a different name, you’ll get a different prefix).
 
 `x_pieces` tells us how many pieces were found, compared to the expected 3 (the length of names). `x_remainder` isn’t useful when there are too few pieces, but we’ll see it again shortly
 
-### Exercise 13
+### Exercise 12
 
 In other cases, you may want to fill in the missing pieces with `NA`s and move on. That’s the job of `too_few` = `"align_start"` and `too_few` = `"align_end"` which allow you to control where the `NA`s should go.
 
 Copy the previous code and change `too_few` to be set to `"align_start"`.
 
-```{r extracting-data-from-strings-13, exercise = TRUE}
+```{r extracting-data-from-strings-12, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r extracting-data-from-strings-13-hint-1, eval = FALSE}
-df <- tibble(x = c(...))
-... |> 
+```{r extracting-data-from-strings-12-hint-1, eval = FALSE}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+debug <- ... |> 
   separate_wider_delim(
     x,
     ... = "-",
     ... = c("x", "y", "z"),
     too_few = ...
   )
-
+debug
 ```
 
-```{r extracting-data-from-strings-13-test, include = FALSE}
+```{r extracting-data-from-strings-12-solution, exercise.reveal_solution = FALSE}
 df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
 debug <- df |>  
-    separate_wider_delim(
+  separate_wider_delim(
     x, 
     delim = "-",
     names = c("x", "y", "z"),
     too_few = "align_start"
   )
 debug
+```
 
+```{r extracting-data-from-strings-12-check}
+grade_this_code()
 ```
 
 ### 
 
-You see that some of colums are filled with `NA` since we put `too_few = "align_start"`.
+You see that some of columns are filled with `NA` since we put `too_few = "align_start"`.
 
-### Exercise 14
+### Exercise 13
 
 The same principles apply if you have too many pieces.
 
-Create a `tibble()`, set `x` as the name of the column and set `x` equal to a vector which looks like  ` c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9")` and lastly assign it to `df`.
+Consider a `tibble()` named `df`, with a variable `x` set equal to a vector `c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9")`.
 
+Try running the following code chunk. You will get an error and get suggestions to use `too_many = "debug"` or `too_many = "drop/merge"`. We will use "debug" to see what being kept and what's being left and after that we will talk about use drop and merge.
+
+
+Within `separate_wider_delim()` add the argument `too_many` to be `"debug"`.
+
+```{r extracting-data-from-strings-13, exercise = TRUE}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
+df |>
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z")
+  )
+```
+
+```{r extracting-data-from-strings-13-hint-1, eval = FALSE}
+df <- tibble(x = ...)
+... |> 
+  separate_wider_delim(
+    ...,
+    delim = "...",
+    names = c(...),
+    too_many = "..."
+  )
+```
+
+```{r extracting-data-from-strings-13-solution, exercise.reveal_solution = FALSE}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
+df |>  
+  separate_wider_delim(
+    x, 
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "debug"
+  )
+```
+
+```{r extracting-data-from-strings-13-check}
+grade_this_code()
+```
+
+### 
+
+When we debug the result, you can see the purpose of `x_remainder`: it shows what was left behind and not inserted into the columns.
+
+### Exercise 14
+
+Copy the previous code and change `too_many` to "drop".
 
 ```{r extracting-data-from-strings-14, exercise = TRUE}
 
@@ -1171,17 +1310,37 @@ Create a `tibble()`, set `x` as the name of the column and set `x` equal to a ve
 
 ```{r extracting-data-from-strings-14-hint-1, eval = FALSE}
 df <- tibble(x = ...)
+... |> 
+  separate_wider_delim(
+    ...,
+    delim = "...",
+    names = c(...),
+    too_many = "..."
+  )
 ```
 
-```{r extracting-data-from-strings-14-test, include = FALSE}
+```{r extracting-data-from-strings-14-solution, exercise.reveal_solution = FALSE}
 df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
+df |>  
+  separate_wider_delim(
+    x, 
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "drop"
+  )
+```
+
+```{r extracting-data-from-strings-14-check}
+grade_this_code()
 ```
 
 ### 
 
+As we are already aware by the word `drop`, it has been established that Rstudio will discard the remaining x remainders.
+
 ### Exercise 15
 
-Copy the previous code and start pipe with `df` to `separate_wider_delim()`, within the function, type `x`, then set the `delim` to "-" and finally set the names to a vector which looks like `c("x", "y", "z")`.
+Copy previous and now change `too_many` to "merge".
 
 ```{r extracting-data-from-strings-15, exercise = TRUE}
 
@@ -1195,110 +1354,12 @@ df <- tibble(x = ...)
   separate_wider_delim(
     ...,
     delim = "...",
-    names = c(...)
-  )
-```
-
-<!-- Add error test. -->
-
-### 
-
-You will get an error and get suggestions to use `too_many = "debug"` or `too_many = "drop/merge"`. We will use "debug" to see what being kept and what's being left and after that we will talk about use drop and merge.
-
-### Exercise 16
-
-Copy the previous code add `too_many = "debug"` within `separate_wider_delim()`.
-
-```{r extracting-data-from-strings-16, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r extracting-data-from-strings-16-hint-1, eval = FALSE}
-df <- tibble(x = ...)
-... |> 
-  separate_wider_delim(
-    ...,
-    delim = "...",
     names = c(...),
     too_many = "..."
   )
 ```
 
-```{r extracting-data-from-strings-16-test, include = FALSE}
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
-df |>  
-  separate_wider_delim(
-    x, 
-    delim = "-",
-    names = c("x", "y", "z"),
-    too_many = "debug"
-  )
-```
-
-### 
-
-When we debug the result, you can see the purpose of `x_remainder`: it shows what was left behind and not inserted into the columns.
-
-### Exercise 17
-
-Copy the previous code and change `too_many` to "drop".
-
-```{r extracting-data-from-strings-17, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r extracting-data-from-strings-17-hint-1, eval = FALSE}
-df <- tibble(x = ...)
-... |> 
-  separate_wider_delim(
-    ...,
-    delim = "...",
-    names = c(...),
-    too_many = "..."
-  )
-```
-
-```{r extracting-data-from-strings-17-test, include = FALSE}
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
-df |>  
-  separate_wider_delim(
-    x, 
-    delim = "-",
-    names = c("x", "y", "z"),
-    too_many = "drop"
-  )
-```
-
-### 
-
-As we are already aware by the word `drop`, it has been established that Rstudio will discard the remaining x remainders.
-
-### Exercise 18
-
-Copy previous and now change `too_many` to "merge".
-
-```{r extracting-data-from-strings-18, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r extracting-data-from-strings-18-hint-1, eval = FALSE}
-df <- tibble(x = ...)
-... |> 
-  separate_wider_delim(
-    ...,
-    delim = "...",
-    names = c(...),
-    too_many = "..."
-  )
-```
-
-```{r extracting-data-from-strings-18-test, include = FALSE}
+```{r extracting-data-from-strings-15-solution, exercise.reveal_solution = FALSE}
 df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
 df |>  
   separate_wider_delim(
@@ -1307,6 +1368,10 @@ df |>
     names = c("x", "y", "z"),
     too_many = "merge"
   )
+```
+
+```{r extracting-data-from-strings-15-check}
+grade_this_code()
 ```
 
 ### 
@@ -1335,8 +1400,12 @@ Type the function `str_length()` and type `"hello world"` as the argument and ru
 str_length(...)
 ```
 
-```{r letters-1-test, include = FALSE}
+```{r letters-1-solution, exercise.reveal_solution = FALSE}
 str_length("hello world")
+```
+
+```{r letters-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -1357,8 +1426,12 @@ In addition to `"hello world"` in `str_length()`, add two more values which are 
 str_length(c(...,...,...))
 ```
 
-```{r letters-2-test, include = FALSE}
+```{r letters-2-solution, exercise.reveal_solution = FALSE}
 str_length(c("hello world", "programming", NA))
+```
+
+```{r letters-2-check}
+grade_this_code()
 ```
 
 ### 
@@ -1367,7 +1440,7 @@ The values you'll get are 11, 11 and NA.
 
 ### Exercise 3
 
-Let's load the "babynames" using `library()`.
+Let's load the `babynames` package using `library()`.
 
 ```{r letters-3, exercise = TRUE}
 
@@ -1377,13 +1450,17 @@ Let's load the "babynames" using `library()`.
 ...
 ```
 
-```{r letters-3-test, include = FALSE}
-library("babynames")
+```{r letters-3-solution, exercise.reveal_solution = FALSE}
+library(babynames)
+```
+
+```{r letters-3-check}
+grade_this_code()
 ```
 
 ### 
 
-The `babynames` is a data set which contained names used for babies from 1880 to 2017. If you want to explore the data set, checkout [popular baby names](https://www.ssa.gov/oact/babynames/limits.html).
+The "babynames" package contains a data set called `babynames` which contained names used for babies from 1880 to 2017. If you want to explore the data set, checkout [popular baby names](https://www.ssa.gov/oact/babynames/limits.html).
 
 ### Exercise 4
 
@@ -1399,8 +1476,12 @@ Run `babynames` to have an overview of the data set.
 babynames
 ```
 
-```{r letters-4-test, include = FALSE}
+```{r letters-4-solution, exercise.reveal_solution = FALSE}
 babynames
+```
+
+```{r letters-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -1424,9 +1505,13 @@ Start a pipe with babynames to `count()`.
   count()
 ```
 
-```{r letters-5-test, include = FALSE}
+```{r letters-5-solution, exercise.reveal_solution = FALSE}
 babynames |>  
   count()
+```
+
+```{r letters-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -1448,12 +1533,16 @@ Let's create two columns to see the length of the name and also the count. Withi
   count(... = str_length(...),wt = ...)
 ```
 
-```{r letters-6-test, include = FALSE}
+```{r letters-6-solution, exercise.reveal_solution = FALSE}
 babynames |>  
   count(
     length = str_length(name),
     wt = n
   )
+```
+
+```{r letters-6-check}
+grade_this_code()
 ```
 
 ### 
@@ -1473,12 +1562,15 @@ Now that we know that the longest name is 15 letters. Let's find the most famous
   filter(...(name)== 15)
 ```
 
-```{r letters-7-test, include = FALSE}
-
+```{r letters-7-solution, exercise.reveal_solution = FALSE}
 babynames |> 
   filter(
     str_length(name) == 15
   )
+```
+
+```{r letters-7-check}
+grade_this_code()
 ```
 
 ### 
@@ -1502,7 +1594,7 @@ Now that we have all the names with 15 letters, let's continue the pipe from `fi
   count(..., wt = ..., sort = ...)
 ```
 
-```{r letters-8-test, include = FALSE}
+```{r letters-8-solution, exercise.reveal_solution = FALSE}
 babynames |> 
   filter(
     str_length(name) == 15
@@ -1512,6 +1604,10 @@ babynames |>
     wt = n, 
     sort = TRUE
   )
+```
+
+```{r letters-8-check}
+grade_this_code()
 ```
 
 ### 
@@ -1532,8 +1628,12 @@ Create a variable `y` and set it equal to a vector containing strings: Apple, Ba
 y <- c(...,...,...)
 ```
 
-```{r letters-9-test, include = FALSE}
+```{r letters-9-solution, exercise.reveal_solution = FALSE}
 y <- c("Apple", "Banana", "Pear")
+```
+
+```{r letters-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -1552,8 +1652,12 @@ To extract a substring using the `str_sub()` function, specify the following arg
 str_sub(y, ...,...)
 ```
 
-```{r letters-10-test, include = FALSE}
+```{r letters-10-solution, exercise.reveal_solution = FALSE}
 str_sub(y, 1, 3)
+```
+
+```{r letters-10-check}
+grade_this_code()
 ```
 
 ### 
@@ -1562,7 +1666,7 @@ Looking at results, when using `str_sub()`The start and end arguments are inclus
 
 ### Exercise 11
 
-Let's modify the line from previous code and change the 2nd arguemnt to `-3` and the 3rd argument to `-1`.
+Let's modify the line from previous code and change the 2nd arguement to `-3` and the 3rd argument to `-1`.
 
 ```{r letters-11, exercise = TRUE}
 
@@ -1574,8 +1678,12 @@ Let's modify the line from previous code and change the 2nd arguemnt to `-3` and
 str_sub(..., ...,...)
 ```
 
-```{r letters-11-test, include = FALSE}
+```{r letters-11-solution, exercise.reveal_solution = FALSE}
 str_sub(y, -3, -1)
+```
+
+```{r letters-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -1596,8 +1704,12 @@ You might ask what if the range is bigger than the actual string? Let's see then
 str_sub("...",1,...)
 ```
 
-```{r letters-12-test, include = FALSE}
+```{r letters-12-solution, exercise.reveal_solution = FALSE}
 str_sub("a", 1, 5)
+```
+
+```{r letters-12-check}
+grade_this_code()
 ```
 
 ### 
@@ -1609,27 +1721,35 @@ Seeing the results, we have to note that `str_sub()` won’t fail if the string 
 Now's that we have a sense of `str_sub()`, let's find the first and last letter of each name.
 Start a pipe with `babynames` to `mutate()`.
 
+Within `mutate()`, create a new column called `first` and set it to `str_sub(name, 1,1)` to get the first letter. 
+
 ```{r letters-13, exercise = TRUE}
 
 ```
 
 ```{r letters-13-hint-1, eval = FALSE}
-babynames |>
-  mutate()
+... |>
+  ...(... = str_...(name,1,...))
 ```
 
-```{r letters-13-test, include = FALSE}
+```{r letters-13-solution, exercise.reveal_solution = FALSE}
 babynames |>
-  mutate()
+  mutate(
+    first = str_sub(name, 1,1)
+  )
+```
+
+```{r letters-13-check}
+grade_this_code()
 ```
 
 ### 
 
-We are using `mutate()` because we will be add two new columns called first and last.
+If you didnt know, In Python, indexing starts from zero, whereas in RStudio, indexing starts from one, resulting in a slight variation in accessing elements and slicing sequences.
 
 ### Exercise 14
 
-Within `mutate()`, create a new column called `first` and set it to `str_sub(name, 1,1)` to get the first letter. 
+In addition to creating the `first` column , let's add the `last` column. Within `mutate()`, add `last` and set it to `str_sub(name, -1,-1)`.
 
 ```{r letters-14, exercise = TRUE}
 
@@ -1639,37 +1759,11 @@ Within `mutate()`, create a new column called `first` and set it to `str_sub(nam
 
 ```{r letters-14-hint-1, eval = FALSE}
 ... |>
-  ...(... = str_...(name,1,...))
-```
-
-```{r letters-14-test, include = FALSE}
-babynames |>
-  mutate(
-    first = str_sub(name, 1,1)
-  )
-```
-
-### 
-
-If you didnt know, In Python, indexing starts from zero, whereas in RStudio, indexing starts from one, resulting in a slight variation in accessing elements and slicing sequences.
-
-### Exercise 15
-
-In addition to creating the `first` column , let's add the `last` column. Within `mutate()`, add `last` and set it to `str_sub(name, -1,-1)`.
-
-```{r letters-15, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r letters-15-hint-1, eval = FALSE}
-... |>
   ...(... = str_...(name,1,...),
       last = ..._sub(name, -1,-1))
 ```
 
-```{r letters-15-test, include = FALSE}
+```{r letters-14-solution, exercise.reveal_solution = FALSE}
 babynames |>
   mutate(
     first = str_sub(name, 1,1),
@@ -1677,507 +1771,15 @@ babynames |>
   )
 ```
 
+```{r letters-14-check}
+grade_this_code()
+```
+
 ### 
 
 When we ran the code, we see two new columns `first` and `last` which show the first and last letters of a name.
 
-## Last letter of boy names
-### 
 
-<!-- Some code here seems too hard. Or maybe it just needs a clearer explanation. -->
-
-The **[babynames](http://hadley.github.io/babynames/)** package contains data about baby names through the years. 
-
-### 
-
-Using this data, let's create the following graph.
-
-```{r baby-lastnames}
-boys_p <- babynames |>
-  filter(sex == 'M') |>
-  
-  # prop is supposed to be proportion of a specific name in all male baby names
-  # in that year. But I am not sure it is! For example, if you sum up prop for
-  # all M in a given year, it never adds to 1. It always adds to a number less
-  # than 1, but greater than 0.9. My *guess* would be that this is due to
-  # babynames dropping names which have very small numbers of babies with that
-  # name. If true, then prop is likely correct.
-  
-  select(name, year, prop) |>
-  
-  # Add last letter of baby names. 
-  
-  mutate(last_letter = stringr::str_sub(name, -1, -1)) |>
-  
-  # frequency is the poroportion of a certain last letter in all male baby names in that year. 
-  
-  summarize(frequency = sum(prop), 
-            .by = c(year, last_letter)) |>
-  ggplot(aes(x = year, y = frequency, colour = last_letter)) +
-    geom_line() + 
-  
-    # only color last letters that appears more than 15 % of all boy names in any year. 
-    
-    gghighlight(max(frequency) > 0.15,
-                label_key = last_letter) + 
-    scale_x_continuous(guide = guide_axis(angle = 70),
-                       breaks = c(1880, 1900, 1925, 1950,
-                                  1975, 2000, 2017)) +
-    scale_y_continuous(labels = scales::percent_format()) +
-    theme_minimal() + 
-    labs(x = NULL,
-         y = NULL,
-         subtitle = "Names ending with 'N' increased rapidly after 1950",
-         title = "Last Letter of Boy Baby Names",
-         caption = "Source: http://hadley.github.io/babynames")
-
-boys_p
-```
-
-### Exercise 1
-
-`glimpse()` the `babynames` data set. Pay close attention to the data type of each variable.
-
-```{r last-letter-of-boy-names-1, exercise = TRUE}
-
-```
-
-```{r last-letter-of-boy-names-1-hint-1, eval = FALSE}
-glimpse(...)
-```
-
-```{r last-letter-of-boy-names-1-test, include = FALSE}
-glimpse(babynames)
-```
-
-### 
-
-We could have also used the `head()` function to check the first few rows of the tibble.
-
-### Exercise 2
-
-To check for `NA` values, use `any()` function with argument `is.na()`, argument of which should be the dataset babynames. 
-
-```{r last-letter-of-boy-names-2, exercise = TRUE}
-
-```
-
-```{r last-letter-of-boy-names-2-hint-1, eval = FALSE}
-any(is.na(...))
-```
-
-```{r last-letter-of-boy-names-2-test, include = FALSE}
-any(is.na(babynames))
-```
-
-### 
-
-This function returned `FALSE`, which indicates that there are no NA values. 
-
-### Exercise 3
-
-Because we are trying to analyse only boy names by last letter, start a pipe with     `babynames`.`filter()` the data set to only get the data of boy names by setting `sex` equal to `'M'`. 
-
-```{r last-letter-of-boy-names-3, exercise = TRUE}
-
-```
-
-```{r last-letter-of-boy-names-3-hint-1, eval = FALSE}
-babynames |>
-  filter(... == 'M')
-
-```
-
-
-```{r last-letter-of-boy-names-3-test, include = FALSE}
-babynames |>
-  filter(sex == 'M')
-```
-
-### Exercise 4
-
-Continue the pipe by selecting the `name`, `year`, and `prop` columns using `select()`. 
-
-```{r last-letter-of-boy-names-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-4-hint-1, eval = FALSE}
-...  |>
-  select(..., ..., ...)
-```
-
-```{r last-letter-of-boy-names-4-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop)
-```
-
-### 
-
-When selecting columns, we can also combine multiple select helpers. For example,
-when selecting `name` and `year` columns, we can use the following code: 
-`select(starts_with("na") | ends_with("ar"))`.
-
-### Exercise 5
-
-We want the last letters of boy names. Therefore, create a new variable names `last_letters` that should be equal to last letter of each boy name. To get the last letter of each boy name, we will make use of `str_sub()` function of **[stringr](https://stringr.tidyverse.org/)** package. 
-
-### 
-
-Add the `mutate()` function to add a new column: `last_letter`. Its value is the `str_sub()` function with `name`, `-1` and `-1` as its first three arguments.
-
-```{r last-letter-of-boy-names-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-5-hint-1, eval = FALSE}
-... |>
-  mutate(last_letter = stringr::str_sub(..., ..., -1))
-```
-
-```{r last-letter-of-boy-names-5-test, include = FALSE}
-babynames |>
-  filter(sex == 'M')|>
-  select(name, year, prop)|>
-  mutate(last_letter = stringr::str_sub(name, -1, -1))
-```
-
-### 
-
-`str_sub` takes three arguments: character vector to work on, starting character, and ending character. Because we wanted to extract last letter, or -1 element, of each name, we set the starting and ending characters as -1.
-
-
-### Exercise 6
-
-Add `summarize()` to create the variable `frequency` that is equal to `sum()` of proportions (`prop`) of each group. Also, set the `.by` argument to `c(year, last_letter)` because we want to know the value for each year/letter combination. 
-
-```{r last-letter-of-boy-names-6, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-6-hint-1, eval = FALSE}
-... |> 
-  summarize(frequency = sum(prop), 
-            .by = c(year, last_letter))
-```
-
-```{r last-letter-of-boy-names-6-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop) |>
-  mutate( 
-    last_letter = str_sub(name, -1, -1)) |>
-  summarize(
-    frequency = sum(prop),
-    .by = c(year, last_letter))
-```
-
-### Exercise 7
-
-Now, create a ggplot object, and within `ggplot(aes())`, set x-axis values to `year`, y-axis values to `frequency`, and colour to `last_letter.` 
-
-<!-- AB: not working for somereason with colour and problem happened through whole tutorial  -->
-
-```{r last-letter-of-boy-names-7, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-7-hint-1, eval = FALSE}
-...|>
-  ggplot(aes(x = ..., y = ..., colour = ...)) 
-```
-
-```{r last-letter-of-boy-names-7-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop) |>
-  mutate( 
-    last_letter = str_sub(name, -1, -1)) |>
-  summarize(
-    frequency = sum(prop),
-    .by = c(year, last_letter)) |>
-  ggplot( 
-    aes(x = year, y = frequency, colour = last_letter))
-```
-
-### Exercise 8
-
-Add `geom_line()` to the ggplot object from previous exercise.
-
-
-```{r last-letter-of-boy-names-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-8-hint-1, eval = FALSE}
-...  +
-  geom_line()
-```
-
-```{r last-letter-of-boy-names-8-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop) |>
-  mutate( 
-    last_letter = str_sub(name, -1, -1)) |>
-  summarize(
-    frequency = sum(prop),
-    .by = c(year, last_letter)) |>
-  ggplot( 
-    aes(x = year, y = frequency, colour = last_letter)) +
-    geom_line()
-```
-
-### 
-
-Alternatively, we could have used other chart types such as scatter chart. However, for our goal, line plot is a great option. 
-
-### Exercise 9
-
-Because we want to analyse last letters that are prevalent, we want to color only last letters that have been above a certainn threshold.
-
-### 
-
-We use 15% as the threshold. Therefore, we only want to color last letters that for certain time have been the last letter of more than 15% of all baby boys that were born during that time. 
-
-### 
-
-We will utilize `gghighlight` library for this purpose. Add `gghighlight()` to the ggplot object. Within this function, set `max()` `frequency` to be greater than `0.15`, and to avoid any warnings, set `label_key` equal to `last_letter`.
-
-```{r last-letter-of-boy-names-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-9-hint-1, eval = FALSE}
-...+ 
-  gghighlight(max(...) > ...,
-                label_key = ...) 
-```
-
-```{r last-letter-of-boy-names-9-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop) |>
-  mutate( 
-    last_letter = str_sub(name, -1, -1)) |>
-  summarize(
-    frequency = sum(prop),
-    .by = c(year, last_letter)) |>
-  ggplot( 
-    aes(x = year, y = frequency, colour = last_letter)) +
-    geom_line() +
-    gghighlight(
-      max(frequency) > .15,
-      label_key = last_letter
-    )
-```
-
-### 
-
-We don't think current x-axis ticks are informative enough. Therefore, we should set custom x-axis ticks.
-
-### Exercise 10
-
-Add `scale_x_continuous`, and within this function, set `breaks` argument equal to numerical vector of years. You can choose any years within the data set. We preferred 1880, 1900, 1925, 1950, 1975, 2000, and 2017. 
-
-```{r last-letter-of-boy-names-10, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-10-hint-1, eval = FALSE}
-... +
-  scale_x_continuous(breaks = c(1880, 1900, ..., ...,
-                                ..., 2000, 2017)) 
-```
-
-```{r last-letter-of-boy-names-10-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop) |>
-  mutate( 
-    last_letter = str_sub(name, -1, -1)) |>
-  summarize(
-    frequency = sum(prop),
-    .by = c(year, last_letter)) |>
-  ggplot( 
-    aes(x = year, y = frequency, colour = last_letter)) +
-    geom_line() +
-    gghighlight(
-      max(frequency) > .15,
-      label_key = last_letter
-    ) +
-    scale_x_continuous(
-      breaks = c(1880, 1900, 1925, 1950, 1975, 2000, 2017))
-```
-
-### 
-
-A rule of thumb, however, is to include ending and beginning years so that whoever sees your plot could understand the range of years that data is collected.
-
-### Exercise 11
-
-Moreover, we want to visualize y-axis as percentage instead of proportion. Therefore, add `scale_y_continuous`, and within this function, set `labels` argument equal to `scales::percent_format()`.
-
-```{r last-letter-of-boy-names-11, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-11-hint-1, eval = FALSE}
-... +
-  scale_y_continuous(... = scales::...()) 
-```
-
-```{r last-letter-of-boy-names-11-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop) |>
-  mutate( 
-    last_letter = str_sub(name, -1, -1)) |>
-  summarize(
-    frequency = sum(prop),
-    .by = c(year, last_letter)) |>
-  ggplot( 
-    aes(x = year, y = frequency, colour = last_letter)) +
-    geom_line() +
-    gghighlight(
-      max(frequency) > .15,
-      label_key = last_letter
-    ) +
-    scale_x_continuous(
-      breaks = c(1880, 1900, 1925, 1950, 1975, 2000, 2017)) +
-    scale_y_continuous(
-      labels = scales::percent_format())
-```
-
-### 
-
-`scale` library provides many functions to assist the scaling of axes. For example, `scale_y_binned()` can be used to discretize continuous position data.
-
-### Exercise 12
-
-Add `theme_minimal()`. 
-
-```{r last-letter-of-boy-names-12, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-12-hint-1, eval = FALSE}
-... +
-  theme_minimal()
-```
-
-```{r last-letter-of-boy-names-12-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop) |>
-  mutate( 
-    last_letter = str_sub(name, -1, -1)) |>
-  summarize(
-    frequency = sum(prop),
-    .by = c(year, last_letter)) |>
-  ggplot( 
-    aes(x = year, y = frequency, colour = last_letter)) +
-    geom_line() +
-    gghighlight(
-      max(frequency) > .15,
-      label_key = last_letter
-    ) +
-    scale_x_continuous(
-      breaks = c(1880, 1900, 1925, 1950, 1975, 2000, 2017)) +
-    scale_y_continuous(
-      labels = scales::percent_format()) +
-    theme_minimal()
-```
-
-### 
-
-We also could have used themes such as `theme_gray()`, `theme_void()`, and`theme_bw()`.
-
-### Exercise 13
-
-Finally, add `caption`, `title`, `subtitle`, and `axis` labels of your choice. Add `labs()` function to the plot. 
-
-Reminder: This is what your plot should look like
-
-```{r last-letter-of-boy-names-13}
-boys_p
-```
-
-```{r baby-lastnames-13, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r last-letter-of-boy-names-13-hint-1, eval = FALSE}
-... +
-  labs(...)
-```
-
-```{r last-letter-of-boy-names-13-test, include = FALSE}
-babynames |>
-  filter( 
-    sex == 'M') |>
-  select(
-    name, year, prop) |>
-  mutate( 
-    last_letter = str_sub(name, -1, -1)) |>
-  summarize(
-    frequency = sum(prop),
-    .by = c(year, last_letter)) |>
-  ggplot( 
-    aes(x = year, y = frequency, colour = last_letter)) +
-    geom_line() +
-    gghighlight(
-      max(frequency) > .15,
-      label_key = last_letter
-    ) +
-    scale_x_continuous(
-      breaks = c(1880, 1900, 1925, 1950, 1975, 2000, 2017)) +
-    scale_y_continuous(
-      labels = scales::percent_format()) +
-    theme_minimal() +
-    labs( 
-      x = "Year",
-      y = "",
-      title = "Last Letter of Boy Baby Names",
-      subtitle = "Names ending with 'N' increased rapidly after 1950")
-```
 
 ## Summary
 ### 
@@ -2189,5 +1791,19 @@ You learned about some of the power of the [**stringr**](https://stringr.tidyver
 [`str_flatten()`](https://stringr.tidyverse.org/reference/str_flatten.html),
 [`separate_longer_delim()`](https://tidyr.tidyverse.org/reference/separate_longer_delim.html), and more.
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+
+
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
+```
+
+## Check Grade
+
+```{r}
+grade_button_ui(id = "grade")
 ```

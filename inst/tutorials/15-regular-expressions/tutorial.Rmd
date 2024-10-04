@@ -1,20 +1,27 @@
 ---
 title: Regular expressions
-author: David Kane
 tutorial:
   id: regular-expressions
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 15: Regular expressions'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane -->
 
 ```{r setup, include = FALSE}
 library(learnr)
 library(tutorial.helpers)
 library(tidyverse)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
+
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -34,15 +41,21 @@ people <- tribble(
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+```{r, context = "server"}
+grade_server("grade")
 ```
 
-<!-- DK: Knowledge drop the two links from the summary. -->
-
-<!-- Maybe one of the nice looking babynames lots could go at the end of this tutorial. Or maybe we make a new one? -->
-
-<!-- This tutorial is long! Maybe don't include the practice section? Or maybe it is just long to write! -->
-
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
 
 ## Introduction
 ### 
@@ -55,114 +68,48 @@ This tutorial covers [Chapter 15: Regular expressions](https://r4ds.hadley.nz/re
 
 The term "regular expression" is a bit of a mouthful, so most people abbreviate it to "regex" or "regexp."
 
-
 ### Exercise 1
 
-Run `library(tidyverse)` in the Console. Copy/paste the resulting message.
+Run `fruit` at the Console. What is the name of the first fruit?
 
 ```{r pattern-basics-1}
 question_text(NULL,
-	answer(NULL, correct = TRUE),
+	answer("apple", correct = TRUE),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
-	rows = 3)
+	rows = 1)
 ```
 
 ### 
 
-There are currently nine core packages in the *Tidyverse*, although that number may grow over time. **stringr** is the main package with which we use regular expressions.
-
-
-### Exercise 2
-
-Load the **babynames** package with `library()` below. Don't forget to hit "Run Code."
-
-
-```{r pattern-basics-2, exercise = TRUE}
-
-```
-
-```{r pattern-basics-2-hint-1, eval = FALSE}
-library(...)
-```
-
-There is no return value.
-
-
-### Exercise 3
-
-In the Console, run `library(babynames)` and then look up the help page for the `babynames` tibble by running `?babynames`. Copy/paste the Format information below.
-
-```{r pattern-basics-3}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
-```
-
-### 
-
-The definition of the `prop` variable is subtle.
-
-
-
-
-### Exercise 4
-
-Run `glimpse()` on the `babynames` tibble.
-
-```{r pattern-basics-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r pattern-basics-4-hint-1, eval = FALSE}
-glimpse(...)
-```
-
-### 
-
-There are almost 2 millions rows! 
-
-### Exercise 5
-
-Run `fruit` at the Console. CP/CR.
-
-```{r pattern-basics-5}
-question_text(NULL,
-	answer(NULL, correct = TRUE),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 15)
-```
-
-### 
-
-In addition to `babynames`, we will use three character vectors from the **stringr** package:
+We will use three character vectors from the **stringr** package:
 
 * `fruit` contains the names of 80 fruits.
 * `words` contains 980 common English words.
 * `sentences` contains 720 short sentences.
 
 
-### Exercise 6
-
-Type `str_view(fruit, "berry")`. Hit "Run Code." (Unless we specifically indicate that you should use the Console, you should enter commands into the exercise code block and press "Run Code.") 
+### Exercise 2
 
 The first argument to `str_view()` is the vector which you are searching through. The second argument is the regular expression which you are searching for.
 
+Type `str_view(fruit, "berry")`. Hit "Submit Code."
 
-```{r pattern-basics-6, exercise = TRUE}
+```{r pattern-basics-2, exercise = TRUE}
 
 ```
 
-```{r pattern-basics-6-hint-1, eval = FALSE}
+```{r pattern-basics-2-hint-1, eval = FALSE}
 str_view(fruit, "berry")
+```
+
+```{r pattern-basics-2-solution, exercise.reveal_solution = FALSE}
+str_view(fruit, "berry")
+```
+
+```{r pattern-basics-2-check}
+grade_this_code()
 ```
 
 ### 
@@ -170,7 +117,7 @@ str_view(fruit, "berry")
 `str_view()` will show only the elements of the string vector that match, surrounding each match with <>, and, where possible, highlighting the match in blue.
 
 
-### Exercise 7
+### Exercise 3
 
 Letters and numbers match exactly and are called *literal characters*. Most punctuation characters, like `.`, `+`, `*`, `[`, `]`, and `?`, have special meanings2 and are called *metacharacters*.
 
@@ -352,6 +299,69 @@ Regular expressions are very compact and use a lot of punctuation characters, so
 ### 
 
 Now that you’ve got the basics of regular expressions under your belt, let’s use them with some **stringr** and **tidyr** functions. In the following section, you’ll learn how to detect the presence or absence of a match, how to count the number of matches, how to replace a match with fixed text, and how to extract text using a pattern.
+
+
+### Exercise 1
+
+Load the **babynames** package with `library()` below. Don't forget to hit "Submit Code."
+
+```{r key-functions-1, exercise = TRUE}
+
+```
+
+```{r key-functions-1-hint-1, eval = FALSE}
+library(...)
+```
+
+```{r pattern-basics-1-solution, exercise.reveal_solution = FALSE}
+library(babynames)
+```
+
+```{r pattern-basics-1-check}
+grade_this_code()
+```
+
+### Exercise 2
+
+In the Console, run `library(babynames)` and then look up the help page for the `babynames` tibble by running `?babynames`. Copy/paste the Format information below.
+
+```{r pattern-basics-2}
+question_text(NULL,
+	answer("A data frame with five variables: year, sex, name, n and prop (n divided by total number of applicants in that year, which means proportions are of people of that sex with that name born in that year).", correct = TRUE),
+	allow_retry = TRUE,
+	try_again_button = "Edit Answer",
+	incorrect = NULL,
+	rows = 3)
+```
+
+### 
+
+The definition of the `prop` variable is subtle.
+
+
+### Exercise 3
+
+Run `glimpse()` on the `babynames` tibble.
+
+```{r pattern-basics-3, exercise = TRUE}
+
+```
+
+```{r pattern-basics-3-hint-1, eval = FALSE}
+glimpse(...)
+```
+
+```{r pattern-basics-3-solution, exercise.reveal_solution = FALSE}
+library(babynames)
+```
+
+```{r pattern-basics-3-check}
+grade_this_code()
+```
+
+### 
+
+There are almost 2 millions rows! 
 
 ### Exercise 1
 
@@ -938,5 +948,20 @@ This tutorial covered [Chapter 15: Regular expressions](https://r4ds.hadley.nz/r
 
 If you want to learn more, a good place to start is [`vignette("regular-expressions", package = "stringr")`](https://stringr.tidyverse.org/articles/regular-expressions.html): it documents the full set of syntax supported by the [**stringr**](https://stringr.tidyverse.org/index.html) package. Another useful reference is `https://www.regular-expressions.info/`. It’s not R specific, but you can use it to learn about the most advanced features of regexes and how they work under the hood.
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+
+
+
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
+```
+
+## Check Grade
+
+```{r}
+grade_button_ui(id = "grade")
 ```
