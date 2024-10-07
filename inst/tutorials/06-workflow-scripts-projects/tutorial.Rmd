@@ -66,7 +66,7 @@ So far, we have only worked in the R Console, but it's quite difficult to type m
 
 ### Task 1
 
-Create an R script by clicking the `File -> New File` drop down menu at the top left of your RStudio Session, and then selecting `R Script`.
+Create an R script by clicking the `File >> New File` drop down menu at the top left of your RStudio Session, and then selecting `R Script`.
 
 ### 
 
@@ -98,7 +98,7 @@ Save the file into this new folder. Name it `script-1.R`. (Note that R will prov
 
 ###
 
-Folder and file names should ALWAYS be machine and human readable. Meaning avoid spaces, symbols, and special characters and choose a meaningful name.
+Folder and file names should **ALWAYS** be machine and human readable. Meaning avoid spaces, symbols, and special characters and choose a meaningful name.
 
 
 ### Task 2
