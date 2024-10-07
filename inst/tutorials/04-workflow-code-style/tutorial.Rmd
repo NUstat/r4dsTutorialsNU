@@ -180,24 +180,37 @@ For the following exercises, correct the code to have appropriate pipe formattin
 
 ### Exercise 1
 
-```{r pipes-1, exercise = TRUE}
+```{r pipes-1, exercise = TRUE, results='hide'}
 flights|>filter(!is.na(arr_delay), !is.na(tailnum))|>count(dest)
 ```
 
 
 ```{r pipes-1-solution, exercise.reveal_solution = FALSE}
-flights |>  
+flights |> 
   filter(!is.na(arr_delay), !is.na(tailnum)) |> 
   count(dest)
 ```
 
 ```{r pipes-1-check}
-grade_this_code()
+grade_this_code(
+  correct = glue::glue(
+  "Complete!", 
+  "Verify that it matches the solution, provided once you click `Continue` below. The auto-grader has problems checking syntax so we are giving completion credit. Check that your solution is correct!", .sep = "<br><br>")
+)
 ```
+
+### Exercise 1 Solution
+
+```{r, eval=FALSE, echo=TRUE}
+flights |> 
+  filter(!is.na(arr_delay), !is.na(tailnum)) |> 
+  count(dest)
+```
+
 
 ### Exercise 2
 
-```{r pipes-2, exercise = TRUE}
+```{r pipes-2, exercise = TRUE, results='hide'}
 flights |>
   group_by(
     tailnum
@@ -216,8 +229,24 @@ flights |>
 ```
 
 ```{r pipes-2-check}
-grade_this_code()
+grade_this_code(
+  correct = glue::glue(
+  "Complete!", 
+  "Verify that it matches the solution, provided once you click `Continue` below. The auto-grader has problems checking syntax so we are giving completion credit. Check that your solution is correct!", .sep = "<br><br>")
+)
 ```
+
+### Exercise 2 Solution
+
+```{r, eval=FALSE, echo=TRUE}
+flights |>  
+  group_by(tailnum) |> 
+  summarize(
+    delay = mean(arr_delay, na.rm = TRUE),
+    n = n()
+  )
+```
+
 
 ## ggplot2
 
@@ -225,12 +254,12 @@ The `+` operator follows the same formatting as the pipe `|>`
 
 ###
 
-For the following exercises, correct the code to have appropriate formatting.
-
 ### Exercise 1
 
-```{r ggplot2-1, exercise = TRUE}
-flights |> 
+Correct the code to have appropriate formatting.
+
+```{r ggplot2-1, exercise = TRUE, results='hide', warning=FALSE, message=FALSE}
+speed_v_distance_plot <- flights |> 
   group_by(dest) |> 
   summarize(
     distance = mean(distance),
@@ -245,7 +274,7 @@ flights |>
 
 
 ```{r ggplot2-1-solution, exercise.reveal_solution = FALSE}
-flights |> 
+speed_v_distance_plot <- flights |> 
   group_by(dest) |> 
   summarize(
     distance = mean(distance),
@@ -263,7 +292,31 @@ flights |>
 ```
 
 ```{r ggplot2-1-check}
-grade_this_code()
+grade_this_code(
+  correct = glue::glue(
+  "Complete!", 
+  "Verify that it matches the solution, provided once you click `Continue` below. The auto-grader has problems checking syntax so we are giving completion credit. Check that your solution is correct!", .sep = "<br><br>")
+)
+```
+
+### Exercise 1 Solution
+
+```{r, eval=FALSE, echo=TRUE}
+speed_v_distance_plot <- flights |> 
+  group_by(dest) |> 
+  summarize(
+    distance = mean(distance),
+    speed = mean(distance / air_time, na.rm = TRUE)
+  ) |> 
+  ggplot(aes(x = distance, y = speed)) +
+  geom_smooth(
+    method = "loess",
+    span = 0.5,
+    se = FALSE, 
+    color = "white", 
+    linewidth = 4
+  ) +
+  geom_point()
 ```
 
 ## Sectioning comments
