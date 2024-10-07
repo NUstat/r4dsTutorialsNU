@@ -391,7 +391,7 @@ Each row in `flights` is already distinct so we get back the same number of rows
 
 ### Exercise 9
 
-Most of the time, however, you’ll want the distinct combination of some variables, so you can also optionally supply column names. Pipe `flights` to `distinct()` with the argument `origin`.
+Most of the time, however, you’ll want the distinct combination of some variables, so you can also optionally supply column names. Pipe `flights` to `distinct()` with the input of `origin`.
 
 ```{r rows-9, exercise = TRUE}
 
