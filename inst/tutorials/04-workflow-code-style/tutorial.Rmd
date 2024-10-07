@@ -38,15 +38,16 @@ grade_server("grade")
 ```
 
 ```{r Name}
-question_text("Name:",
-              answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-              correct = "submitted",
-              allow_retry = FALSE )
+question_text(
+  "Name:",
+  answer_fn(function(value){
+    if(length(value) >= 1 ) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE) )
+  }),
+  correct = "submitted",
+  allow_retry = FALSE )
 ```
 
 ```{r}
@@ -107,38 +108,71 @@ For the following exercises, correct the code to have appropriate spacing.
 
 ### Exercise 1
 
+<!-- ```{r, eval=FALSE, echo=TRUE} -->
+<!-- z<-(a+b)^2/d -->
+<!-- ``` -->
+
+<!-- ```{r spaces-1} -->
+<!-- question_text( -->
+<!--   "", -->
+<!--   answer("z <- (a + b)^2 / d", correct = TRUE), -->
+<!--   allow_retry = TRUE -->
+<!--   ) -->
+<!-- ``` -->
+
+```{r spaces-1-setup}
+a <- 2
+b <- 3
+d <- 4
+```
+
 ```{r spaces-1, exercise = TRUE}
 z<-(a+b)^2/d
 ```
-
 
 ```{r spaces-1-solution, exercise.reveal_solution = FALSE}
 z <- (a + b)^2 / d
 ```
 
 ```{r spaces-1-check}
-grade_this_code()
+grade_this({
+  # custom checking code appears here
+  if (identical(.user_code, .solution_code)) {
+    pass("Great work!")
+  }
+  fail("Try again!")
+})
+
 ```
 
 ### Exercise 2
 
-```{r spaces-2, exercise = TRUE}
-mean (x ,na.rm=TRUE)
+```{r spaces-2-setup}
+x <- rnorm(20, 100, sqrt(10))
 ```
 
+```{r spaces-2, exercise = TRUE, results='hide'}
+mean (x ,na.rm=TRUE)
+```
 
 ```{r spaces-2-solution, exercise.reveal_solution = FALSE}
 mean(x, na.rm = TRUE)
 ```
 
 ```{r spaces-2-check}
-grade_this_code()
+grade_this({
+  # custom checking code appears here
+  if (identical(.user_code, .solution_code)) {
+    pass("Great work!")
+  }
+  fail("Try again!")
+})
 ```
 
 
 ## Pipes
 
-|> should always have a space before it and should typically be the last thing on a line.
+`|>` should always have a space before it and should typically be the last thing on a line.
 
 ###
 
@@ -237,7 +271,7 @@ grade_this_code()
 ```{r sec-comment-1-q}
 quiz(
   caption = "",
-  question("What is the 'shortcut' for creating Section comments?",
+  question("What is the 'shortcut' for creating sectioning comments?",
        answer("ctrl/cmd + shift + R", correct = TRUE),
        answer("ctrl/cmd + shift + C"),
        answer("alt + -"),
