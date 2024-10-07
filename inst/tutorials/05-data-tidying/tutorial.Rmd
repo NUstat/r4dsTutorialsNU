@@ -91,6 +91,12 @@ Key functions include [`pivot_longer()`](https://tidyr.tidyverse.org/reference/p
 ## Tidy Data
 ### 
 
+> “Happy families are all alike; every unhappy family is unhappy in its own way.”
+> — Leo Tolstoy
+
+> “Tidy datasets are all alike, but every messy dataset is messy in its own way.”
+> — Hadley Wickham
+
 You can represent the same underlying data in multiple ways by organizing values in a given dataset in different orders. But not all data is equally easy to use.
 
 ### Exercise 1
@@ -191,10 +197,8 @@ Now, this looks like a very nice dataset with 3 columns and 6 rows, but it break
 
 ### Exercise 4
 
-Using the three rules, answer the question below.
-
 ```{r tidy-data-4-q}
-question("Are all the cells a single value?",
+question("Which of the rules for tidy data is violated by `table3`?",
 	answer("Each cell is a single value.", correct = TRUE),
 	answer("Each variable is a column"),
 	answer("Each observation is a row"),
@@ -311,12 +315,6 @@ grade_this_code()
 ### 
 
 We clearly don't want to connect the data points in this way.
-
-> “Happy families are all alike; every unhappy family is unhappy in its own way.”
-> — Leo Tolstoy
-
-> “Tidy datasets are all alike, but every messy dataset is messy in its own way.”
-> — Hadley Wickham
 
 ### Exercise 9
 
@@ -436,7 +434,7 @@ grade_this_code()
 
 ### 
 
-The `billboard` dataset consists of song rankings from the Billboard top 100 songs in the year 2000. This data is going to be extremely difficult to work with. It has *79* columns! Start a pipe with `billboard`.
+The `billboard` dataset consists of song rankings from the Billboard top 100 songs in the year 2000. This data is going to be extremely difficult to work with. It has *79* columns! 
 
 
 ### Exercise 2
@@ -464,13 +462,13 @@ grade_this_code()
 ```
 ### 
 
-`cols` specifies which columns need to be pivoted, i.e. which columns aren’t variables. This argument uses the same syntax as `select()` so here we could use `!c(artist, track, date.entered)` or `contains("wk")`
+`cols` specifies which columns need to be pivoted, i.e. which columns aren’t variables. This argument uses the same syntax as `select()` so here we could use `!c(artist, track, date.entered)`, `contains("wk")`, or `starts_with("wk")`.
 
 ### Exercise 3
 
 What should we do with the new `name` and `value` columns?
 
-We need to turn these 76 columns and all these observations into two columns: `rank` and `week`. We can do this by adding `names_to = "week"`, and `values_to = "rank` to `pivot_longer()`. (Make sure you have commas separating each argument.) 
+We need to turn these 76 columns and all these observations into two columns: `rank` and `week`. We can do this by adding `names_to = "week"`, and `values_to = "rank"` to `pivot_longer()`. (Make sure you have commas separating each argument.) 
 
 ```{r lengthening-data-3, exercise = TRUE}
 
