@@ -547,9 +547,11 @@ flights |>
 
 ``` {r columns-2-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(gain = dep_delay - arr_delay,
-         speed = distance / air_time * 60,
-         .before = 1)
+  mutate(
+    gain = dep_delay - arr_delay,
+    speed = distance / air_time * 60,
+    .before = 1
+    )
 ```
 
 
@@ -592,7 +594,7 @@ You can control which variables are kept with the `.keep` argument. A particular
 flights |> 
   mutate(
     gain = dep_delay - arr_delay,
-    hours = air_time / 60,
+    speed = distance / air_time * 60,
     .keep = "..."
   )
 ```
