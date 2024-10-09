@@ -1,21 +1,27 @@
 ---
 title: Dates and times
-author: David Kane and Mann Talati
 tutorial:
   id: dates-and-times
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 17: Dates and times'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane and Mann Talati-->
 
 ```{r setup, include = FALSE}
 library(learnr)
 library(tutorial.helpers)
 library(tidyverse)
 library(nycflights13)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
@@ -50,8 +56,22 @@ combined <- c(parisdate, newyorkdate)
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+```{r, context = "server"}
+grade_server("grade")
 ```
+
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
+
 
 ## Introduction
 ### 
@@ -75,6 +95,13 @@ Let's load the `tidyverse` library. Run `library()` on `tidyverse`.
 library(...)
 ```
 
+```{r datetimes-import-1-solution, exercise.reveal_solution = FALSE}
+library(tidyverse)
+```
+
+```{r datetimes-import-1-check}
+grade_this_code()
+```
 
 ### Exercise 2
 
@@ -86,6 +113,14 @@ Run `today()` in the code chunk below. With this we can get the current date.
 
 ```{r datetimes-import-2-hint-1, eval = FALSE}
 ...()
+```
+
+```{r datetimes-import-2-solution, exercise.reveal_solution = FALSE}
+today()
+```
+
+```{r datetimes-import-2-check}
+grade_this_code()
 ```
 
 ### 
@@ -959,5 +994,22 @@ When we want to change the underlying instant in time we use `force_tz()`. Use t
 
 This tutorial covered [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to use the [**lubridate**](https://www.rdocumentation.org/packages/lubridate/versions/1.9.2) on the [**flights**](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf) data and how to use date and datetimes.
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+
+## Get Grade
+
+You can check your grade at any time by clicking the 'View Grade' button below. 
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+<br>
+
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
 ```

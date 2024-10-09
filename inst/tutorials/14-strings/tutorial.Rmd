@@ -1792,6 +1792,15 @@ You learned about some of the power of the [**stringr**](https://stringr.tidyver
 [`separate_longer_delim()`](https://tidyr.tidyverse.org/reference/separate_longer_delim.html), and more.
 
 
+## Get Grade
+
+You can check your grade at any time by clicking the 'View Grade' button below. 
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+<br>
 
 Once you are finished:
 
@@ -1800,10 +1809,4 @@ Once you are finished:
 
 ```{r}
 grade_print_ui("grade")
-```
-
-## Check Grade
-
-```{r}
-grade_button_ui(id = "grade")
 ```

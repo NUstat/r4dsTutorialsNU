@@ -126,28 +126,44 @@ Run `str_view()` with `c("a", "ab", "ae", "bd", "ea", "eab")` as the first argum
 A `.` will match any character, so `"a."` will match any string that contains an “a” followed by another character. 
 
 
-```{r pattern-basics-7, exercise = TRUE}
+```{r pattern-basics-3, exercise = TRUE}
 
 ```
 
-```{r pattern-basics-7-hint-1, eval = FALSE}
+```{r pattern-basics-3-hint-1, eval = FALSE}
 str_view(c("a", "ab", "ae", "bd", "ea", "eab"), ...)
+```
+
+```{r pattern-basics-3-solution, exercise.reveal_solution = FALSE}
+str_view(c("a", "ab", "ae", "bd", "ea", "eab"), "a.")
+```
+
+```{r pattern-basics-3-check}
+grade_this_code()
 ```
 
 ### 
 
 There are three matches. Notice how the `<>` pull out the actual match itself, leaving irrelevant letters, like the "e" in the last match, outside.
 
-### Exercise 8
+### Exercise 4
 
 Run `str_view()` on `fruit` as the vector and `"a...e"` as the pattern.
 
-```{r pattern-basics-8, exercise = TRUE}
+```{r pattern-basics-4, exercise = TRUE}
 
 ```
 
-```{r pattern-basics-8-hint-1, eval = FALSE}
+```{r pattern-basics-4-hint-1, eval = FALSE}
 str_view(..., "a...e")
+```
+
+```{r pattern-basics-4-solution, exercise.reveal_solution = FALSE}
+str_view(c("a", "ab", "ae", "bd", "ea", "eab"), "a...e")
+```
+
+```{r pattern-basics-4-check}
+grade_this_code()
 ```
 
 Try to interpret the pattern before we tell you the answer . . .
@@ -157,7 +173,7 @@ Try to interpret the pattern before we tell you the answer . . .
 The matches are any fruit which includes an "a", followed by any three characters, followed by an "e". Look at the matches to confirm that they all follow this rule.
 
 
-### Exercise 9
+### Exercise 5
 
 *Quantifiers* control how many times a pattern can match:
 
@@ -168,68 +184,100 @@ The matches are any fruit which includes an "a", followed by any three character
 Run `str_view()` on `c("a", "ab", "abb")` as the vector and `"ab?"` as the pattern.
 
 
-```{r pattern-basics-9, exercise = TRUE}
+```{r pattern-basics-5, exercise = TRUE}
 
 ```
 
-```{r pattern-basics-9-hint-1, eval = FALSE}
+```{r pattern-basics-5-hint-1, eval = FALSE}
 str_view(c("a", "ab", "abb"), ...)
 ```
+
+```{r pattern-basics-5-solution, exercise.reveal_solution = FALSE}
+str_view(c("a", "ab", "abb"), "ab?")
+```
+
+```{r pattern-basics-5-check}
+grade_this_code()
+```
+
 
 ### 
 
 Note how "a" matches "ab?" because the "?" makes the "b" optional.
 
-### Exercise 10
+### Exercise 6
 
 Run `str_view()` on `c("a", "ab", "abb")` as the vector and `"ab+"` as the pattern.
 
-```{r pattern-basics-10, exercise = TRUE}
+```{r pattern-basics-6, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r pattern-basics-10-hint-1, eval = FALSE}
+```{r pattern-basics-6-hint-1, eval = FALSE}
 str_view(..., "ab+")
+```
+
+
+```{r pattern-basics-6-solution, exercise.reveal_solution = FALSE}
+str_view(c("a", "ab", "abb"), "ab+")
+```
+
+```{r pattern-basics-6-check}
+grade_this_code()
 ```
 
 ### 
 
 `"ab+"` matches an "a", followed by at least one "b".
 
-### Exercise 11
+### Exercise 7
 
 Run `str_view()` on `c("a", "ab", "abb")` as the vector and `"ab*"` as the pattern.
 
-```{r pattern-basics-11, exercise = TRUE}
+```{r pattern-basics-7, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r pattern-basics-11-hint-1, eval = FALSE}
+```{r pattern-basics-7-hint-1, eval = FALSE}
 str_view(c("a", "ab", "abb"), ...)
+```
+
+```{r pattern-basics-7-solution, exercise.reveal_solution = FALSE}
+str_view(c("a", "ab", "abb"), "ab*")
+```
+
+```{r pattern-basics-7-check}
+grade_this_code()
 ```
 
 ### 
 
 `ab*` matches an "a", followed by any number of "b"s, including zero "b"s.
 
-### Exercise 12
+### Exercise 8
 
 *Character classes* are defined by `[]` and let you match a set of characters, e.g., `[abcd]` matches “a”, “b”, “c”, or “d”.
 
 Run `str_view()` on `words` as the vector and `"[aeiou]x[aeiou]"` as the pattern.
 
-```{r pattern-basics-12, exercise = TRUE}
+```{r pattern-basics-8, exercise = TRUE}
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r pattern-basics-12-hint-1, eval = FALSE}
+```{r pattern-basics-8-hint-1, eval = FALSE}
 str_view(..., "[aeiou]x[aeiou]")
+```
+
+```{r pattern-basics-8-solution, exercise.reveal_solution = FALSE}
+str_view(words, "[aeiou]x[aeiou]")
+```
+
+```{r pattern-basics-8-check}
+grade_this_code()
 ```
 
 Can you explain what is going on?
@@ -238,56 +286,80 @@ Can you explain what is going on?
 
 We are matching all the words which feature the patter of any vowel, followed by an "x", followed by any vowel.
 
-### Exercise 13
+### Exercise 9
 
 You can also invert the match by starting with ^: [^abcd] matches anything except “a”, “b”, “c”, or “d”. 
 
 Run `str_view()` on `words` as the vector and `"[^aeiou]y[^aeiou]"` as the pattern.
 
-```{r pattern-basics-13, exercise = TRUE}
+```{r pattern-basics-9, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r pattern-basics-13-hint-1, eval = FALSE}
+```{r pattern-basics-9-hint-1, eval = FALSE}
 str_view(words, "...")
+```
+
+```{r pattern-basics-9-solution, exercise.reveal_solution = FALSE}
+str_view(words, "[^aeiou]y[^aeiou]")
+```
+
+```{r pattern-basics-9-check}
+grade_this_code()
 ```
 
 ### 
 
 The `"[^aeiou]y[^aeiou]"` pattern finds every instance of any non-vowel, followed by "y", followed by any non-vowel.
 
-### Exercise 14
+### Exercise 10
 
 You can use alternation, `|`, to pick between one or more alternative patterns.
 
 Run `str_view()` on `fruit` as the vector and `"apple|melon|nut"` as the pattern.
 
-```{r pattern-basics-14, exercise = TRUE}
+```{r pattern-basics-10, exercise = TRUE}
 
 ```
 
-```{r pattern-basics-14-hint-1, eval = FALSE}
+```{r pattern-basics-10-hint-1, eval = FALSE}
 str_view(..., "apple|melon|nut")
+```
+
+```{r pattern-basics-10-solution, exercise.reveal_solution = FALSE}
+str_view(fruit, "apple|melon|nut")
+```
+
+```{r pattern-basics-10-check}
+grade_this_code()
 ```
 
 ### 
 
 The `"apple|melon|nut"` pattern matches any fruit which contains one of the three options. T
 
-### Exercise 15
+### Exercise 11
 
 Run `str_view()` on `fruit` as the vector and `"aa|ee|ii|oo|uu"` as the pattern. his should find all the fruits with at least one repeated vowel.
 
-```{r pattern-basics-15, exercise = TRUE}
+```{r pattern-basics-11, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r pattern-basics-15-hint-1, eval = FALSE}
+```{r pattern-basics-11-hint-1, eval = FALSE}
 str_view(fruit, ...)
+```
+
+```{r pattern-basics-11-solution, exercise.reveal_solution = FALSE}
+str_view(fruit, "aa|ee|ii|oo|uu")
+```
+
+```{r pattern-basics-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -313,11 +385,11 @@ Load the **babynames** package with `library()` below. Don't forget to hit "Subm
 library(...)
 ```
 
-```{r pattern-basics-1-solution, exercise.reveal_solution = FALSE}
+```{r key-functions-1-solution, exercise.reveal_solution = FALSE}
 library(babynames)
 ```
 
-```{r pattern-basics-1-check}
+```{r key-functions-1-check}
 grade_this_code()
 ```
 
@@ -325,7 +397,7 @@ grade_this_code()
 
 In the Console, run `library(babynames)` and then look up the help page for the `babynames` tibble by running `?babynames`. Copy/paste the Format information below.
 
-```{r pattern-basics-2}
+```{r key-functions-2}
 question_text(NULL,
 	answer("A data frame with five variables: year, sex, name, n and prop (n divided by total number of applicants in that year, which means proportions are of people of that sex with that name born in that year).", correct = TRUE),
 	allow_retry = TRUE,
@@ -343,19 +415,19 @@ The definition of the `prop` variable is subtle.
 
 Run `glimpse()` on the `babynames` tibble.
 
-```{r pattern-basics-3, exercise = TRUE}
+```{r key-functions-3, exercise = TRUE}
 
 ```
 
-```{r pattern-basics-3-hint-1, eval = FALSE}
+```{r key-functions-3-hint-1, eval = FALSE}
 glimpse(...)
 ```
 
-```{r pattern-basics-3-solution, exercise.reveal_solution = FALSE}
-library(babynames)
+```{r key-functions-3-solution, exercise.reveal_solution = FALSE}
+glimpse(babynames)
 ```
 
-```{r pattern-basics-3-check}
+```{r key-functions-3-check}
 grade_this_code()
 ```
 
@@ -363,34 +435,52 @@ grade_this_code()
 
 There are almost 2 millions rows! 
 
-### Exercise 1
+### Exercise 4
 
 `str_detect()` returns a logical vector that is `TRUE` if the pattern matches an element of the character vector and `FALSE` otherwise.  Run `str_detect()` with the `string` argument equal to `c("a", "b", "c")` and the `pattern` argument equal to  `"[aeiou]"`.
 
-```{r key-functions-1, exercise = TRUE}
+```{r key-functions-4, exercise = TRUE}
 
 ```
 
-```{r key-functions-1-hint-1, eval = FALSE}
+```{r key-functions-4-hint-1, eval = FALSE}
 str_detect(string = ..., 
            pattern = ...)
+```
+
+```{r key-functions-4-solution, exercise.reveal_solution = FALSE}
+str_detect(string = c("a", "b", "c"), 
+           pattern = "[aeiou]")
+```
+
+```{r key-functions-4-check}
+grade_this_code()
 ```
 
 ### 
 
 Most of the time, we admit the argument names (`string` and `pattern`) and simply rely on "positional mapping," meaning that `string` is always the first argument (and `pattern` the second) because that is how the function is defined.
 
-### Exercise 2
+### Exercise 5
 
 Since `str_detect()` returns a logical vector of the same length as the initial vector, it pairs well with `filter()`. Pipe `babynames` to `filter()`, using `str_detect(name, "x")` as the argument to `filter()`.
 
-```{r key-functions-2, exercise = TRUE}
+```{r key-functions-5, exercise = TRUE}
 
 ```
 
-```{r key-functions-2-hint-1, eval = FALSE}
+```{r key-functions-5-hint-1, eval = FALSE}
 babynames |> 
   filter(...(name, ...))
+```
+
+```{r key-functions-5-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  filter(str_detect(name, "x"))
+```
+
+```{r key-functions-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -398,72 +488,10 @@ babynames |>
 Note that `name` is one of the variables in `babynames`. This pipe reduces the almost 2 million rows in `babynames` to just the 16,000 or so rows in which `name` contains the letter `x`.
 
 
-### Exercise 3
-
-<!-- DK: Note how the `n` column in `babynames` makes this code harder than we would like. Maybe break this up into three steps? -->
-
-Continue the pipe with `count()`, using the arguments `name, wt = n, sort = TRUE`. 
-
-
-```{r key-functions-3, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r key-functions-3-hint-1, eval = FALSE}
-... |> 
-  count(..., wt = n, ... = TRUE)
-```
-
-### 
-
-We want to determine the most popular `name`'s with an "x" in them, which is why we have `sort = TRUE`. We need `wt = n` because we want to account for the role of `n` in indicating how many times, in a single year, a given names was used.
-
-### Exercise 4
-
-<!-- DK: Should this be `x` or `string` in this paragraph? -->
-
-We can also use `str_detect()` with `summarize()` by pairing it with `sum()` or `mean()`: `sum(str_detect(x, pattern))` tells you the number of observations that match and `mean(str_detect(x, pattern))` tells you the proportion that match. 
-
-Pipe `babynames` to `summarize()` with the argument `prop_x = mean(str_detect(name, "x"))`.
-
-```{r key-functions-4, exercise = TRUE}
-
-```
-
-```{r key-functions-4-hint-1, eval = FALSE}
-babynames |> 
-  summarize(prop_x = ...(str_detect(name, ...)))
-```
-
-### 
-
-The result indicates that about 8% of the `names` in `babynames` include the letter "x."
-
-### Exercise 5
-
-We are interested in how this percentage has changed over time, so modify the code by adding `.by = year` to the class to `summarize()`.
-
-```{r key-functions-5, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r key-functions-5-hint-1, eval = FALSE}
-babynames |> 
-  summarize(... = mean(str_detect(name, "x")),
-            .by = ...)
-```
-
-### 
-
-This gives us the proportion of names that contain an "x." if you wanted the proportion of babies with a name containing an "x," you would need to perform a weighted mean.
-
 ### Exercise 6
 
-Continue the pipe to a call to `ggplot()`, with `aes(x = year, y = prop_x)`. Add `geom_line()`. Don;t forget that commands after `ggplot()` are separated by `+`, not `|>`.
+Continue the pipe with `count()`, using the argument `name`. 
+
 
 ```{r key-functions-6, exercise = TRUE}
 
@@ -473,8 +501,137 @@ Continue the pipe to a call to `ggplot()`, with `aes(x = year, y = prop_x)`. Add
 
 ```{r key-functions-6-hint-1, eval = FALSE}
 ... |> 
+  count(...)
+```
+
+```{r key-functions-6-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  filter(str_detect(name, "x")) |> 
+  count(name)
+```
+
+```{r key-functions-6-check}
+grade_this_code()
+```
+
+### 
+
+We want to determine the most popular `name`'s with an "x" in them. Using the `count` function we now have a new column `n` which is the number of times that name appeared.
+
+
+### Exercise 7
+
+Within `count` add the additional arguments `wt = n, sort = TRUE`. 
+
+```{r key-functions-7, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r key-functions-7-hint-1, eval = FALSE}
+... |> 
+  count(name, wt = ..., ... = TRUE)
+```
+
+```{r key-functions-7-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  filter(str_detect(name, "x")) |> 
+  count(name, wt = n, sort = TRUE)
+```
+
+```{r key-functions-7-check}
+grade_this_code()
+```
+
+###
+
+We need `wt = n` because we want to account for the role of `n` in indicating how many times, in a single year, a given names was used. Setting `sort = TRUE` arranges the data frame from the most to least number of times the name was used.
+
+### Exercise 8
+
+We can also use `str_detect()` with `summarize()` by pairing it with `sum()` or `mean()`: `sum(str_detect(string, pattern))` tells you the number of observations that match and `mean(str_detect(string, pattern))` tells you the proportion that match. 
+
+Pipe `babynames` to `summarize()` with the argument `prop_x = mean(str_detect(name, "x"))`.
+
+```{r key-functions-8, exercise = TRUE}
+
+```
+
+```{r key-functions-8-hint-1, eval = FALSE}
+babynames |> 
+  summarize(prop_x = ...(str_detect(name, ...)))
+```
+
+```{r key-functions-8-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  summarize(prop_x = mean(str_detect(name, "x")))
+```
+
+```{r key-functions-8-check}
+grade_this_code()
+```
+
+### 
+
+The result indicates that about 8% of the `names` in `babynames` include the letter "x."
+
+### Exercise 9
+
+We are interested in how this percentage has changed over time, so modify the code by adding `.by = year` to the class to `summarize()`.
+
+```{r key-functions-9, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r key-functions-9-hint-1, eval = FALSE}
+babynames |> 
+  summarize(... = mean(str_detect(name, "x")),
+            .by = ...)
+```
+
+```{r key-functions-9-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  summarize(prop_x = mean(str_detect(name, "x")),
+            .by = year)
+```
+
+```{r key-functions-9-check}
+grade_this_code()
+```
+
+### 
+
+This gives us the proportion of names that contain an "x." if you wanted the proportion of babies with a name containing an "x," you would need to perform a weighted mean.
+
+### Exercise 10
+
+Continue the pipe to a call to `ggplot()`, with `aes(x = year, y = prop_x)`. Add `geom_line()`. Don;t forget that commands after `ggplot()` are separated by `+`, not `|>`.
+
+```{r key-functions-10, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r key-functions-10-hint-1, eval = FALSE}
+... |> 
   ggplot(aes(x = ..., ... = prop_x)) + 
   geom_...()
+```
+
+```{r key-functions-10-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  summarize(prop_x = mean(str_detect(name, "x")),
+            .by = year) |> 
+  ggplot(aes(x = year, y = prop_x)) + 
+  geom_line()
+```
+
+```{r key-functions-10-check}
+grade_this_code()
 ```
 
 ### 
@@ -485,53 +642,76 @@ There are two functions that are closely related to `str_detect()`:
 * `str_which()` returns an integer vector giving the positions of the strings that match.
 
 
-### Exercise 7
+### Exercise 11
 
 The next step up in complexity from `str_detect()` is `str_count()`: rather than a true or false, it tells you how many matches there are in each string. Run `str_count()` with two arguments: the vector `c("apple", "banana", "pear")` and the letter "p".
 
-```{r key-functions-7, exercise = TRUE}
+```{r key-functions-11, exercise = TRUE}
 
 ```
 
-```{r key-functions-7-hint-1, eval = FALSE}
+```{r key-functions-11-hint-1, eval = FALSE}
 str_count(..., "p")
+```
+
+```{r key-functions-11-solution, exercise.reveal_solution = FALSE}
+str_count(c("apple", "banana", "pear"), "p")
+```
+
+```{r key-functions-11-check}
+grade_this_code()
 ```
 
 ### 
 
 There are two "p"'s in "apple" but zero in "pear."
 
-### Exercise 8
+### Exercise 12
 
 Note that each match starts at the end of the previous match, i.e. regex matches never overlap. 
 
 Run `str_count()` on `"abababa"` and `"aba"`.
 
-
-```{r key-functions-8, exercise = TRUE}
+```{r key-functions-12, exercise = TRUE}
 
 ```
 
-```{r key-functions-8-hint-1, eval = FALSE}
+```{r key-functions-12-hint-1, eval = FALSE}
 str_count("abababa", ...)
+```
+
+```{r key-functions-12-solution, exercise.reveal_solution = FALSE}
+str_count("abababa", "aba")
+```
+
+```{r key-functions-12-check}
+grade_this_code()
 ```
 
 ### 
 
 For example, in "abababa", how many times will the pattern "aba" match? Regular expressions say two, not three.
 
-### Exercise 9
+### Exercise 13
 
 To better see this, `str_view()` on `"abababa"` and `"aba"`.
 
-```{r key-functions-9, exercise = TRUE}
+```{r key-functions-13, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r key-functions-9-hint-1, eval = FALSE}
+```{r key-functions-13-hint-1, eval = FALSE}
 str_view(..., "aba")
+```
+
+```{r key-functions-13-solution, exercise.reveal_solution = FALSE}
+str_view("abababa", "aba")
+```
+
+```{r key-functions-13-check}
+grade_this_code()
 ```
 
 ### 
@@ -539,35 +719,43 @@ str_view(..., "aba")
 In other words, the "second" "aba" string, which relies on the second "a" in the first "aba" string, does not count because regular expressions, by default, are exclusive.
 
 
-### Exercise 10
+### Exercise 14
 
 Pipe `babynames` to `count(name)`.
 
-
-```{r key-functions-10, exercise = TRUE}
+```{r key-functions-14, exercise = TRUE}
 
 ```
 
-```{r key-functions-10-hint-1, eval = FALSE}
+```{r key-functions-14-hint-1, eval = FALSE}
 babynames |> 
   ...(name)
+```
+
+```{r key-functions-14-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  count(name)
+```
+
+```{r key-functions-14-check}
+grade_this_code()
 ```
 
 ### 
 
 The reduces the almost 2 million entries to just the 100,000 or so unique names. Note how often the letter "a" appears in the first ten names.
 
-### Exercise 11
+### Exercise 15
 
 Continue the pipe with `mutate()`, creating a new variable, `vowels`, which is equal to `str_count(name, "[aeiou]")`.
 
-```{r key-functions-11, exercise = TRUE}
+```{r key-functions-15, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r key-functions-11-hint-1, eval = FALSE}
+```{r key-functions-15-hint-1, eval = FALSE}
 babynames |> 
   count(name) |> 
   mutate(
@@ -575,28 +763,53 @@ babynames |>
   )
 ```
 
+```{r key-functions-15-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  count(name) |> 
+  mutate(
+    vowels = str_count(name, "[aeiou]")
+  )
+```
+
+```{r key-functions-15-check}
+grade_this_code()
+```
+
 ### 
 
 If you look closely, you’ll notice that there’s something off with our calculations: “Aaban” contains three “a”s, but our summary reports only two vowels. That’s because regular expressions are case sensitive. Ignore that error for now.
 
 
-### Exercise 12
+### Exercise 16
 
 Add another variable creation argument to `mutate()`. Create `consonants` as the result of `str_count(name, "[^aeiou]")`.
 
-```{r key-functions-12, exercise = TRUE}
+```{r key-functions-16, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r key-functions-12-hint-1, eval = FALSE}
+```{r key-functions-16-hint-1, eval = FALSE}
 babynames |> 
   count(name) |> 
   mutate(
     vowels = str_count(name, "[aeiou]"),
     consonants = ...(name, ...)
   )
+```
+
+```{r key-functions-16-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  count(name) |> 
+  mutate(
+    vowels = str_count(name, "[aeiou]"),
+    consonants = str_count(name, "[^aeiou]")
+  )
+```
+
+```{r key-functions-16-check}
+grade_this_code()
 ```
 
 ### 
@@ -607,17 +820,17 @@ This suffers from the same problem as `vowels`. The capital letter "A" is not in
 
 * Telling the regular expression to ignore case: `str_count(name, regex("[aeiou]", ignore_case = TRUE))`.
 
-### Exercise 13
+### Exercise 17
 
 Change `mutate()` so that the first step is to change-in-place the variable `name` to be all in lower case. We do that with `name = str_to_lower(name)`.
 
-```{r key-functions-13, exercise = TRUE}
+```{r key-functions-17, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r key-functions-13-hint-1, eval = FALSE}
+```{r key-functions-17-hint-1, eval = FALSE}
 babynames |> 
   count(name) |> 
   mutate(
@@ -627,44 +840,74 @@ babynames |>
   )
 ```
 
+```{r key-functions-17-solution, exercise.reveal_solution = FALSE}
+babynames |> 
+  count(name) |> 
+  mutate(
+    name = str_to_lower(name),
+    vowels = str_count(name, "[aeiou]"),
+    consonants = str_count(name, "[^aeiou]")
+  )
+```
+
+```{r key-functions-17-check}
+grade_this_code()
+```
+
 ### 
 
 This variety of approaches is pretty typical when working with strings — there are often multiple ways to reach your goal, either by making your pattern more complicated or by doing some preprocessing on your string. If you get stuck trying one approach, it can often be useful to switch gears and tackle the problem from a different perspective.
 
-### Exercise 14
+### Exercise 18
 
 As well as detecting and counting matches, we can also modify them with `str_replace()` and `str_replace_all()`. Run `str_replace_all()` on with `string` equal to `c("apple", "pear", "banana")`, `pattern` equal to  `"[aeiou]"`, and `replacement` equal to `"-"`.
 
-
-```{r key-functions-14, exercise = TRUE}
+```{r key-functions-18, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r key-functions-14-hint-1, eval = FALSE}
+```{r key-functions-18-hint-1, eval = FALSE}
 str_replace_all(string = ..., 
                 ... = "[aeiou]", 
                 replacement = ...)
+```
+
+```{r key-functions-18-solution, exercise.reveal_solution = FALSE}
+str_replace_all(string = c("apple", "pear", "banana"), 
+                pattern = "[aeiou]", 
+                replacement = "-")
+```
+
+```{r key-functions-18-check}
+grade_this_code()
 ```
 
 ### 
 
 We usually omit the argument names, so this code would normally be: `str_replace_all(c("apple", "pear", "banana"), "[aeiou]", "-")`.
 
-### Exercise 15
+### Exercise 19
 
 `str_remove()` and `str_remove_all()` are handy shortcuts for `str_replace(x, pattern, "")`. Run `str_remove_all()` on `c("apple", "pear", "banana")` and `"[aeiou]"`.
 
-
-```{r key-functions-15, exercise = TRUE}
+```{r key-functions-19, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r key-functions-15-hint-1, eval = FALSE}
+```{r key-functions-19-hint-1, eval = FALSE}
 str_remove_all(c("apple", "pear", "banana"), ...)
+```
+
+```{r key-functions-19-solution, exercise.reveal_solution = FALSE}
+str_remove_all(c("apple", "pear", "banana"), "[aeiou]")
+```
+
+```{r key-functions-19-check}
+grade_this_code()
 ```
 
 ### 
@@ -673,31 +916,37 @@ These commands with the `_all` suffix just act on the *first* match in each elem
 
 These functions are naturally paired with `mutate()` when doing data cleaning, and you’ll often apply them repeatedly to peel off layers of inconsistent formatting.
 
-### Exercise 16
+### Exercise 20
 
 The last function we’ll discuss in this section uses regular expressions to extract data out of one column into one or more new columns: `separate_wider_regex()`. It’s a peer of the `separate_wider_position()` and `separate_wider_delim()` functions that you learned about previously. These functions live in the **tidyr** package because they operate on (columns of) data frames, rather than individual vectors.
 
 Run `people` to examine the tibble which we will use.
 
-```{r key-functions-16, exercise = TRUE}
+```{r key-functions-20, exercise = TRUE}
 
 ```
 
-```{r key-functions-16-hint-1, eval = FALSE}
+```{r key-functions-20-hint-1, eval = FALSE}
 people
+```
+
+```{r key-functions-20-solution, exercise.reveal_solution = FALSE}
+people
+```
+
+```{r key-functions-20-check}
+grade_this_code()
 ```
 
 ### 
 
 We have the name, gender, and age of a bunch of people in a rather weird format. We wish we could reassure you that you’d never see something this weird in real life, but unfortunately over the course of your career you’re likely to see much weirder!
 
-### Exercise 17
+### Exercise 21
 
-To extract this data using separate_wider_regex() we just need to construct a sequence of regular expressions that match each piece. If we want the contents of that piece to appear in the output, we give it a name. Consider:
+To extract this data using `separate_wider_regex()` we just need to construct a sequence of regular expressions that match each piece. If we want the contents of that piece to appear in the output, we give it a name. Click Submit Code.
 
-<!-- DK: Shouldn't we split this up into a series of steps, perhaps with on-purpose errors and debugging? -->
-
-```{r key-functions-17, exercise = TRUE}
+```{r key-functions-21, exercise = TRUE}
 people |> 
   separate_wider_regex(
     str,
@@ -711,13 +960,29 @@ people |>
   )
 ```
 
-```{r key-functions-17-hint-1, eval = FALSE}
+```{r key-functions-21-hint-1, eval = FALSE}
 No hint needed!
 ```
 
-### 
+```{r key-functions-21-solution, exercise.reveal_solution = FALSE}
+people |> 
+  separate_wider_regex(
+    str,
+    patterns = c(
+      "<", 
+      name = "[A-Za-z]+", 
+      ">-", 
+      gender = ".", "_", 
+      age = "[0-9]+"
+    )
+  )
+```
 
-<!-- DK: Note the typo in the original in R4DS. -->
+```{r key-functions-21-check}
+grade_this_code()
+```
+
+### 
 
 If the match fails, you can use `too_few = "debug"` to figure out what went wrong, just like `separate_wider_delim()` and `separate_wider_position()`.
 
@@ -732,8 +997,7 @@ Now that you understand the basics of the pattern language and how to use it wit
 
 ### Exercise 1
 
-In order to match a literal `.`, you need an escape which tells the regular expression to match metacharacters literally. Like strings, regexps use the backslash for escaping. So, to match a `.`, you need the regexp `\.`. Unfortunately this creates a problem. We use strings to represent regular expressions, and `\` is also used as an escape symbol in strings. So to create the regular expression `\.` we need the string `"\\."`, as the following example shows. Run this code:
-
+In order to match a literal `.`, you need an escape which tells the regular expression to match metacharacters literally. Like strings, regexps use the backslash for escaping. So, to match a `.`, you need the regexp `\.`. Unfortunately this creates a problem. We use strings to represent regular expressions, and `\` is also used as an escape symbol in strings. So to create the regular expression `\.` we need the string `"\\."`, as the following example shows. Submit this code:
 
 ```{r pattern-details-1, exercise = TRUE}
 # To create the regular expression \., we need to use \\.
@@ -750,6 +1014,21 @@ str_view(c("abc", "a.c", "bef"), "a\\.c")
 No hint needed.
 ```
 
+```{r pattern-details-1-solution, exercise.reveal_solution = FALSE}
+# To create the regular expression \., we need to use \\.
+dot <- "\\."
+
+# But the expression itself only contains one \
+str_view(dot)
+
+# And this tells R to look for an explicit .
+str_view(c("abc", "a.c", "bef"), "a\\.c")
+```
+
+```{r pattern-details-1-check}
+grade_this_code()
+```
+
 ### 
 
 In this section, we’ll usually write regular expression without quotes, like `\.`. If we need to emphasize what you’ll actually type, we’ll surround it with quotes and add extra escapes, like `"\\."`.
@@ -757,7 +1036,7 @@ In this section, we’ll usually write regular expression without quotes, like `
 
 ### Exercise 2
 
-If `\` is used as an escape character in regular expressions, how do you match a literal `\`? Well, you need to escape it, creating the regular expression `\\`. To create that regular expression, you need to use a string, which also needs to escape `\`. 
+If `\` is used as an escape character in regular expressions, how do you match a literal `\`? Well, you need to escape it, creating the regular expression `\\`. To create that regular expression, you need to use a string, which also needs to escape `\`. Submit this code.
 
 
 ```{r pattern-details-2, exercise = TRUE}
@@ -770,13 +1049,23 @@ str_view(x, "\\\\")
 No hint needed.
 ```
 
+```{r pattern-details-2-solution, exercise.reveal_solution = FALSE}
+x <- "a\\b"
+str_view(x)
+str_view(x, "\\\\")
+```
+
+```{r pattern-details-2-check}
+grade_this_code()
+```
+
 ### 
 
 In other words, to match a literal `\` you need to write `"\\\\"` — you need four backslashes to match one!
 
 ### Exercise 3
 
-Probably better is to use the raw strings you learned about previously. That lets you avoid one layer of escaping. Run this code.
+Probably better is to use the raw strings you learned about previously. That lets you avoid one layer of escaping. Submit this code.
 
 ```{r pattern-details-3, exercise = TRUE}
 x <- "a\\b"
@@ -785,6 +1074,15 @@ str_view(x, r"{\\}")
 
 ```{r pattern-details-3-hint-1, eval = FALSE}
 No hint needed.
+```
+
+```{r pattern-details-3-solution, exercise.reveal_solution = FALSE}
+x <- "a\\b"
+str_view(x, r"{\\}")
+```
+
+```{r pattern-details-3-check}
+grade_this_code()
 ```
 
 ### 
@@ -804,6 +1102,15 @@ str_view(c("abc", "a.c", "a*c", "a c"), ".[*]c")
 No hint needed.
 ```
 
+```{r pattern-details-4-solution, exercise.reveal_solution = FALSE}
+str_view(c("abc", "a.c", "a*c", "a c"), "a[.]c")
+str_view(c("abc", "a.c", "a*c", "a c"), ".[*]c")
+```
+
+```{r pattern-details-4-check}
+grade_this_code()
+```
+
 ### 
 
 Regular expressions require care and attention. That last example, which uses `".[*]c"`, means any character (the `.`), followed by a `*` (captured in as a character class), followed by a "c". Only `"a*c"` matches this pattern.
@@ -818,6 +1125,14 @@ By default, regular expressions will match any part of a string. If you want to 
 
 ```{r pattern-details-5-hint-1, eval = FALSE}
 str_view(fruit, ...)
+```
+
+```{r pattern-details-5-solution, exercise.reveal_solution = FALSE}
+str_view(fruit, "^a")
+```
+
+```{r pattern-details-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -838,13 +1153,21 @@ Run `str_view()` with `fruit` as the first argument and `"a$"` as the second.
 str_view(fruit, ...)
 ```
 
+```{r pattern-details-6-solution, exercise.reveal_solution = FALSE}
+str_view(fruit, "a$")
+```
+
+```{r pattern-details-6-check}
+grade_this_code()
+```
+
 ### 
 
 Note how we use `"^a"` with the `^` at the front of the pattern, indicating that "a" belongs at the start of the string, and `"a$`, with the `$` at the end of the pattern, indicating that "a" belongs at the end of the string.
 
 ### Exercise 7
 
-To force a regular expression to match only the full string, anchor it with both `^` and `$`. Run `str_view()` twice, both times with `fruit` as the first argument. In one, `"apple"` is the pattern. In another, `"^apples$` is the pattern.
+To force a regular expression to match only the full string, anchor it with both `^` and `$`. Run `str_view()` twice, both times with `fruit` as the first argument. In one, `"apple"` is the pattern. In another, `"^apples$"` is the pattern.
 
 ```{r pattern-details-7, exercise = TRUE}
 
@@ -853,6 +1176,15 @@ To force a regular expression to match only the full string, anchor it with both
 ```{r pattern-details-7-hint-1, eval = FALSE}
 str_view(..., "apple")
 str_view(fruit, ...)
+```
+
+```{r pattern-details-7-solution, exercise.reveal_solution = FALSE}
+str_view(fruit, "apple")
+str_view(fruit, "^apples$")
+```
+
+```{r pattern-details-7-check}
+grade_this_code()
 ```
 
 ### 
@@ -870,7 +1202,16 @@ x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
 
 ```{r pattern-details-8-hint-1, eval = FALSE}
 x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
+str_view(x, "sum")
+```
+
+```{r pattern-details-8-solution, exercise.reveal_solution = FALSE}
+x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
 str_view(..., "sum")
+```
+
+```{r pattern-details-8-check}
+grade_this_code()
 ```
 
 ### 
@@ -889,6 +1230,15 @@ x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
 ```{r pattern-details-9-hint-1, eval = FALSE}
 x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
 str_view(x, ...)
+```
+
+```{r pattern-details-9-solution, exercise.reveal_solution = FALSE}
+x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
+str_view(x, "\\bsum\\b")
+```
+
+```{r pattern-details-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -910,14 +1260,21 @@ When used alone, anchors will produce a zero-width match. Run `str_view()` on th
 str_view(..., c("$", "^", "\\b"))
 ```
 
+```{r pattern-details-10-solution, exercise.reveal_solution = FALSE}
+str_view("abc", c("$", "^", "\\b"))
+```
+
+```{r pattern-details-10-check}
+grade_this_code()
+```
+
 ### 
 
 Note how we have a single string but three different patterns, each of which does match the string. The display, with its zero-width brackets --- `<>` --- indicates that the matches do not involve the contents of the string.
 
 ### Exercise 11
 
-The previous example helps you understand what happens when you replace a standalone anchor. Run `str_replace_all()` on the string `"abc"` and the patterns `c("$", "^", "\\b")` with using  `"--"` as the replacement. 
-
+The previous example helps you understand what happens when you replace a standalone anchor. Run `str_replace_all()` on the string `"abc"` and the patterns `c("$", "^", "\\b")` with using  `"--"` as the replacement.
 
 ```{r pattern-details-11, exercise = TRUE}
 
@@ -925,6 +1282,14 @@ The previous example helps you understand what happens when you replace a standa
 
 ```{r pattern-details-11-hint-1, eval = FALSE}
 str_replace_all("abc", ..., "--")
+```
+
+```{r pattern-details-11-solution, exercise.reveal_solution = FALSE}
+str_replace_all("abc", c("$", "^", "\\b"), "--")
+```
+
+```{r pattern-details-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -949,7 +1314,15 @@ This tutorial covered [Chapter 15: Regular expressions](https://r4ds.hadley.nz/r
 If you want to learn more, a good place to start is [`vignette("regular-expressions", package = "stringr")`](https://stringr.tidyverse.org/articles/regular-expressions.html): it documents the full set of syntax supported by the [**stringr**](https://stringr.tidyverse.org/index.html) package. Another useful reference is `https://www.regular-expressions.info/`. It’s not R specific, but you can use it to learn about the most advanced features of regexes and how they work under the hood.
 
 
+## Get Grade
 
+You can check your grade at any time by clicking the 'View Grade' button below. 
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+<br>
 
 Once you are finished:
 
@@ -958,10 +1331,4 @@ Once you are finished:
 
 ```{r}
 grade_print_ui("grade")
-```
-
-## Check Grade
-
-```{r}
-grade_button_ui(id = "grade")
 ```

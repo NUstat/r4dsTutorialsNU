@@ -3514,6 +3514,15 @@ This tutorial covered [Chapter 13: Numbers](https://r4ds.hadley.nz/numbers.html)
 [`round()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Round.html) which rounds values in its first argument to the specified number of decimal places, and [`min_rank()`](https://dplyr.tidyverse.org/reference/row_number.html) which gives every tie the same value and ranks an inputted vector.
 
 
+## Get Grade
+
+You can check your grade at any time by clicking the 'View Grade' button below. 
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+<br>
 
 Once you are finished:
 
@@ -3522,10 +3531,4 @@ Once you are finished:
 
 ```{r}
 grade_print_ui("grade")
-```
-
-## Check Grade
-
-```{r}
-grade_button_ui(id = "grade")
 ```

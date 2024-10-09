@@ -2061,6 +2061,16 @@ A boxplot is the best way to see the relationship between the type of diamond cu
 This tutorial covered [Chapter 10: Exploratory data analysis](https://r4ds.hadley.nz/eda.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We made use of the [**ggplot2**](https://ggplot2.tidyverse.org/) and the [**dplyr**](https://dplyr.tidyverse.org/) packages to learn about variation and patterns. Some key commands included [`coord_cartesian()`](https://ggplot2.tidyverse.org/reference/coord_cartesian.html), [`geom_freqpoly()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html), [`fct_reorder()`](https://forcats.tidyverse.org/reference/fct_reorder.html), [`geom_tile()`](https://ggplot2.tidyverse.org/reference/geom_tile.html), and [`geom_count()`](https://ggplot2.tidyverse.org/reference/geom_count.html).
 
 
+## Get Grade
+
+You can check your grade at any time by clicking the 'View Grade' button below. 
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+<br>
+
 Once you are finished:
 
 -   Click the 'Download Grade' button below. This will download an html document of your grade summary.
@@ -2068,10 +2078,4 @@ Once you are finished:
 
 ```{r}
 grade_print_ui("grade")
-```
-
-## Check Grade
-
-```{r}
-grade_button_ui(id = "grade")
 ```
