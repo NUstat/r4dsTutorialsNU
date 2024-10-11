@@ -137,7 +137,7 @@ quiz(
           answer("directly before the code that requires it"),
           answer("does not belong in script"),
 	random_answer_order = TRUE,
-	allow_retry = FALSE),
+	allow_retry = TRUE),
   question("Where should packages be installed in your script?",
           answer("top"),
           answer("bottom"),
