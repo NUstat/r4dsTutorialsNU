@@ -1,15 +1,17 @@
 ---
 title: Iteration
-author: David Kane and Melissa Ban
 tutorial:
   id: iteration
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 26: Iteration'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane and Melissa Ban-->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -17,6 +19,10 @@ library(tutorial.helpers)
 library(tidyverse)
 library(readxl)
 library(duckdb)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
@@ -153,9 +159,21 @@ carat_histogram <- function(df) {
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+```{r, context = "server"}
+grade_server("grade")
 ```
 
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
 
 
 ## Introduction
@@ -184,6 +202,14 @@ library(...)
 
 ```{r modifying-multiple-columns-1-test, include = FALSE}
 library(tidyverse)
+```
+
+```{r modifying-multiple-columns-1-solution, exercise.reveal_solution = FALSE}
+library(tidyverse)
+```
+
+```{r modifying-multiple-columns-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -2981,5 +3007,21 @@ Remember that `ggsave()` is a convenient function for saving a plot. It defaults
 This tutorial covered [Chapter 26: Iteration](https://r4ds.hadley.nz/iteration.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We used the [**purrr**](https://purrr.tidyverse.org/) package to learn tools for iteration, repeatedly performing the same action on different objects. Key functions included  [`across()`](https://dplyr.tidyverse.org/reference/across.html),  [`map()`](https://purrr.tidyverse.org/reference/map.html), and user-created anonymous functions.
 
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+## Get Grade
+
+You can check your grade at any time by clicking the 'View Grade' button below. 
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+<br>
+
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
 ```

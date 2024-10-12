@@ -1,21 +1,28 @@
 ---
 title: Functions
-author: Anish Bellamkonda
 tutorial:
   id: functions
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 25: Functions'
 ---
+
+<!-- Modification of r4ds.tutorials author: Anish Bellamkonda-->
 
 ```{r setup, include = FALSE}
 library(learnr)
 library(tutorial.helpers)
 library(tidyverse)
 library(nycflights13)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
+
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -150,7 +157,20 @@ count_missing <- function(df, group_vars, x_var) {
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+```{r, context = "server"}
+grade_server("grade")
+```
+
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
 ```
 
 ## Introduction
@@ -199,6 +219,16 @@ myfunc_1 <- function(){
 }
 ```
 
+```{r simple-function-2-solution, exercise.reveal_solution = FALSE}
+myfunc_1 <- function(){
+  
+}
+```
+
+```{r simple-function-2-check}
+grade_this_code()
+```
+
 ### 
 
 Even though there is no code in the body, you have made your first function in R.
@@ -215,6 +245,14 @@ Run `myfunc_1()`.
 myfunc_1()
 ```
 
+```{r simple-function-3-solution, exercise.reveal_solution = FALSE}
+myfunc_1()
+```
+
+```{r simple-function-3-check}
+grade_this_code()
+```
+
 ### 
 
 The output you will get is null because the function is doing nothing and sever no purpose therefore R returns null.
@@ -229,6 +267,14 @@ This time only run `myfunc_1`.
 
 ```{r simple-function-4-hint-1, eval = FALSE}
 myfunc_1
+```
+
+```{r simple-function-4-solution, exercise.reveal_solution = FALSE}
+myfunc_1
+```
+
+```{r simple-function-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -249,13 +295,23 @@ myfunc_2 <- ...(x){
 }
 ```
 
+```{r simple-function-5-solution, exercise.reveal_solution = FALSE}
+myfunc_2 <- ...(x){
+  
+}
+```
+
+```{r simple-function-5-check}
+grade_this_code()
+```
+
 ### 
 
 This is the same as `myfunc_2` but it takes the argument `x`.
 
 ### Exercise 6
 
-Run `myfunc_2()` and pass in any number you want.
+Run `myfunc_2()` and pass in the number `5`.
 
 ```{r simple-function-6, exercise = TRUE}
 
@@ -265,13 +321,21 @@ Run `myfunc_2()` and pass in any number you want.
 myfunc_2(...)
 ```
 
+```{r simple-function-6-solution, exercise.reveal_solution = FALSE}
+myfunc_2(5)
+```
+
+```{r simple-function-6-check}
+grade_this_code()
+```
+
 ### 
 
 We get the same result as `myfunc_1` does because once again we have nothing in the body of the code.
 
 ### Exercise 7
 
-Now run `myfunc_2` with no arguments.
+Now run `myfunc_2()` with no arguments.
 
 ```{r simple-function-7, exercise = TRUE}
 
@@ -279,6 +343,14 @@ Now run `myfunc_2` with no arguments.
 
 ```{r simple-function-7-hint-1, eval = FALSE}
 myfunc_2()
+```
+
+```{r simple-function-7-solution, exercise.reveal_solution = FALSE}
+myfunc_2()
+```
+
+```{r simple-function-7-check}
+grade_this_code()
 ```
 
 ### 
@@ -299,13 +371,23 @@ myfunc_3 <- function(x){
 }
 ```
 
+```{r simple-function-8-solution, exercise.reveal_solution = FALSE}
+myfunc_3 <- function(x){
+  x^2
+}
+```
+
+```{r simple-function-8-check}
+grade_this_code()
+```
+
 ### 
 
 We just made a function which takes a number as an argument and squares it.
 
 ### Exercise 9
 
-Let's now use the function, so run `myfunc_3()` and pass in a number you like.
+Let's now use the function, so run `myfunc_3()` and pass in the number `3`.
 
 ```{r simple-function-9, exercise = TRUE}
 
@@ -313,6 +395,14 @@ Let's now use the function, so run `myfunc_3()` and pass in a number you like.
 
 ```{r simple-function-9-hint-1, eval = FALSE}
 myfunc_3(..)
+```
+
+```{r simple-function-9-solution, exercise.reveal_solution = FALSE}
+myfunc_3(3)
+```
+
+```{r simple-function-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -331,6 +421,14 @@ Run `myfunc_3()` and pass in `"abc"`.
 myfunc_3("abc")
 ```
 
+```{r simple-function-10-solution, exercise.reveal_solution = FALSE}
+myfunc_3("abc")
+```
+
+```{r simple-function-10-check}
+grade_this_code()
+```
+
 ### 
 
 We get the error that we are using a non-numeric argument to a binary operator and it's true since we can square a string.
@@ -347,9 +445,17 @@ Now run `myfunc_3()` with no argument.
 myfunc_3()
 ```
 
+```{r simple-function-11-solution, exercise.reveal_solution = FALSE}
+myfunc_3()
+```
+
+```{r simple-function-11-check}
+grade_this_code()
+```
+
 ### 
 
-We didn't get this error in `myfunc_2()`, but why are we getting it here? It is because we have code that actually uses the arguement to return a value and serve its purpose.
+We didn't get this error in `myfunc_2()`, but why are we getting it here? It is because we have code that actually uses the argument to return a value and serve its purpose.
 
 Good Work! You now know the basics of function.
 
@@ -1598,5 +1704,21 @@ In the code above the pipe is indented incorrectly. As you can see we recommend 
 This tutorial covered [Chapter 25: Functions](https://r4ds.hadley.nz/functions.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to make simple functions at the beginning and progressed into making vector, data frame, and plot functions which are much more complex that the simple functions.
 
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+## Get Grade
+
+You can check your grade at any time by clicking the 'View Grade' button below. 
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+<br>
+
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
 ```
