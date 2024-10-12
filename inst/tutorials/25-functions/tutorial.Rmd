@@ -151,14 +151,25 @@ count_missing <- function(df, group_vars, x_var) {
     )
 }
 
-
+df1 <- tibble(
+  mean_var = 1,
+  group_var = "g",
+  group = 1,
+  x = 10,
+  y = 100
+)
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
 ```{r, context = "server"}
-grade_server("grade")
+grade_server("grade",
+             exclude = c("simple-function-10",
+                         "simple-function-11",
+                         "data-frame-functions-3",
+                         "data-frame-functions-18")
+             )
 ```
 
 ```{r Name}
@@ -421,13 +432,13 @@ Run `myfunc_3()` and pass in `"abc"`.
 myfunc_3("abc")
 ```
 
-```{r simple-function-10-solution, exercise.reveal_solution = FALSE}
-myfunc_3("abc")
-```
+<!-- ```{r simple-function-10-solution, exercise.reveal_solution = FALSE} -->
+<!-- myfunc_3("abc") -->
+<!-- ``` -->
 
-```{r simple-function-10-check}
-grade_this_code()
-```
+<!-- ```{r simple-function-10-check} -->
+<!-- grade_this_code() -->
+<!-- ``` -->
 
 ### 
 
@@ -445,13 +456,13 @@ Now run `myfunc_3()` with no argument.
 myfunc_3()
 ```
 
-```{r simple-function-11-solution, exercise.reveal_solution = FALSE}
-myfunc_3()
-```
+<!-- ```{r simple-function-11-solution, exercise.reveal_solution = FALSE} -->
+<!-- myfunc_3() -->
+<!-- ``` -->
 
-```{r simple-function-11-check}
-grade_this_code()
-```
+<!-- ```{r simple-function-11-check} -->
+<!-- grade_this_code() -->
+<!-- ``` -->
 
 ### 
 
@@ -488,7 +499,7 @@ df |> mutate(
 
 ### 
 
-You might have noticed that this code rescales each column to have a range from 0 to 1. However, there is a mistake that went unnoticed. When Anish copied and pasted the code, they inadvertently forgot to change an `'a'` to a `'b'`. This highlights the importance of learning how to write functions, as it helps prevent such mistakes from occurring.
+You might have noticed that this code rescales each column to have a range from 0 to 1. However, there is a mistake that went unnoticed. When we copied and pasted the code, they inadvertently forgot to change an `'a'` to a `'b'`. This highlights the importance of learning how to write functions, as it helps prevent such mistakes from occurring.
 
 ### Exercise 1
 
@@ -526,6 +537,16 @@ Type `rescale01` and assign it to `function()` and pass in `x` to be the argumen
 }
 ```
 
+```{r vector-functions-2-solution, exercise.reveal_solution = FALSE}
+rescale01 <- function(x){
+  
+}
+```
+
+```{r vector-functions-2-check}
+grade_this_code()
+```
+
 ### 
 
 Now that we have the name and the arguments set, let set up the body of the function.
@@ -546,6 +567,15 @@ Copy the previous code, and inside the curly braces pass in `(a - min(a, na.rm =
 }
 ```
 
+```{r vector-functions-3-solution, exercise.reveal_solution = FALSE}
+rescale01 <- function(x){
+  (a - min(a, na.rm = TRUE)) / (max(a, na.rm = TRUE) - min(a, na.rm = TRUE))
+}
+```
+
+```{r vector-functions-3-check}
+grade_this_code()
+```
 ### 
 
 At this point you might test with a few simple inputs to make sure you’ve captured the logic correctly.
@@ -561,7 +591,15 @@ Type `rescale01()` and pass in the vector: `c(-10,0,10)`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r vector-functions-4-hint-1, eval = FALSE}
-scaler01(...)
+rescale01(...)
+```
+
+```{r vector-functions-4-solution, exercise.reveal_solution = FALSE}
+rescale01(c(-10, 0, 10))
+```
+
+```{r vector-functions-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -580,6 +618,14 @@ Run `df` to have a look at the dataset.
 
 ```{r vector-functions-5-hint-1, eval = FALSE}
 df
+```
+
+```{r vector-functions-5-solution, exercise.reveal_solution = FALSE}
+df
+```
+
+```{r vector-functions-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -605,6 +651,19 @@ df |> ...(
 )
 ```
 
+```{r vector-functions-6-solution, exercise.reveal_solution = FALSE}
+df |> mutate(
+  a = rescale01(a),
+  b = rescale01(b),
+  c = rescale01(c),
+  d = rescale01(d),
+)
+```
+
+```{r vector-functions-6-check}
+grade_this_code()
+```
+
 ### 
 
 You might notice that the `rescale01()` function does some work way too many times instead of just once so let's improve the function and optimize it.
@@ -626,6 +685,17 @@ rescale02 <- function(...) {
 }
 ```
 
+```{r vector-functions-7-solution, exercise.reveal_solution = FALSE}
+rescale02 <- function(...) {
+  rng <- range(x, na.rm = TRUE)
+  (x - rng[1]) / (rng[2] - rng[1])
+}
+```
+
+```{r vector-functions-7-check}
+grade_this_code()
+```
+
 ### 
 
 Now you’ve got the basic idea of functions, let’s take a look at a whole bunch of examples. We’ll start by looking at “mutate” functions, i.e. functions that work well inside of `mutate()` and `filter()` because they return an output of the same length as the input.
@@ -634,7 +704,8 @@ Now you’ve got the basic idea of functions, let’s take a look at a whole bun
 
 Of course functions don’t just need to work with numeric variables. You might want to do some repeated string manipulation. Maybe you need to make the first character upper case.
 
-Create a function `first_upper` and assign it to `function()` and pass in `x`. Within the curly braces, pass in `  str_sub(x, 1, 1) <- str_to_upper(str_sub(x, 1, 1))` and then on a new line call `x`.
+Create a function `first_upper` and assign it to `function()` and pass in `x`. Within the curly braces, pass in `str_sub(x, 1, 1) <- str_to_upper(str_sub(x, 1, 1))` and then on a new line call `x`.
+
 ```{r vector-functions-8, exercise = TRUE}
 
 ```
@@ -644,6 +715,17 @@ Create a function `first_upper` and assign it to `function()` and pass in `x`. W
   str_sub(x, 1, ....) <- str_to_upper(...(x, 1, 1))
   ...
 }
+```
+
+```{r vector-functions-8-solution, exercise.reveal_solution = FALSE}
+first_upper <- function(x) {
+  str_sub(x, 1, 1) <- str_to_upper(str_sub(x, 1, 1))
+  x
+}
+```
+
+```{r vector-functions-8-check}
+grade_this_code()
 ```
 
 ### 
@@ -661,6 +743,14 @@ Call `first_upper()` and pass in `"hello"` as the argument.
 
 ```{r vector-functions-9-hint-1, eval = FALSE}
 first_upper("...")
+```
+
+```{r vector-functions-9-solution, exercise.reveal_solution = FALSE}
+first_upper("hello")
+```
+
+```{r vector-functions-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -700,6 +790,15 @@ clean_number("$12,300")
 clean_number("45%")
 ```
 
+```{r vector-functions-11-solution, exercise.reveal_solution = FALSE}
+clean_number("$12,300")
+clean_number("45%")
+```
+
+```{r vector-functions-11-check}
+grade_this_code()
+```
+
 ### 
 
 We’ve focused on examples that take a single vector because we think they’re the most common. But there’s no reason that your function can’t take multiple vector inputs.
@@ -720,6 +819,16 @@ Let's create a function called `commas` that takes multiple strings and combines
 }
 ```
 
+```{r vector-functions-12-solution, exercise.reveal_solution = FALSE}
+commas <- function(x) {
+  str_flatten(x, collapse = ", ", last = " and ")
+}
+```
+
+```{r vector-functions-12-check}
+grade_this_code()
+```
+
 ### 
 
 Let's now use the function on a vector of strings.
@@ -734,6 +843,14 @@ Type `commas()` and pass in a vector `c("cat","dog","piegon")`./
 
 ```{r vector-functions-13-hint-1, eval = FALSE}
 commas(...("cat", "...", "..."))
+```
+
+```{r vector-functions-13-solution, exercise.reveal_solution = FALSE}
+commas(c("cat","dog","piegon"))
+```
+
+```{r vector-functions-13-check}
+grade_this_code()
 ```
 
 ### 
@@ -752,6 +869,16 @@ For example, maybe you want to compute the mean absolute prediction error to hel
 ... <- function(actual, ...) {
   sum(...((actual - predicted) / ...)) / length(...)
 }
+```
+
+```{r vector-functions-14-solution, exercise.reveal_solution = FALSE}
+mape <- function(actual, predicted) {
+  sum(abs((actual - predicted) / actual)) / length(actual)
+}
+```
+
+```{r vector-functions-14-check}
+grade_this_code()
 ```
 
 ### 
@@ -778,12 +905,20 @@ Type `grouped_mean` and assign it to `function(df, group_var, mean_var)`, then a
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r data-frame-functions-1-hint-1, eval = FALSE}
 grouped_mean <- function(...){
   
 }
+```
+
+```{r data-frame-functions-1-solution, exercise.reveal_solution = FALSE}
+grouped_mean <- function(df, group_var, mean_var){
+  
+}
+```
+
+```{r data-frame-functions-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -808,6 +943,18 @@ Within the curly braces, start a pipe with `df` to `group_by()` and pass in `gro
 }
 ```
 
+```{r data-frame-functions-2-solution, exercise.reveal_solution = FALSE}
+grouped_mean <- function(df, group_var, mean_var){
+  df |>
+    group_by(group_var)|>
+    summarize(mean(mean_var))
+}
+```
+
+```{r data-frame-functions-2-check}
+grade_this_code()
+```
+
 ### 
 
 Now that we the function, ready, let's implement the functions on the diamonds dataset.
@@ -821,8 +968,18 @@ Start a pipe with `diamonds` to `grouped_mean()` and pass in `cut` and `carat`.
 ```
 
 ```{r data-frame-functions-3-hint-1, eval = FALSE}
-diamonds |> grouped_mean(...,...)
+diamonds |> 
+  grouped_mean(..., ...)
 ```
+
+<!-- ```{r data-frame-functions-3-solution, exercise.reveal_solution = FALSE} -->
+<!-- diamonds |>  -->
+<!--   grouped_mean(cut, carat) -->
+<!-- ``` -->
+
+<!-- ```{r data-frame-functions-3-check} -->
+<!-- grade_this_code() -->
+<!-- ``` -->
 
 ### 
 
@@ -830,14 +987,36 @@ When encountering an error stating that the group by variables should be found i
 
 ### Exercise 4
 
-To make this clear, let's start a pipe with `df1` to `grouped_mean()` and pass in `group` and `x` and to clarify, this data set has a column named `group_var`
+To make this clear, consider the dataframe `df1`:
+
+```{r, echo = TRUE}
+df1 <- tibble(
+  mean_var = 1,
+  group_var = "g",
+  group = 1,
+  x = 10,
+  y = 100
+)
+```
+
+Start a pipe with `df1` to `grouped_mean()` and pass in `group` and `x` and to clarify, this data set has a column named `group_var`
 
 ```{r data-frame-functions-4, exercise = TRUE}
 
 ```
 
 ```{r data-frame-functions-4-hint-1, eval = FALSE}
-df1 |> grouped_mean(group, x)
+df1 |> 
+  grouped_mean(group, x)
+```
+
+```{r data-frame-functions-4-solution, exercise.reveal_solution = FALSE}
+df1 |> 
+  grouped_mean(group, x)
+```
+
+```{r data-frame-functions-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -848,16 +1027,15 @@ This time the code actually ran and returned `group_var` instead of `group` colu
 
 Tidy evaluation includes a solution to this problem called embracing 🤗. Embracing a variable means to wrap it in braces so (e.g.) var becomes `{{ var }}`. Embracing a variable tells dplyr to use the value stored inside the argument, not the argument as the literal variable name.
 
-Copy the code for `grouped_mean` and rename the function to `grouped_mean1`. Modify the arguments within `group_by()`` and `summarize()` to be enclosed with `{{}}`.
-
-
-
-
-
+Modify the code for `grouped_mean`. Rename the function to `grouped_mean1`. Modify the arguments within `group_by()` and `summarize()` to be enclosed with `{{}}`.
 
 
 ```{r data-frame-functions-5, exercise = TRUE}
-
+grouped_mean <- function(df, group_var, mean_var){
+  df |>
+    group_by(group_var)|>
+    summarize(mean(mean_var))
+}
 ```
 
 ```{r data-frame-functions-5-hint-1, eval = FALSE}
@@ -866,6 +1044,18 @@ Copy the code for `grouped_mean` and rename the function to `grouped_mean1`. Mod
     ...({{ group_var }}) |> 
     summarize(mean({{ ... }}))
 }
+```
+
+```{r data-frame-functions-5-solution, exercise.reveal_solution = FALSE}
+grouped_mean1 <- function(df, group_var, mean_var) {
+  df |> 
+    group_by({{ group_var }}) |> 
+    summarize(mean({{ mean_var }}))
+}
+```
+
+```{r data-frame-functions-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -880,12 +1070,19 @@ Let's start a pipe with `diamonds` to `grouped_mean1` and pass in `cut` and `car
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r data-frame-functions-6-hint-1, eval = FALSE}
-... |> grouped_mean(..., carat)
+... |> 
+  grouped_mean1(..., carat)
 ```
 
+```{r data-frame-functions-6-solution, exercise.reveal_solution = FALSE}
+diamonds |> 
+  grouped_mean1(cut, carat)
+```
+
+```{r data-frame-functions-6-check}
+grade_this_code()
+```
 ### 
 
 Success! But the key challenge in writing data frame functions is figuring out which arguments need to be embraced. 
@@ -899,13 +1096,6 @@ Data-masking: This is used in functions like `arrange()`, `filter()`, and `summa
 Tidy-selection: This is used in functions like `select()`, `relocate()`, and `rename()` that involve selecting variables.
 
 For many common functions, your intuition about which arguments use tidy evaluation should be sufficient—just consider whether you need to perform computations (e.g., x + 1) or select variables (e.g., a:x).
-
-
-
-
-
-
-
 
 ### 
 
@@ -931,18 +1121,28 @@ summary6 <- function(data, var) {
 
 ### 
 
-Based on the image, it'll calculate the min, mean, median, max, count and null values. This makes it easier to get the shape of the data set.
+Based on the code, it'll calculate the min, mean, median, max, count and null values. This makes it easier to get the shape of the data set.
 
 ### Exercise 9
 
-Let's start a pipe with `diamonds` to `summary6()` and pass in `carat` as the arguement.
+Let's start a pipe with `diamonds` to `summary6()` and pass in `carat` as the argument.
 
 ```{r data-frame-functions-9, exercise = TRUE}
 
 ```
 
 ```{r data-frame-functions-9-hint-1, eval = FALSE}
-diamonds |> summary6(...)
+diamonds |> 
+  summary6(...)
+```
+
+```{r data-frame-functions-9-solution, exercise.reveal_solution = FALSE}
+diamonds |> 
+  summary6(carat)
+```
+
+```{r data-frame-functions-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -963,6 +1163,16 @@ diamonds |>
   summary6(...)
 ```
 
+```{r data-frame-functions-10-solution, exercise.reveal_solution = FALSE}
+diamonds |> 
+  group_by(cut) |>
+  summary6(carat)
+```
+
+```{r data-frame-functions-10-check}
+grade_this_code()
+```
+
 ### 
 
 Furthermore, since the arguments to summarize are data-masking also means that the var argument to `summary6()` is data-masking. That means you can also summarize computed variables for example using `summary6(log10(carat))`.
@@ -976,9 +1186,19 @@ Another simple use case of making functions is making a helper `count()` functio
 ```
 
 ```{r data-frame-functions-11-hint-1, eval = FALSE}
-... <- function(df, var, ...= FALSE){
+... <- function(df, var, ... = FALSE){
   
 }
+```
+
+```{r data-frame-functions-11-solution, exercise.reveal_solution = FALSE}
+count_prop <- function(df, var, sort = FALSE){
+  
+}
+```
+
+```{r data-frame-functions-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -987,7 +1207,7 @@ Note how the name of function is purposeful so others can understand easily.
 
 ### Exercise 12
 
-Copying the previous code, within the curly braces, start a pipe with df to `count()` and include `var` with `sort = sort`. Remember to enclose `var` in the body using `{{}}`. Then, extend the pipe to `mutate()` and pass in `prop = n/sum(n)`.
+Copy the previous code, within the curly braces, start a pipe with df to `count()` and include `var` with `sort = sort`. Remember to enclose `var` in the body using `{{}}`. Then, extend the pipe to `mutate()` and pass in `prop = n/sum(n)`.
 
 ```{r data-frame-functions-12, exercise = TRUE}
 
@@ -1003,13 +1223,25 @@ Copying the previous code, within the curly braces, start a pipe with df to `cou
 }
 ```
 
+```{r data-frame-functions-12-solution, exercise.reveal_solution = FALSE}
+count_prop <- function(df, var, sort = FALSE){
+  df |>
+    count({{ var }}, sort = sort) |>
+    mutate(prop = n / sum(n))
+}
+```
+
+```{r data-frame-functions-12-check}
+grade_this_code()
+```
+
 ### 
 
 This function has three arguments: `df`, `var`, and `sort`, and only var needs to be embraced because it’s passed to `count()` which uses data-masking for all variables. 
 
 ### Exercise 13
 
-Start a pipe with `dimaonds` to `count_prop()` and pass in `clarity` as the arguement.
+Start a pipe with `dimaonds` to `count_prop()` and pass in `clarity` as the argument.
 
 ```{r data-frame-functions-13, exercise = TRUE}
 
@@ -1018,6 +1250,15 @@ Start a pipe with `dimaonds` to `count_prop()` and pass in `clarity` as the argu
 ```{r data-frame-functions-13-hint-1, eval = FALSE}
 dimaonds |>
   count_prop(...)
+```
+
+```{r data-frame-functions-13-solution, exercise.reveal_solution = FALSE}
+dimaonds |>
+  count_prop(clarity)
+```
+
+```{r data-frame-functions-13-check}
+grade_this_code()
 ```
 
 ### 
@@ -1040,6 +1281,18 @@ unique_where <- function(..., condition, ...) {
     filter({{ ... }})
   
 }
+```
+
+```{r data-frame-functions-14-solution, exercise.reveal_solution = FALSE}
+unique_where <- function(df, condition, var) {
+  df |> 
+    filter({{ condition }})
+  
+}
+```
+
+```{r data-frame-functions-14-check}
+grade_this_code()
 ```
 
 ### 
@@ -1066,6 +1319,19 @@ unique_where <- function(..., condition, ...) {
 }
 ```
 
+```{r data-frame-functions-15-solution, exercise.reveal_solution = FALSE}
+unique_where <- function(df, condition, var) {
+  df |> 
+    filter({{ condition }}) |>
+    distinct({{var}}) |>
+    arrange({{var}})
+}
+```
+
+```{r data-frame-functions-15-check}
+grade_this_code()
+```
+
 ### 
 
 Let's now use this function on the `flights` dataset.
@@ -1079,7 +1345,17 @@ Start a pipe with `flights` to `unique_where()` and pass in `month == 12` and `d
 ```
 
 ```{r data-frame-functions-16-hint-1, eval = FALSE}
-flights |> unique_where(... == 12, dest)
+flights |> 
+  unique_where(... == 12, dest)
+```
+
+```{r data-frame-functions-16-solution, exercise.reveal_solution = FALSE}
+flights |> 
+  unique_where(month == 12, dest)
+```
+
+```{r data-frame-functions-16-check}
+grade_this_code()
 ```
 
 ### 
@@ -1118,6 +1394,15 @@ flights |>
   count_missing(...,...)
 ```
 
+<!-- ```{r data-frame-functions-18-solution, exercise.reveal_solution = FALSE} -->
+<!-- flights |> -->
+<!--   count_missing(c(year, month, day), dep_time) -->
+<!-- ``` -->
+
+<!-- ```{r data-frame-functions-18-check} -->
+<!-- grade_this_code() -->
+<!-- ``` -->
+
 ### 
 
 This doesn’t work because group_by() uses data-masking, not tidy-selection. We can work around that problem by using the handy pick() function, which allows you to use tidy-selection inside data-masking functions.
@@ -1141,13 +1426,28 @@ count_missing1 <- function(df, ..., x_var) {
 }
 ```
 
+```{r data-frame-functions-19-solution, exercise.reveal_solution = FALSE}
+count_missing1 <- function(df, group_vars, x_var) {
+  df |> 
+    group_by(pick({{ group_vars }})) |> 
+    summarize(
+      n_miss = sum(is.na({{ x_var }})),
+      .groups = "drop"
+    )
+}
+```
+
+```{r data-frame-functions-19-check}
+grade_this_code()
+```
+
 ### 
 
 Let's now run it with `flights`.
 
 ### Exercise 20
 
-copy the code from exercise 18 and change the function name to `count_missing1` and run it.
+Copy the code from exercise 18 and change the function name to `count_missing1` and run it.
 
 ```{r data-frame-functions-20, exercise = TRUE}
 
@@ -1155,7 +1455,16 @@ copy the code from exercise 18 and change the function name to `count_missing1` 
 
 ```{r data-frame-functions-20-hint-1, eval = FALSE}
 flights |>
-  count_missing1
+  ...(c(year, month, day), dep_time)
+```
+
+```{r data-frame-functions-20-solution, exercise.reveal_solution = FALSE}
+flights |>
+  count_missing1(c(year, month, day), dep_time)
+```
+
+```{r data-frame-functions-20-check}
+grade_this_code()
 ```
 
 ### 
@@ -1227,6 +1536,16 @@ histogram <- ...(..., var, binwidth = ...){
 }
 ```
 
+```{r plot-functions-1-solution, exercise.reveal_solution = FALSE}
+histogram <- function(df, var, binwidth = NULL){
+  
+}
+```
+
+```{r plot-functions-1-check}
+grade_this_code()
+```
+
 ### 
 
 The reason we set `binwidth` to `NULL` is because the `binwidth` is a optional variable that you can modify when using the function.  
@@ -1249,6 +1568,18 @@ Copying the previous code, within the curly braces of `function()`, start a new 
 }
 ```
 
+```{r plot-functions-2-solution, exercise.reveal_solution = FALSE}
+histogram <- function(df, var, binwidth = NULL){
+  df |>
+    ggplot(aes(x = {{x}}))+
+    geom_histogram(binwidth = binwidth)
+}
+```
+
+```{r plot-functions-2-check}
+grade_this_code()
+```
+
 ### 
 
 Now that we have the function ready and good to get, let's use it on datsets.
@@ -1262,7 +1593,17 @@ Start a pipe with `diamonds` data set to `histogram()` and set the first argumen
 ```
 
 ```{r plot-functions-3-hint-1, eval = FALSE}
-diamonds |> histogram(..., 0.1)
+diamonds |> 
+  histogram(..., 0.1)
+```
+
+```{r plot-functions-3-solution, exercise.reveal_solution = FALSE}
+diamonds |> 
+  histogram(carat, 0.1)
+```
+
+```{r plot-functions-3-check}
+grade_this_code()
 ```
 
 ### 
@@ -1282,7 +1623,19 @@ Note that `histogram()` returns a ggplot2 plot, allowing you to add additional c
 ```{r plot-functions-4-hint-1, eval = FALSE}
 ... |> 
   histogram(..., 0.1) +
-  labs(... = "Size (in carats)", y = "...")
+  labs(... = "Size (in carats)", 
+       y = "...")
+```
+
+```{r plot-functions-4-solution, exercise.reveal_solution = FALSE}
+diamonds |> 
+  histogram(carat, 0.1) +
+  labs(x = "Size (in carats)", 
+       y = "Number of diamonds")
+```
+
+```{r plot-functions-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -1303,6 +1656,16 @@ Create a new function `linearity_check` and assign it `function()` using `<-` an
 linearity_check <- function(...,...,...){
   
 }
+```
+
+```{r plot-functions-5-solution, exercise.reveal_solution = FALSE}
+linearity_check <- function(df ,x ,y){
+  
+}
+```
+
+```{r plot-functions-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -1327,9 +1690,21 @@ linearity_check <- function(df, x, y){
 }
 ```
 
+```{r plot-functions-6-solution, exercise.reveal_solution = FALSE}
+linearity_check <- function(df ,x ,y){
+  df |>
+    ggplot(aes(x = {{x}}, y = {{y}}))+
+    geom_point()
+}
+```
+
+```{r plot-functions-6-check}
+grade_this_code()
+```
+
 ### 
 
-Let"s now add a straight lie and a smooth line.
+Let's now add a straight lie and a smooth line.
 
 ### Exercise 7
 
@@ -1343,11 +1718,27 @@ Copy the code and after `geom_point()`, add the `geom_smooth()` layer and pass i
 
 ```{r plot-functions-7-hint-1, eval = FALSE}
 linearity_check <- function(df, x, y){
-  ... |>
+  df |>
     ggplot(aes(... = {{...}}, y = {{...}}))+
-    ...()+
+    ...() +
     geom_smooth(...)
 }
+```
+
+```{r plot-functions-7-solution, exercise.reveal_solution = FALSE}
+linearity_check <- function(df ,x ,y){
+  df |>
+    ggplot(aes(x = {{x}}, y = {{y}}))+
+    geom_point() +
+    geom_smooth(method = "loess", 
+                formula = y ~ x, 
+                color = "red", 
+                se = FALSE)
+}
+```
+
+```{r plot-functions-7-check}
+grade_this_code()
 ```
 
 ### 
@@ -1374,6 +1765,26 @@ linearity_check <- function(df, x, y){
 }
 ```
 
+```{r plot-functions-8-solution, exercise.reveal_solution = FALSE}
+linearity_check <- function(df ,x ,y){
+  df |>
+    ggplot(aes(x = {{x}}, y = {{y}}))+
+    geom_point() +
+    geom_smooth(method = "loess", 
+                formula = y ~ x, 
+                color = "red", 
+                se = FALSE) +
+    geom_smooth(method = "lm", 
+                formula = y ~ x, 
+                color = "blue", 
+                se = FALSE)
+}
+```
+
+```{r plot-functions-8-check}
+grade_this_code()
+```
+
 ### 
 
 Let's now use it on a dataset to see if the data is linear or not.
@@ -1388,8 +1799,18 @@ Start a pipe with `starwars` to `filter()` and filter the data where `mass < 100
 
 ```{r plot-functions-9-hint-1, eval = FALSE}
 starwars |>
-  filter(mass <5000)|>
-  linearity_check(...,...)
+  filter(mass < 5000)|>
+  linearity_check(..., ...)
+```
+
+```{r plot-functions-9-solution, exercise.reveal_solution = FALSE}
+starwars |>
+  filter(mass < 5000)|>
+  linearity_check(mass, height)
+```
+
+```{r plot-functions-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -1445,6 +1866,16 @@ sorted_bars <- function(..., var){
 }
 ```
 
+```{r plot-functions-11-solution, exercise.reveal_solution = FALSE}
+sorted_bars <- function(df, var){
+  
+}
+```
+
+```{r plot-functions-11-check}
+grade_this_code()
+```
+
 ### 
 
 Now that we set the function name and arguments right, let's now edit the body of the code.
@@ -1461,10 +1892,21 @@ Copy the code, within the curly braces, start a pipe with `df` to `mutate()` Pas
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r plot-functions-12-hint-1, eval = FALSE}
-sorted_bars <- function(..., var) {
+sorted_bars <- function(df, var) {
   ... |> 
     mutate({{ ... }} := fct_rev(...({{ var }}))) 
 }
+```
+
+```{r plot-functions-12-solution, exercise.reveal_solution = FALSE}
+sorted_bars <- function(df, var){
+  df |> 
+    mutate({{ var }} := fct_rev(fct_infreq({{ var }}))) 
+}
+```
+
+```{r plot-functions-12-check}
+grade_this_code()
 ```
 
 ### 
@@ -1490,13 +1932,25 @@ sorted_bars <- function(..., var) {
 }
 ```
 
+```{r plot-functions-13-solution, exercise.reveal_solution = FALSE}
+sorted_bars <- function(df, var){
+  df |> 
+    mutate({{ var }} := fct_rev(fct_infreq({{ var }}))) |>
+    ggplot(aes(y = {{var}}))+
+    geom_bar()
+}
+```
+
+```{r plot-functions-13-check}
+grade_this_code()
+```
 ### 
 
 You have now made a sorted bar graph.
 
 ### Exercise 14
 
-Let's now use the `filter()` function which is another helper function. Copy the previous code, change the name to `conditional_bars` , add another argument `var` and delete the `mutate()` and add ` filter({{ condition }})` and also change the `y` to `x` since this is a horizontal grpah.
+Let's now use the `filter()` function which is another helper function. Copy the previous code, change the name to `conditional_bars` , add another argument `var` and delete the `mutate()` and add ` filter({{ condition }})` and also change the `y` to `x` since this is a horizontal graph.
 
 ```{r plot-functions-14, exercise = TRUE}
 
@@ -1511,6 +1965,19 @@ conditional_bars <- function(df, ..., var) {
     ggplot(aes(... = {{ var }})) + 
     geom_bar()
 }
+```
+
+```{r plot-functions-14-solution, exercise.reveal_solution = FALSE}
+conditional_bars <- function(df, condition, var){
+  df |> 
+    filter({{ condition }}) |>
+    ggplot(aes(x = {{var}}))+
+    geom_bar()
+}
+```
+
+```{r plot-functions-14-check}
+grade_this_code()
 ```
 
 ### 
@@ -1530,6 +1997,15 @@ diamonds |>
   ...(cut == "Good", ...)
 ```
 
+```{r plot-functions-15-solution, exercise.reveal_solution = FALSE}
+diamonds |> 
+  conditional_bars(cut == "Good", clarity)
+```
+
+```{r plot-functions-15-check}
+grade_this_code()
+```
+
 ### 
 
 Good Work!
@@ -1540,7 +2016,7 @@ We’ll finish with a more complicated case: labeling the plots you create.
 
 Remember the histogram function we showed you earlier?
 
-```{r}
+```{r, echo = TRUE}
 histogram1 <- function(df, var, binwidth) {
   df |> 
     ggplot(aes(x = {{ var }})) + 
@@ -1573,8 +2049,23 @@ histogram1 <- function(df, ..., binwidth) {
   df |> 
     ggplot(aes(x = {{ ... }})) + 
     geom_histogram(binwidth = binwidth) + 
-    labs(...` = label)
+    labs(... = label)
 }
+```
+
+```{r plot-functions-17-solution, exercise.reveal_solution = FALSE}
+histogram1 <- function(df, var, binwidth) {
+  label <- rlang::...("A histogram of {{var}} with binwidth {...}")
+  
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth) + 
+    labs(title = label)
+}
+```
+
+```{r plot-functions-17-check}
+grade_this_code()
 ```
 
 ### 
@@ -1594,13 +2085,22 @@ diamonds |>
   ...(carat, ...)
 ```
 
+```{r plot-functions-18-solution, exercise.reveal_solution = FALSE}
+diamonds |>
+  histogram1(carat, .1)
+```
+
+```{r plot-functions-18-check}
+grade_this_code()
+```
+
 ### 
 
 You can use the same approach in any other place where you want to supply a string in a ggplot2 plot.
 
 ### Exercise 19
 
-Let's make the x and y axis look better so copy the code and after `histogram()` add the `labs()` layer and set `x` to `"Size (in carats)"` and `y` to `"Number of diamonds"`.
+Let's make the x and y axis look better so copy the code and after `histogram1()` add the `labs()` layer and set `x` to `"Size (in carats)"` and `y` to `"Number of diamonds"`.
 
 ```{r plot-functions-19, exercise = TRUE}
 
@@ -1612,6 +2112,17 @@ Let's make the x and y axis look better so copy the code and after `histogram()`
 ... |>
   ...(carat, ...) +
   labs(x = ..., y = ...)
+```
+
+```{r plot-functions-19-solution, exercise.reveal_solution = FALSE}
+diamonds |>
+  histogram1(carat, .1) +
+  labs(x = "Size (in carats)",
+       y = "Number of diamonds")
+```
+
+```{r plot-functions-19-check}
+grade_this_code()
 ```
 
 ### 
