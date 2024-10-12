@@ -1,15 +1,17 @@
 ---
 title: Joins
-author: David Kane
 tutorial:
   id: joins
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 19: Joins'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane-->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -18,6 +20,10 @@ library(knitr)
 library(dplyr)
 library(babynames)
 library(lubridate)
+library(gradethis)
+library(tutorialExtras)
+
+gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(out.width = '90%')
@@ -75,8 +81,22 @@ parties3 <- tibble(
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+```{r, context = "server"}
+grade_server("grade")
 ```
+
+```{r Name}
+question_text("Name:",
+              answer_fn(function(value){
+                              if(length(value) >= 1 ) {
+                                return(mark_as(TRUE))
+                                }
+                              return(mark_as(FALSE) )
+                              }),
+              correct = "submitted",
+              allow_retry = FALSE )
+```
+
 
 ## Introduction
 ### 
@@ -99,7 +119,7 @@ To understand joins, you need to first understand how two tables can be connecte
 
 Every join involves a pair of keys: a primary key and a foreign key. A primary key is a variable or set of variables that uniquely identifies each observation.
 
-As a example run `airlines`.
+As a example type `airlines` and submit.
 
 ```{r keys-1, exercise = TRUE}
 
@@ -109,13 +129,21 @@ As a example run `airlines`.
 airlines
 ```
 
+```{r keys-1-solution, exercise.reveal_solution = FALSE}
+airlines
+```
+
+```{r keys-1-check}
+grade_this_code()
+```
+
 ### 
 
 `airlines` records two pieces of data about each airline: its `carrier` code and its full `name`. You can identify an airline with its two letter carrier code, making carrier the primary key.
 
 ### Exercise 2
 
-Run `airports`.
+Run and submit `airports`.
 
 ```{r keys-2, exercise = TRUE}
 
@@ -125,13 +153,21 @@ Run `airports`.
 airports
 ```
 
+```{r keys-2-solution, exercise.reveal_solution = FALSE}
+airports
+```
+
+```{r keys-2-check}
+grade_this_code()
+```
+
 ### 
 
 `airports` records data about each airport. You can identify each airport by its three letter airport code, making `faa` the primary key.
 
 ### Exercise 3
 
-Run `planes`.
+Run and submit `planes`.
 
 ```{r keys-3, exercise = TRUE}
 
@@ -141,13 +177,21 @@ Run `planes`.
 planes
 ```
 
+```{r keys-3-solution, exercise.reveal_solution = FALSE}
+planes
+```
+
+```{r keys-3-check}
+grade_this_code()
+```
+
 ### 
 
 `planes` records data about each plane. You can identify a plane by its tail number, making `tailnum` the primary key.
 
 ### Exercise 4
 
-Run `weather`.
+Run and submit `weather`.
 
 ```{r keys-4, exercise = TRUE}
 
@@ -155,6 +199,14 @@ Run `weather`.
 
 ```{r keys-4-hint-1, eval = FALSE}
 weather
+```
+
+```{r keys-4-solution, exercise.reveal_solution = FALSE}
+weather
+```
+
+```{r keys-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -167,7 +219,7 @@ When more than one variable is needed, the key is called a `compound key`.
 
 Now that we have seen couple of examples of what `primary keys` are, let's explore what a `foreign key` is. A `foreign key` is a variable (or set of variables) that corresponds to a `primary key` in another table.
 
-Run `flights$tailnum`.
+Run and submit `flights$tailnum`.
 
 ```{r keys-5, exercise = TRUE}
 
@@ -177,8 +229,12 @@ Run `flights$tailnum`.
 flights$tailnum
 ```
 
-```{r include = FALSE}
+```{r keys-5-solution, exercise.reveal_solution = FALSE}
 flights$tailnum
+```
+
+```{r keys-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -187,7 +243,7 @@ flights$tailnum
 
 ### Exercise 6
 
-Run `flights$carrier`.
+Run and submit `flights$carrier`.
 
 ```{r keys-6, exercise = TRUE}
 
@@ -197,8 +253,12 @@ Run `flights$carrier`.
 flights$carrier
 ```
 
-```{r include = FALSE}
+```{r keys-6-solution, exercise.reveal_solution = FALSE}
 flights$carrier
+```
+
+```{r keys-6-check}
+grade_this_code()
 ```
 
 ### 
@@ -207,7 +267,7 @@ flights$carrier
 
 ### Exercise 7
 
-Run `flights$origin`.
+Run and submit `flights$origin`.
 
 ```{r keys-7, exercise = TRUE}
 
@@ -217,8 +277,12 @@ Run `flights$origin`.
 flights$origin
 ```
 
-```{r include = FALSE}
+```{r keys-7-solution, exercise.reveal_solution = FALSE}
 flights$origin
+```
+
+```{r keys-7-check}
+grade_this_code()
 ```
 
 ### 
@@ -247,10 +311,14 @@ Start a pipe with `planes` to the `count()` function and within count set the ar
   filter(...)
 ```
 
-```{r include = FALSE}
+```{r keys-8-solution, exercise.reveal_solution = FALSE}
 planes |> 
   count(tailnum) |> 
   filter(n > 1)
+```
+
+```{r keys-8-check}
+grade_this_code()
 ```
 
 ### 
@@ -273,10 +341,14 @@ Let's perform a similar check using `weather` data. Please replicate the previou
   filter(n > 1)
 ```
 
-```{r include = FALSE}
+```{r keys-9-solution, exercise.reveal_solution = FALSE}
 weather |> 
   count(time_hour, origin) |> 
   filter(n > 1)
+```
+
+```{r keys-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -296,9 +368,13 @@ planes |>
   filter(is.na(...))
 ```
 
-```{r include = FALSE}
+```{r keys-10-solution, exercise.reveal_solution = FALSE}
 planes |> 
   filter(is.na(tailnum))
+```
+
+```{r keys-10-check}
+grade_this_code()
 ```
 
 ### 
@@ -320,9 +396,13 @@ Let's perform a similar check using `weather` data. Please replicate the previou
   filter(is.na(time_hour) | is.na(...))
 ```
 
-```{r include = FALSE}
+```{r keys-11-solution, exercise.reveal_solution = FALSE}
 planes |> 
   filter(is.na(tailnum) | is.na(origin))
+```
+
+```{r keys-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -345,10 +425,14 @@ Let's verify if the following variables can be used a primary keys, start a pipe
   ...
 ```
 
-```{r include = FALSE}
+```{r keys-12-solution, exercise.reveal_solution = FALSE}
 flights |> 
   count(time_hour, carrier, flight) |> 
-  filter(n>1)
+  filter(n > 1)
+```
+
+```{r keys-12-check}
+grade_this_code()
 ```
 
 ### 
@@ -371,10 +455,14 @@ Let's check if altitude and latitude are good primary keys for airports, so copy
   filter(...)
 ```
 
-```{r include = FALSE}
+```{r keys-13-solution, exercise.reveal_solution = FALSE}
 airports |> 
   count(alt, lat) |> 
-  filter(n>1)
+  filter(n > 1)
+```
+
+```{r keys-13-check}
+grade_this_code()
 ```
 
 ### 
@@ -391,16 +479,18 @@ Let's make a new primary key `id` and to add a new column `id` with row numbers 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r keys-14-hint-1, eval = FALSE}
 flights |> 
   mutate(id = ..., .before = ...)
 ```
 
-```{r include = FALSE}
+```{r keys-14-solution, exercise.reveal_solution = FALSE}
 flights |> 
   mutate(id = row_number(), .before = 1)
+```
+
+```{r keys-14-check}
+grade_this_code()
 ```
 
 ### 
@@ -428,9 +518,14 @@ flights2 <- ... |>
 flights2
 ```
 
-```{r include = FALSE}
+```{r basic-joins-1-solution, exercise.reveal_solution = FALSE}
 flights2 <- flights |> 
-select(year, time_hour, origin, dest, tailnum,carrier)
+  select(year, time_hour, origin, dest, tailnum,carrier)
+flights2
+```
+
+```{r basic-joins-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -447,16 +542,18 @@ To add full airline name to the flights2 data, let's start a pipe with `flights2
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r basic-joins-2-hint-1, eval = FALSE}
 ... |>
   left_join(...)
 ```
 
-```{r include = FALSE}
+```{r basic-joins-2-solution, exercise.reveal_solution = FALSE}
 flights2 |>
   left_join(airlines)
+```
+
+```{r basic-joins-2-check}
+grade_this_code()
 ```
 
 ### 
@@ -480,9 +577,13 @@ Copy the previous code, modify the arguemet for `left_join()` to `weather |> sel
   ...(weather |> select(origin, time_hour, temp, wind_speed))
 ```
 
-```{r include = FALSE}
+```{r basic-joins-3-solution, exercise.reveal_solution = FALSE}
 flights2 |> 
   left_join(weather |> select(origin, time_hour, temp, wind_speed))
+```
+
+```{r basic-joins-3-check}
+grade_this_code()
 ```
 
 ### 
@@ -505,9 +606,13 @@ Copy the previous code and modify the argument in `left_join()` to `planes |> se
   ...(...)
 ```
 
-```{r include = FALSE}
+```{r basic-joins-4-solution, exercise.reveal_solution = FALSE}
 flights2 |> 
   left_join(planes |> select(tailnum, type, engines, seats))
+```
+
+```{r basic-joins-4-check}
+grade_this_code()
 ```
 
 ### 
@@ -530,10 +635,14 @@ flights2 |>
   left_join(...)
 ```
 
-```{r include = FALSE}
+```{r basic-joins-5-solution, exercise.reveal_solution = FALSE}
 flights2 |> 
   filter(tailnum == "N3ALAA") |> 
   left_join(planes |> select(tailnum, type, engines, seats))
+```
+
+```{r basic-joins-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -559,9 +668,13 @@ To do so, start of by creating pipe with `flights2` to `left_join()` and pass in
   left_join(...)
 ```
 
-```{r include = FALSE}
+```{r basic-joins-6-solution, exercise.reveal_solution = FALSE}
 flights2 |>
   left_join(planes)
+```
+
+```{r basic-joins-6-check}
+grade_this_code()
 ```
 
 ### 
@@ -585,9 +698,13 @@ Copy the previous code and within `left_join()`, add `join_by()` and pass in `ta
   ...(planes, join_by(...))
 ```
 
-```{r include = FALSE}
+```{r basic-joins-7-solution, exercise.reveal_solution = FALSE}
 flights2 |>
   left_join(planes, join_by(tailnum))
+```
+
+```{r basic-joins-7-check}
+grade_this_code()
 ```
 
 ### 
@@ -611,9 +728,13 @@ Copy the previous code change `planes` to `airports` and in `join_by()` set `des
   ...(airports, join_by(...))
 ```
 
-```{r include = FALSE}
+```{r basic-joins-8-solution, exercise.reveal_solution = FALSE}
 flights2 |>
   left_join(airports, join_by(dest == faa))
+```
+
+```{r basic-joins-8-check}
+grade_this_code()
 ```
 
 ### 
@@ -636,14 +757,18 @@ Copy the previous code and change `join_by()` arguement to `origin == faa`.
   ...(airports, join_by(...== ...))
 ```
 
-```{r include = FALSE}
+```{r basic-joins-9-solution, exercise.reveal_solution = FALSE}
 flights2 |>
   left_join(airports, join_by(origin == faa))
 ```
 
+```{r basic-joins-9-check}
+grade_this_code()
+```
+
 ### 
 
-If we compare both the tibbbles we can see the difference in the `name` variable.
+If we compare both the tibbles we can see the difference in the `name` variable.
 
 ### Exercise 10
 
@@ -662,9 +787,13 @@ Start a pipe with `airports` to `semi_join()` and for the table which we will jo
   ...(flights2, join_by(faa == ...))
 ```
 
-```{r include = FALSE}
+```{r basic-joins-10-solution, exercise.reveal_solution = FALSE}
 airports |> 
   semi_join(flights2, join_by(faa == dest))
+```
+
+```{r basic-joins-10-check}
+grade_this_code()
 ```
 
 ### 
@@ -686,10 +815,14 @@ Let's find rows that are missing from airports by looking for flights that don�
   ...(airports, join_by(... == faa)
 ```
 
-```{r, include = FALSE}
+```{r basic-joins-11-solution, exercise.reveal_solution = FALSE}
 flights2 |> 
   anti_join(airports, join_by(dest == faa)) |> 
   distinct(dest)
+```
+
+```{r basic-joins-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -712,10 +845,14 @@ Let's now find which `tailnums` are missing from planes. Copy the previous code,
   ...(tailnum)
 ```
 
-```{r, include = FALSE}
+```{r basic-joins-12-solution, exercise.reveal_solution = FALSE}
 flights2 |> 
   anti_join(planes, join_by(tailnum)) |> 
   distinct(tailnum)
+```
+
+```{r basic-joins-12-check}
+grade_this_code()
 ```
 
 ### 
@@ -723,13 +860,14 @@ flights2 |>
 Good Work! You now have the knowledge of basic joins that you will maybe need in the future for your final project.
 
 ## How do joins work?
+
 Now that you’ve used joins a few times it’s time to learn more about how they work, focusing on how each row in x matches rows in y. We’ll begin by introducing a visual representation of joins, using the simple tibbles defined below  In these examples we’ll use a single key called key and a single value column (val_x and val_y), but the ideas all generalize to multiple keys and multiple values.
 
 ### Exercise 1
 
-These are the tibbles we will use to demonstrate or visualize the images that will be shown the exercises going on.
+Hit Submit Answer to create the tibbles we will use to demonstrate or visualize the images in the upcoming exercises.
 
-```{r how-do-joins-work-1}
+```{r how-do-joins-work-1, exercise = TRUE}
 x <- tribble(
   ~key, ~val_x,
      1, "x1",
@@ -744,11 +882,32 @@ y <- tribble(
 )
 ```
 
+```{r how-do-joins-work-1-solution, exercise.reveal_solution = FALSE}
+x <- tribble(
+  ~key, ~val_x,
+     1, "x1",
+     2, "x2",
+     3, "x3"
+)
+y <- tribble(
+  ~key, ~val_y,
+     1, "y1",
+     2, "y2",
+     4, "y3"
+)
+```
+
+```{r how-do-joins-work-1-check}
+grade_this_code()
+```
+
 ### 
 
 The graphical representation of the `x` and `y` tibble:
 
 ```{r}
+#| out.width = "300px"
+
 knitr::include_graphics("images/photo1.png")
 ```
 
@@ -757,6 +916,8 @@ knitr::include_graphics("images/photo1.png")
 To understand how joins work, it’s useful to think of every possible match. Here we show that with a grid of connecting lines.
 
 ```{r}
+#| out.width = "300px"
+
 knitr::include_graphics("images/setup2.png")
 ```
 
@@ -769,6 +930,8 @@ The image above depicts the foundation of our visual representation, showing pot
 To describe a join type, we use dots to indicate matches. The matches determine the output rows, which include the key, x values, and y values. Image below displays an inner join, retaining rows only when the keys are equal.
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/inner.png")
 ```
 
@@ -783,6 +946,8 @@ Outer joins retain observations that appear in at least one of the data frames, 
 The image below is a visual representation of the left join where every row in x appears in the output.
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/left.png")
 ```
 
@@ -795,6 +960,8 @@ A left join keeps all observations in x, like in the image below. Every row of x
 The image below is a visual representation of the right join where every row of y appears in the output.
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/right.png")
 ```
 
@@ -807,6 +974,8 @@ A right join keeps all observations in y, like the image above. Every row of y i
 The image below is  a visual representation of the full join where every row in x and y appears in the output.
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/full.png")
 ```
 
@@ -819,6 +988,8 @@ A full join keeps all observations that appear in x or y, like the image above. 
 The image below is  a visual representation Venn diagrams showing the difference between inner, left, right, and full joins.
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/venn.png")
 ```
 
@@ -833,6 +1004,8 @@ So far we’ve explored what happens if a row in x matches zero or one rows in y
 The image below is shows how two records in Y tibble connect to the same record in X tibble.
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/match-types.png")
 ```
 
@@ -854,16 +1027,18 @@ Create two variables `df1` and `df2` on different lines. Assign `tibble(key = c(
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r how-do-joins-work-9-hint-1, eval = FALSE}
 df1 <- 
 df2 <- 
 ```
 
-```{r, include = FALSE}
+```{r how-do-joins-work-9-solution, exercise.reveal_solution = FALSE}
 df1 <- tibble(key = c(1, 2, 2), val_x = c("x1", "x2", "x3"))
 df2 <- tibble(key = c(1, 2, 2), val_x = c("x1", "x2", "x3"))
+```
+
+```{r how-do-joins-work-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -885,9 +1060,13 @@ Copy the previous code and on a new line create a pipe with `df1` to `inner_join
   inner_join(df2, ...(key))
 ```
 
-```{r, include = FALSE}
+```{r how-do-joins-work-10-solution, exercise.reveal_solution = FALSE}
 df1 |> 
   inner_join(df2, join_by(key))
+```
+
+```{r how-do-joins-work-10-check}
+grade_this_code()
 ```
 
 ### 
@@ -901,22 +1080,24 @@ While the first row in df1 only matches one row in df2, the second and third row
 
 Let's relax the restriction of equi joins and explore different criteria for matching rows. Before that, let's revisit a simplification we made earlier. In equi joins, the x keys and y keys are always equal, so we only display one key in the output. By requesting dplyr to keep both keys with `keep = TRUE`, we can modify the inner_join() code.
 
-To join `x` with `y` using left_join(), start a pipe and specify y as the tibble to join. Use `key` as the joining criterion using `by` and include `keep = TRUE` to retain both keys.
+To join `x` with `y` using `left_join()`, start a pipe and specify y as the tibble to join. Use `key` as the joining criterion using `by` and include `keep = TRUE` to retain both keys.
 
 ```{r nonequi-joins-1, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r nonequi-joins-1-hint-1, eval = FALSE}
 x |> 
   left_join(..., ... = "key", keep = ...)
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-1-solution, exercise.reveal_solution = FALSE}
 x |> 
   left_join(y, by = "key", keep = TRUE)
+```
+
+```{r nonequi-joins-1-check}
+grade_this_code()
 ```
 
 ### 
@@ -924,6 +1105,8 @@ x |>
 Below is the representation of when you do equi joins:
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/inner-both.png")
 ```
 
@@ -932,6 +1115,8 @@ knitr::include_graphics("images/inner-both.png")
 When using non-equi joins, we always display both keys because their values can differ. For instance, instead of requiring equality between x$key and y$key, we can match when x$key is greater than or equal to y$key, as shown in image below. dplyr's join functions recognize this distinction and automatically show both keys in non-equi joins.
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/gte.png")
 ```
 
@@ -945,12 +1130,14 @@ Non-equi join isn’t a particularly useful term because it only tells you what 
 A cross join matches everything, as the image below, generating the Cartesian product of rows. This means the output will have nrow(x) * nrow(y) rows.
 
 ```{r}
+#| out.width = "300px"
+
 knitr::include_graphics("images/cross.png")
 ```
 
 ### 
 
-The image above demonstrates a cross join matching each row in x with every row in y. Looking at the image we cans ee that cross joins are useful when generating permutations.
+The image above demonstrates a cross join matching each row in x with every row in y. Looking at the image we can see that cross joins are useful when generating permutations.
 
 ### Exercise 4
 
@@ -960,16 +1147,17 @@ To make use of the permutations skills that this function has, let's first creat
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r nonequi-joins-4-hint-1, eval = FALSE}
 df <- tibble(name = ...(...))
 ```
 
-```{r, include=FALSE}
+```{r nonequi-joins-4-solution, exercise.reveal_solution = FALSE}
 df <- tibble(name = c("John", "Simon", "Tracy", "Max"))
 ```
 
+```{r nonequi-joins-4-check}
+grade_this_code()
+```
 
 ### 
 
@@ -991,10 +1179,14 @@ df |>
   cross_join(...)
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-5-solution, exercise.reveal_solution = FALSE}
 df <- tibble(name = c("John", "Simon", "Tracy", "Max"))
 df |> 
   cross_join(df)
+```
+
+```{r nonequi-joins-5-check}
+grade_this_code()
 ```
 
 ### 
@@ -1008,6 +1200,8 @@ Next up we will talk about the second type of non-equi join that dplyr has which
 Inequality joins use `<, <=, >=, or >` to restrict the set of possible matches. Below is what it looks like visually.
 
 ```{r}
+#| out.width = "300px"
+
 knitr::include_graphics("images/lt.png")
 ```
 
@@ -1025,16 +1219,17 @@ Create a variable `df` and assign  `tibble(id = 1:4, name = c("John", "Simon", "
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r nonequi-joins-7-hint-1, eval = FALSE}
 df <- tibble(..., name = ...(...))
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-7-solution, exercise.reveal_solution = FALSE}
 tibble(id = 1:4, name = c("John", "Simon", "Tracy", "Max"))
 ```
 
+```{r nonequi-joins-7-check}
+grade_this_code()
+```
 
 ### 
 
@@ -1047,6 +1242,8 @@ The next type of non equi joins are rolling joins which we will explore in the n
 Rolling joins return the closest match instead of all satisfying the inequality. to have  rolling join add `closest() to the inequality condition. For example, join_by(closest(x <= y)) finds the smallest y ≥ x, and join_by(closest(x > y)) finds the largest y < x. Example:
 
 ```{r}
+#| out.width = "400px"
+
 knitr::include_graphics("images/closest.png")
 ```
 
@@ -1064,14 +1261,16 @@ Create a tibble `parties` and add columns `q` and pass in `1:4` for it then add 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r nonequi-joins-9-hint-1, eval = FALSE}
 parties <- tibble(q = ..., party = ymd(c(...)))
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-9-solution, exercise.reveal_solution = FALSE}
 parties <- tibble(q = 1:4, party = ymd(c("2022-01-10", "2022-04-04", "2022-07-11", "2022-10-03")))
+```
+
+```{r nonequi-joins-9-check}
+grade_this_code()
 ```
 
 ### 
@@ -1088,8 +1287,6 @@ On a new line call employees to have a look at the tibble.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r nonequi-joins-10-hint-1, eval = FALSE}
 ... <- tibble(
   name = sample(babynames::...$name, 100),
@@ -1098,12 +1295,16 @@ On a new line call employees to have a look at the tibble.
 employees
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-10-solution, exercise.reveal_solution = FALSE}
 employees <- tibble(
   name = sample(babynames::babynames$name, 100),
  birthdays = ymd("2022-01-01") + (sample(365, 100, replace = TRUE) - 1)
 )
 employees
+```
+
+```{r nonequi-joins-10-check}
+grade_this_code()
 ```
 
 ### 
@@ -1118,25 +1319,18 @@ To join the employees and parties tables, start a pipe with employees and use `l
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r nonequi-joins-11-hint-1, eval = FALSE}
 ... |> 
   left_join(..., join_by(...(birthday >= party)))
 ```
 
-```{r, include = FALSE}
-employees <- tibble(
-     name = sample(babynames::babynames$name, 100),
-     birthday = ymd("2022-01-01") + (sample(365, 100, replace = TRUE) - 1)
-)
-
-parties <- tibble(
-     q = 1:4,
-     party = ymd(c("2022-01-10", "2022-04-04", "2022-07-11", "2022-10-03")))
-
+```{r nonequi-joins-11-solution, exercise.reveal_solution = FALSE}
 employees |> 
   left_join(parties, join_by(closest(birthday >= party)))
+```
+
+```{r nonequi-joins-11-check}
+grade_this_code()
 ```
 
 ### 
@@ -1158,9 +1352,13 @@ employees |>
   ...(parties, join_by(closest(birthday >= party)))
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-12-solution, exercise.reveal_solution = FALSE}
 employees |> 
   right_join(parties, join_by(closest(birthday >= party)))
+```
+
+```{r nonequi-joins-12-check}
+grade_this_code()
 ```
 
 ### 
@@ -1177,8 +1375,6 @@ Make a new tibble `parties2` using `tibble()` and define three columns: party, s
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r nonequi-joins-13-hint-1, eval = FALSE}
 parties2 <- tibble(
   q = ...,
@@ -1189,7 +1385,7 @@ parties2 <- tibble(
 parties2
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-13-solution, exercise.reveal_solution = FALSE}
 parties2 <- tibble(
   q = 1:4,
   party = ymd(c("2022-01-10", "2022-04-04", "2022-07-11", "2022-10-03")),
@@ -1199,6 +1395,9 @@ parties2 <- tibble(
 parties2
 ```
 
+```{r nonequi-joins-13-check}
+grade_this_code()
+```
 
 ### 
 
@@ -1219,16 +1418,18 @@ Start a pipe with `parties2` to `inner_join()`, we will join `parties2` to itsel
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r nonequi-joins-14-hint-1, eval = FALSE}
 ... |> 
   inner_join(..., join_by(...(start, end, start, end), ...))
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-14-solution, exercise.reveal_solution = FALSE}
 parties2 |> 
   inner_join(parties2, join_by(overlaps(start, end, start, end), q < q))
+```
+
+```{r nonequi-joins-14-check}
+grade_this_code()
 ```
 
 ### 
@@ -1237,7 +1438,7 @@ If you want to explore move about overlap joins, check out [dplyr](https://dplyr
 
 ### Exercise 15
 
-When we ran the previous code, we see other info which we dont need, so let's remove those using `select()`. So copy the previous code and continue the pipe from `inner_join()` to `select()` and only select the `start.x, end.x, start.y, end.y`.
+When we ran the previous code, we see other info which we don't need, so let's remove those using `select()`. So copy the previous code and continue the pipe from `inner_join()` to `select()` and only select the `start.x, end.x, start.y, end.y`.
 
 ```{r nonequi-joins-15, exercise = TRUE}
 
@@ -1251,10 +1452,14 @@ parties2 |>
   select(..., ..., ..., ...)
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-15-solution, exercise.reveal_solution = FALSE}
 parties2 |> 
   inner_join(parties2, join_by(overlaps(start, end, start, end), q < q)) |>
   select(start.x, end.x, start.y, end.y)
+```
+
+```{r nonequi-joins-15-check}
+grade_this_code()
 ```
 
 ### 
@@ -1280,7 +1485,7 @@ Go back to exercise 13 and copy your answer from there and paste it here, change
 )
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-16-solution, exercise.reveal_solution = FALSE}
 parties4 <- tibble(
   q = 1:4,
   party = ymd(c("2022-01-10", "2022-04-04", "2022-07-11", "2022-10-03")),
@@ -1288,6 +1493,10 @@ parties4 <- tibble(
   end = ymd(c("2022-04-03", "2022-07-10", "2022-10-02", "2022-12-31"))
 )
 parties2
+```
+
+```{r nonequi-joins-16-check}
+grade_this_code()
 ```
 
 ### 
@@ -1302,17 +1511,19 @@ Let's join `employees` and `parties3` by first creating a pipe with `employees` 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r nonequi-joins-17-hint-1, eval = FALSE}
 ... |> 
       inner_join(parties3, ...(between(birthday, start, end)), unmatched = "...")
 ```
 
-```{r, include = FALSE}
+```{r nonequi-joins-17-solution, exercise.reveal_solution = FALSE}
 employees |> 
       inner_join(parties3, 
                  join_by(between(birthday, start, end)), unmatched = "error")
+```
+
+```{r nonequi-joins-17-check}
+grade_this_code()
 ```
 
 ### 
@@ -1331,5 +1542,21 @@ Filtering joins, which filter observations from one data frame based on whether 
 You also learned about basic joins, keys, foreign keys and more which is basically like creating a relational database in SQL.
 
 
-```{r download-answers, child = system.file("child_documents/download_answers.Rmd", package = "tutorial.helpers")}
+## Get Grade
+
+You can check your grade at any time by clicking the 'View Grade' button below. 
+
+```{r}
+grade_button_ui(id = "grade")
+```
+
+<br>
+
+Once you are finished:
+
+-   Click the 'Download Grade' button below. This will download an html document of your grade summary.
+-   Submit the downloaded html to your learning management system.
+
+```{r}
+grade_print_ui("grade")
 ```
