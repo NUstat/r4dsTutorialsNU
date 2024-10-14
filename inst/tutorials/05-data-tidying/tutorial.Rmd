@@ -280,7 +280,13 @@ table1 |>
 ```
 
 ```{r tidy-data-7-check}
-grade_this_code()
+grade_this({
+  # custom checking code appears here
+  if (identical(.result, .solution) && str_detect(.user_code, "mutate")) {
+    pass("Great work!")
+  }
+  fail("Try again!")
+})
 ```
 
 ### Exercise 8
