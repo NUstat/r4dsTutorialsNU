@@ -81,7 +81,7 @@ If AI is so important, then why do all the tutorials in this package make no use
 ## Google is your friend
 ### 
 
-If you get stuck, start with Google. Typically adding “R” to a query is enough to restrict it to relevant results. If the search result isn’t useful, it often means that there aren’t any R-specific results available.
+If you get stuck, start with Google. Typically adding “R” or "R tidyverse" to a query is enough to restrict it to relevant results. If the search result isn’t useful, it often means that there aren’t any R-specific results available.
 
 ### Exercise 1
 
@@ -90,21 +90,22 @@ Run the query "how to make a boxplot in R" in Google or in your favorite search 
 ```{r google-is-your-friend-1}
 question_text(NULL,
 	answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
+	  if(length(value) >= 1 ) {
+	    return(mark_as(TRUE))
+	    }
+	  return(mark_as(FALSE) )
+	}),
 	correct = "submitted",
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
-	rows = 3)
+	rows = 3
+	)
 ```
 
 ### 
 
-Google is particularly useful for error messages. If you get an error message and you have no idea what it means, try googling it! Chances are that someone else has been confused by it in the past, and there will be help somewhere on the web. (If the error message isn’t in English, run Sys.setenv(LANGUAGE = "en") and re-run the code; you’re more likely to find help for English error messages.)
+Google is particularly useful for error messages. If you get an error message and you have no idea what it means, try googling it! Chances are that someone else has been confused by it in the past, and there will be help somewhere on the web. (If the error message isn’t in English, run `Sys.setenv(LANGUAGE = "en")` and re-run the code; you’re more likely to find help for English error messages.)
 
 ### Exercise 2
 
@@ -112,17 +113,18 @@ Adding package names like “tidyverse” or “ggplot2” will help narrow down
 
 ```{r google-is-your-friend-2}
 question_text(NULL,
-	answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-	correct = "submitted",
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = TRUE,
+  try_again_button = "Edit Answer",
+  incorrect = NULL,
+  rows = 3
+)
 ```
 
 ### 
@@ -137,17 +139,18 @@ Copy/paste the URL for the most recent topic (the one after the default "Welcome
 
 ```{r google-is-your-friend-3}
 question_text(NULL,
-	answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-	correct = "submitted",
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = TRUE,
+  try_again_button = "Edit Answer",
+  incorrect = NULL,
+  rows = 3
+)
 ```
 
 ### 
@@ -161,17 +164,18 @@ The documentation for R is excellent. You can access it with using either `?` or
 
 ```{r google-is-your-friend-4}
 question_text(NULL,
-	answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-	correct = "submitted",
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = TRUE,
+  try_again_button = "Edit Answer",
+  incorrect = NULL,
+  rows = 3
+)
 ```
 
 Sometimes, you may need to use a double question mark --- `??function_name` --- if the function is part of a package you don't have loaded. RStudio will prompt you to try `??` if `?` doesn't work. 
@@ -221,16 +225,19 @@ Then run the code and **paste the first line of the error message below**.
 
 ```{r making-a-reprex-1}
 question_text(NULL,
-          answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("Errorin`geom_col()`:")) {
-                 return(mark_as(TRUE))}
-                 return(mark_as(FALSE) ) }),
-	correct = "submitted",
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 3)
+  answer_fn(function(value) {
+    if (str_remove_all(str_to_lower(value), " ") %in%
+      str_to_lower(c("Errorin`geom_col()`:", "Errorin`geom_col()`"))) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = TRUE,
+  try_again_button = "Edit Answer",
+  incorrect = NULL,
+  rows = 3
+)
 ```
 
 
