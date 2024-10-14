@@ -128,7 +128,7 @@ read_lines("data/students.csv") |> cat(sep = "\n")
 
 ### 
 
-Write code for reading this data into R. Use `read_csv()` and set the `file` argument to "data/students.csv". All the files we will use in this tutorial live in the `data/` directory.
+Write code for reading this data into R. Use `read_csv()` and set the `file` argument to `"data/students.csv"`. All the files we will use in this tutorial live in the `data/` directory.
 
 ```{r reading-data-from-a-file-2, exercise = TRUE}
 
@@ -143,7 +143,13 @@ read_csv(file = "data/students.csv")
 ```
 
 ```{r reading-data-from-a-file-2-check}
-grade_this_code()
+grade_this({
+  # custom checking code appears here
+  if (identical(TRUE, all.equal(.result, .solution))) {
+    pass(random_praise())
+  }
+  fail("Try Again!")
+})
 ```
 
 ### 
