@@ -898,6 +898,24 @@
       ],
       "Hash": "347d104ed332650b737f509a703c9c7f"
     },
+    "ggcheck": {
+      "Package": "ggcheck",
+      "Version": "0.0.5",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "ggcheck",
+      "RemoteUsername": "rstudio",
+      "RemoteSha": "155f77dc6931a48595e4cecdf0a43c1533a77912",
+      "Requirements": [
+        "ggplot2",
+        "gradethis",
+        "purrr",
+        "rlang",
+        "utils"
+      ],
+      "Hash": "31a31538ca31e00fe66a91077262b796"
+    },
     "gghighlight": {
       "Package": "gghighlight",
       "Version": "0.4.1",
