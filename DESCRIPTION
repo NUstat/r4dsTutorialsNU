@@ -21,7 +21,8 @@ RoxygenNote: 7.3.2
 Imports:
     tutorial.helpers,
     tutorialExtras,
-    gradethis
+    gradethis,
+    ggcheck (>= 0.0.5)
 Suggests:
     arrow,
     babynames,
@@ -56,9 +57,10 @@ Suggests:
     writexl,
     Lahman
 Config/testthat/edition: 3  
-Remotes: 
+Remotes:  
     PPBDS/tutorial.helpers,
     NUstat/tutorialExtras,
-    rstudio/gradethis
+    rstudio/gradethis,
+    rstudio/ggcheck
 BugReports: https://github.com/NUstat/r4dsTutorialsNU/issues
 URL: https://NUstat.github.io/r4dsTutorialsNU/, https://github.com/NUstat/r4dsTutorialsNU
