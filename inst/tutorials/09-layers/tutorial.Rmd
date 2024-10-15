@@ -187,18 +187,17 @@ ggplot(mpg, aes(x = displ, y = hwy, color = ...)) +
 ```
 
 ```{r aesthetic-mappings-4-solution, exercise.reveal_solution = FALSE}
+# option_1 ----
 ggplot(mpg, aes(x = displ, y = hwy, color = class)) + 
   geom_point()
+
+# option_2 ----
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = class))
 ```
 
 ```{r aesthetic-mappings-4-check}
-grade_this({
-  # custom checking code appears here
-  if (gradethis_equal(.result, .solution)) {
-    pass("Great work!")
-  }
-  fail(gradethis_equal(.result, .solution))
-})
+grade_this_code()
 ```
 
 ### 
