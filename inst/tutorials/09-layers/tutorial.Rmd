@@ -215,22 +215,20 @@ Replace the `color` argument with the `shape` argument within `aes()`. Set the v
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r aesthetic-mappings-5-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                shape = ...)) +
+ggplot(mpg, aes(x = displ, y = hwy, shape = ...)) +
   geom_point()
 ```
 
 ```{r aesthetic-mappings-5-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy,
-                shape = class)) +
+ggplot(mpg, aes(x = displ, y = hwy, shape = class)) +
   geom_point()
 ```
 
 ```{r aesthetic-mappings-5-check}
 grade_this_code()
 ```
+
+###
 
 When class is mapped to shape, we get two warnings:
 
