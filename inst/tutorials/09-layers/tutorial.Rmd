@@ -253,16 +253,12 @@ Replace the `shape` argument with the `size` argument within `aes()`. Set the va
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r aesthetic-mappings-6-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                size = ...)) +
+ggplot(mpg, aes(x = displ, y = hwy, size = ...)) +
   geom_point()
 ```
 
 ```{r aesthetic-mappings-6-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy,
-                size = class)) +
+ggplot(mpg, aes(x = displ, y = hwy, size = class)) +
   geom_point()
 ```
 
@@ -292,16 +288,12 @@ Replace the `size` argument with the `alpha` argument within `aes()`. Set the va
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r aesthetic-mappings-7-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                alpha = ...)) +
+ggplot(mpg, aes(x = displ, y = hwy, alpha = ...)) +
   geom_point()
 ```
 
 ```{r aesthetic-mappings-7-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy,
-                alpha = class)) +
+ggplot(mpg, aes(x = displ, y = hwy, alpha = class)) +
   geom_point()
 ```
 
@@ -331,14 +323,12 @@ You can also set the visual properties of your geom manually as an argument of y
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r aesthetic-mappings-8-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = ..., 
-                y = hwy)) + 
+ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point(color = "...")
 ```
 
 ```{r aesthetic-mappings-8-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
+ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point(color = "blue")
 ```
 
@@ -376,14 +366,12 @@ Run `ggplot()`
 ```
 
 ```{r geometric-objects-1-hint-1, eval = FALSE}
-ggplot(..., aes(x = displ, 
-                y = hwy)) + 
+ggplot(..., aes(x = displ, y = hwy)) + 
   geom_smooth()
 ```
 
 ```{r geometric-objects-1-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) +
+ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth()
 ```
 
@@ -428,19 +416,13 @@ Third, add `se = FALSE`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r geometric-objects-2-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
-  geom_smooth(... = 'loess', 
-              ... = 'y ~ x',
-              se = ...)
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_smooth(... = 'loess', ... = 'y ~ x', se = ...)
 ```
 
 ```{r geometric-objects-2-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
+ggplot(mpg, aes(x = displ, y = hwy)) + 
+  geom_smooth(method = 'loess', formula = 'y ~ x', se = FALSE)
 ```
 
 ```{r geometric-objects-2-check}
@@ -467,21 +449,13 @@ You can set the `linetype` of a line. `geom_smooth()` will draw a different line
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r geometric-objects-3-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                linetype = ...)) + 
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
+ggplot(mpg, aes(x = displ, y = hwy, linetype = ...)) + 
+  geom_smooth(method = 'loess', formula = 'y ~ x', se = FALSE)
 ```
 
 ```{r geometric-objects-3-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                linetype = drv)) + 
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
+ggplot(mpg, aes(x = displ, y = hwy, linetype = drv)) +
+  geom_smooth(method = "loess", formula = "y ~ x", se = FALSE)
 ```
 
 ```{r geometric-objects-3-check}
@@ -505,25 +479,15 @@ Also set `color = drv` within `aes()`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r geometric-objects-4-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                linetype = drv,
-                color = ...)) + 
+ggplot(mpg, aes(x = displ, y = hwy, linetype = drv, color = ...)) + 
   ...() +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
+  geom_smooth(method = 'loess', formula = 'y ~ x', se = FALSE)
 ```
 
 ```{r geometric-objects-4-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                linetype = drv,
-                color = drv)) + 
+ggplot(mpg, aes(x = displ, y = hwy, linetype = drv, color = drv)) + 
   geom_point() +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
+  geom_smooth(method = 'loess', formula = 'y ~ x', se = FALSE)
 ```
 
 ```{r geometric-objects-4-check}
@@ -542,7 +506,7 @@ Notice that `geom_point()` simply ignores `linetype` because that is not a valid
 
 It would be more appropriate to define `linetype` locally within the `geom_smooth()` call (instead of globally).
 
-Set `linetype = drv` within the `aes()` of the call to `geom_smooth()`.
+Set `linetype = drv` in `aes()` from within `geom_smooth()`. 
 
 ```{r geometric-objects-5, exercise = TRUE}
 
@@ -551,22 +515,20 @@ Set `linetype = drv` within the `aes()` of the call to `geom_smooth()`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r geometric-objects-5-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                color = drv)) + 
+ggplot(mpg, aes(x = displ, y = hwy, color = drv)) + 
   ... +
-  geom_smooth(...(linetype = ...))
+  geom_smooth(...(linetype = ...), ...)
 ```
 
 ```{r geometric-objects-5-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy, 
-                color = drv)) + 
+ggplot(mpg, aes(x = displ, y = hwy, color = drv)) + 
   geom_point() +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE,
-              aes(linetype = drv))
+  geom_smooth(
+    mapping = aes(linetype = drv),
+    method = 'loess',     
+    formula = 'y ~ x',
+    se = FALSE
+  )
 ```
 
 ```{r geometric-objects-5-check}
@@ -588,19 +550,13 @@ The explore the use of the `group` aesthetic, begin with our standard plot, whic
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r geometric-objects-6-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) +
-  geom_smooth(method = ..., 
-              ... = 'y ~ x',
-              se = ...)
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_smooth(method = ..., ... = 'y ~ x', se = ...)
 ```
 
 ```{r geometric-objects-6-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE)
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_smooth(method = 'loess', formula = 'y ~ x', se = FALSE)
 ```
 
 ```{r geometric-objects-6-check}
@@ -625,18 +581,22 @@ Add `aes(group = drv)` to the call to `geom_smooth()`.
 
 ```{r geometric-objects-7-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE,
-              ...(group = ...))
+  geom_smooth(
+    mapping = ...(group = ...)
+    method = 'loess', 
+    formula = 'y ~ x',
+    se = FALSE
+  )
 ```
 
 ```{r geometric-objects-7-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE,
-              aes(group = drv))
+  geom_smooth(
+    mapping = aes(group = drv),
+    method = 'loess', 
+    formula = 'y ~ x',
+    se = FALSE
+  )
 ```
 
 ```{r geometric-objects-7-check}
@@ -658,20 +618,24 @@ Switch `group = drv` to `color = drv` and add `show.legend = FALSE` to the call 
 
 ```{r geometric-objects-8-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE,
-              aes(color = drv), 
-              ... = FALSE)
+  geom_smooth(
+    mapping = aes(color = drv), 
+    method = 'loess', 
+    formula = 'y ~ x',
+    se = FALSE,
+    ... = FALSE
+  )
 ```
 
 ```{r geometric-objects-8-solution, exercise.reveal_solution = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_smooth(method = 'loess', 
-              formula = 'y ~ x',
-              se = FALSE,
-              aes(color = drv), 
-              show.legend = FALSE)
+  geom_smooth(
+    mapping = aes(color = drv), 
+    method = 'loess', 
+    formula = 'y ~ x',
+    se = FALSE,
+    show.legend = FALSE
+  )
 ```
 
 ```{r geometric-objects-8-check}
@@ -696,7 +660,9 @@ geom_p <- ggplot(mpg, aes(x = displ, y = hwy)) +
   ) +
   geom_point(
     data = mpg |> filter(class == "2seater"), 
-    shape = "circle open", size = 3, color = "red"
+    shape = "circle open", 
+    size = 3, 
+    color = "red"
   )
 
 geom_p
@@ -802,7 +768,7 @@ We need the two extra calls to `geom_point()` because the first one makes the ce
 
 Geoms are the fundamental building blocks of ggplot2. You can completely transform the look of your plot by changing its geom, and different geoms can reveal different features of your data. 
 
-Make a new plot by hitting "Submit Code".
+Make a new plot by hitting "Submit Anwser".
 
 ```{r geometric-objects-12, exercise = TRUE}
 ggplot(mpg, aes(x = hwy)) +
@@ -820,7 +786,10 @@ ggplot(mpg, aes(x = hwy)) +
 ```
 
 ```{r geometric-objects-12-check}
-grade_this_code()
+grade_this_code(
+  correct = "Complete!", 
+  incorrect = "Try again! Must have changed something. Hit Start Over button."
+)
 ```
 ### 
 
@@ -855,7 +824,7 @@ grade_this_code()
 
 ### Exercise 14
 
-The [**ggridges** package](https://wilkelab.org/ggridges) is useful for making ridgeline plots, which can be useful for visualizing the density of a numerical variable for different levels of a categorical variable. Hit "Submit Code" to see an example.
+The [**ggridges** package](https://wilkelab.org/ggridges) is useful for making ridgeline plots, which can be useful for visualizing the density of a numerical variable for different levels of a categorical variable. Hit "Submit Answer" to see an example.
 
 ```{r geometric-objects-14, exercise = TRUE}
 library(ggridges)
@@ -872,12 +841,17 @@ ggplot(mpg, aes(x = hwy, y = drv, fill = drv, color = drv)) +
 ```
 
 ```{r geometric-objects-14-solution, exercise.reveal_solution = FALSE}
+library(ggridges)
+
 ggplot(mpg, aes(x = hwy, y = drv, fill = drv, color = drv)) +
   geom_density_ridges(alpha = 0.5, show.legend = FALSE)
 ```
 
 ```{r geometric-objects-14-check}
-grade_this_code()
+grade_this_code(
+  correct = "Complete!", 
+  incorrect = "Try again! Must have changed something. Hit Start Over button."
+)
 ```
 ### 
 
@@ -893,7 +867,7 @@ In Chapter 1 you learned that `facet_wrap()` is used to facet your plot by a sin
 
 ### Exercise 1
 
-Start with our usual basic scatterplot, `displ` versus `hwy` from the `mpg` tibble.
+Start with our basic scatterplot of `displ` versus `hwy` using the `mpg` tibble/dataset.
 
 Add `facet_wrap(~cyl)` to the end of your scatterplot code. Don't forget the `+` after `geom_point()`.
 
@@ -902,17 +876,15 @@ Add `facet_wrap(~cyl)` to the end of your scatterplot code. Don't forget the `+`
 ```
 
 ```{r facets-1-hint-1, eval = FALSE}
-ggplot(mpg, aes(... = displ, 
-                y = ...)) + 
+ggplot(mpg, aes(... = displ, y = ...)) + 
   ...() + 
   facet_wrap(~ ...)
 ```
 
 ```{r facets-1-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
+ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
-  facet_wrap(~cyl)
+  facet_wrap(~ cyl)
 ```
 
 ```{r facets-1-check}
@@ -936,15 +908,13 @@ Replace `facet_wrap(~cyl)` with `facet_grid(drv ~ cyl)`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r facets-2-hint-1, eval = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
+ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
   facet_...(... ~ cyl)
 ```
 
 ```{r facets-2-solution, exercise.reveal_solution = FALSE}
-ggplot(mpg, aes(x = displ, 
-                y = hwy)) + 
+ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
   facet_grid(drv ~ cyl)
 ```
@@ -959,7 +929,7 @@ By default each of the facets share the same scale and range for x and y axes. T
 
 ### Exercise 3
 
-Setting the scales argument in a faceting function to "free" will allow for different axis scales across both rows and columns, "free_x" will allow for different scales across rows, and "free_y" will allow for different scales across columns.
+Setting the scales argument in a faceting function to "free" will allow for different axis scales across both rows and columns, `"free_x"` will allow for different scales across rows, and `"free_y"` will allow for different scales across columns.
 
 Add `scales = "free_y"` to the call to `facet_grid()`. Don't forget the comma after `drv ~ cyl`.
 
@@ -1039,10 +1009,6 @@ On the x-axis, the chart displays cut, a variable from diamonds. On the y-axis, 
 Pipe `diamonds` into `count(cut)`.
 
 ```{r statistical-transformations-2, exercise = TRUE}
-
-```
-
-```{r statistical-transformations-2-hint-1, eval = FALSE}
 
 ```
 
@@ -1153,11 +1119,11 @@ To find the possible variables that can be computed by the stat, look for the se
 
 ###
 
-Setting `group`, is used to override the default grouping of `cut`. If we did not set this argument it would instead set each proportion to 100% because the proportion of Fair in Fair is 100%, etc.
+Setting `group`, is used to override the default grouping of `cut`. If we did not set this argument it would instead set each proportion to 1 (or 100% ) because the proportion of Fair in Fair is 1 (or 100%), etc.
 
 ### Exercise 6
 
-You might want to draw greater attention to the statistical transformation in your code. For example, you might use stat_summary(), which summarizes the y values for each unique x value, to draw attention to the summary that you’re computing. Hit "Submit Code".
+You might want to draw greater attention to the statistical transformation in your code. For example, you might use stat_summary(), which summarizes the y values for each unique x value, to draw attention to the summary that you’re computing. Hit "Submit Answer".
 
 ```{r statistical-transformations-6, exercise = TRUE}
 ggplot(diamonds) + 
@@ -1192,7 +1158,10 @@ ggplot(diamonds) +
 ```
 
 ```{r statistical-transformations-6-check}
-grade_this_code()
+grade_this_code(
+  correct = "Complete!", 
+  incorrect = "Try again! Must have changed something. Hit Start Over button."
+)
 ```
 ### 
 
@@ -1263,7 +1232,7 @@ Note what happens if you map the fill aesthetic to another variable, like `class
 
 ### Exercise 3
 
-The stacking is performed automatically using the position adjustment specified by the position argument. If you don’t want a stacked bar chart, you can use one of three other options: "identity", "dodge" or "fill". To explore, take the previous plot and add `alpha = 1/5, position = "identity"` to the call to `geom_bar()`.
+The stacking is performed automatically using the position adjustment specified by the position argument. If you don’t want a stacked bar chart, you can use one of three other options: `"identity"`, `"dodge"` or `"fill"`. To explore, take the previous plot and add `alpha = 1/5, position = "identity"` to the call to `geom_bar()`.
 
 ```{r position-adjustments-3, exercise = TRUE}
 
@@ -1295,7 +1264,7 @@ The identity position adjustment is more useful for 2d geoms, like points, where
 
 ### Exercise 4
 
-`position = "fill"` works like stacking, but makes each set of stacked bars the same height. Use the same code, but remove `fill = NA` and replace `"identity"` with `"fill"`.
+`position = "fill"` works like stacking, but makes each set of stacked bars the same height. Use the code from the exercise, but remove the alpha argument and replace `"identity"` with `"fill"`.
 
 ```{r position-adjustments-4, exercise = TRUE}
 
@@ -1304,7 +1273,8 @@ The identity position adjustment is more useful for 2d geoms, like points, where
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r position-adjustments-4-hint-1, eval = FALSE}
-
+ggplot(mpg, aes(x = drv, fill = class)) + 
+  geom_bar(position = ...)
 ```
 
 ```{r position-adjustments-4-solution, exercise.reveal_solution = FALSE}
@@ -1407,7 +1377,7 @@ The **maps** package includes the area of each matching region in the map is com
 
 ### Exercise 2
 
-Hit "Submit Code" to create an object with data for New Zealand and then create a plot.
+Hit "Submit Answer" to create an object with data for New Zealand and then create a plot.
 
 ```{r coordinate-systems-2, exercise = TRUE}
 nz <- map_data("nz")
@@ -1432,7 +1402,10 @@ ggplot(nz, aes(x = long, y = lat, group = group)) +
 ```
 
 ```{r coordinate-systems-2-check}
-grade_this_code()
+grade_this_code(
+  correct = "Complete!", 
+  incorrect = "Try again! Must have changed something. Hit Start Over button."
+)
 ```
 
 ### 
@@ -1455,8 +1428,14 @@ We don’t have the space to discuss maps extensively in this tutorial but you c
 ```
 
 ```{r coordinate-systems-3-solution, exercise.reveal_solution = FALSE}
+# option_1 ----
 nz <- map_data("nz")
 
+ggplot(nz, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill = "white", color = "black") +
+  coord_quickmap()
+
+# option_2 ----
 ggplot(nz, aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "white", color = "black") +
   coord_quickmap()
