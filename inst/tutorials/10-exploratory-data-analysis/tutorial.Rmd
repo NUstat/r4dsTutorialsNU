@@ -185,7 +185,7 @@ portland_graph <- ggplot(
     plot.title = element_text(face = "bold"),
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
-    axis.line.x = element_line(size = 0.2),
+    axis.line.x = element_line(linewidth = 0.2),
     axis.ticks.x = element_line()
   )
 
@@ -363,7 +363,7 @@ Some valuable questions to ask yourself when dealing with variation are the foll
 
 ### Exercise 4
 
-Let's explore the distribution of carat for smaller diamonds. Since this is likely a group of diamonds we will want to explore more closely, we should create a dataset if its own. Start with the `diamonds` dataset and pipe it into `filter()` which will only keep diamonds with carats less than 3. Store this dataset as `smaller`. 
+Let's explore the distribution of carat for smaller diamonds. Since this is likely a group of diamonds we will want to explore more closely, we should create a dataset if its own. Start with the `diamonds` dataset and pipe it into `filter()` set to keep only diamonds with carats less than 3. Store this resulting dataset as `smaller`. 
 
 ```{r variation-4, exercise = TRUE}
 
@@ -396,8 +396,6 @@ Now that we have the `smaller` dataset, continue the exploration by piping `smal
 ```{r variation-5, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r variation-5-hint-1, eval = FALSE}
 smaller |>
@@ -451,6 +449,8 @@ smaller |>
 ```{r variation-6-check}
 grade_this_code()
 ```
+
+###
 
 It's important to try a variety of different `binwidth` (or `bin`) values when using a histogram to find an appropriate setting.
 
