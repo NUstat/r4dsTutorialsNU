@@ -22,48 +22,53 @@ library(tidyverse)
 library(tidymodels)
 library(hexbin)
 library(gradethis)
+library(ggcheck)
 library(tutorialExtras)
 
 gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(out.width = '90%')
-options(tutorial.exercise.timelimit = 60, 
-        tutorial.storage = "local") 
+knitr::opts_chunk$set(out.width = "90%")
+options(
+  tutorial.exercise.timelimit = 60,
+  tutorial.storage = "local"
+)
 
-smaller <- diamonds |> 
+smaller <- diamonds |>
   filter(carat < 3)
 
-diamonds2 <- diamonds |> 
+diamonds2 <- diamonds |>
   mutate(y_new = if_else(y < 3 | y > 20, NA, y))
 
-p1 <- nycflights13::flights |> 
+p1 <- nycflights13::flights |>
   mutate(
     cancelled = is.na(dep_time),
     sched_hour = sched_dep_time %/% 100,
     sched_min = sched_dep_time %% 100,
     sched_dep_time = sched_hour + (sched_min / 60)
-  ) |> 
-  ggplot(aes(x = sched_dep_time)) + 
-  geom_freqpoly(aes(color = cancelled), binwidth = 1/4) + 
-  labs(title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights",
-       subtitle = "There are a lot of non-cancelled flights at 3 PM",
-       x = "Scheduled Departure Time",
-       y = "Frequency",
-       color = "Cancelled or Non-Cancelled")
-
-p2 <- mpg |> 
-  ggplot(aes(x = hwy, y = fct_reorder(class, hwy, median))) +
-  geom_boxplot() + 
+  ) |>
+  ggplot(aes(x = sched_dep_time)) +
+  geom_freqpoly(aes(color = cancelled), binwidth = 1 / 4) +
   labs(
-    title = "Variation of Highway Mileage over Classes", 
+    title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights",
+    subtitle = "There are a lot of non-cancelled flights at 3 PM",
+    x = "Scheduled Departure Time",
+    y = "Frequency",
+    color = "Cancelled or Non-Cancelled"
+  )
+
+p2 <- mpg |>
+  ggplot(aes(x = hwy, y = fct_reorder(class, hwy, median))) +
+  geom_boxplot() +
+  labs(
+    title = "Variation of Highway Mileage over Classes",
     subtitle = "The compact and midsized cars are tied for the highest highway mileage.",
     x = "Highway Mileage",
     y = "Car Classes"
   )
 
-p3 <- diamonds |> 
-  count(color, cut) |>  
+p3 <- diamonds |>
+  count(color, cut) |>
   ggplot(aes(x = color, y = cut)) +
   geom_tile(aes(fill = n)) +
   labs(
@@ -73,14 +78,16 @@ p3 <- diamonds |>
     y = "Cut of diamond"
   )
 
-p4 <- smaller |> 
-  ggplot( aes(x = carat, y = price)) + 
+p4 <- smaller |>
+  ggplot(aes(x = carat, y = price)) +
   geom_boxplot(aes(group = cut_width(carat, 0.1))) +
-  labs(title = "Covariation between Number of Carats and Price of Diamonds",
-       subtitle = "As the number of carats of a diamond increases the price also increases",
-       x = "Number of Carats",
-       y = "Price of the Diamond")
-  
+  labs(
+    title = "Covariation between Number of Carats and Price of Diamonds",
+    subtitle = "As the number of carats of a diamond increases the price also increases",
+    x = "Number of Carats",
+    y = "Price of the Diamond"
+  )
+
 diamonds3 <- diamonds |>
   mutate(
     log_price = log(price),
@@ -93,8 +100,8 @@ diamonds_fit <- linear_reg() |>
 diamonds_aug <- augment(diamonds_fit, new_data = diamonds3) |>
   mutate(.resid = exp(.resid))
 
-p5 <- diamonds_aug |> 
-  ggplot(aes(x = cut, y = .resid)) + 
+p5 <- diamonds_aug |>
+  ggplot(aes(x = cut, y = .resid)) +
   geom_boxplot()
 
 ## Stuff from two fancy plots. Used to be 32 visualization case studies by Heather Li.
@@ -110,49 +117,77 @@ library(ggthemes)
 
 url <- "https://raw.githubusercontent.com/PPBDS/r4ds.tutorials/main/data-raw/portlandtemp.csv"
 
-portland_data <- 
+portland_data <-
   read_csv(url,
-           col_types = cols(date = col_date(format = ""),
-                   tmax = col_double(),
-                   tmin = col_double())) |> 
-  filter(date >= as.Date("1979-01-01")) |> 
-  mutate(yday = lubridate::yday(date),
-         year = lubridate::year(date),
-         recent_high = if_else(tmax > 100 & year == 2021, 
-                              TRUE, FALSE))
+    col_types = cols(
+      date = col_date(format = ""),
+      tmax = col_double(),
+      tmin = col_double()
+    )
+  ) |>
+  filter(date >= as.Date("1979-01-01")) |>
+  mutate(
+    yday = lubridate::yday(date),
+    year = lubridate::year(date),
+    recent_high = if_else(tmax > 100 & year == 2021,
+      TRUE, FALSE
+    )
+  )
 
-months <- 
-  tibble(yday = c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335),
-                 label = c("Jan.", "Feb.", "March", "April", "May", "June", 
-                           "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
+months <-
+  tibble(
+    yday = c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335),
+    label = c(
+      "Jan.", "Feb.", "March", "April", "May", "June",
+      "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."
+    )
+  )
 
-portland_graph <- ggplot(data = portland_data, 
-         mapping = aes(x = yday, 
-                       y = tmax)) +
+portland_graph <- ggplot(
+  data = portland_data,
+  mapping = aes(
+    x = yday,
+    y = tmax
+  )
+) +
   geom_point(alpha = .05, size = .9) +
-  geom_point(data = filter(portland_data, 
-                    recent_high != FALSE), 
-             mapping = aes(color = "#C1392B"),
-             alpha = 1,
-             size = 2.3) +
+  geom_point(
+    data = filter(
+      portland_data,
+      recent_high != FALSE
+    ),
+    mapping = aes(color = "#C1392B"),
+    alpha = 1,
+    size = 2.3
+  ) +
   guides(color = "none") +
-  scale_x_continuous(breaks = months$yday,
-                     labels = months$label,
-                     expand = c(.01, .01)) +
-  scale_y_continuous(labels = function(x) paste0(x, "°F"), 
-                     breaks = seq(from = 20, 
-                                  to = 120, 
-                                  by = 20)) +
+  scale_x_continuous(
+    breaks = months$yday,
+    labels = months$label,
+    expand = c(.01, .01)
+  ) +
+  scale_y_continuous(
+    labels = function(x) paste0(x, "°F"),
+    breaks = seq(
+      from = 20,
+      to = 120,
+      by = 20
+    )
+  ) +
   theme_minimal() +
-  labs(x = NULL, 
-       y = NULL, 
-       title = "Daily maximum temperatures in Portland, 1979–2021",
-       caption = "Data: National Oceanic and Atmospheric Administration via Oregon Live. \nGraphic: Cédric Scherer.") +
-  theme(plot.title = element_text(face ="bold"),
-        panel.grid.minor = element_blank(),
-        panel.grid.major.x = element_blank(),
-        axis.line.x = element_line(size = 0.2),
-        axis.ticks.x = element_line())
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "Daily maximum temperatures in Portland, 1979–2021",
+    caption = "Data: National Oceanic and Atmospheric Administration via Oregon Live. \nGraphic: Cédric Scherer."
+  ) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.line.x = element_line(size = 0.2),
+    axis.ticks.x = element_line()
+  )
 
 ```
 
@@ -166,14 +201,15 @@ grade_server("grade")
 
 ```{r Name}
 question_text("Name:",
-              answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-              correct = "submitted",
-              allow_retry = FALSE )
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = FALSE
+)
 ```
 
 <!-- The below links should be dropped at least once, if not twice. -->
@@ -189,7 +225,9 @@ question_text("Name:",
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 10: Exploratory data analysis](https://r4ds.hadley.nz/eda.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We will be making use of the [**ggplot2**](https://ggplot2.tidyverse.org/) and the [**dplyr**](https://dplyr.tidyverse.org/) packages to learn about variation and patterns. Some key commands include [`coord_cartesian()`](https://ggplot2.tidyverse.org/reference/coord_cartesian.html), [`geom_freqpoly()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html), [`fct_reorder()`](https://forcats.tidyverse.org/reference/fct_reorder.html), [`geom_tile()`](https://ggplot2.tidyverse.org/reference/geom_tile.html), and [`geom_count()`](https://ggplot2.tidyverse.org/reference/geom_count.html). 
+This tutorial covers [Chapter 10: Exploratory data analysis](https://r4ds.hadley.nz/eda.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We will be making use of the [**ggplot2**](https://ggplot2.tidyverse.org/) and the [**dplyr**](https://dplyr.tidyverse.org/) packages to learn about variation and patterns. 
+
+Some key commands include [`coord_cartesian()`](https://ggplot2.tidyverse.org/reference/coord_cartesian.html), [`geom_freqpoly()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html), [`fct_reorder()`](https://forcats.tidyverse.org/reference/fct_reorder.html), [`geom_tile()`](https://ggplot2.tidyverse.org/reference/geom_tile.html), and [`geom_count()`](https://ggplot2.tidyverse.org/reference/geom_count.html). 
 
 <!-- There is a Question section which includes no code. I have incorporated that material as knowledge drops in the Variation section. -->
 
@@ -244,12 +282,20 @@ print(diamonds, n = 3)
 
 ```{r variation-2-q}
 question_wordbank("Match the variable name with its description.",
-       choices = c("price in US dollars", "weight of the diamond", "quality of the cut", "length in mm", "width in mm", "depth in mm"),
-       arrange = "ordered",
-       box = 8,
-       wordbank = c("price", "carat", "cut", "x", "y", "z", "clarity", "color", "weight"),
-       answer(c("price", "carat", "cut", "x", "y", "z"), correct = TRUE),
-       allow_retry = TRUE)
+  choices = c(
+    "price in US dollars", 
+    "weight of the diamond", 
+    "quality of the cut", 
+    "length in mm", 
+    "width in mm", 
+    "depth in mm"
+  ),
+  arrange = "ordered",
+  box = 8,
+  wordbank = c("price", "carat", "cut", "x", "y", "z", "clarity", "color", "weight"),
+  answer(c("price", "carat", "cut", "x", "y", "z"), correct = TRUE),
+  allow_retry = TRUE
+)
 ```
 
 ###
@@ -280,7 +326,7 @@ grade_this_code()
 
 ### 
 
-Every variable has its own pattern of variation, which can reveal interesting information about how that it varies between measurements on the same observation as well as across observations. The best way to understand that pattern is to visualize the distribution of the variable’s values.
+Every variable has its own pattern of variation, which can reveal interesting information about how it varies between measurements on the same observation as well as across observations. The best way to understand that pattern is to visualize the distribution of the variable's values.
 
 ### Exercise 3
 
@@ -307,29 +353,6 @@ diamonds |>
 grade_this_code()
 ```
 
-
-### Exercise 4
-
-Create a new variable called `smaller` and set it equal to `diamonds`. 
-
-```{r variation-4, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r variation-4-hint-1, eval = FALSE}
-smaller <- ...
-```
-
-```{r variation-4-solution, exercise.reveal_solution = FALSE}
-smaller <- diamonds
-```
-
-```{r variation-4-check}
-grade_this_code()
-```
-
 ### 
 
 Some valuable questions to ask yourself when dealing with variation are the following:
@@ -338,9 +361,37 @@ Some valuable questions to ask yourself when dealing with variation are the foll
 - Which values are rare? Why? Does that match your expectations?
 - Can you see any unusual patterns? What might explain them?
 
+### Exercise 4
+
+Let's explore the distribution of carat for smaller diamonds. Since this is likely a group of diamonds we will want to explore more closely, we should create a dataset if its own. Start with the `diamonds` dataset and pipe it into `filter()` which will only keep diamonds with carats less than 3. Store this dataset as `smaller`. 
+
+```{r variation-4, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r variation-4-hint-1, eval = FALSE}
+... <- diamonds |>
+  filter(...)
+```
+
+```{r variation-4-solution, exercise.reveal_solution = FALSE}
+smaller <- diamonds |>
+  filter(carat < 3)
+```
+
+```{r variation-4-check}
+grade_this_code()
+```
+
+### 
+
+*“There are no routine statistical questions, only questionable statistical routines.” — Sir David Cox*
+
 ### Exercise 5
 
-We are still creating the `smaller` tibble. Copy your previous code and create a pipeline with `diamonds`. Pipe `diamonds` with `filter()` and filter out rows for which `carat` is less than `3`. 
+Now that we have the `smaller` dataset, continue the exploration by piping `smaller` to `ggplot()`. Within `ggplot()`, using `aes()`, set the `x` argument to `carat`.
 
 ```{r variation-5, exercise = TRUE}
 
@@ -349,46 +400,16 @@ We are still creating the `smaller` tibble. Copy your previous code and create a
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r variation-5-hint-1, eval = FALSE}
-smaller <- diamonds |> 
-  filter(carat < ...)
-```
-
-```{r variation-5-solution, exercise.reveal_solution = FALSE}
-smaller <- diamonds |>
-  filter(carat < 3)
-```
-
-```{r variation-5-check}
-grade_this_code()
-```
-
-### 
-
-*“There are no routine statistical questions, only questionable statistical routines.” — Sir David Cox*
-
-### Exercise 6
-
-Now pipe the variable `smaller` to `ggplot()`. 
-
-Within `ggplot()`, using `aes()`, set the `x` argument to `carat`.
-
-```{r variation-6, exercise = TRUE}
-
-```
-
-<!-- <button onclick = "transfer_code(this)">Copy previous code</button> -->
-
-```{r variation-6-hint-1, eval = FALSE}
-smaller |> 
+smaller |>
   ...
 ```
 
-```{r variation-6-solution, exercise.reveal_solution = FALSE}
+```{r variation-5-solution, exercise.reveal_solution = FALSE}
 smaller |>
   ggplot(aes(x = carat))
 ```
 
-```{r variation-6-check}
+```{r variation-5-check}
 grade_this_code()
 ```
 
@@ -406,9 +427,36 @@ EDA, or exploratory data analysis, is an iterative cycle. You:
 
 EDA is not a formal process with a strict set of rules. More than anything, EDA is a state of mind. During the initial phases of EDA you should feel free to investigate every idea that occurs to you. Some of these ideas will pan out, and some will be dead ends.
 
-### Exercise 7
+### Exercise 6
 
 Add `geom_histogram()` to the pipeline.
+
+```{r variation-6, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r variation-6-hint-1, eval = FALSE}
+... + 
+  geom_histogram()
+```
+
+```{r variation-6-solution, exercise.reveal_solution = FALSE}
+smaller |>
+  ggplot(aes(x = carat)) +
+  geom_histogram()
+```
+
+```{r variation-6-check}
+grade_this_code()
+```
+
+It's important to try a variety of different `binwidth` (or `bin`) values when using a histogram to find an appropriate setting.
+
+### Exercise 7
+
+Within `geom_histogram()`, set the `binwidth` argument to `0.01`. 
 
 ```{r variation-7, exercise = TRUE}
 
@@ -417,44 +465,17 @@ Add `geom_histogram()` to the pipeline.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r variation-7-hint-1, eval = FALSE}
-... + 
-  geom_histogram()
+... +
+  geom_histogram(binwidth = ...)
 ```
 
 ```{r variation-7-solution, exercise.reveal_solution = FALSE}
 smaller |>
   ggplot(aes(x = carat)) +
-  geom_histogram()
-```
-
-```{r variation-7-check}
-grade_this_code()
-```
-
-It's important to try a variety of different `binwidth` (or `bin`) values when using a histogram to find an appropriate setting.
-
-### Exercise 8
-
-Within `geom_histogram()`, set the `binwidth` argument to `0.01`. 
-
-```{r variation-8, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r variation-8-hint-1, eval = FALSE}
-... +
-  geom_histogram(binwidth = ...)
-```
-
-```{r variation-8-solution, exercise.reveal_solution = FALSE}
-smaller |>
-  ggplot(aes(x = carat)) +
   geom_histogram(binwidth = 0.01)
 ```
 
-```{r variation-8-check}
+```{r variation-7-check}
 grade_this_code()
 ```
 
@@ -467,7 +488,7 @@ This histogram suggests several interesting questions:
 - Why are there more diamonds slightly to the right of each peak than there are slightly to the left of each peak?
 
 
-### Exercise 9
+### Exercise 8
 
 Let's observe and take note of unusual values in the dataset. 
 
@@ -479,21 +500,21 @@ With a new pipeline, pipe `diamonds` to `ggplot()`.
 
 Within `ggplot()`, using `aes()`, set the `x` argument to `y`.
 
-```{r variation-9, exercise = TRUE}
+```{r variation-8, exercise = TRUE}
 
 ```
 
-```{r variation-9-hint-1, eval = FALSE}
+```{r variation-8-hint-1, eval = FALSE}
 diamonds |> 
   ...(aes(...))
 ```
 
-```{r variation-9-solution, exercise.reveal_solution = FALSE}
+```{r variation-8-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   ggplot(aes(x = y))
 ```
 
-```{r variation-9-check}
+```{r variation-8-check}
 grade_this_code()
 ```
 
@@ -504,28 +525,28 @@ Be careful! The `x` in this code is an argument, the usual usage with `aes()`. T
 Always be careful when variable names happen to be the same as argument names!
 
 
-### Exercise 10
+### Exercise 9
 
 Add `geom_histogram()` to the pipeline
 
-```{r variation-10, exercise = TRUE}
+```{r variation-9, exercise = TRUE}
 
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
-```{r variation-10-hint-1, eval = FALSE}
+```{r variation-9-hint-1, eval = FALSE}
 ... +
   geom_histogram()
 ```
 
-```{r variation-10-solution, exercise.reveal_solution = FALSE}
+```{r variation-9-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   ggplot(aes(x = y)) +
     geom_histogram()
 ```
 
-```{r variation-10-check}
+```{r variation-9-check}
 grade_this_code()
 ```
 
@@ -535,9 +556,38 @@ When you have a lot of data, outliers are sometimes difficult to see in a histog
 
 Sometimes outliers are data entry errors, sometimes they are simply values at the extremes that happened to be observed in this data collection, and other times they suggest important new discoveries.
 
-### Exercise 11
+### Exercise 10
 
 Within `geom_histogram()`, add the `binwidth` argument and set it equal to `0.5`. 
+
+```{r variation-10, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r variation-10-hint-1, eval = FALSE}
+... +
+  geom_histogram(binwidth = ...)
+```
+
+```{r variation-10-solution, exercise.reveal_solution = FALSE}
+diamonds |> 
+  ggplot(aes(x = y)) +
+    geom_histogram(binwidth = 0.5)
+```
+
+```{r variation-10-check}
+grade_this_code()
+```
+
+### 
+
+There are so many observations in the common bins that the rare bins are very short, making it very difficult to see them (although maybe if you stare intently at 0 you’ll spot something). To make it easy to see the unusual values, we need to zoom in to small values of the y-axis with `coord_cartesian()`.
+
+### Exercise 11
+
+Add `coord_cartesian()` to the pipeline. Within `coord_cartesian()`, add the `ylim` argument and set it equal to `c(0, 50)`. 
 
 ```{r variation-11, exercise = TRUE}
 
@@ -546,14 +596,15 @@ Within `geom_histogram()`, add the `binwidth` argument and set it equal to `0.5`
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r variation-11-hint-1, eval = FALSE}
-... +
-  geom_histogram(binwidth = ...)
+... + 
+  coord_cartesian(ylim = ...)
 ```
 
 ```{r variation-11-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   ggplot(aes(x = y)) +
-    geom_histogram(binwidth = 0.5)
+    geom_histogram(binwidth = 0.5) +
+    coord_cartesian(ylim = c(0, 50))
 ```
 
 ```{r variation-11-check}
@@ -562,28 +613,24 @@ grade_this_code()
 
 ### 
 
-There are so many observations in the common bins that the rare bins are very short, making it very difficult to see them (although maybe if you stare intently at 0 you’ll spot something). To make it easy to see the unusual values, we need to zoom to small values of the y-axis with `coord_cartesian()`.
+The function, `coord_cartesian()`, also has an `xlim` argument for when you need to zoom into the x-axis. **ggplot2** also has `xlim()` and `ylim()` functions that work slightly differently: they throw away the data outside the limits. This allows us to see that there are three unusual values: `0`, `~30`, and `~60`. 
 
 ### Exercise 12
 
-Add `coord_cartesian()` to the pipeline. Within `coord_cartesian()`, add the `ylim` argument and set it equal to `c(0, 50)`. 
+Pipe `diamonds` to `filter()` and filter `y` to be less than `3`.
 
 ```{r variation-12, exercise = TRUE}
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r variation-12-hint-1, eval = FALSE}
-... + 
-  coord_cartesian(ylim = ...)
+diamonds |> 
+  filter(y < ...)
 ```
 
 ```{r variation-12-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
-  ggplot(aes(x = y)) +
-    geom_histogram(binwidth = 0.5) +
-    coord_cartesian(ylim = c(0, 50))
+  filter(y < 3)
 ```
 
 ```{r variation-12-check}
@@ -592,24 +639,27 @@ grade_this_code()
 
 ### 
 
-The function, `coord_cartesian()`, also has an `xlim` argument for when you need to zoom into the x-axis. **ggplot2** also has `xlim()` and `ylim()` functions that work slightly differently: they throw away the data outside the limits. This allows us to see that there are three unusual values: `0`, `~30`, and `~60`. 
+The `y` variable measures one of the three dimensions of these diamonds, in `mm`. We know that diamonds can’t have a width of 0 mm, so these values must be incorrect. 
+
 
 ### Exercise 13
 
-Pipe `diamonds` to `filter()` and filter `y` to be less than `3`.
+Modify the pipe by adding, to the `filter()` command,  `|` and then `y` greater than `20`.
 
 ```{r variation-13, exercise = TRUE}
 
 ```
 
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
 ```{r variation-13-hint-1, eval = FALSE}
 diamonds |> 
-  filter(y < ...)
+  filter(y < 3 | y > ...)
 ```
 
 ```{r variation-13-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
-  filter(y < 3)
+  filter(y < 3 | y > 20)
 ```
 
 ```{r variation-13-check}
@@ -618,12 +668,11 @@ grade_this_code()
 
 ### 
 
-The `y` variable measures one of the three dimensions of these diamonds, in `mm`. We know that diamonds can’t have a width of 0 mm, so these values must be incorrect. 
-
+EDA is an important part of any data analysis, even if the primary research questions are handed to you on a platter, because you always need to investigate the quality of your data.
 
 ### Exercise 14
 
-Modify the pipe by adding, to the `filter()` command,  `|` and then `y` greater than `20`.
+Add `select()` to the pipeline. Within `select()`, select the variables `price`, `x`, `y`, and `z`.
 
 ```{r variation-14, exercise = TRUE}
 
@@ -632,26 +681,23 @@ Modify the pipe by adding, to the `filter()` command,  `|` and then `y` greater 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r variation-14-hint-1, eval = FALSE}
-diamonds |> 
-  filter(y < 3 | y > ...)
+... |> 
+  select(price, x, ...)
 ```
 
 ```{r variation-14-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
-  filter(y < 3 | y > 20)
+  filter(y < 3 | y > 20) |> 
+  select(price, x, y, z)
 ```
 
 ```{r variation-14-check}
 grade_this_code()
 ```
 
-### 
-
-EDA is an important part of any data analysis, even if the primary research questions are handed to you on a platter, because you always need to investigate the quality of your data.
-
 ### Exercise 15
 
-Add `select()` to the pipeline. Within `select()`, select the variables `price`, `x`, `y`, and `z`.
+Add `arrange()` to the pipeline. Within `arrange()`, add the variable `y`  
 
 ```{r variation-15, exercise = TRUE}
 
@@ -661,42 +707,17 @@ Add `select()` to the pipeline. Within `select()`, select the variables `price`,
 
 ```{r variation-15-hint-1, eval = FALSE}
 ... |> 
-  select(price, x, ...)
-```
-
-```{r variation-15-solution, exercise.reveal_solution = FALSE}
-diamonds |> 
-  filter(y < 3 | y > 20) |> 
-  select(price, x, y, z)
-```
-
-```{r variation-15-check}
-grade_this_code()
-```
-
-### Exercise 16
-
-Add `arrange()` to the pipeline. Within `arrange()`, add the variable `y`  
-
-```{r variation-16, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r variation-16-hint-1, eval = FALSE}
-... |> 
   arrange(...)
 ```
 
-```{r variation-16-solution, exercise.reveal_solution = FALSE}
+```{r variation-15-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   filter(y < 3 | y > 20) |> 
   select(price, x, y, z) |> 
   arrange(y)
 ```
 
-```{r variation-16-check}
+```{r variation-15-check}
 grade_this_code()
 ```
 
