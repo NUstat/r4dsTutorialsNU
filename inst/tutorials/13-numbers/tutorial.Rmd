@@ -19,6 +19,7 @@ library(tutorial.helpers)
 library(tidyverse)
 library(nycflights13)
 library(gradethis)
+library(ggcheck)
 library(tutorialExtras)
 
 gradethis_setup()
@@ -168,14 +169,12 @@ Use `parse_number()` when the string contains non-numeric text that you want to 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r making-numbers-4-hint-1, eval = FALSE}
 y <- c(..., ..., ...)
 ```
 
 ```{r making-numbers-4-solution, exercise.reveal_solution = FALSE}
-y <- c("$1,1234", "USD 3,513", "59%")
+y <- c("$1,234", "USD 3,513", "59%")
 ```
 
 ```{r making-numbers-4-check}
@@ -234,7 +233,7 @@ Now let's load in the dataset, `flights` that we will be making use of. This dat
 
 ### 
 
-Type in `flights` and hit "Run Code".
+Type in `flights` and hit "Submit Answer".
 
 ```{r counts-1, exercise = TRUE}
 
@@ -313,8 +312,6 @@ Create a new pipeline. Pipe flights to the `summarize()` function. Within the `s
 ```{r counts-4, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r counts-4-hint-1, eval = FALSE}
 flights |> 
@@ -427,7 +424,6 @@ With a new pipeline, pipe `flights` to the `count()` function. Within the call t
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r counts-8-hint-1, eval = FALSE}
 flights |> 
@@ -477,7 +473,9 @@ Weighted counts are a common problem so count() has the `wt` argument that does 
 
 ### Exercise 10
 
-Now, count the number of cancelled flights or missing values of each destination. With a new pipeline, pipe `flights` to the `summarize()` function. Within the call to `summarize()`, create a new variable called `n_cancelled` and set it equal to `sum(is.na(dep_time)`.
+Now, count the number of cancelled flights or missing values of each destination. 
+
+With a new pipeline, pipe `flights` to the `summarize()` function. Within the call to `summarize()`, create a new variable called `n_cancelled` and set it equal to `sum(is.na(dep_time)`.
 
 ```{r counts-10, exercise = TRUE}
 
@@ -568,8 +566,6 @@ Make a new vector `x` and set it to `c(1, 2, 10, 20)`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r numeric-transformations-1-hint-1, eval = FALSE}
 x <- c(...)
 ```
@@ -581,8 +577,6 @@ x <- c(1, 2, 10, 20)
 ```{r numeric-transformations-1-check}
 grade_this_code()
 ```
-
-### 
 
 ### Exercise 2
 
@@ -647,8 +641,6 @@ Create a new pipeline. Pipe `flights` to the `filter()` function. And add an arg
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r numeric-transformations-4-hint-1, eval = FALSE}
 flights |> 
   filter(month == c(...))
@@ -673,13 +665,11 @@ Most arithmetic functions work with pairs of variables. Two closely related func
 
 ### 
 
-Let's utilize a premade dataframe `df`. Type in `df` and hit "Submit Code".
+Let's utilize a premade dataframe `df`. Type in `df` and hit "Submit Answer".
 
 ```{r numeric-transformations-5, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-transformations-5-hint-1, eval = FALSE}
 df
@@ -880,7 +870,7 @@ We can also find the remainder using `%%`.
 
 ### Exercise 12
 
-On the next line compute the remainder of the vector `z` divided by `3` by typing in `z %% 3` and hitting "Submit Code". 
+On the next line compute the remainder of the vector `z` divided by `3` by typing in `z %% 3` and hitting "Submit Answer". 
 
 ```{r numeric-transformations-12, exercise = TRUE}
 z <- 1:10
@@ -913,13 +903,15 @@ Create a new pipeline. Pipe `flights` with the function `mutate()`. Within the `
 ```{r numeric-transformations-13-hint-1, eval = FALSE}
 flights |> 
   mutate(
-    hour = ...)
+    hour = ...
+  )
 ```
 
 ```{r numeric-transformations-13-solution, exercise.reveal_solution = FALSE}
 flights |> 
   mutate(
-    hour = sched_dep_time %/% 100)
+    hour = sched_dep_time %/% 100
+  )
 ```
 
 ```{r numeric-transformations-13-check}
@@ -944,14 +936,16 @@ Using the previous code, within the `mutate()` function, create a new variable c
 flights |> 
   mutate(
     hour = sched_dep_time %/% 100, 
-    minute = ...)
+    minute = ...
+  )
 ```
 
 ```{r numeric-transformations-14-solution, exercise.reveal_solution = FALSE}
 flights |> 
   mutate(
     hour = sched_dep_time %/% 100, 
-    minute = sched_dep_time %% 100)
+    minute = sched_dep_time %% 100
+  )
 ```
 
 ```{r numeric-transformations-14-check}
@@ -1008,7 +1002,7 @@ plots
 
 ### 
 
-Create a new pipeline. Pipe `flights` to the function `summarize()`. Within the call to `summarize()`, create a new variable called `hour` and set it to `sched_dep_time %/% 100`.
+Create a new pipeline. Pipe `flights` to the function `mutate()`. Within the call to `mutate()`, create a new variable called `hour` and set it to `sched_dep_time %/% 100`.
 
 ```{r numeric-transformations-16, exercise = TRUE}
 
@@ -1018,13 +1012,13 @@ Create a new pipeline. Pipe `flights` to the function `summarize()`. Within the 
 
 ```{r numeric-transformations-16-hint-1, eval = FALSE}
 flights |> 
-  summarize(hour = ...)
+  mutate(hour = ...)
 
 ```
 
 ```{r numeric-transformations-16-solution, exercise.reveal_solution = FALSE}
 flights |> 
-  summarize(hour = sched_dep_time %/% 100)
+  mutate(hour = sched_dep_time %/% 100)
 ```
 
 ```{r numeric-transformations-16-check}
@@ -1037,7 +1031,7 @@ We can combine that with a trick using `mean(is.na(x))` to see how the proportio
 
 ### Exercise 17
 
-Using your previous code. Within the call to `summarize()`, create a new variable called `prop_cancelled` and set it to `mean(is.na(dep_time))`.
+Using your previous code. Pipe to `summarize()` and with in it create a new variable called `prop_cancelled` and set it to `mean(is.na(dep_time))`.
 
 ```{r numeric-transformations-17, exercise = TRUE}
 
@@ -1047,14 +1041,18 @@ Using your previous code. Within the call to `summarize()`, create a new variabl
 
 ```{r numeric-transformations-17-hint-1, eval = FALSE}
 flights |> 
-  summarize(hour = sched_dep_time %/% 100, 
-            prop_cancelled = ...)
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = ...
+  )
 ```
 
 ```{r numeric-transformations-17-solution, exercise.reveal_solution = FALSE}
 flights |> 
-  summarize(hour = sched_dep_time %/% 100, 
-            prop_cancelled = mean(is.na(dep_time)))
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time))
+  )
 ```
 
 ```{r numeric-transformations-17-check}
@@ -1077,16 +1075,20 @@ Using your previous code. Within the call to `summarize()`, create another varia
 
 ```{r numeric-transformations-18-hint-1, eval = FALSE}
 flights |> 
-  summarize(hour = sched_dep_time %/% 100, 
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = ...)
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize( 
+    prop_cancelled = mean(is.na(dep_time)), 
+    n = ...
+  )
 ```
 
 ```{r numeric-transformations-18-solution, exercise.reveal_solution = FALSE}
 flights |> 
-  summarize(hour = sched_dep_time %/% 100, 
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n())
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n()
+  )
 ```
 
 ```{r numeric-transformations-18-check}
@@ -1109,18 +1111,22 @@ Using your previous code. Within the call to `summarize()`, add an argument call
 
 ```{r numeric-transformations-19-hint-1, eval = FALSE}
 flights |> 
-  summarize(hour = sched_dep_time %/% 100, 
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = ...)
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),
+    .by = ...
+  )
 ```
 
 ```{r numeric-transformations-19-solution, exercise.reveal_solution = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour)
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  )
 ```
 
 ```{r numeric-transformations-19-check}
@@ -1140,20 +1146,24 @@ Using your previous code. Add the function `filter()` to the pipeline. Within th
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-transformations-20-hint-1, eval = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(...)
 ```
 
 ```{r numeric-transformations-20-solution, exercise.reveal_solution = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1)
 ```
 
@@ -1172,21 +1182,25 @@ Using your previous code. Add the function `ggplot()` to the pipeline. Within th
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-transformations-21-hint-1, eval = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = ..., y = ...))
 ```
 
 ```{r numeric-transformations-21-solution, exercise.reveal_solution = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled))
 ```
@@ -1207,22 +1221,26 @@ Using your previous code. Add the function `geom_line()` to the pipeline.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-transformations-22-hint-1, eval = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   ...
 ```
 
 ```{r numeric-transformations-22-solution, exercise.reveal_solution = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line()
@@ -1243,22 +1261,26 @@ Using your previous code, within the call to `geom_line()` make a new argument c
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-transformations-23-hint-1, eval = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line(color = ...)
 ```
 
 ```{r numeric-transformations-23-solution, exercise.reveal_solution = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line(color = "grey50")
@@ -1280,11 +1302,13 @@ Using your previous code, add the function `geom_point()` to the pipeline.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-transformations-24-hint-1, eval = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line(color = "grey50") + 
@@ -1292,11 +1316,13 @@ flights |>
 ```
 
 ```{r numeric-transformations-24-solution, exercise.reveal_solution = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line(color = "grey50") + 
@@ -1310,7 +1336,7 @@ grade_this_code()
 
 ### Exercise 25
 
-Copy your previous code. Within the function `geom_point()` map `size` to `n`. 
+Copy your previous code. Within the function `geom_point()` map the aesthetic `size` to `n`. 
 
 ```{r numeric-transformations-25, exercise = TRUE}
 
@@ -1319,11 +1345,13 @@ Copy your previous code. Within the function `geom_point()` map `size` to `n`.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-transformations-25-hint-1, eval = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line(color = "grey50") + 
@@ -1331,11 +1359,13 @@ flights |>
 ```
 
 ```{r numeric-transformations-25-solution, exercise.reveal_solution = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line(color = "grey50") + 
@@ -1357,35 +1387,43 @@ Using your previous code, use the `labs()` function to set the title to "Proport
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-transformations-26-hint-1, eval = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line(color = "grey50") + 
-  geom_point(aes(size = n)) + 
-  labs(title = ...,
-       subtitle = ..., 
-       x = ...,
-       y = ...)
+  geom_point(aes(size = n)) +
+  labs(
+    title = ...,
+    subtitle = ..., 
+    x = ...,
+    y = ...
+  )
 ```
 
 ```{r numeric-transformations-26-solution, exercise.reveal_solution = FALSE}
-flights |> 
-  summarize(hour = sched_dep_time %/% 100,
-            prop_cancelled = mean(is.na(dep_time)), 
-            n = n(), 
-            .by = hour) |> 
+flights |>
+  mutate(hour = sched_dep_time %/% 100) |> 
+  summarize(
+    prop_cancelled = mean(is.na(dep_time)),
+    n = n(),          
+    .by = hour
+  ) |> 
   filter(hour > 1) |> 
   ggplot(aes(x = hour, y = prop_cancelled)) +
   geom_line(color = "grey50") + 
   geom_point(aes(size = n)) + 
-  labs(title = "Proportion of cancelled flights throughout the day",
-       subtitle = "The most cancelled flights occur in the evening", 
-       x = "Hour",
-       y = "Proportion cancelled")
+  labs(
+    title = "Proportion of cancelled flights throughout the day",
+    subtitle = "The most cancelled flights occur in the evening", 
+    x = "Hour",
+    y = "Proportion cancelled"
+  )
 ```
 
 ```{r numeric-transformations-26-check}
@@ -1413,16 +1451,17 @@ Run `?log` in the Console and copy paste the Description below. (Don't worry abo
 
 ```{r other-number-functions-1}
 question_text(NULL,
-	answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-	allow_retry = TRUE,
-	try_again_button = "Edit Answer",
-	incorrect = NULL,
-	rows = 6)
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  allow_retry = TRUE,
+  try_again_button = "Edit Answer",
+  incorrect = NULL,
+  rows = 6
+)
 ```
 
 ### 
@@ -1431,7 +1470,7 @@ Logarithms are an incredibly useful transformation for dealing with data that ra
 
 ### Exercise 2
 
-Use the function `round()` with the argument `123.456` and hit "Run Code".
+Use the function `round()` with the argument `123.456` and hit "Submit Answer".
 
 ```{r other-number-functions-2, exercise = TRUE}
 
@@ -1477,10 +1516,6 @@ round(123.456, digits = 2)
 grade_this_code()
 ```
 
-### 
-
-You can control the precision of the rounding with the second argument, digits. round(x, digits) rounds to the nearest 10^-n so digits = 2 will round to the nearest 0.01.
-
 ### Exercise 4
 
 Copy your previous code and change the `digits` argument to `-2`. 
@@ -1509,7 +1544,7 @@ The *-2* argument in the `round()` function will round the number `123.456` to t
 
 ### Exercise 5
 
-Type in `round(c(1.5, 2.5))` and hit "Run Code".
+Type in `round(c(1.5, 2.5))` and hit "Submit Answer".
 
 ```{r other-number-functions-5, exercise = TRUE}
 
@@ -1542,8 +1577,6 @@ The functions `floor()` and `ceiling()` are paired with `round()`. Use the funct
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r other-number-functions-6-hint-1, eval = FALSE}
 floor(...)
 ```
@@ -1562,7 +1595,8 @@ The function `floor()` will always round down to the nearest integer.
 
 ### Exercise 7
 
-Type in ceiling() with the numerical argument of `123.456`. 
+Type in `ceiling()` with the numerical argument of `123.456`. 
+
 ```{r other-number-functions-7, exercise = TRUE}
 
 ```
@@ -1592,8 +1626,6 @@ Make a new variable `x` and set it to the number 123.456.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r other-number-functions-8-hint-1, eval = FALSE}
 x <- ...
 ```
@@ -1612,7 +1644,7 @@ The `floor()` and `ceiling()` functions don’t have a digits argument, so you c
 
 ### Exercise 9
 
-Let's round down to the nearest two digits. On the next line, type in `floor(x / 0.01) * 0.01` and hit "Submit Code".
+Let's round down to the nearest two digits. On the next line, type in `floor(x / 0.01) * 0.01` and hit "Submit Answer".
 
 ```{r other-number-functions-9, exercise = TRUE}
 x <- 123.456
@@ -1634,7 +1666,7 @@ grade_this_code()
 
 ### Exercise 10
 
-Let's round up to the nearest two digits. On the next line, type in `ceiling(x / 0.01) * 0.01` and hit "Submit Code". 
+Let's round up to the nearest two digits. On the next line, type in `ceiling(x / 0.01) * 0.01` and hit "Submit Answer". 
 
 ```{r other-number-functions-10, exercise = TRUE}
 x <- 123.456
@@ -1660,7 +1692,7 @@ You can use the same technique if you want to round() to a multiple of some othe
 
 ### Exercise 11
 
-Let's round to the nearest multiple of 4. On the next line, type in `round(x / 4) * 4` and hit "Submit Code".
+Let's round to the nearest multiple of 4. On the next line, type in `round(x / 4) * 4` and hit "Submit Answer".
 
 ```{r other-number-functions-11, exercise = TRUE}
 x <- 123.456
@@ -1682,7 +1714,7 @@ grade_this_code()
 
 ### Exercise 12
 
-This time let's round to the nearest 0.25. On the next line, type in `round(x / 0.25) * 0.25` and hit "Submit Code".
+This time let's round to the nearest 0.25. On the next line, type in `round(x / 0.25) * 0.25` and hit "Submit Answer".
 
 ```{r other-number-functions-12, exercise = TRUE}
 x <- 123.456
@@ -1820,8 +1852,6 @@ Make a new vector `x` and set it to `1:10`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r other-number-functions-17-hint-1, eval = FALSE}
 x <- ...
 ```
@@ -1873,20 +1903,18 @@ This section will utilize the package **dplyr** and allow you to make use of tra
 
 ### Exercise 1
 
-Make a new vector named `x` that has the values of `c(1, 2, 3, 4, NA)`.
+Make a new vector named `x` that has the values of `c(1, 2, 2, 3, 4, NA)`.
 
 ```{r general-transformations-1, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r general-transformations-1-hint-1, eval = FALSE}
 x <- ...
 ```
 
 ```{r general-transformations-1-solution, exercise.reveal_solution = FALSE}
-x <- c(1,2,3,4,NA)
+x <- c(1, 2, 2, 3, 4, NA)
 ```
 
 ```{r general-transformations-1-check}
@@ -1902,16 +1930,16 @@ dplyr provides a number of ranking functions inspired by SQL, but you should alw
 On the next line, use the function `min_rank()` taking `x` as the argument.
 
 ```{r general-transformations-2, exercise = TRUE}
-x <- c(1, 2, 3, 4, NA)
+x <- c(1, 2, 2, 3, 4, NA)
 ```
 
 ```{r general-transformations-2-hint-1, eval = FALSE}
-x <- c(1, 2, 3, 4, NA)
+x <- c(1, 2, 2, 3, 4, NA)
 min_rank(x)
 ```
 
 ```{r general-transformations-2-solution, exercise.reveal_solution = FALSE}
-x <- c(1, 2, 3, 4, NA)
+x <- c(1, 2, 2, 3, 4, NA)
 min_rank(x)
 ```
 
@@ -1928,18 +1956,17 @@ Note that the smallest values get the lowest ranks; use desc(x) to give the larg
 Now, use the function `min_rank()` taking `desc(x)` as its argument.
 
 ```{r general-transformations-3, exercise = TRUE}
-x <- c(1, 2, 3, 4, NA)
+x <- c(1, 2, 2, 3, 4, NA)
+min_rank(x)
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r general-transformations-3-hint-1, eval = FALSE}
-x <- c(1, 2, 3, 4, NA)
+x <- c(1, 2, 2, 3, 4, NA)
 min_rank(...)
 ```
 
 ```{r general-transformations-3-solution, exercise.reveal_solution = FALSE}
-x <- c(1, 2, 3, 4, NA)
+x <-  c(1, 2, 2, 3, 4, NA)
 min_rank(desc(x))
 ```
 
@@ -1953,13 +1980,11 @@ If min_rank() doesn’t do what you need, look at the variants `dplyr::row_numbe
 
 ### Exercise 4
 
-Type in `ranktypes` and hit "Run Code".
+Type in `ranktypes` and hit "Submit Answer".
 
 ```{r general-transformations-4, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r general-transformations-4-hint-1, eval = FALSE}
 ranktypes
@@ -1982,19 +2007,15 @@ Right now, `ranktypes` is just a tibble of the vector `x`.
 Pipe `ranktypes` to the `mutate()` function. Within the call to `mutate()`, create a variable `row_number` which equals `row_number(x)`.
 
 ```{r general-transformations-5, exercise = TRUE}
-x <- c(1, 2, 3, 4, NA)
+ranktypes
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r general-transformations-5-hint-1, eval = FALSE}
-x <- c(1, 2, 3, 4, NA)
 ranktypes |> 
   mutate(row_number = ...)
 ```
 
 ```{r general-transformations-5-solution, exercise.reveal_solution = FALSE}
-x <- c(1, 2, 3, 4, NA)
 ranktypes |> 
   mutate(row_number = row_number(x))
 ```
@@ -2008,23 +2029,25 @@ grade_this_code()
 Using the same pipe as above, create another variable, within the call to `mutate()`, called `dense_rank` equal to `dense_rank(x)`.
 
 ```{r general-transformations-6, exercise = TRUE}
-x <- c(1, 2, 3, 4, NA)
+
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r general-transformations-6-hint-1, eval = FALSE}
-x <- c(1, 2, 3, 4, NA)
 ranktypes |> 
-  mutate(row_number = row_number(x), 
-         dense_rank = ...)
+  mutate(
+    row_number = row_number(x), 
+    dense_rank = ...
+  )
 ```
 
 ```{r general-transformations-6-solution, exercise.reveal_solution = FALSE}
-x <- c(1, 2, 3, 4, NA)
 ranktypes |> 
-  mutate(row_number = row_number(x),
-         dense_rank = dense_rank(x))
+  mutate(
+    row_number = row_number(x),
+    dense_rank = dense_rank(x)
+  )
 ```
 
 ```{r general-transformations-6-check}
@@ -2036,25 +2059,27 @@ grade_this_code()
 Using the same pipe as above, create another variable, within the call to `mutate()`, called `percent_rank` equal to `percent_rank(x)`.
 
 ```{r general-transformations-7, exercise = TRUE}
-x <- c(1, 2, 3, 4, NA)
+
 ```
 
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r general-transformations-7-hint-1, eval = FALSE}
-x <- c(1, 2, 3, 4, NA)
 ranktypes |> 
-  mutate(row_number = row_number(x),
-         dense_rank = dense_rank(x),
-         percent_rank = ...)
+  mutate(
+    row_number = row_number(x),
+    dense_rank = dense_rank(x),
+    percent_rank = ...
+  )
 ```
 
 ```{r general-transformations-7-solution, exercise.reveal_solution = FALSE}
-x <- c(1, 2, 3, 4, NA)
-ranktypes |> 
-  mutate(row_number = row_number(x),
-         dense_rank = dense_rank(x),
-         percent_rank = percent_rank(x))
+ranktypes |>
+  mutate(
+    row_number = row_number(x),
+    dense_rank = dense_rank(x),
+    percent_rank = percent_rank(x)
+  )
 ```
 
 ```{r general-transformations-7-check}
@@ -2073,21 +2098,23 @@ Using the same pipe as above, create another variable, within the call to `mutat
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r general-transformations-8-hint-1, eval = FALSE}
-x <- c(1, 2, 3, 4, NA)
 ranktypes |> 
-  mutate(row_number = row_number(x),
-         dense_rank = dense_rank(x),
-         percent_rank = percent_rank(x),
-         cume_dist = ...)
+  mutate(
+    row_number = row_number(x),
+    dense_rank = dense_rank(x),
+    percent_rank = percent_rank(x),
+    cume_dist = ...
+  )
 ```
 
 ```{r general-transformations-8-solution, exercise.reveal_solution = FALSE}
-x <- c(1, 2, 3, 4, NA)
-ranktypes |> 
-  mutate(row_number = row_number(x),
-         dense_rank = dense_rank(x),
-         percent_rank = percent_rank(x),
-         cume_dist = cume_dist(x))
+ranktypes |>
+  mutate(
+    row_number = row_number(x),
+    dense_rank = dense_rank(x),
+    percent_rank = percent_rank(x),
+    cume_dist = cume_dist(x)
+  )
 ```
 
 ```{r general-transformations-8-check}
@@ -2096,17 +2123,15 @@ grade_this_code()
 
 ### 
 
-You can achieve many of the same results by picking the appropriate ties.method argument to base R’s rank(); you’ll probably also want to set na.last = "keep" to keep NAs as NA.
+You can achieve many of the same results by picking the appropriate ties.method argument to base R's `rank()`; you’ll probably also want to set `na.last = "keep"` to keep `NA`s as `NA`.
 
 ### Exercise 9
 
-Type in numbers and hit "Run Code". 
+Type in `numbers` and hit "Submit Answer". 
 
 ```{r general-transformations-9, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r general-transformations-9-hint-1, eval = FALSE}
 numbers
@@ -2122,7 +2147,7 @@ grade_this_code()
 
 ### 
 
-The numbers dataset just lists the numbers from 1 through 10.
+The `numbers` dataset just lists the numbers from 1 through 10.
 
 ### Exercise 10
 
@@ -2153,7 +2178,7 @@ grade_this_code()
 
 ### 
 
-row_number() can also be used without any arguments when inside a dplyr verb. In this case, it’ll give the number of the “current” row.
+`row_number()` can also be used without any arguments when inside a dplyr verb. In this case, it’ll give the number of the "current" row.
 
 ### Exercise 11
 
@@ -2168,7 +2193,7 @@ Using the same pipe as above, create another variable, within the call to `mutat
 ```{r general-transformations-11-hint-1, eval = FALSE}
 numbers |> 
   mutate(
-    row0 = row_number() - 0, 
+    row0 = row_number() - 1, 
     three_groups = ... %% ...
   )
 ```
@@ -2176,8 +2201,9 @@ numbers |>
 ```{r general-transformations-11-solution, exercise.reveal_solution = FALSE}
 numbers |> 
   mutate(
-    row0 = row_number() - 0,
-    three_groups = row0 %% 3)
+    row0 = row_number() - 1,
+    three_groups = row0 %% 3
+  )
 ```
 
 ```{r general-transformations-11-check}
@@ -2201,7 +2227,7 @@ Using the same pipe as above, create another variable, within the call to `mutat
 ```{r general-transformations-12-hint-1, eval = FALSE}
 numbers |> 
   mutate(
-    row0 = row_number() - 0,
+    row0 = row_number() - 1,
     three_groups = row0 %% 3,
     three_in_each_group = ... %/% ...
   )
@@ -2210,9 +2236,10 @@ numbers |>
 ```{r general-transformations-12-solution, exercise.reveal_solution = FALSE}
 numbers |> 
   mutate(
-    row0 = row_number() - 0,
+    row0 = row_number() - 1,
     three_groups = row0 %% 3,
-    three_in_each_group = row0 %/% 3)
+    three_in_each_group = row0 %/% 3
+  )
 ```
 
 ```{r general-transformations-12-check}
@@ -2228,8 +2255,6 @@ Create a new vector `x` and set it to `c(2, 5, 11, 11, 19, 35)`
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r general-transformations-13-hint-1, eval = FALSE}
 x <- ...
 ```
@@ -2244,7 +2269,7 @@ grade_this_code()
 
 ### 
 
-dplyr::lead() and dplyr::lag() allow you to refer the values just before or just after the “current” value. They return a vector of the same length as the input, padded with NAs at the start or end
+`dplyr::lead()` and `dplyr::lag()` allow you to refer the values just before or just after the “current” value. They return a vector of the same length as the input, padded with NAs at the start or end
 
 ### Exercise 14
 
@@ -2253,8 +2278,6 @@ Use the function `lag()` taking in `x` as its argument.
 ```{r general-transformations-14, exercise = TRUE}
 x <- c(2, 5, 11, 11, 19, 35)
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r general-transformations-14-hint-1, eval = FALSE}
 x <- c(2, 5, 11, 11, 19, 35)
@@ -2277,8 +2300,6 @@ Use the function `lead()` taking in `x` as its argument.
 ```{r general-transformations-15, exercise = TRUE}
 x <- c(2, 5, 11, 11, 19, 35)
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r general-transformations-15-hint-1, eval = FALSE}
 x <- c(2, 5, 11, 11, 19, 35)
@@ -2322,7 +2343,7 @@ grade_this_code()
 
 ### Exercise 17
 
-Type in `x == lag(x)` and hit "Submit Code".
+Type in `x == lag(x)` and hit "Submit Answer".
 
 ```{r general-transformations-17, exercise = TRUE}
 x <- c(2, 5, 11, 11, 19, 35)
@@ -2335,7 +2356,7 @@ x == ...
 
 ```{r general-transformations-17-solution, exercise.reveal_solution = FALSE}
 x <- c(2, 5, 11, 11, 19, 35)
-x==lag(x)
+x == lag(x)
 ```
 
 ```{r general-transformations-17-check}
@@ -2352,7 +2373,7 @@ When you’re looking at website data, it’s common to want to break up events 
 
 ### 
 
-Type in `times_visited` and hit "Submit Code".
+Type in `times_visited` and hit "Submit Answer".
 
 ```{r general-transformations-18, exercise = TRUE}
 
@@ -2391,7 +2412,7 @@ times_visited |>
 
 ```{r general-transformations-19-solution, exercise.reveal_solution = FALSE}
 times_visited |> 
-  mutate(diff = lag(time, default = first(time)))
+  mutate(diff = time - lag(time, default = first(time)))
 ```
 
 ```{r general-transformations-19-check}
@@ -2411,14 +2432,17 @@ Using the same pipe as above, create another variable, within the call to `mutat
 ```{r general-transformations-20-hint-1, eval = FALSE}
 times_visited |> 
   mutate(
-    diff = diff = lag(time, default = first(time)), 
-    has_gap = ...)
+    diff = time - lag(time, default = first(time)), 
+    has_gap = ...
+  )
 ```
 
 ```{r general-transformations-20-solution, exercise.reveal_solution = FALSE}
 times_visited |> 
-  mutate(diff = lag(time, default = first(time)),
-         has_gap = diff >=5)
+  mutate(
+    diff = time - lag(time, default = first(time)), 
+    has_gap = diff >= 5
+  )
 ```
 
 ```{r general-transformations-20-check}
@@ -2442,16 +2466,19 @@ Using the same pipe as above, create another variable, within the call to `mutat
 ```{r general-transformations-21-hint-1, eval = FALSE}
 times_visited |> 
   mutate(
-    diff = diff = lag(time, default = first(time)), 
+    diff = time - lag(time, default = first(time)), 
     has_gap = diff >=5,
-    group = ...)
+    group = ...
+  )
 ```
 
 ```{r general-transformations-21-solution, exercise.reveal_solution = FALSE}
-times_visited |> 
-  mutate(diff = lag(time, default = first(time)),
-         has_gap = diff >=5,
-         group = cumsum(has_gap))
+times_visited |>
+  mutate(
+    diff = time - lag(time, default = first(time)), 
+    has_gap = diff >= 5,
+    group = cumsum(has_gap)
+  )
 ```
 
 ```{r general-transformations-21-check}
@@ -2464,7 +2491,7 @@ When `has_gap` is `TRUE`, `cumsum()` will increment `group` by `1`.
 
 ### Exercise 22
 
-Imagine you have a dataframe with a bunch of repeated values. Type in `repetition` and hit "Submit Code".
+Imagine you have a dataframe with a bunch of repeated values. Type in `repetition` and hit "Submit Answer".
 
 ```{r general-transformations-22, exercise = TRUE}
 
@@ -2484,7 +2511,7 @@ grade_this_code()
 
 ### Exercise 23
 
-Create a new pipeline and pipe `repetition` to the `summarize()` function. Within the call to `summarize()`, create a variable `id` and set it to `consecutive_id(x)`.
+Create a new pipeline and pipe `repetition` to the `mutate()` function. Within the call to `mutate()`, create a variable `id` and set it to `consecutive_id(x)`.
 
 ```{r general-transformations-23, exercise = TRUE}
 
@@ -2494,12 +2521,12 @@ Create a new pipeline and pipe `repetition` to the `summarize()` function. Withi
 
 ```{r general-transformations-23-hint-1, eval = FALSE}
 repetition |> 
-  summarize(id = ...)
+  mutate(id = ...)
 ```
 
 ```{r general-transformations-23-solution, exercise.reveal_solution = FALSE}
 repetition |> 
-  summarize(id = consecutive_id(x))
+  mutate(id = consecutive_id(x))
 ```
 
 ```{r general-transformations-23-check}
@@ -2512,7 +2539,7 @@ Another approach for creating grouping variables is `consecutive_id()`, which st
 
 ### Exercise 24
 
-Using your previous code, within your call to the `summarize()` function, add the parameters `x` and `y` so that we could include these columns in our plot.
+Using the same pipe as above, add the function `slice_head()` to the pipeline. Within this function add the argument `n` and set it to `1`.
 
 ```{r general-transformations-24, exercise = TRUE}
 
@@ -2522,21 +2549,27 @@ Using your previous code, within your call to the `summarize()` function, add th
 
 ```{r general-transformations-24-hint-1, eval = FALSE}
 repetition |> 
-  summarize(id = consecutive_id(x), x, ...)
+  mutate(id = consecutive_id(x)) |> 
+  slice_head(n = ...)
 ```
 
 ```{r general-transformations-24-solution, exercise.reveal_solution = FALSE}
 repetition |> 
-  summarize(id = consecutive_id(x), x, y)
+  mutate(id = consecutive_id(x)) |> 
+  slice_head(n = 1)
 ```
 
 ```{r general-transformations-24-check}
 grade_this_code()
 ```
 
+### 
+
+This keeps the first row from each repeated `x`.
+
 ### Exercise 25
 
-Using the same pipe as above, add the function `slice_head()` to the pipeline. Within this function add the argument `n` and set it to `1`.
+Using your previous code, within the `slice_head()` function, add the `by` argument and set it to `id`.
 
 ```{r general-transformations-25, exercise = TRUE}
 
@@ -2546,47 +2579,17 @@ Using the same pipe as above, add the function `slice_head()` to the pipeline. W
 
 ```{r general-transformations-25-hint-1, eval = FALSE}
 repetition |> 
-  summarize(id = consecutive_id(x), x, y)
-  slice_head(n = ...)
+  mutate(id = consecutive_id(x)) |> 
+  slice_head(n = 1, by = ...)
 ```
 
 ```{r general-transformations-25-solution, exercise.reveal_solution = FALSE}
 repetition |> 
-  summarize(id = consecutive_id(x), x, y) |>
-  slice_head(n=1)
+  mutate(id = consecutive_id(x)) |> 
+  slice_head(n = 1, by = id)
 ```
 
 ```{r general-transformations-25-check}
-grade_this_code()
-```
-
-### 
-
-This keeps the first row from each repeated `x`.
-
-### Exercise 26
-
-Using your previous code, within the `slice_head()` function, add the `by` argument and set it to `id`.
-
-```{r general-transformations-26, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r general-transformations-26-hint-1, eval = FALSE}
-repetition |> 
-  summarize(id = consecutive_id(x), x, y) |>
-  slice_head(n=1, by = .__C__.name)
-```
-
-```{r general-transformations-26-solution, exercise.reveal_solution = FALSE}
-repetition |> 
-  summarize(id = consecutive_id(x), x, y) |>
-  slice_head(n=1, by = id)
-```
-
-```{r general-transformations-26-check}
 grade_this_code()
 ```
 
