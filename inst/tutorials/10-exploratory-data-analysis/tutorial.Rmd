@@ -736,10 +736,11 @@ In this section we will learn about the ways to deal with unusual values in a da
 
 ```{r unusual-values-1-q}
 question("To handle unusual values, we recommend dropping the entire row.",
-       answer("TRUE"),
-       answer("FALSE", correct = TRUE),
-       random_answer_order = TRUE,
-       allow_retry = TRUE)
+  answer("TRUE"),
+  answer("FALSE", correct = TRUE),
+  random_answer_order = TRUE,
+  allow_retry = TRUE
+)
 ```
 
 ###
@@ -749,33 +750,32 @@ We don’t recommend dropping entire rows because one invalid value doesn’t im
 
 ### Exercise 2
 
-In the `diamonds` dataset, diamonds with a width less than 3 or greater than 20 are "unusual". Let's replace them with `NA`.
+One way to handle this is to modify the dataset so that the "unusual" values are changed to `NA`. To do this, begin by piping the `diamonds` dataset into a `mutate()`. Within `mutate()`, create/define a new variable `y_new` by using `y_new = if_else(y < 3 | y > 20, NA, y)`.
 
-First, create a new variable called `diamonds2` and set it equal to `diamonds`.
+The function `if_else()` is a vectorized *if-else*. Compared to the base R equivalent, `ifelse()`, this function allows you to handle missing values in the `condition` with `missing` and always takes `true`, `false`, and `missing` into account when determining what the output type should be. `if_else()` is the tidyverse form of the base R `ifelse` and generally speaking we will prefer the tidyverse version.
+
 
 ```{r unusual-values-2, exercise = TRUE}
 
 ```
 
 ```{r unusual-values-2-hint-1, eval = FALSE}
-diamonds2 <- ...
+diamonds |> 
+  ...
 ```
 
 ```{r unusual-values-2-solution, exercise.reveal_solution = FALSE}
-diamonds2 <- diamonds
+diamonds |> 
+  mutate(y_new = if_else(y < 3 | y > 20, NA, y))
 ```
 
 ```{r unusual-values-2-check}
 grade_this_code()
 ```
 
-### 
-
-The function `if_else()` is a vectorized *if-else*. Compared to the base R equivalent, `ifelse()`, this function allows you to handle missing values in the `condition` with `missing` and always takes `true`, `false`, and `missing` into account when determining what the output type should be.
-
 ### Exercise 3
 
-Copy your previous code and pipe `diamonds` to `mutate()`. Within `mutate()`, create a new variable, `y_new`, and set it equal to `if_else(y < 3 | y > 20, NA, y)`.
+Copy your previous code and store/assign it to `diamonds2`.
 
 ```{r unusual-values-3, exercise = TRUE}
 
@@ -784,8 +784,7 @@ Copy your previous code and pipe `diamonds` to `mutate()`. Within `mutate()`, cr
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r unusual-values-3-hint-1, eval = FALSE}
-diamonds2 <- diamonds |> 
-  mutate(y_new = ...)
+diamonds2 <- ...
 ```
 
 ```{r unusual-values-3-solution, exercise.reveal_solution = FALSE}
@@ -796,19 +795,14 @@ diamonds2 <- diamonds |>
 ```{r unusual-values-3-check}
 grade_this_code()
 ```
-### 
-
-Here we replaced the unusual values with missing values. Here, we use the `mutate()` function to replace the variable with a modified copy. We used the `if_else()` function to replace unusual values with `NA`.
 
 ### Exercise 4
 
-Create a scatter plot with our `diamonds2` dataset, within the `aes()` function set `x` equal to `x` and `y` equal to `y_new`.
+Create a scatterplot with our `diamonds2` dataset, within the `aes()` function set `x` equal to `x` and `y` equal to `y_new`.
 
 ```{r unusual-values-4, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r unusual-values-4-hint-1, eval = FALSE}
 ggplot(..., aes(x = ..., y = ...)) +
@@ -816,7 +810,7 @@ ggplot(..., aes(x = ..., y = ...)) +
 ```
 
 ```{r unusual-values-4-solution, exercise.reveal_solution = FALSE}
-ggplot(diamonds2, x = x, y = y_new) +
+ggplot(diamonds2, aes(x = x, y = y_new)) +
   geom_point()
 ```
 
@@ -826,7 +820,7 @@ grade_this_code()
 
 ### 
 
-It’s not obvious where you should plot missing values, so **ggplot2** doesn’t include them in the plot, but it does warn that they’ve been removed. To suppress that warning, set `na.rm = TRUE`.
+It’s not obvious where you should plot missing values, so **ggplot2** doesn’t include them in the plot, but it does warn that they’ve been removed. To suppress that warning, set `na.rm = TRUE` in the geom layer.
 
 ### Exercise 5
 
@@ -844,7 +838,7 @@ Within `geom_point()`, add the `na.rm` argument and set it equal to `TRUE`.
 ```
 
 ```{r unusual-values-5-solution, exercise.reveal_solution = FALSE}
-ggplot(diamonds2, x = x, y = y_new) +
+ggplot(diamonds2, aes(x = x, y = y_new)) +
   geom_point(na.rm = TRUE)
 ```
 
@@ -869,17 +863,25 @@ p1 <- nycflights13::flights |>
     sched_dep_time = sched_hour + (sched_min / 60)
   ) |>
   ggplot(aes(x = sched_dep_time)) +
-  geom_freqpoly(aes(color = cancelled), binwidth = 1/4) +
-  labs(title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights",
-       subtitle = "There are a lot of non-cancelled flights at 3 PM",
-       x = "Scheduled Departure Time",
-       y = "Frequency",
-       color = "Cancelled or Non-Cancelled")
+  geom_freqpoly(aes(color = cancelled), binwidth = 1 / 4) +
+  labs(
+    title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights",
+    subtitle = "There are a lot of non-cancelled flights at 3 PM",
+    x = "Scheduled Departure Time",
+    y = "Frequency",
+    color = "Cancelled or Non-Cancelled"
+  )
 
 p1
 ```
 
-With a new pipeline, pipe `nycflights13::flights` to `mutate()`. Within `mutate()`, create a new variable called `cancelled` and set it equal to `is.na(dep_time)`.
+###
+
+In the dataset `nycflights13::flights`, missing values in the `dep_time` variable indicate that the flight was cancelled. To compare the scheduled departure times for cancelled and non-cancelled times we will need a new variable indicating if it was a cancelled flight or not. You can do this by making a new variable, using `is.na()` to check if `dep_time` is missing.
+
+###
+
+To begin, pipe `nycflights13::flights` to `mutate()`. Within `mutate()`, create a new variable called `cancelled` and set it equal to `is.na(dep_time)`.
 
 ```{r unusual-values-6, exercise = TRUE}
 
@@ -896,19 +898,16 @@ nycflights13::flights |>
 nycflights13::flights |> 
   mutate(
     cancelled = is.na(dep_time)
-  ) |> 
+  ) 
 ```
 
 ```{r unusual-values-6-check}
 grade_this_code()
 ```
 
-### 
-
-In the dataset `nycflights13::flights`, missing values in the `dep_time` variable indicate that the flight was cancelled. So you might want to compare the scheduled departure times for cancelled and non-cancelled times. You can do this by making a new variable, using `is.na()` to check if `dep_time` is missing.
-
-
 ### Exercise 7
+
+Right now `sched_dep_time` is currently in `HHMM` or `HMM` format. That is, `H` refers to hours after midnight and then `MM` the number of minutes after the hour. We need to transform `sched_dep_time` to better format, and in this case, changing it to the number of hours after midnight seems to be best. Thee following instructions help with this. 
 
 Within `mutate()`, create:
 
@@ -948,18 +947,19 @@ grade_this_code()
 
 ### 
 
-Two important operators are %/% and %%
+Two important operators are `%/%` and `%%`
 
-- %/% is the integer division operator
-- %% is the modulo operator
+- `%/%` is the integer division operator
+- `%%` is the modulo operator
 
 For example,
+
 - `5 %/% 2` would equal `2` (number of whole times 2 goes into 5)
 - `5 %% 2` would equal `1` (remainder: `5 - 2*2`)
 
 ###
 
-Data cleaning is just one application of EDA: you ask questions about whether your data meets your expectations or not. To do data cleaning, you’ll need to deploy all the tools of EDA: visualization, transformation, and modelling.
+Data cleaning like this is just one application of EDA. You ask questions about whether your data meets your expectations or is in a form to be useful. To do data cleaning, you’ll need to deploy all the tools of EDA: visualization, transformation, and modelling.
 
 ###
 
@@ -967,9 +967,7 @@ EDA is fundamentally a creative process. And like most creative processes, the k
 
 ### Exercise 8
 
-Add `ggplot()` to the pipeline.
-
-Then within `aes()`, set the `x` argument to the `sched_dep_time` variable.
+Now that the data has been appropriately transformed, add `ggplot()` to the pipeline. Within `aes()`, set the `x` argument to the `sched_dep_time` variable.
 
 ```{r unusual-values-8, exercise = TRUE}
 
@@ -1011,7 +1009,7 @@ There is no rule about which questions you should ask to guide your research. Ho
 
 ### Exercise 9
 
-Add `geom_freqpoly()` to the pipeline.
+Now add `geom_freqpoly()` to the pipeline.
 
 ```{r unusual-values-9, exercise = TRUE}
 
@@ -1077,13 +1075,13 @@ grade_this_code()
 
 ### Exercise 11
 
-Add `labs()` to the pipeline and set the `title`, `subtitle`, `x` axis title, `y` axis title, and `color` label as follows:
+Fianlly, add `labs()` to the pipeline and set the `title`, `subtitle`, `x` axis title, `y` axis title, and `color` label as follows (order of entry matters for grading):
 
-- title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights"
-- subtitle = "There are a lot of non-cancelled flights at 3 PM",
-- x = "Scheduled Departure Time",
-- y = "Frequency",
-- color = "Cancelled or Non-Cancelled"
+- `title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights"`
+- `subtitle = "There are a lot of non-cancelled flights at 3 PM"`,
+- `x = "Scheduled Departure Time"`,
+- `y = "Frequency"`,
+- `color = "Cancelled or Non-Cancelled"`
 
 ```{r unusual-values-11, exercise = TRUE}
 
@@ -1103,20 +1101,22 @@ Add `labs()` to the pipeline and set the `title`, `subtitle`, `x` axis title, `y
 ```
 
 ```{r unusual-values-11-solution, exercise.reveal_solution = FALSE}
-nycflights13::flights |> 
+nycflights13::flights |>
   mutate(
     cancelled = is.na(dep_time),
     sched_hour = sched_dep_time %/% 100,
     sched_min = sched_dep_time %% 100,
     sched_dep_time = sched_hour + (sched_min / 60)
-  ) |> 
-  ggplot(aes(x = sched_dep_time)) + 
-  geom_freqpoly(aes(color = cancelled), binwidth = 1/4) +
-  labs(title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights",
-       subtitle = "There are a lot of non-cancelled flights at 3 PM",
-       x = "Scheduled Departure Time",
-       y = "Frequency",
-       color = "Cancelled or Non-Cancelled")
+  ) |>
+  ggplot(aes(x = sched_dep_time)) +
+  geom_freqpoly(aes(color = cancelled), binwidth = 1 / 4) +
+  labs(
+    title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights",
+    subtitle = "There are a lot of non-cancelled flights at 3 PM",
+    x = "Scheduled Departure Time",
+    y = "Frequency",
+    color = "Cancelled or Non-Cancelled"
+  )
 ```
 
 ```{r unusual-values-11-check}
@@ -1179,7 +1179,7 @@ Add `geom_freqpoly()` to the pipeline.
 ```{r covariation-2-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   ggplot(aes(x = price)) +
-    geom_freqpoly()
+  geom_freqpoly()
 ```
 
 ```{r covariation-2-check}
@@ -1208,7 +1208,7 @@ Within `geom_freqpoly()`, using `aes()`, set the `color` argument to the `cut` v
 ```{r covariation-3-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   ggplot(aes(x = price)) +
-    geom_freqpoly(aes(color = cut))
+  geom_freqpoly(aes(color = cut))
 ```
 
 ```{r covariation-3-check}
@@ -1231,17 +1231,21 @@ Within `geom_freqpoly()`, set `binwidth` to `500` and `linewidth` to `0.75`.
 
 ```{r covariation-4-hint-1, eval = FALSE}
 ... + 
-  geom_freqpoly(aes(color = cut), 
-                binwidth = ...,
-                ... = 0.75)
+  geom_freqpoly(
+    mapping = aes(color = cut), 
+    binwidth = ...,
+    ... = 0.75
+  )
 ```
 
 ```{r covariation-4-solution, exercise.reveal_solution = FALSE}
-diamonds |> 
+diamonds |>
   ggplot(aes(x = price)) +
-    geom_freqpoly(aes(color = cut), 
-                  binwidth = 500,
-                  linewidth = 0.75)
+  geom_freqpoly(
+    mapping = aes(color = cut),
+    binwidth = 500,
+    linewidth = 0.75
+  )
 ```
 
 ```{r covariation-4-check}
@@ -1254,7 +1258,7 @@ The default appearance of `geom_freqpoly()` is not that useful here because the 
 
 ### Exercise 5
 
-Within `ggplot()`, within `aes()`, set the `y` argument to `after_stat(density)`. 
+Within the `ggplot()` layer's `aes()`, set the `y` argument to `after_stat(density)`. 
 
 ```{r covariation-5, exercise = TRUE}
 
@@ -1265,15 +1269,21 @@ Within `ggplot()`, within `aes()`, set the `y` argument to `after_stat(density)`
 ```{r covariation-5-hint-1, eval = FALSE}
 diamonds |> 
   ggplot(aes(x = price, y = ...) + 
-  geom_freqpoly(aes(color = cut), binwidth = 500, linewidth = 0.75)
+  geom_freqpoly(
+    mapping = aes(color = cut), 
+    binwidth = 500, 
+    linewidth = 0.75
+  )
 ```
 
 ```{r covariation-5-solution, exercise.reveal_solution = FALSE}
-diamonds |> 
+diamonds |>
   ggplot(aes(x = price, y = after_stat(density))) +
-    geom_freqpoly(aes(color = cut), 
-                  binwidth = 500,
-                  linewidth = 0.75)
+  geom_freqpoly(
+    mapping = aes(color = cut),
+    binwidth = 500,
+    linewidth = 0.75
+  )
 ```
 
 ```{r covariation-5-check}
@@ -1347,7 +1357,7 @@ mpg |>
 ```{r covariation-7-solution, exercise.reveal_solution = FALSE}
 mpg |> 
   ggplot(aes(x = class, y = hwy)) +
-    geom_boxplot()
+  geom_boxplot()
 ```
 
 ```{r covariation-7-check}
@@ -1356,7 +1366,7 @@ grade_this_code()
 
 ### 
 
-The trend is pretty hard to see, so to make it easier on the eyes, we can reorder `class` based on the `median` value of `hwy`. 
+The trend is pretty hard to see, so to make it easier on the eyes, we can reorder `class` based on the `median` value of `hwy` for each class. 
 
 ### Exercise 8
 
@@ -1371,7 +1381,7 @@ Within `ggplot()`, within `aes()`, set the `x` argument to `fct_reorder(class, h
 ```{r covariation-8-hint-1, eval = FALSE}
 mpg |> 
   ggplot(aes(x = ..., y = hwy)) +
-    geom_boxplot()
+  geom_boxplot()
 ```
 
 ```{r covariation-8-solution, exercise.reveal_solution = FALSE}
@@ -1401,7 +1411,7 @@ Since we have long variable names, `geom_boxplot()` will work better if you flip
 ```{r covariation-9-hint-1, eval = FALSE}
 mpg |> 
   ggplot(aes(y = fct_reorder(class, hwy, median), ... = ...)) +
-    geom_boxplot()
+  geom_boxplot()
   ...
 ```
 
@@ -1421,11 +1431,12 @@ Instead of switching the `x` and `y` variable you could have alternatively added
 
 ### Exercise 10
 
-Add a `title`, `subtitle` and `x` axis title by adding `labs()` to the pipeline. Set the y-axis label to `NULL`. 
+Add a `title`, `subtitle` and `x` axis title by adding `labs()` to the pipeline (order of entry matters for grading). 
 
-- title = "Variation of Highway Mileage over Classes", 
-- subtitle = "The compact and midsized cars are tied for the highest highway mileage.",
-- x = "Highway Mileage"
+- `title = "Variation of Highway Mileage over Classes"`, 
+- `subtitle = "The compact and midsized cars are tied for the highest highway mileage."`,
+- `x = "Highway Mileage"`
+- `y = NULL`
 
 ```{r covariation-10, exercise = TRUE}
 
@@ -1484,7 +1495,7 @@ With a new pipeline, pipe the `diamonds` dataset to `ggplot()` with `aes(x = cut
 ```{r covariation-with-two-categoric-1-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   ggplot(aes(x = cut, y = color)) +
-    geom_count()
+  geom_count()
 ```
 
 ```{r covariation-with-two-categoric-1-check}
@@ -1496,7 +1507,7 @@ grade_this_code()
 
 ### 
 
-The size of each circle in the plot displays how many observations occurred at each combination of values. Covariation will appear as a strong correlation between specific x values and specific y values.
+The size of each circle in the plot displays how many observations occurred at each combination of values. Covariation will appear as a strong association between specific x values and specific y values.
 
 
 ### Exercise 2
@@ -1637,13 +1648,13 @@ Take the previous code and add `alpha = 1 / 100` to the call to `geom_point()`.
 ```{r covariation-with-two-numerical-2-hint-1, eval = FALSE}
 smaller |> 
   ggplot(aes(x = carat, y = price)) +
-    geom_point(alpha = ...)
+  geom_point(alpha = ...)
 ```
 
 ```{r covariation-with-two-numerical-2-solution, exercise.reveal_solution = FALSE}
 smaller |> 
   ggplot(aes(x = carat, y = price)) +
-    geom_point(alpha = 1 / 100)
+  geom_point(alpha = 1 / 100)
 ```
 
 ```{r covariation-with-two-numerical-2-check}
@@ -1658,7 +1669,7 @@ Using the `alpha` aesthetic to add transparency is one way to deal with too much
 
 Using transparency can be challenging for very large datasets. Another solution is to "bin" the data, using functions like `geom_bin2d()` and `geom_hex()`. 
 
-Replace the call to `geom_point()` with `geom_bin2d()`.
+Replace the call to `geom_point()` with `geom_bin2d()`. Remember to remove the transparency argument. 
 
 ```{r covariation-with-two-numerical-3, exercise = TRUE}
 
@@ -1691,7 +1702,7 @@ grade_this_code()
 
 Another option is to bin one continuous variable so it acts like a categorical variable. Then you can use one of the techniques for visualizing the combination of a categorical and a continuous variable that you learned about. For example, you could bin carat and then for each group, display a boxplot. 
 
-To create such a plot, begin by replacing `geom_hex()` with `geom_boxplot()` from the previous pipeline.
+To create such a plot, begin by replacing `geom_bin2d()` with `geom_boxplot()` from the previous pipeline.
 
 ```{r covariation-with-two-numerical-4, exercise = TRUE}
 
@@ -1707,7 +1718,7 @@ To create such a plot, begin by replacing `geom_hex()` with `geom_boxplot()` fro
 ```{r covariation-with-two-numerical-4-solution, exercise.reveal_solution = FALSE}
 smaller |> 
   ggplot(aes(x = carat, y = price)) +
-    geom_boxplot()
+  geom_boxplot()
 ```
 
 ```{r covariation-with-two-numerical-4-check}
@@ -1877,7 +1888,7 @@ We will be using `diamonds3`, with these two new variables,  to make a model tha
 
 ### Exercise 4
 
-Create a new variable called `diamonds_fit` and set it equal to `linear_reg()`. 
+Assign `linear_reg()` to `diamonds_fit` (click *Hint* for help). We are initializing a mathematical model for data, specifically a linear regression model.
 
 ```{r patterns-and-models-4, exercise = TRUE}
 
@@ -1929,7 +1940,7 @@ The functon [`linear_reg()`](https://parsnip.tidymodels.org/reference/linear_reg
 
 ### Exercise 6
 
-Create a new variable called `diamonds_aug` and set it equal to `augment(diamonds_fit, new_data = diamonds3)`. 
+Create a new object called `diamonds_aug` containing `augment(diamonds_fit, new_data = diamonds3)` (see *Hint* for help). After creating it, print it out. 
 
 ```{r patterns-and-models-6, exercise = TRUE}
 
@@ -1937,10 +1948,12 @@ Create a new variable called `diamonds_aug` and set it equal to `augment(diamond
 
 ```{r patterns-and-models-6-hint-1, eval = FALSE}
 diamonds_aug <- ...
+
 ```
 
 ```{r patterns-and-models-6-solution, exercise.reveal_solution = FALSE}
 diamonds_aug <- augment(diamonds_fit, new_data = diamonds3)
+
 ```
 
 ```{r patterns-and-models-6-check}
@@ -1956,7 +1969,7 @@ If you look at `diamonds_aug`, you will notice two new variables: `.pred` and `.
 
 ### Exercise 7
 
-Using your previous code, pipe `augment(diamonds_fit, new_data = diamonds3)` to `mutate()`. Within `mutate()`, create a new variable `.resid` and set it equal to `exp(.resid)`. 
+Using your previous code, add a `mutate()`. Within the `mutate()`, create a new variable `.resid` and set it equal to `exp(.resid)`. Print the `diamonds_aug`.
 
 ```{r patterns-and-models-7, exercise = TRUE}
 
@@ -1967,11 +1980,14 @@ Using your previous code, pipe `augment(diamonds_fit, new_data = diamonds3)` to 
 ```{r patterns-and-models-7-hint-1, eval = FALSE}
 diamonds_aug <- augment(diamonds_fit, new_data = diamonds3) |>
   ...
+
+diamonds_aug
 ```
 
 ```{r patterns-and-models-7-solution, exercise.reveal_solution = FALSE}
 diamonds_aug <- augment(diamonds_fit, new_data = diamonds3) |>
   mutate(.resid = exp(.resid))
+
 diamonds_aug
 ```
 
@@ -2011,7 +2027,7 @@ grade_this_code()
 
 ### 
 
-Big picture: We are sure that there is a major relationship between `price` and `carat`. Diamonds with more carats are much more expensive. If we want to study the relationship between `price` and `cut`, we first need to "adjust" for the number of carats.
+Big picture: We are sure that there is a major relationship between `price` and `carat` that eclipses all other relationships. Diamonds with more carats are much more expensive. If we want to study the relationship between `price` and `cut`, we first need to "adjust" for the number of carats.
 
 <!-- DK: This is was too concise to be meaningful to new students! -->
 
