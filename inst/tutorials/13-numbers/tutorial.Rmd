@@ -3072,8 +3072,6 @@ Create a new pipeline. Pipe `flights` to the `summarize()` function. Within the 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r numeric-summaries-14-hint-1, eval = FALSE}
 flights |> 
   summarize(
@@ -3201,16 +3199,17 @@ Describe the oddity.
 
 ```{r numeric-summaries-18}
 question_text(NULL,
-	message = "The distance between any two airports should be constant, obviously. Airports don't move! For some reason, the are distances between EGE, on one hand, and JFK/EWR on the other hand, are not always the same. That seems odd!",
-	answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-	allow_retry = FALSE,
-	incorrect = NULL,
-	rows = 6)
+  message = "The distance between any two airports should be constant, obviously. Airports don't move! For some reason, the are distances between EGE, on one hand, and JFK/EWR on the other hand, are not always the same. That seems odd!",
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  allow_retry = FALSE,
+  incorrect = NULL,
+  rows = 6
+)
 ```
 
 ### Exercise 19
@@ -3220,8 +3219,6 @@ Create a new pipeline. Pipe `flights` to the `filter()` function. Within the cal
 ```{r numeric-summaries-19, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-summaries-19-hint-1, eval = FALSE}
 flights |> 
@@ -3309,8 +3306,6 @@ Create a new pipeline. Pipe `flights` to the `summarize()` function. Within the 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r numeric-summaries-22-hint-1, eval = FALSE}
 flights |> 
   summarize(
@@ -3321,7 +3316,8 @@ flights |>
 ```{r numeric-summaries-22-solution, exercise.reveal_solution = FALSE}
 flights |> 
   summarize(
-    first_dep = first(dep_time, na_rm = TRUE))
+    first_dep = first(dep_time, na_rm = TRUE)
+  )
 ```
 
 ```{r numeric-summaries-22-check}
@@ -3432,8 +3428,6 @@ Create a new pipeline and pipe `flights` to the `mutate()` function to the pipel
 ```{r numeric-summaries-26, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r numeric-summaries-26-hint-1, eval = FALSE}
 flights |> 
