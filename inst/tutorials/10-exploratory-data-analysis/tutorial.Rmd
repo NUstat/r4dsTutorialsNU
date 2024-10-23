@@ -1949,11 +1949,13 @@ Create a new object called `diamonds_aug` containing `augment(diamonds_fit, new_
 ```{r patterns-and-models-6-hint-1, eval = FALSE}
 diamonds_aug <- ...
 
+diamonds_aug
 ```
 
 ```{r patterns-and-models-6-solution, exercise.reveal_solution = FALSE}
 diamonds_aug <- augment(diamonds_fit, new_data = diamonds3)
 
+diamonds_aug
 ```
 
 ```{r patterns-and-models-6-check}
