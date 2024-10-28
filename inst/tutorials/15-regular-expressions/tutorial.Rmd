@@ -1217,13 +1217,13 @@ x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
 ```{r pattern-details-8-hint-1, eval = FALSE}
 x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
 
-str_view(x, "sum")
+str_view(..., "sum")
 ```
 
 ```{r pattern-details-8-solution, exercise.reveal_solution = FALSE}
 x <- c("summary(x)", "summarize(df)", "rowsum(x)", "sum(x)")
 
-str_view(..., "sum")
+str_view(x, "sum")
 ```
 
 ```{r pattern-details-8-check}
