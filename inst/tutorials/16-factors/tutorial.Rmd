@@ -377,8 +377,6 @@ Run `fct()` and `x1`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r factor-basics-11-hint-1, eval = FALSE}
 fct(...)
 ```
@@ -423,7 +421,7 @@ If you ever need to access the set of valid levels directly, you can do so with 
 
 ### Exercise 13
 
-The next exercises will be focusing on the variable `csv`. Hit "Submit Answer" to look at `csv`.
+The next exercises will be focusing on the variable `csv`. Click "Submit Answer" to look at `csv`.
 
 ```{r factor-basics-13, exercise = TRUE}
 csv
