@@ -18,11 +18,12 @@ library(learnr)
 library(tutorial.helpers)
 library(tidyverse)
 library(gradethis)
+library(ggcheck)
 library(tutorialExtras)
 
 gradethis_setup()
 
-# Without thishack, we fail on GHA! cols() and col_factor() have conflicting
+# Without this hack, we fail on GHA! cols() and col_factor() have conflicting
 # versions in readr, vroom and scales. Of course, we want the readr versions. We
 # could solve this with either:
 
@@ -39,15 +40,17 @@ cols <- readr::cols
 col_factor <- readr::col_factor
 
 knitr::opts_chunk$set(echo = FALSE)
-options(tutorial.exercise.timelimit = 60, 
-        tutorial.storage = "local") 
+options(
+  tutorial.exercise.timelimit = 60,
+  tutorial.storage = "local"
+)
 
 x1 <- c("Dec", "Apr", "Jan", "Mar")
 
 x2 <- c("Dec", "Apr", "Jam", "Mar")
 
 month_levels <- c(
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 )
 
@@ -68,14 +71,15 @@ grade_server("grade")
 
 ```{r Name}
 question_text("Name:",
-              answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-              correct = "submitted",
-              allow_retry = FALSE )
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = FALSE
+)
 ```
 
 ## Introduction
@@ -95,8 +99,6 @@ Load the **tidyverse** library.
 ```{r factor-basics-1, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r factor-basics-1-hint-1, eval = FALSE}
 library(...)
@@ -122,7 +124,7 @@ Look up the help page for **forcats** by entering `help(package = "forcats")` at
 
 ### Exercise 2
 
-Hit "Submit Code" to create the variable `x1`.
+Click "Submit Answer" to create the variable `x1`.
 
 ```{r factor-basics-2, exercise = TRUE}
 x1 <- c("Dec", "Apr", "Jan", "Mar")
@@ -138,7 +140,7 @@ grade_this_code()
 
 ### 
 
-Note that `x1` is a character variable. This can lead to all sorts of problems given that months are a good example of a categorical variable, given that there are exactly 12 possible values.
+Note that `x1` is a character or string variable. This can lead to problems because months are ordered and there are exactly 12 possible values. Months is a great example of a categorical/factor variable.
 
 ### Exercise 3
 
@@ -147,8 +149,6 @@ Run `sort()` on `x1`.
 ```{r factor-basics-3, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r factor-basics-3-hint-1, eval = FALSE}
 sort(...)
@@ -168,7 +168,7 @@ Because `x1` is a character variable, this sorts alphabetically, which is not wh
 
 ### Exercise 4
 
-Hit "Submit Code" to create the `x2` variable, another character vector. But note the misspelling of "Jan" as "Jam".
+Click "Submit Answer" to create the `x2` variable, another character vector. But note the misspelling of "Jan" as "Jam".
 
 ```{r factor-basics-4, exercise = TRUE}
 x2 <- c("Dec", "Apr", "Jam", "Mar")
@@ -188,7 +188,9 @@ Because `x1` and `x2` are both character vectors, nothing will catch the contrad
 
 ### Exercise 5
 
-To create a factor you must start by creating a list of the valid "levels." Hit "Run Code" to create the `month_levels` variable.
+To create a factor you must start by creating a list of the valid levels. 
+
+Click "Submit Answer" to create the `month_levels` variable.
 
 
 ```{r factor-basics-5, exercise = TRUE}
@@ -307,11 +309,36 @@ Run `fct(x2, levels = month_levels)`.
 ```
 
 ```{r factor-basics-9-solution, exercise.reveal_solution = FALSE}
-fct(x2, levels = month_levels)
+tryCatch(
+  fct(x2, levels = month_levels),
+  error = function(e) e$message
+)
+```
+
+```{r factor-basics-9-error-check}
+grade_this({
+  # custom checking code appears here
+  user_error = tryCatch(
+    .result,
+    error = function(e) e$message
+  ) |> 
+  as.character()
+  
+  error_check = 'All values of `x` must appear in `levels` or `na`\\nℹ Missing level: "Jam"'
+  
+  if (str_detect(user_error, error_check)) {
+    pass(random_praise())
+  }
+  fail(random_encouragement())
+})
 ```
 
 ```{r factor-basics-9-check}
-grade_this_code()
+grade_this({
+  if (TRUE) {
+    fail("Try again. Your code should be producing an error!")
+  }
+})
 ```
 
 ### 
@@ -396,7 +423,7 @@ If you ever need to access the set of valid levels directly, you can do so with 
 
 ### Exercise 13
 
-The next exercises will be focusing on the variable `csv`. Hit "Submit Code" to look at `csv`.
+The next exercises will be focusing on the variable `csv`. Hit "Submit Answer" to look at `csv`.
 
 ```{r factor-basics-13, exercise = TRUE}
 csv
@@ -579,7 +606,7 @@ The `gss_cat` tibble is a data set in the **forcats** package. It’s a sample o
 
 ### Exercise 1
 
-Type `gss_cat` and hit "Submit Code."
+Type `gss_cat` and hit "Submit Answer."
 
 ```{r general-social-surve-1, exercise = TRUE}
 
