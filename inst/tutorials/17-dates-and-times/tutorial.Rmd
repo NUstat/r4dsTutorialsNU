@@ -19,26 +19,29 @@ library(tutorial.helpers)
 library(tidyverse)
 library(nycflights13)
 library(gradethis)
+library(ggcheck)
 library(tutorialExtras)
 
 gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
-options(tutorial.exercise.timelimit = 60, 
-        tutorial.storage = "local") 
+options(
+  tutorial.exercise.timelimit = 60,
+  tutorial.storage = "local"
+)
 
 make_datetime_100 <- function(year, month, day, time) {
   make_datetime(year, month, day, time %/% 100, time %% 100)
 }
 
-flights_dt <- flights |> 
-  filter(!is.na(dep_time), !is.na(arr_time)) |> 
+flights_dt <- flights |>
+  filter(!is.na(dep_time), !is.na(arr_time)) |>
   mutate(
     dep_time = make_datetime_100(year, month, day, dep_time),
     arr_time = make_datetime_100(year, month, day, arr_time),
     sched_dep_time = make_datetime_100(year, month, day, sched_dep_time),
     sched_arr_time = make_datetime_100(year, month, day, sched_arr_time)
-  ) |> 
+  ) |>
   select(origin, dest, ends_with("delay"), ends_with("time"))
 
 date2015_csv <- "
@@ -47,7 +50,7 @@ date2015_csv <- "
 "
 
 datetime2026 <- ymd_hms("2026-07-08 12:34:56")
-age <- today() - ymd("2000-8-30") 
+age <- today() - ymd("2000-8-30")
 date2026 <- ymd_hms("2026-03-08 01:00:00", tz = "America/New_York")
 date2021 <- ymd("2021-01-01")
 date2020 <- ymd("2020-01-01")
@@ -66,14 +69,15 @@ grade_server("grade")
 
 ```{r Name}
 question_text("Name:",
-              answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-              correct = "submitted",
-              allow_retry = FALSE )
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = FALSE
+)
 ```
 
 
@@ -153,7 +157,7 @@ grade_this_code()
 
 ### 
 
-A date-time is a date plus a time: it uniquely identifies an instant in time (typically to the nearest second). Tibbles print this as `<dttm>`. Base R calls these POSIXct, but doesn’t exactly trip off the tongue.
+A date-time is a date plus a time: it uniquely identifies an instant in time (typically to the nearest second). Tibbles print this as `<dttm>`. Base R calls these POSIXct, but doesn’t exactly roll off the tongue.
 
 
 ### Exercise 4
@@ -212,7 +216,7 @@ With `read_csv()` we are able to analyze the aspects of date and date-time with 
 
 ### Exercise 6
 
-Now we will use `col_types` to format the date in the `date2015_csv`. Set `col_types` to cols(date = col_date("%m/%d/%y")) in `read_csv()`.
+Now we will use `col_types` to format the date in the `date2015_csv`. Set `col_types` to `cols(date = col_date("%m/%d/%y"))` in `read_csv()`.
 
 ```{r datetimes-import-6, exercise = TRUE}
 
@@ -264,7 +268,7 @@ Note that no matter how you specify the date format, it’s always displayed the
 
 ### 
 
-Oftentimes when working with non-English dates and %b or %B you will need to use `locale()`. Check out [**date_names_langs()**](https://readr.tidyverse.org/reference/date_names.html) for more information.
+Oftentimes when working with non-English dates and `%b` or `%B` you will need to use `locale()`. Check out [**date_names_langs()**](https://readr.tidyverse.org/reference/date_names.html) for more information.
 
 ## Creating date/times from strings
 ### 
@@ -273,7 +277,7 @@ The date-time specification language is powerful, but requires careful analysis 
 
 ### Exercise 1
 
-Run `mdy()` on "January 31st, 2017".
+Run `mdy()` on `"January 31st, 2017"`.
 
 ```{r datetimes-strings-1, exercise = TRUE}
 
@@ -293,7 +297,7 @@ grade_this_code()
 
 ### Exercise 2
 
-Run `ymd()` on "2017-01-31".
+Run `ymd()` on `"2017-01-31"`.
 
 ```{r datetimes-strings-2, exercise = TRUE}
 
@@ -317,7 +321,7 @@ When using these three formats we need to identify the order in which year, mont
 
 ### Exercise 3
 
-Besides this we can also force set this by supplying a timezone. In `ymd()` set `tz` to "EST".
+Besides this we can also force the creation of a date-time by supplying a timezone. In `ymd()` set `tz` to `"EST"`.
 
 ```{r datetimes-strings-3, exercise = TRUE}
 
@@ -340,7 +344,7 @@ grade_this_code()
 
 ### Exercise 4
 
-We can also use the "hms" function to create an datetime. Set `ymd_hms()` to "2017-01-31 20:11:59".
+We can also use the `hms` function to create an datetime. Apply `ymd_hms()` to `"2017-01-31 20:11:59"`.
 
 ```{r datetimes-strings-4, exercise = TRUE}
 
@@ -372,21 +376,27 @@ We can use the datetime features on pieces of data. We will use the datetime com
 Let's make this line graph using `geom_point()`:
 
 ```{r creating-datetimes-w}
-flight_grph <- 
+flight_grph <-
   flights |>
-    mutate(dep_time = make_datetime(year, month, day, dep_time),
-            sched_dep_time = make_datetime(year, month, day, sched_dep_time)) |>
-    select(dep_delay, dep_time, sched_dep_time) |> 
-    drop_na() |> 
-    ggplot(aes(x = sched_dep_time, 
-               y = dep_time,
-               color = dep_delay)) +
-      geom_point() +
-      labs(title = "Flights",
-           subtitle = "Flight departed time based on scheduled departed time.",
-           color = "Flight",
-           x = "Scheduled Departure Time",
-           y = "Departure Time")
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  ) |>
+  select(dep_delay, dep_time, sched_dep_time) |>
+  drop_na() |>
+  ggplot(aes(
+    x = sched_dep_time,
+    y = dep_time,
+    color = dep_delay
+  )) +
+  geom_point() +
+  labs(
+    title = "Flights",
+    subtitle = "Flight departed time based on scheduled departed time.",
+    color = "Flight",
+    x = "Scheduled Departure Time",
+    y = "Departure Time"
+  )
 
 flight_grph
 ```
@@ -453,14 +463,18 @@ Let's add to the `mutate()` and set `sched_dep_time` to `make_datetime(year, mon
 
 ```{r datetimes-comp-3-hint-1, eval = FALSE}
 ... |>
-    mutate(...,
-           sched_dep_time = ...))
+    mutate(
+      ...,
+      sched_dep_time = ...
+    )
 ```
 
 ```{r datetimes-comp-3-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(year, month, day, dep_time),
-         sched_dep_time = make_datetime(year, month, day, sched_dep_time))
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  )
 ```
 
 ```{r datetimes-comp-3-check}
@@ -483,15 +497,19 @@ Continue the pipe by adding `select()` for the `dep_delay`, `dep_time`, `sched_d
 
 ```{r datetimes-comp-4-hint-1, eval = FALSE}
 ... |>
-    mutate(...,
-           sched_dep_time = ...)) |>
+    mutate(
+      ...,
+      sched_dep_time = ...
+    ) |>
     select(dep_delay, dep_time, sched_dep_time)
 ```
 
 ```{r datetimes-comp-4-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(year, month, day, dep_time),
-         sched_dep_time = make_datetime(year, month, day, sched_dep_time)) |>
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  ) |>
   select(dep_delay, dep_time, sched_dep_time)
 ```
 
@@ -505,7 +523,7 @@ We only want to select these three variables because we will be using these for 
 
 ### Exercise 5
 
-Continue the pipe by adding `ggplot()` and in `aes()` set `x` to `sched_dep_time` and `y` to `dep_time`
+Continue the pipe by adding `ggplot()` and in `aes()` set `x` to `sched_dep_time` and `y` to `dep_time`. Note nothing will be plotted because we have not used `geom_point()`.
 
 ```{r datetimes-comp-5, exercise = TRUE}
 
@@ -515,24 +533,27 @@ Continue the pipe by adding `ggplot()` and in `aes()` set `x` to `sched_dep_time
 
 ```{r datetimes-comp-5-hint-1, eval = FALSE}
 ... |>
-    ggplot(aes(x = ..., 
-               y = ...))
+    ggplot(aes(x = ..., y = ...))
 ```
 
 ```{r datetimes-comp-5-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(year, month, day, dep_time),
-         sched_dep_time = make_datetime(year, month, day, sched_dep_time)) |>
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
-    ggplot(aes(x = sched_dep_time, 
-               y = dep_time))
+  ggplot(aes(
+    x = sched_dep_time,
+    y = dep_time
+  ))
 ```
 
 ```{r datetimes-comp-5-check}
 grade_this_code()
 ```
 
-Note nothing will be plotted because we have not used `geom_point()`.
+
 
 ### Exercise 6
 
@@ -552,11 +573,12 @@ Let's plot this by adding `geom_point()`.
 
 ```{r datetimes-comp-6-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(year, month, day, dep_time),
-         sched_dep_time = make_datetime(year, month, day, sched_dep_time)) |>
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
-    ggplot(aes(x = sched_dep_time, 
-               y = dep_time)) +
+  ggplot(aes(x = sched_dep_time,y = dep_time)) +
   geom_point()
 ```
 
@@ -584,18 +606,19 @@ We want to add drop any null values from the three columns that we use. Continue
   select(...) |>
   ...() |> 
     ggplot(...) +
-      geom_point()
+    geom_point()
 ```
 
 ```{r datetimes-comp-7-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(year, month, day, dep_time),
-         sched_dep_time = make_datetime(year, month, day, sched_dep_time)) |>
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
-  drop_na() |> 
-    ggplot(aes(x = sched_dep_time, 
-               y = dep_time)) +
-    geom_point()
+  drop_na() |>
+  ggplot(aes(x = sched_dep_time, y = dep_time)) +
+  geom_point()
 ```
 
 ```{r datetimes-comp-7-check}
@@ -617,22 +640,20 @@ In `aes()` set `color` to `dep_delay`.
 ... |>
   select(...) |>
   drop_na() |> 
-    ggplot(aes(x = ...,
-               y = ...,
-               color = ...) +
-      geom_point()
+  ggplot(aes(x = ..., y = ...,color = ...) +
+  geom_point()
 ```
 
 ```{r datetimes-comp-8-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(year, month, day, dep_time),
-         sched_dep_time = make_datetime(year, month, day, sched_dep_time)) |>
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
-  drop_na() |> 
-    ggplot(aes(x = sched_dep_time, 
-               y = dep_time,
-               color = dep_delay)) +
-    geom_point()
+  drop_na() |>
+  ggplot(aes(x = sched_dep_time, y = dep_time, color = dep_delay)) +
+  geom_point()
 ```
 
 ```{r datetimes-comp-8-check}
@@ -645,48 +666,51 @@ When we set `color` to `dep_delay` we are able to see how late flights were rega
 
 ### Exercise 9
 
-Finally add the labels to the graph to complete the graph with `labs()`
+Finally we add the labels to the graph. Click "Run Answer" and the labels will be added.
 
 ```{r datetimes-comp-9, exercise = TRUE}
-
-```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
-```{r datetimes-comp-9-hint-1, eval = FALSE}
-... + labs(title = ...,
-                subtitle = ...,
-                color = "Flight",
-                x = ...,
-                y = ...)
+flights |>
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  ) |>
+  select(dep_delay, dep_time, sched_dep_time) |>
+  drop_na() |>
+  ggplot(aes(x = sched_dep_time, y = dep_time, color = dep_delay)) +
+  geom_point() +
+  labs(
+    title = "Flights",
+    subtitle = "Flight departed time based on scheduled departed time.",
+    color = "Flight",
+    x = "Scheduled Departure Time",
+    y = "Departure Time"
+  )
 ```
 
 ```{r datetimes-comp-9-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(year, month, day, dep_time),
-         sched_dep_time = make_datetime(year, month, day, sched_dep_time)) |>
+  mutate(
+    dep_time = make_datetime(year, month, day, dep_time),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+  ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
-  drop_na() |> 
-    ggplot(aes(x = sched_dep_time, 
-               y = dep_time,
-               color = dep_delay)) +
-    geom_point() +
-      labs(title = "Flights",
-           subtitle = "Flight departed time based on scheduled departed time.",
-           color = "Flight",
-           x = "Scheduled Departure Time",
-           y = "Departure Time")
+  drop_na() |>
+  ggplot(aes(x = sched_dep_time, y = dep_time, color = dep_delay)) +
+  geom_point() +
+  labs(
+    title = "Flights",
+    subtitle = "Flight departed time based on scheduled departed time.",
+    color = "Flight",
+    x = "Scheduled Departure Time",
+    y = "Departure Time"
+  )
 ```
 
 ```{r datetimes-comp-9-check}
 grade_this_code()
 ```
 
-Remember your graph should look like this:
 
-```{r flight_grph}
-flight_grph
-```
 
 ### 
 
