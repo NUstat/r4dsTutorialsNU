@@ -604,7 +604,7 @@ The `gss_cat` tibble is a data set in the **forcats** package. It’s a sample o
 
 ### Exercise 1
 
-Type `gss_cat` and hit "Submit Answer."
+Type `gss_cat` and click "Submit Answer."
 
 ```{r general-social-surve-1, exercise = TRUE}
 
@@ -679,16 +679,20 @@ When working with factors, one common operation is changing the order of the lev
 
 ```{r make-plot1}
 plot1 <- gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
-  mutate(relig = fct_reorder(relig, tvhours)) |> 
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
+  mutate(relig = fct_reorder(relig, tvhours)) |>
   ggplot(aes(x = tvhours, y = relig)) +
   geom_point() +
-  labs(title = "TV Watching and Religious Affiliation",
-       subtitle = "Don't Knows watch a lot of TV",
-       x = "TV Hours Watched Per Day",
-       y = "Religious Affiliation")
+  labs(
+    title = "TV Watching and Religious Affiliation",
+    subtitle = "Don't Knows watch a lot of TV",
+    x = "TV Hours Watched Per Day",
+    y = "Religious Affiliation"
+  )
 
 plot1
 ```
@@ -731,8 +735,13 @@ gss_cat |>
 ```
 
 ```{r modifying-factor-ord-2-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
   summarize(n = n())
+
+# option 2 ----
+gss_cat |>
+  summarise(n = n())
 ```
 
 ```{r modifying-factor-ord-2-check}
@@ -755,14 +764,26 @@ Use the same pipe again, but add `.by = relig` as an argument/value pairing to `
 
 ```{r modifying-factor-ord-3-hint-1, eval = FALSE}
 gss_cat |>
-  summarize(n = n(),
-            .by = relig)
+  summarize(
+    n = n(),
+    .by = relig
+  )
 ```
 
 ```{r modifying-factor-ord-3-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
-  summarize(n = n(),
-            .by = relig)
+  summarize(
+    n = n(),
+    .by = relig
+  )
+
+# option 2 ----
+gss_cat |>
+  summarise(
+    n = n(),
+    .by = relig
+  )
 ```
 
 ```{r modifying-factor-ord-3-check}
@@ -785,16 +806,30 @@ Use the same code again, adding another variable creation step to `summarize()`:
 
 ```{r modifying-factor-ord-4-hint-1, eval = FALSE}
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours),
-            .by = relig)
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours),
+    .by = relig
+  )
 ```
 
 ```{r modifying-factor-ord-4-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours),
-            .by = relig)
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours),
+    .by = relig
+  )
+
+# option 2 ----
+gss_cat |>
+  summarise(
+    n = n(),
+    tvhours = mean(tvhours),
+    .by = relig
+  )
+
 ```
 
 ```{r modifying-factor-ord-4-check}
@@ -808,7 +843,7 @@ Note that each argument (or variable creation step) in `summarize()` must be sep
 
 ### Exercise 5
 
-Modify the pipe by add `na.rm = TRUE` as an argument **within* the `mean()` function.
+Modify the pipe by add `na.rm = TRUE` as an argument **within** the `mean()` function.
 
 ```{r modifying-factor-ord-5, exercise = TRUE}
 
@@ -818,16 +853,29 @@ Modify the pipe by add `na.rm = TRUE` as an argument **within* the `mean()` func
 
 ```{r modifying-factor-ord-5-hint-1, eval = FALSE}
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig)
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  )
 ```
 
 ```{r modifying-factor-ord-5-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig)
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  )
+
+# option 2 ----
+gss_cat |>
+  summarise(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  )
 ```
 
 ```{r modifying-factor-ord-5-check}
@@ -849,19 +897,29 @@ Continue the pipe with a call to `ggplot()`, setting the `mapping` argument to `
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r modifying-factor-ord-6-hint-1, eval = FALSE}
-gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
+... |>
   ggplot(aes(x = tvhours, y = relig))
 ```
 
 ```{r modifying-factor-ord-6-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
   ggplot(aes(x = tvhours, y = relig))
+
+# option 2 ----
+gss_cat |>
+  summarise(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
+  ggplot(aes(x = tvhours, y = relig))
+
 ```
 
 ```{r modifying-factor-ord-6-check}
@@ -883,19 +941,29 @@ Add `geom_point()` to the pipe. Don't forget that calls to **ggplot** components
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r modifying-factor-ord-7-hint-1, eval = FALSE}
-gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
+... |>
   ggplot(aes(x = tvhours, y = relig)) +
   geom_point()
 ```
 
 ```{r modifying-factor-ord-7-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
+  ggplot(aes(x = tvhours, y = relig)) +
+  geom_point()
+
+# option 2 ----
+gss_cat |>
+  summarise(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
   ggplot(aes(x = tvhours, y = relig)) +
   geom_point()
 ```
@@ -906,7 +974,7 @@ grade_this_code()
 
 ### 
 
-It is hard to read this plot because there’s no overall pattern. We can improve it by reordering the levels of relig using `fct_reorder()`. `fct_reorder()` takes three arguments:
+It is hard to read this plot because there’s no overall pattern. We can improve it by reordering the levels of `relig` using `fct_reorder()`. `fct_reorder()` takes three arguments:
 
 * `f`, the factor whose levels you want to modify.
 * `x`, a numeric vector that you want to use to reorder the levels.
@@ -923,19 +991,29 @@ Replace `y = relig` with `y = fct_reorder(relig, tvhours)` in your pipe.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r modifying-factor-ord-8-hint-1, eval = FALSE}
-gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
+... |>
   ggplot(aes(x = tvhours, y = fct_reorder(relig, tvhours))) +
   geom_point()
 ```
 
 ```{r modifying-factor-ord-8-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
+  ggplot(aes(x = tvhours, y = fct_reorder(relig, tvhours))) +
+  geom_point()
+
+# option 2 ----
+gss_cat |>
+  summarise(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
   ggplot(aes(x = tvhours, y = fct_reorder(relig, tvhours))) +
   geom_point()
 ```
@@ -946,7 +1024,7 @@ grade_this_code()
 
 ### 
 
-Reordering religion makes it much easier to see that people in the “Don’t know” category watch much more TV, and Hinduism & Other Eastern religions watch much less.
+Reordering religion makes it much easier to see that people in the `“Don’t know”` category watch much more TV, and Hinduism & Other Eastern religions watch much less TV.
 
 ### Exercise 9
 
@@ -960,22 +1038,39 @@ As you start making more complicated transformations, we recommend moving them o
 
 ```{r modifying-factor-ord-9-hint-1, eval = FALSE}
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |> 
   mutate(... = fct_reorder(relig, ...)) |> 
   ggplot(aes(x = tvhours, ... = relig)) +
   geom_point()
 ```
 
 ```{r modifying-factor-ord-9-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
-  mutate(... = fct_reorder(relig, ...)) |> 
-  ggplot(aes(x = tvhours, ... = relig)) +
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
+  mutate(relig = fct_reorder(relig, tvhours)) |>
+  ggplot(aes(x = tvhours, y = relig)) +
   geom_point()
+
+# option 2 ----
+gss_cat |>
+  summarise(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
+  mutate(relig = fct_reorder(relig, tvhours)) |>
+  ggplot(aes(x = tvhours, y = relig)) +
+  geom_point()
+
 ```
 
 ```{r modifying-factor-ord-9-check}
@@ -1001,24 +1096,48 @@ plot1
 
 ```{r modifying-factor-ord-10-hint-1, eval = FALSE}
 ... +
-  labs(... = "TV Watching and Religious Affiliation",
-       subtitle = ...,
-       x = ...,
-       ... = "Religious Affiliation")
+  labs(
+    ... = "TV Watching and Religious Affiliation",
+    subtitle = ...,
+    x = ...,
+    ... = "Religious Affiliation"
+  )
 ```
 
 ```{r modifying-factor-ord-10-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 gss_cat |>
-  summarize(n = n(),
-            tvhours = mean(tvhours, na.rm = TRUE),
-            .by = relig) |> 
-  mutate(... = fct_reorder(relig, ...)) |> 
-  ggplot(aes(x = tvhours, ... = relig)) +
+  summarize(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
+  mutate(relig = fct_reorder(relig, tvhours)) |>
+  ggplot(aes(x = tvhours, y = relig)) +
   geom_point() +
-  labs(title = "TV Watching and Religious Affiliation",
-       subtitle = "Don't Knows watch a lot of TV",
-       x = "TV Hours Watched Per Day",
-       y = "Religious Affiliation")
+  labs(
+    title = "TV Watching and Religious Affiliation",
+    subtitle = "Don't Knows watch a lot of TV",
+    x = "TV Hours Watched Per Day",
+    y = "Religious Affiliation"
+  )
+
+# option 2 ----
+gss_cat |>
+  summarise(
+    n = n(),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    .by = relig
+  ) |>
+  mutate(relig = fct_reorder(relig, tvhours)) |>
+  ggplot(aes(x = tvhours, y = relig)) +
+  geom_point() +
+  labs(
+    title = "TV Watching and Religious Affiliation",
+    subtitle = "Don't Knows watch a lot of TV",
+    x = "TV Hours Watched Per Day",
+    y = "Religious Affiliation"
+  )
 ```
 
 ```{r modifying-factor-ord-10-check}
@@ -1035,23 +1154,26 @@ Let's create this graph now.
 
 ```{r make-plot2}
 plot2 <- gss_cat |>
-  filter(!is.na(age)) |> 
+  filter(!is.na(age)) |>
   count(age, marital) |>
   mutate(
     prop = n / sum(n),
-    .by = age) |> 
-  ggplot(aes(x = age, 
-             y = prop, 
-             color = fct_reorder2(marital, age, prop))) +
-    geom_line(linewidth = 1) +
-    scale_color_brewer(palette = "Set1") + 
-    labs(color = "Marital", x = "Age", y = "Proportion")
+    .by = age
+  ) |>
+  ggplot(aes(
+    x = age,
+    y = prop,
+    color = fct_reorder2(marital, age, prop)
+  )) +
+  geom_line(linewidth = 1) +
+  scale_color_brewer(palette = "Set1") +
+  labs(color = "Marital", x = "Age", y = "Proportion")
 
 plot2
 ```
 
 
-Pipe gss_cat to `filter()`, with the argument set as `!is.na(age)`
+Pipe `gss_cat` to `filter()`, with the argument set as `!is.na(age)`
 
 ```{r modifying-factor-ord-11, exercise = TRUE}
 
@@ -1140,15 +1262,20 @@ Add the argument `.by` within the `mutate()` function. Set `.by` to `age`
 
 ```{r modifying-factor-ord-14-hint-1, eval = FALSE}
 ... |>
-  mutate(prop = n/sum(n), .by = ...)
+  mutate(
+    prop = n/sum(n), 
+    .by = ...
+  )
 ```
 
 ```{r modifying-factor-ord-14-solution, exercise.reveal_solution = FALSE}
 gss_cat |>
   filter(!is.na(age)) |>
   count(age, marital) |>
-  mutate(prop = n/sum(n),
-         .by = age)
+  mutate(
+    prop = n/sum(n),
+    .by = age
+  )
 ```
 
 ```{r modifying-factor-ord-14-check}
@@ -1178,8 +1305,10 @@ Add `ggplot()` to the current pipe. Set `x` to `age`, `y` to `prop` and `color` 
 gss_cat |>
   filter(!is.na(age)) |>
   count(age, marital) |>
-  mutate(prop = n/sum(n),
-         .by = age) |>
+  mutate(
+    prop = n / sum(n),
+    .by = age
+  ) |>
   ggplot(aes(x = age, y = prop, color = marital))
 ```
 
@@ -1198,7 +1327,7 @@ Continue the pipe to `geom_line()`. Inside the function, set `linewidth` to 1.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r modifying-factor-ord-16-hint-1, eval = FALSE}
-... |>
+... +
   geom_line(linewidth = ...)
 ```
 
@@ -1206,9 +1335,11 @@ Continue the pipe to `geom_line()`. Inside the function, set `linewidth` to 1.
 gss_cat |>
   filter(!is.na(age)) |>
   count(age, marital) |>
-  mutate(prop = n/sum(n),
-         .by = age) |>
-  ggplot(aes(x = age, y = prop, color = marital)) |>
+  mutate(
+    prop = n / sum(n),
+    .by = age
+  ) |>
+  ggplot(aes(x = age, y = prop, color = marital)) +
   geom_line(linewidth = 1)
 ```
 
@@ -1218,7 +1349,7 @@ grade_this_code()
 
 ### Exercise 17
 
-Continue the pipe with `scale_color_brewer()`, with the argument `palette` set to "Set1".
+Continue the pipe with `scale_color_brewer()`, with the argument `palette` set to `"Set1"`.
 
 ```{r modifying-factor-ord-17, exercise = TRUE}
 
@@ -1227,7 +1358,7 @@ Continue the pipe with `scale_color_brewer()`, with the argument `palette` set t
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r modifying-factor-ord-17-hint-1, eval = FALSE}
-... |>
+... +
   scale_color_brewer(... = "Set1")
 ```
 
@@ -1235,10 +1366,12 @@ Continue the pipe with `scale_color_brewer()`, with the argument `palette` set t
 gss_cat |>
   filter(!is.na(age)) |>
   count(age, marital) |>
-  mutate(prop = n/sum(n),
-         .by = age) |>
-  ggplot(aes(x = age, y = prop, color = marital)) |>
-  geom_line(linewidth = 1) |>
+  mutate(
+    prop = n / sum(n),
+    .by = age
+  ) |>
+  ggplot(aes(x = age, y = prop, color = marital)) +
+  geom_line(linewidth = 1) +
   scale_color_brewer(palette = "Set1")
 ```
 
@@ -1257,7 +1390,7 @@ Finish the pipe with `labs()` giving an appropriate x axis, y axis and color leg
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r modifying-factor-ord-18-hint-1, eval = FALSE}
-... |>
+... +
   labs(x = ..., y = ..., color = ...)
 ```
 
@@ -1265,11 +1398,13 @@ Finish the pipe with `labs()` giving an appropriate x axis, y axis and color leg
 gss_cat |>
   filter(!is.na(age)) |>
   count(age, marital) |>
-  mutate(prop = n/sum(n),
-         .by = age) |>
-  ggplot(aes(x = age, y = prop, color = marital)) |>
-  geom_line(linewidth = 1) |>
-  scale_color_brewer(palette = "Set1") |>
+  mutate(
+    prop = n / sum(n),
+    .by = age
+  ) |>
+  ggplot(aes(x = age, y = prop, color = marital)) +
+  geom_line(linewidth = 1) +
+  scale_color_brewer(palette = "Set1") +
   labs(x = "Age", y = "Proportion", color = "Marital")
 ```
 
@@ -1293,7 +1428,7 @@ In the `ggplot()` function, change `color` from `marital` to `fct_reorder2(marit
 
 ```{r modifying-factor-ord-19-hint-1, eval = FALSE}
 ... |>
-  ggplot(aes(x = age, y = prop, color = fct_reorder2(marital, age, prop))) |>
+  ggplot(aes(x = age, y = prop, color = fct_reorder2(marital, age, prop))) +
   ...
 ```
 
@@ -1302,12 +1437,13 @@ In the `ggplot()` function, change `color` from `marital` to `fct_reorder2(marit
 gss_cat |>
   filter(!is.na(age)) |>
   count(age, marital) |>
-  mutate(prop = n/sum(n),
-         .by = age) |>
-  ggplot(aes(x = age, y = prop, 
-             color = fct_reorder2(marital, age, prop))) |>
-  geom_line(linewidth = 1) |>
-  scale_color_brewer(palette = "Set1") |>
+  mutate(
+    prop = n / sum(n),
+    .by = age
+  ) |>
+  ggplot(aes(x = age, y = prop, color = fct_reorder2(marital, age, prop))) +
+  geom_line(linewidth = 1) +
+  scale_color_brewer(palette = "Set1") +
   labs(x = "Age", y = "Proportion", color = "Marital")
 ```
 
