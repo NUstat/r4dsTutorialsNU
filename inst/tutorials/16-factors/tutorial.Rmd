@@ -343,7 +343,14 @@ grade_this({
 
 ### 
 
-Notice the thorough error message. "Jam" is missing from the `levels` as defined in the `month_levels` variable.
+Your code should have produced an error: 
+
+```{verbatim, echo=TRUE}
+All values of `x` must appear in `levels` or `na`
+ℹ Missing level: "Jam
+```
+
+This is a thorough error message. `"Jam"` is missing from the `levels`, which we defined in the `month_levels` variable.
 
 ### Exercise 10
 
