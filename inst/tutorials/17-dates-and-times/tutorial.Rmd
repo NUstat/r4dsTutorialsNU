@@ -747,7 +747,7 @@ grade_this_code()
 
 ### 
 
-We are going to focus on four columns `dep_time`, `sched_dep_time`, `arr_time`, `sched_arr_time` because they are all <dttm> (datetime).
+We are going to focus on four columns `dep_time`, `sched_dep_time`, `arr_time`, `sched_arr_time` because they are all `<dttm>` (datetime).
 
 ### Exercise 2
 
@@ -803,7 +803,7 @@ grade_this_code()
 
 ### Exercise 4
 
-Add `geom_bar()` to the pipe.
+Add a `geom_bar()` layer.
 
 ```{r datetime-getting-4, exercise = TRUE}
 
@@ -840,7 +840,7 @@ An alternative approach to plotting individual components is to round the date t
 
 ### Exercise 1
 
-Start a pipe with the `flights_dt` data again through `mutate()`. Set `dep_hour` to `dep_time`-`floor_date(dep_time, "day")`.
+Start a pipe with the `flights_dt` data again through `mutate()`. Set `dep_hour` to `dep_time - floor_date(dep_time, "day")`.
 
 ```{r datetime-rounding-1, exercise = TRUE}
 
@@ -892,7 +892,7 @@ grade_this_code()
 
 ### Exercise 3
 
-Add `geom_freqpoly()` to the pipe to view the difference by setting `binwidth` to "60*30" in `geom_freqpoly()`.
+Add `geom_freqpoly()` to the pipe to view the difference by setting `binwidth` to `60 * 30` in `geom_freqpoly()`.
 
 ```{r datetime-rounding-3, exercise = TRUE}
 
@@ -911,7 +911,7 @@ Add `geom_freqpoly()` to the pipe to view the difference by setting `binwidth` t
 flights_dt |>
   mutate(dep_hour = dep_time - floor_date(dep_time, "day")) |>
   ggplot(aes(x = dep_hour)) +
-  geom_freqpoly(binwidth = "60*30")
+  geom_freqpoly(binwidth = 60 * 30)
 ```
 
 ```{r datetime-rounding-3-check}
@@ -929,7 +929,7 @@ You can also use each accessor function to modify the components of a date/time.
 
 ### Exercise 1
 
-Let's modify this date: "2026-07-08 12:34:56" with the `ymd_hms()` function. Create a `datetime2026` variable and set `ymd_hms()` to this.
+Let's modify this date: `"2026-07-08 12:34:56"` with the `ymd_hms()` function. Store it as `datetime2026` variable and set `ymd_hms()` to this.
 
 ```{r datetime-modifying-1, exercise = TRUE}
 
@@ -1087,14 +1087,10 @@ Periods are time spans but don’t have a fixed length in seconds, instead they 
 
 ### Exercise 1
 
-Set `ymd_hms("2026-03-08 01:00:00", tz = "America/New_York")` to the `date2026` variable and run the variable to see the datetime.
+The code below creates adn stores a datetime as `date2026`. It also displays/prints. Click "Submit Answer" to run the code.
 
 ```{r time-spans-periods-1, exercise = TRUE}
-
-```
-
-```{r time-spans-periods-1-hint-1, eval = FALSE}
-... <- ymd_hms("2026-03-08 01:00:00", tz = "America/New_York")
+date2026 <- ymd_hms("2026-03-08 01:00:00", tz = "America/New_York")
 date2026
 ```
 
@@ -1109,7 +1105,7 @@ grade_this_code()
 
 ### 
 
-Unlike above where we specified `tz` as "EST" or "UTC". We can use "America/New_York" to specify that we are working in "EST".
+Unlike above where we specified `tz` as `"EST"` or `"UTC"`. We can use `"America/New_York"` to specify that we are working in `"EST"`.
 
 ### Exercise 2
 
@@ -1133,7 +1129,7 @@ grade_this_code()
 
 ### 
 
-Here we can see that our time zone changed and it changed into "EDT". To solve this problem, lubridate provides periods. 
+Here we can see that our time zone changed to `"EDT"`. To solve this problem, **lubridate** provides periods. 
 
 ### Exercise 3
 
@@ -1157,7 +1153,7 @@ grade_this_code()
 
 ### 
 
-Similar to durations, we can use periods to multiply, divide, subtract, and add dates together. However, with periods are more likely to do what you expect.
+Similar to durations, we can use periods to multiply, divide, subtract, and add dates together. However, periods are more likely to do what you expect.
 
 ### Exercise 4
 
@@ -1183,16 +1179,16 @@ grade_this_code()
 
 ### 
 
-We can see here that `dyears()` failed to keep the same timezone. However, with `years()` we were able to keep the same timezone. With the help of periods, we can use time spans more accurately.
+We can see here that `dyears()` failed to keep the same day (there was a leap year issue). However, with `years()` we were able to keep the same day. With the help of periods, we can use time spans more accurately.
 
 ## Time spans with intervals
 ### 
 
-An interval is a pair of starting and ending date times, or you can think of it as a duration with a starting point.
+An interval is a pair of starting and ending datetimes, or you can think of it as a duration with a starting point.
 
 ### Exercise 1
 
-Let's create a `ymd()` date set to Jan 1st, 2021 and set it to `date2021`.
+Let's create a `ymd()` date set to Jan 1st, 2021 and store it as `date2021`.
 
 ```{r time-spans-intervals-1, exercise = TRUE}
 
@@ -1212,7 +1208,7 @@ grade_this_code()
 
 ### Exercise 2
 
-Let's create a `ymd()` date set to Jan 1st, 2020 and set it to `date2020`.
+Let's create a `ymd()` date set to Jan 1st, 2020 and store it as `date2020`.
 
 ```{r time-spans-intervals-2, exercise = TRUE}
 
@@ -1315,7 +1311,7 @@ We can find out what R thinks our current time zone is with `Sys.timezone()`.
 
 ### Exercise 2
 
-Set `newyorkdate` to `ymd_hms()` for the date of Jun 20, 2023 12:00:00 in the "America/New_York" timezone.
+Set `newyorkdate` to `ymd_hms()` for the date of Jun 20, 2023 12:00:00 in the `"America/New_York"` timezone.
 
 ```{r time-zones-2, exercise = TRUE}
 
@@ -1339,11 +1335,11 @@ grade_this_code()
 
 ### 
 
-We are probably familiar with EST, or Eastern Standard Time. However, both Australia and Canada also have EST! To avoid confusion, R uses the international standard IANA time zones. These use a consistent naming scheme {area}/{location}, typically in the form {continent}/{city} or {ocean}/{city}.
+We are probably familiar with EST, or Eastern Standard Time. However, both Australia and Canada also have EST! To avoid confusion, R uses the international standard IANA time zones. These use a consistent naming scheme {area}/{location}, typically in the form {continent}/{city} or {ocean}/{city}. Read more about [**IANA**](https://www.iana.org/time-zones).
 
 ### Exercise 3
 
-Set `parisdate` to `ymd_hms()` for the date of Jun 20, 2023 18:00:00 in the "Europe/Paris" timezone.
+Set `parisdate` to `ymd_hms()` for the date of Jun 20, 2023 18:00:00 in the `"Europe/Paris"` timezone.
 
 ```{r time-zones-3, exercise = TRUE}
 
@@ -1354,7 +1350,7 @@ Set `parisdate` to `ymd_hms()` for the date of Jun 20, 2023 18:00:00 in the "Eur
 ```
 
 ```{r time-zones-3-solution, exercise.reveal_solution = FALSE}
-parisdate <- ymd_hms("2023-06-20 12:00:00", tz = "Europe/Paris")
+parisdate <- ymd_hms("2023-06-20 18:00:00", tz = "Europe/Paris")
 ```
 
 ```{r time-zones-3-check}
@@ -1383,11 +1379,11 @@ grade_this_code()
 
 ### 
 
-We can verify that these are both in the same time zone by subtracting them. You might wonder why the time zone uses a city, when typically you think of time zones as associated with a country or region within a country. This is because the IANA database has to record decades worth of time zone rules. Read more about [**IANA**](https://www.iana.org/time-zones).
+We have verified that these are the same time by subtracting them. 
 
 ### Exercise 5
 
-We can combine datetimes, as well with different timezones. Set `combined` to `c()`. Within `c()` include `parisdate` and `newyorkdate`. Run `combined` on the next line to see the result.
+We can combine datetimes, even those with different time zones. Within `c()` include `parisdate` and `newyorkdate` and store it as `combined`. Run `combined` on the next line to see the result.
 
 ```{r time-zones-5, exercise = TRUE}
 
@@ -1400,6 +1396,7 @@ combined
 
 ```{r time-zones-5-solution, exercise.reveal_solution = FALSE}
 combined <- c(parisdate, newyorkdate)
+combined
 ```
 
 ```{r time-zones-5-check}
@@ -1408,11 +1405,11 @@ grade_this_code()
 
 ### 
 
-Operations that combine date-times, like `c()`, will often drop the time zone. In that case, the date-times will display in the time zone of the first element. Let's fix this issue in the next exercises.
+Operations that combine date-times, like `c()`, will often drop the time zone. In that case, the datetimes will display in the time zone of the first element. Let's fix this issue in the next exercises.
 
 ### Exercise 6
 
-We can change the timezone through `with_tz()`. In `with_tz()` use `combined` and set `tzone` to "Pacific/Auckland".
+We can change the timezone through `with_tz()`. In `with_tz()` use `combined` and set `tzone` to `"Pacific/Auckland"`.
 
 
 ```{r time-zones-6, exercise = TRUE}
@@ -1433,11 +1430,11 @@ grade_this_code()
 
 ### 
 
-We use `with_tz()` when we want to keep the instant in time the same, and change how it’s displayed. Use this when the instant is correct, but want a more natural display.
+We use `with_tz()` when we want to keep the instant in time the same, and change how it’s displayed.
 
 ### Exercise 7
 
-We can also change the timezone through `force_tz()`. In `force_tz()` use `combined` and set `tzone` to "Pacific/Auckland".
+We can also change the timezone through `force_tz()`. In `force_tz()` use `combined` and set `tzone` to `"Pacific/Auckland"`.
 
 ```{r time-zones-7, exercise = TRUE}
 
