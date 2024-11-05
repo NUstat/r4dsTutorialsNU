@@ -21,6 +21,7 @@ library(scales)
 library(ggrepel)
 library(patchwork)
 library(gradethis)
+library(ggcheck)
 library(tutorialExtras)
 
 gradethis_setup()
@@ -28,8 +29,10 @@ gradethis_setup()
 library(socviz)
 
 knitr::opts_chunk$set(echo = FALSE)
-options(tutorial.exercise.timelimit = 60, 
-        tutorial.storage = "local") 
+options(
+  tutorial.exercise.timelimit = 60,
+  tutorial.storage = "local"
+)
 
 labels_tib <- tibble(
   start = 1:10,
@@ -69,24 +72,24 @@ compact <- mpg |> filter(class == "compact")
 
 ## Layout section
 
-p1 <- ggplot(mpg, aes(x = drv, y = cty, color = drv)) + 
-  geom_boxplot(show.legend = FALSE) + 
+p1 <- ggplot(mpg, aes(x = drv, y = cty, color = drv)) +
+  geom_boxplot(show.legend = FALSE) +
   labs(title = "Plot 1")
 
-p2 <- ggplot(mpg, aes(x = drv, y = hwy, color = drv)) + 
-  geom_boxplot(show.legend = FALSE) + 
+p2 <- ggplot(mpg, aes(x = drv, y = hwy, color = drv)) +
+  geom_boxplot(show.legend = FALSE) +
   labs(title = "Plot 2")
 
-p3 <- ggplot(mpg, aes(x = cty, color = drv, fill = drv)) + 
-  geom_density(alpha = 0.5) + 
+p3 <- ggplot(mpg, aes(x = cty, color = drv, fill = drv)) +
+  geom_density(alpha = 0.5) +
   labs(title = "Plot 3")
 
-p4 <- ggplot(mpg, aes(x = hwy, color = drv, fill = drv)) + 
-  geom_density(alpha = 0.5) + 
+p4 <- ggplot(mpg, aes(x = hwy, color = drv, fill = drv)) +
+  geom_density(alpha = 0.5) +
   labs(title = "Plot 4")
 
-p5 <- ggplot(mpg, aes(x = cty, y = hwy, color = drv)) + 
-  geom_point(show.legend = FALSE) + 
+p5 <- ggplot(mpg, aes(x = cty, y = hwy, color = drv)) +
+  geom_point(show.legend = FALSE) +
   facet_wrap(~drv) +
   labs(title = "Plot 5")
 ```
@@ -100,14 +103,15 @@ grade_server("grade")
 
 ```{r Name}
 question_text("Name:",
-              answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-              correct = "submitted",
-              allow_retry = FALSE )
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = FALSE
+)
 ```
 
 
