@@ -266,7 +266,7 @@ grade_this_code()
 Instead of being sorted in alphabetical order, as before, the values are sorted in the order of the levels, which is almost always what we want when sorting months.
 
 
-### Exercise 9
+### Exercise 8
 
 Run `factor(x2, levels = month_levels)`.
 
