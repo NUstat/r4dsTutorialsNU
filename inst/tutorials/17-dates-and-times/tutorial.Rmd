@@ -26,7 +26,7 @@ gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 options(
-  tutorial.exercise.timelimit = 60,
+  tutorial.exercise.timelimit = 240,
   tutorial.storage = "local"
 )
 

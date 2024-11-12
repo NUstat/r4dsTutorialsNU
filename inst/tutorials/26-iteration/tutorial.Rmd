@@ -20,13 +20,16 @@ library(tidyverse)
 library(readxl)
 library(duckdb)
 library(gradethis)
+library(ggcheck)
 library(tutorialExtras)
 
 gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
-options(tutorial.exercise.timelimit = 60, 
-        tutorial.storage = "local") 
+options(
+  tutorial.exercise.timelimit = 60,
+  tutorial.storage = "local"
+)
 
 df <- tibble(
   a = rnorm(10),
@@ -55,7 +58,7 @@ df_miss <- tibble(
 )
 
 expand_dates <- function(df) {
-  df |> 
+  df |>
     mutate(
       across(where(is.Date), list(year = year, month = month, day = mday))
     )
@@ -67,19 +70,20 @@ df_date <- tibble(
 )
 
 summarize_means <- function(df, summary_vars = where(is.numeric)) {
-  df |> 
+  df |>
     summarize(
       across({{ summary_vars }}, \(x) mean(x, na.rm = TRUE)),
       n = n()
     )
 }
 
-long <- df |> 
-  pivot_longer(a:d) |> 
-  group_by(name) |> 
+long <- df |>
+  pivot_longer(a:d) |>
+  group_by(name) |>
   summarize(
     median = median(value),
-    mean = mean(value))
+    mean = mean(value)
+  )
 
 df_paired <- tibble(
   a_val = rnorm(10),
@@ -107,12 +111,13 @@ gapminder_1952 <- readxl::read_excel("data/gapminder/1997.xlsx")
 gapminder_1957 <- readxl::read_excel("data/gapminder/2002.xlsx")
 gapminder_2007 <- readxl::read_excel("data/gapminder/2007.xlsx")
 
-paths <- list.files("data/gapminder", 
-                    pattern = "[.]xlsx$", 
-                    full.names = TRUE)
+paths <- list.files("data/gapminder",
+  pattern = "[.]xlsx$",
+  full.names = TRUE
+)
 
 # Saving Multiple Outputs
-template <- readxl::read_excel(paths[[1]]) |> 
+template <- readxl::read_excel(paths[[1]]) |>
   mutate(year = 1952)
 
 
@@ -134,26 +139,30 @@ failed <- map_vec(files, is.null)
 
 process_file <- function(path) {
   df <- read_csv(path)
-  
-  df |> 
-    filter(!is.na(id)) |> 
-    mutate(id = tolower(id)) |> 
+
+  df |>
+    filter(!is.na(id)) |>
+    mutate(id = tolower(id)) |>
     pivot_longer(jan:dec, names_to = "month")
 }
 
 df_types <- function(df) {
   tibble(
-    col_name = names(df), 
+    col_name = names(df),
     col_type = map_chr(df, vctrs::vec_ptype_full),
-    n_miss = map_int(df, \(x) sum(is.na(x))))}
+    n_miss = map_int(df, \(x) sum(is.na(x)))
+  )
+}
 
-by_clarity <- 
-  diamonds |> 
-    group_nest(clarity) |> 
-    mutate(path = str_glue("diamonds-{clarity}.csv"))
+by_clarity <-
+  diamonds |>
+  group_nest(clarity) |>
+  mutate(path = str_glue("diamonds-{clarity}.csv"))
 
 carat_histogram <- function(df) {
-  ggplot(df, aes(x = carat)) + geom_histogram(binwidth = 0.1)}
+  ggplot(df, aes(x = carat)) +
+    geom_histogram(binwidth = 0.1)
+}
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
@@ -165,14 +174,15 @@ grade_server("grade")
 
 ```{r Name}
 question_text("Name:",
-              answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-              correct = "submitted",
-              allow_retry = FALSE )
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = FALSE
+)
 ```
 
 

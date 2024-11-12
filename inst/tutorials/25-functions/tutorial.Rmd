@@ -19,17 +19,22 @@ library(tutorial.helpers)
 library(tidyverse)
 library(nycflights13)
 library(gradethis)
+library(ggcheck)
 library(tutorialExtras)
 
 gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
-options(tutorial.exercise.timelimit = 60, 
-        tutorial.storage = "local") 
+options(
+  tutorial.exercise.timelimit = 60,
+  tutorial.storage = "local"
+)
 
-myfunc_1 <- function(){}
-myfunc_2 <- function(x){}
-myfunc_3 <- function(x){x^2}
+myfunc_1 <- function() {}
+myfunc_2 <- function(x) {}
+myfunc_3 <- function(x) {
+  x^2
+}
 
 rescale01 <- function(x) {
   (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
@@ -43,14 +48,14 @@ df <- tibble(
 )
 
 grouped_mean <- function(df, group_var, mean_var) {
-  df |> 
-    group_by(group_var) |> 
+  df |>
+    group_by(group_var) |>
     summarize(mean(mean_var))
 }
 
 grouped_mean1 <- function(df, group_var, mean_var) {
-  df |> 
-    group_by({{ group_var }}) |> 
+  df |>
+    group_by({{ group_var }}) |>
     summarize(mean({{ mean_var }}))
 }
 
@@ -73,26 +78,26 @@ count_prop <- function(df, var, sort = FALSE) {
 }
 
 histogram <- function(df, var, binwidth = NULL) {
-  df |> 
-    ggplot(aes(x = {{ var }})) + 
+  df |>
+    ggplot(aes(x = {{ var }})) +
     geom_histogram(binwidth = binwidth)
 }
 
 histogram1 <- function(df, var, binwidth) {
   label <- rlang::englue("A histogram of {{var}} with binwidth {binwidth}")
-  
-  df |> 
-    ggplot(aes(x = {{ var }})) + 
-    geom_histogram(binwidth = binwidth) + 
+
+  df |>
+    ggplot(aes(x = {{ var }})) +
+    geom_histogram(binwidth = binwidth) +
     labs(title = label)
 }
 
 clean_number <- function(x) {
   is_pct <- str_detect(x, "%")
-  num <- x |> 
-    str_remove_all("%") |> 
-    str_remove_all(",") |> 
-    str_remove_all(fixed("$")) |> 
+  num <- x |>
+    str_remove_all("%") |>
+    str_remove_all(",") |>
+    str_remove_all(fixed("$")) |>
     as.numeric(x)
   if_else(is_pct, num / 100, num)
 }
@@ -112,39 +117,39 @@ first_upper <- function(x) {
 
 
 sorted_bars <- function(df, var) {
-  df |> 
-    mutate({{ var }} := fct_rev(fct_infreq({{ var }})))  |>
+  df |>
+    mutate({{ var }} := fct_rev(fct_infreq({{ var }}))) |>
     ggplot(aes(y = {{ var }})) +
     geom_bar()
 }
 
 conditional_bars <- function(df, condition, var) {
-  df |> 
-    filter({{ condition }}) |> 
-    ggplot(aes(x = {{ var }})) + 
+  df |>
+    filter({{ condition }}) |>
+    ggplot(aes(x = {{ var }})) +
     geom_bar()
 }
 
 hex_plot <- function(df, x, y, z, bins = 20, fun = "mean") {
-  df |> 
-    ggplot(aes(x = {{ x }}, y = {{ y }}, z = {{ z }})) + 
+  df |>
+    ggplot(aes(x = {{ x }}, y = {{ y }}, z = {{ z }})) +
     stat_summary_hex(
       aes(color = after_scale(fill)), # make border same color as fill
-      bins = bins, 
+      bins = bins,
       fun = fun,
     )
 }
 
 unique_where <- function(df, condition, var) {
-  df |> 
-    filter({{ condition }}) |> 
-    distinct({{ var }}) |> 
+  df |>
+    filter({{ condition }}) |>
+    distinct({{ var }}) |>
     arrange({{ var }})
 }
 
 count_missing <- function(df, group_vars, x_var) {
-  df |> 
-    group_by({{ group_vars }}) |> 
+  df |>
+    group_by({{ group_vars }}) |>
     summarize(
       n_miss = sum(is.na({{ x_var }})),
       .groups = "drop"
@@ -165,23 +170,26 @@ df1 <- tibble(
 
 ```{r, context = "server"}
 grade_server("grade",
-             exclude = c("simple-function-10",
-                         "simple-function-11",
-                         "data-frame-functions-3",
-                         "data-frame-functions-18")
-             )
+  exclude = c(
+    "simple-function-10",
+    "simple-function-11",
+    "data-frame-functions-3",
+    "data-frame-functions-18"
+  )
+)
 ```
 
 ```{r Name}
 question_text("Name:",
-              answer_fn(function(value){
-                              if(length(value) >= 1 ) {
-                                return(mark_as(TRUE))
-                                }
-                              return(mark_as(FALSE) )
-                              }),
-              correct = "submitted",
-              allow_retry = FALSE )
+  answer_fn(function(value) {
+    if (length(value) >= 1) {
+      return(mark_as(TRUE))
+    }
+    return(mark_as(FALSE))
+  }),
+  correct = "submitted",
+  allow_retry = FALSE
+)
 ```
 
 ## Introduction
