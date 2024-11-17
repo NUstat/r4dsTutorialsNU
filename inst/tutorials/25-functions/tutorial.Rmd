@@ -202,19 +202,19 @@ This tutorial covers [Chapter 25: Functions](https://r4ds.hadley.nz/functions.ht
 
 One of the best ways to improve your reach as a data scientist is to write functions. Functions allow you to automate common tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:
 
-1.You can give a function an evocative name that makes your code easier to understand.
+1. You can give a function an evocative name that makes your code easier to understand.
 
-2.As requirements change, you only need to update code in one place, instead of many.
+2. As requirements change, you only need to update code in one place, instead of many.
 
-3.You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
+3. You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
 
-4.It makes it easier to reuse work from project-to-project, increasing your productivity over time
+4. It makes it easier to reuse work from project-to-project, increasing your productivity over time
 
 ### Exercise 1
 
 Before diving into what a function, let's first make ourselves aware about the syntax of making a function in R.
 
-```
+```{verbatim, echo=TRUE}
 name <- function(arguements){
   body
 }
@@ -315,7 +315,7 @@ myfunc_2 <- ...(x){
 ```
 
 ```{r simple-function-5-solution, exercise.reveal_solution = FALSE}
-myfunc_2 <- ...(x){
+myfunc_2 <- function(x){
   
 }
 ```
@@ -326,7 +326,7 @@ grade_this_code()
 
 ### 
 
-This is the same as `myfunc_2` but it takes the argument `x`.
+This is the same as `myfunc_1` but it takes the argument `x`.
 
 ### Exercise 6
 
