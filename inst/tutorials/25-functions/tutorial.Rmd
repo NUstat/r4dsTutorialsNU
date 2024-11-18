@@ -596,7 +596,6 @@ Type `rescale01()` and pass in the vector: `c(-10,0,10)`.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r vector-functions-4-hint-1, eval = FALSE}
 rescale01(...)
@@ -647,21 +646,23 @@ Start a pipe with `df` to `mutate()`, within `mutate()`, set all column names eq
 ```
 
 ```{r vector-functions-6-hint-1, eval = FALSE}
-df |> ...(
-  a = rescale01(a),
-  b = rescale01(...),
-  ... = rescale01(c),
-  d = ...(d),
-)
+df |> 
+  ...(
+    a = rescale01(a),
+    b = rescale01(...),
+    ... = rescale01(c),
+    d = ...(d)
+  )
 ```
 
 ```{r vector-functions-6-solution, exercise.reveal_solution = FALSE}
-df |> mutate(
-  a = rescale01(a),
-  b = rescale01(b),
-  c = rescale01(c),
-  d = rescale01(d),
-)
+df |> 
+  mutate(
+    a = rescale01(a),
+    b = rescale01(b),
+    c = rescale01(c),
+    d = rescale01(d)
+  )
 ```
 
 ```{r vector-functions-6-check}
@@ -679,8 +680,6 @@ To avoid computing `min()` twice and `max()` once, we can use `range()` to calcu
 ```{r vector-functions-7, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r vector-functions-7-hint-1, eval = FALSE}
 rescale02 <- function(...) {
@@ -765,14 +764,17 @@ Instead of just having the first letter upper case, maybe you want to strip perc
 
 Below is what the function would look like:
 
-```
+```{r, eval=FALSE, echo=TRUE}
 clean_number <- function(x) {
+  
   is_pct <- str_detect(x, "%")
+  
   num <- x |> 
     str_remove_all("%") |> 
     str_remove_all(",") |> 
     str_remove_all(fixed("$")) |> 
     as.numeric(x)
+  
   if_else(is_pct, num / 100, num)
 }
 ```
@@ -839,7 +841,7 @@ Let's now use the function on a vector of strings.
 
 ### Exercise 13
 
-Type `commas()` and pass in a vector `c("cat","dog","piegon")`./
+Type `commas()` and pass in a vector `c("cat","dog","piegon")`
 
 ```{r vector-functions-13, exercise = TRUE}
 
@@ -931,7 +933,7 @@ Tidy evaluation is incredibly useful in most cases, as it simplifies data analys
 
 ### Exercise 2
 
-Within the curly braces, start a pipe with `df` to `group_by()` and pass in `group_var`, then extend the pipe to `summarize()` and pass in`mean(mean_var)`.
+Within the curly braces, start a pipe with `df` to `group_by()` and pass in `group_var`, then extend the pipe to `summarize()` and pass in `mean(mean_var)`.
 
 ```{r data-frame-functions-2, exercise = TRUE}
 
@@ -948,10 +950,18 @@ Within the curly braces, start a pipe with `df` to `group_by()` and pass in `gro
 ```
 
 ```{r data-frame-functions-2-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 grouped_mean <- function(df, group_var, mean_var){
   df |>
     group_by(group_var)|>
     summarize(mean(mean_var))
+}
+
+# option 1 ----
+grouped_mean <- function(df, group_var, mean_var){
+  df |>
+    group_by(group_var)|>
+    summarise(mean(mean_var))
 }
 ```
 
@@ -1003,7 +1013,7 @@ df1 <- tibble(
 )
 ```
 
-Start a pipe with `df1` to `grouped_mean()` and pass in `group` and `x` and to clarify, this data set has a column named `group_var`
+Start a pipe with `df1` to `grouped_mean()` and pass in `group` and `x`. While we aren't using it, we should note the data set has a column named `group_var`.
 
 ```{r data-frame-functions-4, exercise = TRUE}
 
@@ -1025,7 +1035,7 @@ grade_this_code()
 
 ### 
 
-This time the code actually ran and returned `group_var` instead of `group` column. This is a what is called `indirenction`. Now to fix this ,we need a mechanism to instruct `grouped_mean()` to interpret `group_var` and `mean_var` as containers holding the desired variables, rather than treating them as variable names themselves.
+This time the code actually ran and returned `group_var` instead of `group` column. This is a what is called **indirenction**. Now to fix this, we need a mechanism to instruct `grouped_mean()` to interpret `group_var` and `mean_var` as containers holding the desired variables, rather than treating them as variable names themselves.
 
 ### Exercise 5
 
@@ -1093,7 +1103,7 @@ Success! But the key challenge in writing data frame functions is figuring out w
 
 ### Exercise 7
 
-So, when writing data frame functions, a key challenge is determining which arguments need to be embraced. Fortunately, this task is made easy because you can find the relevant information in the documentation 😄. In the documentation, there are two terms you should look for that correspond to the two most common sub-types of tidy evaluation:
+So, when writing data frame functions, a key challenge is determining which arguments need to be embraced. Fortunately, this task is made easier because you can find the relevant information in the documentation 😄. In the documentation, there are two terms you should look for that correspond to the two most common sub-types of tidy evaluation:
 
 Data-masking: This is used in functions like `arrange()`, `filter()`, and `summarize()` that perform computations with variables.
 
@@ -1109,16 +1119,17 @@ In the coming exercises, we will explore the types of useful functions you can w
 
 Let's explore some use cases for functions: If you commonly perform the same set of summaries when doing initial data exploration, you might consider wrapping them up in a helper function like below.
 
-```
+```{r, eval=FALSE, echo=TRUE}
 summary6 <- function(data, var) {
-  data |> summarize(
-    min = min({{ var }}, na.rm = TRUE),
-    mean = mean({{ var }}, na.rm = TRUE),
-    median = median({{ var }}, na.rm = TRUE),
-    max = max({{ var }}, na.rm = TRUE),
-    n = n(),
-    n_miss = sum(is.na({{ var }})),
-    .groups = "drop"
+  data |> 
+    summarize(
+      min = min({{ var }}, na.rm = TRUE),
+      mean = mean({{ var }}, na.rm = TRUE),
+      median = median({{ var }}, na.rm = TRUE),
+      max = max({{ var }}, na.rm = TRUE),
+      n = n(),
+      n_miss = sum(is.na({{ var }})),
+      .groups = "drop"
   )
 }
 ```
@@ -1151,7 +1162,7 @@ grade_this_code()
 
 ### 
 
-Note how the name is very purposeful, as the function gives us a summary of the data as well as giving you 6 different columns. Also Whenever you wrap summarize() in a helper, we think it’s good practice to set .groups = "drop" to both avoid the message and leave the data in an ungrouped state.
+Note how the name is very purposeful, as the function gives us a summary of the data as well as giving you 6 different columns. Also Whenever you wrap summarize() in a helper, we think it’s good practice to set `.groups = "drop"` to both avoid the message and leave the data in an ungrouped state.
 
 ### Exercise 10
 
@@ -1160,6 +1171,8 @@ The nice thing about `summary6()` is, because it wraps `summarize()`, you can us
 ```{r data-frame-functions-10, exercise = TRUE}
 
 ```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r data-frame-functions-10-hint-1, eval = FALSE}
 diamonds |>
@@ -1245,19 +1258,19 @@ This function has three arguments: `df`, `var`, and `sort`, and only var needs t
 
 ### Exercise 13
 
-Start a pipe with `dimaonds` to `count_prop()` and pass in `clarity` as the argument.
+Start a pipe with `diamonds` to `count_prop()` and pass in `clarity` as the argument.
 
 ```{r data-frame-functions-13, exercise = TRUE}
 
 ```
 
 ```{r data-frame-functions-13-hint-1, eval = FALSE}
-dimaonds |>
+diamonds |>
   count_prop(...)
 ```
 
 ```{r data-frame-functions-13-solution, exercise.reveal_solution = FALSE}
-dimaonds |>
+diamonds |>
   count_prop(clarity)
 ```
 
@@ -1370,7 +1383,7 @@ Next up, let's talk about Data Masking and tidy selection.
 
 Sometimes you want to select variables inside a function that uses data-masking. For example, imagine you want to write a `count_missing()` that counts the number of missing observations in rows. You might try writing something like:
 
-```
+```{r, eval=FALSE, echo=TRUE}
 count_missing <- function(df, group_vars, x_var) {
   df |> 
     group_by({{ group_vars }}) |> 
