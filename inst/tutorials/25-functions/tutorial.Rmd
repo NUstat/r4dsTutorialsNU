@@ -84,7 +84,7 @@ histogram <- function(df, var, binwidth = NULL) {
 }
 
 histogram1 <- function(df, var, binwidth) {
-  label <- rlang::englue("A histogram of {{var}} with binwidth {binwidth}")
+  label = rlang::englue("A histogram of {{var}} with binwidth {binwidth}")
 
   df |>
     ggplot(aes(x = {{ var }})) +
@@ -153,6 +153,33 @@ count_missing <- function(df, group_vars, x_var) {
     summarize(
       n_miss = sum(is.na({{ x_var }})),
       .groups = "drop"
+    )
+}
+
+count_missing1 <- function(df, group_vars, x_var) {
+  df |> 
+    group_by(pick({{ group_vars }})) |> 
+    summarize(
+      n_miss = sum(is.na({{ x_var }})),
+      .groups = "drop"
+    )
+}
+
+linearity_check <- function(df, x, y) {
+  df |>
+    ggplot(aes(x = {{ x }}, y = {{ y }})) +
+    geom_point() +
+    geom_smooth(
+      method = "loess",
+      formula = y ~ x,
+      color = "red",
+      se = FALSE
+    ) +
+    geom_smooth(
+      method = "lm",
+      formula = y ~ x,
+      color = "blue",
+      se = FALSE
     )
 }
 
@@ -1492,7 +1519,7 @@ Another convenient use of pick() is to make a 2d table of counts.
 
 Below we count using all the variables in the rows and columns, then use pivot_wider() to rearrange the counts into a grid:
 
-```
+```{r, eval=FALSE, echo=TRUE}
 count_wide <- function(data, rows, cols) {
   data |> 
     count(pick(c({{ rows }}, {{ cols }}))) |> 
@@ -1527,7 +1554,7 @@ While our examples have mostly focused on dplyr, tidy evaluation also underpins 
 
 Instead of returning a data frame, you might want to return a plot. Fortunately, you can use the same techniques with ggplot2, because `aes()` is a data-masking function. For example, imagine that you’re making a lot of histograms like the following:
 
-```
+```{r, echo=TRUE, eval=FALSE}
 diamonds |> 
   ggplot(aes(x = carat)) +
   geom_histogram(binwidth = 0.1)
@@ -1603,7 +1630,7 @@ Now that we have the function ready and good to get, let's use it on datsets.
 
 ### Exercise 3
 
-Start a pipe with `diamonds` data set to `histogram()` and set the first argument to `carat` and second to `.1`.
+Start a pipe with `diamonds` data set to `histogram()` and set the first argument to `carat` and second to `0.1`.
 
 ```{r plot-functions-3, exercise = TRUE}
 
@@ -1625,7 +1652,7 @@ grade_this_code()
 
 ### 
 
-To clarify and clear up some confusion, we already set `df` to `diamonds` with the pipe and setting the rest values within the function call.
+To clarify and clear up any confusion, we already set `df` to `diamonds` with the pipe and setting then set the remaining values within the function call.
 
 ### Exercise 4
 
@@ -1743,14 +1770,16 @@ linearity_check <- function(df, x, y){
 ```
 
 ```{r plot-functions-7-solution, exercise.reveal_solution = FALSE}
-linearity_check <- function(df ,x ,y){
+linearity_check <- function(df, x, y) {
   df |>
-    ggplot(aes(x = {{x}}, y = {{y}}))+
+    ggplot(aes(x = {{ x }}, y = {{ y }})) +
     geom_point() +
-    geom_smooth(method = "loess", 
-                formula = y ~ x, 
-                color = "red", 
-                se = FALSE)
+    geom_smooth(
+      method = "loess",
+      formula = y ~ x,
+      color = "red",
+      se = FALSE
+    )
 }
 ```
 
@@ -1783,18 +1812,22 @@ linearity_check <- function(df, x, y){
 ```
 
 ```{r plot-functions-8-solution, exercise.reveal_solution = FALSE}
-linearity_check <- function(df ,x ,y){
+linearity_check <- function(df, x, y) {
   df |>
-    ggplot(aes(x = {{x}}, y = {{y}}))+
+    ggplot(aes(x = {{ x }}, y = {{ y }})) +
     geom_point() +
-    geom_smooth(method = "loess", 
-                formula = y ~ x, 
-                color = "red", 
-                se = FALSE) +
-    geom_smooth(method = "lm", 
-                formula = y ~ x, 
-                color = "blue", 
-                se = FALSE)
+    geom_smooth(
+      method = "loess",
+      formula = y ~ x,
+      color = "red",
+      se = FALSE
+    ) +
+    geom_smooth(
+      method = "lm",
+      formula = y ~ x,
+      color = "blue",
+      se = FALSE
+    )
 }
 ```
 
@@ -1816,13 +1849,13 @@ Start a pipe with `starwars` to `filter()` and filter the data where `mass < 100
 
 ```{r plot-functions-9-hint-1, eval = FALSE}
 starwars |>
-  filter(mass < 5000)|>
+  filter(mass < 1000)|>
   linearity_check(..., ...)
 ```
 
 ```{r plot-functions-9-solution, exercise.reveal_solution = FALSE}
 starwars |>
-  filter(mass < 5000)|>
+  filter(mass < 1000)|>
   linearity_check(mass, height)
 ```
 
@@ -1838,7 +1871,7 @@ We can see that the data is not fully linear but instead a smooth line.
 
 Maybe you want an alternative to colored scatter plots for very large data sets where overplotting is a problem, so hex plot would work out great. Below is code on how it works:
 
-```
+```{r, echo=TRUE, eval=FALSE}
 hex_plot <- function(df, x, y, z, bins = 20, fun = "mean") {
   df |> 
     ggplot(aes(x = {{ x }}, y = {{ y }}, z = {{ z }})) + 
@@ -1853,11 +1886,7 @@ hex_plot <- function(df, x, y, z, bins = 20, fun = "mean") {
 
 When we use it on a dataset like `diamonds` and pass in variables like `carat` , `price`, and `depth` we get this plot:
 
-```
-diamonds |> hex_plot(carat, price, depth)
-```
-
-```{r}
+```{r, echo=TRUE}
 diamonds |> hex_plot(carat, price, depth)
 ```
 
@@ -1963,11 +1992,11 @@ grade_this_code()
 ```
 ### 
 
-You have now made a sorted bar graph.
+You have now made a sorted bar graph function.
 
 ### Exercise 14
 
-Let's now use the `filter()` function which is another helper function. Copy the previous code, change the name to `conditional_bars` , add another argument `var` and delete the `mutate()` and add ` filter({{ condition }})` and also change the `y` to `x` since this is a horizontal graph.
+Let's now use the `filter()` function which is another helper function. Copy the previous code, change the name to `conditional_bars` , add another argument named `condition` before `var` in the argument list, and replace the `mutate()` with ` filter({{ condition }})`. Lastly, change the `y` to `x` so we will have vertical bars.
 
 ```{r plot-functions-14, exercise = TRUE}
 
@@ -1999,7 +2028,7 @@ grade_this_code()
 
 ### 
 
-You can also get creative and display data summaries in other ways. You can find a cool application at [here](https://gist.github.com/GShotwell/b19ef520b6d56f61a830fabb3454965b); it uses the axis labels to display the highest value. As you learn more about ggplot2, the power of your functions will continue to increase.
+You can also get creative and display data summaries in other ways. You can find a cool application [here](https://gist.github.com/GShotwell/b19ef520b6d56f61a830fabb3454965b); it uses the axis labels to display the highest value. As you learn more about ggplot2, the power of your functions will continue to increase.
 
 ### Exercise 15
 
@@ -2051,17 +2080,21 @@ To do so, we’re going to have to go under the covers of tidy evaluation and us
 
 To solve the labeling problem, we can utilize `rlang::englue()`. It works similarly to `str_glue()`, inserting values wrapped in `{ }` into the string. Additionally, it understands `{{ }}`, automatically inserting the appropriate variable name.
 
-Copying the code for the `histogram1` function, before the start of the pipe, create a new variable `label` and assign it the value of `rlang::englue("A histogram of {{var}} with binwidth {binwidth}")`. Then, within the `df` pipe, add the `labs()` layer after `geom_histogram()`, and set `title = label` within `labs()`.
+Modify the `histogram1` as follows: before the start of the pipe, create a new variable `label` and assign it the value of `rlang::englue("A histogram of {{ var }} with binwidth { binwidth }")`. Then, within the `df` pipe, add the `labs()` layer after `geom_histogram()`, and set `title = label` within `labs()`.
 
 ```{r plot-functions-17, exercise = TRUE}
-
+histogram1 <- function(df, var, binwidth) {
+  
+  
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth)
+}
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r plot-functions-17-hint-1, eval = FALSE}
 histogram1 <- function(df, ..., binwidth) {
-  label <- rlang::...("A histogram of {{var}} with binwidth {...}")
+  label = rlang::...("A histogram of {{ var }} with binwidth {...}")
   
   df |> 
     ggplot(aes(x = {{ ... }})) + 
@@ -2072,7 +2105,7 @@ histogram1 <- function(df, ..., binwidth) {
 
 ```{r plot-functions-17-solution, exercise.reveal_solution = FALSE}
 histogram1 <- function(df, var, binwidth) {
-  label <- rlang::...("A histogram of {{var}} with binwidth {...}")
+  label = rlang::englue("A histogram of {{ var }} with binwidth { binwidth }")
   
   df |> 
     ggplot(aes(x = {{ var }})) + 
@@ -2091,7 +2124,7 @@ If you want to explore about `rlang`, check this [out](https://www.rdocumentatio
  
 ### Exercise 18
 
-Now let's use the function, so start a pipe with `diamonds` to `histogram1()` and pass in `carat` and `.1` as the arguments.
+Now let's use the function, so start a pipe with `diamonds` to `histogram1()` and pass in `carat` and `0.1` as the arguments.
 
 ```{r plot-functions-18, exercise = TRUE}
 
@@ -2157,7 +2190,7 @@ Generally, function names should be verbs, and arguments should be nouns. Howeve
 
 In next few exercises we will show you different examples for the names of functions. Below is one and to clarify I put a hashtag to comment it.
 
-```
+```{r, eval=FALSE, echo=TRUE}
 f()
 ```
 
@@ -2169,7 +2202,7 @@ This name is too short and doesn't mean anything but just the word `f`.
 
 Below is another example:
 
-```
+```{r, eval=FALSE, echo=TRUE}
 my_awesome_function()
 ```
 
@@ -2181,50 +2214,29 @@ This name is not a verb and also is not descriptive at the same time  like the f
 
 Below is another example:
 
-```
+```{r, eval=FALSE, echo=TRUE}
 impute_missing()
 collapse_years()
 ```
 
-### 
-
-Even though this function name is clear, it is still little to long for us to type again and again.
-
 ### Exercise 4
 
-R also doesn’t care about how you use white space in your functions but future readers will. Additionally, `function()` should always be followed by squiggly brackets `({})`, and the contents should be indented by an additional two spaces. This makes it easier to see the hierarchy in your code by skimming the left-hand margin. 
+R also doesn’t care about how you use white space in your functions but future readers will. Additionally, `function()` should always be followed by squiggly brackets, `{}`, and the contents should be indented by an additional two spaces. This makes it easier to see the hierarchy in your code by skimming the left-hand margin. 
 
 Here is a good example of good indentation, which helps us see the hierarchy in the code.
 
-```
-density <- function(color, facets, binwidth = 0.1) {
-diamonds |> 
-  ggplot(aes(x = carat, y = after_stat(density), color = {{ color }})) +
-  geom_freqpoly(binwidth = binwidth) +
-  facet_wrap(vars({{ facets }}))
-}
-```
-
-### 
-
-Missing extra two spaces
-
-### Exercise 5
-
-Below is a example of having two extra spaces:
-
-```
+```{r, eval=FALSE, echo=TRUE}
 density <- function(color, facets, binwidth = 0.1) {
   diamonds |> 
-  ggplot(aes(x = carat, y = after_stat(density), color = {{ color }})) +
-  geom_freqpoly(binwidth = binwidth) +
-  facet_wrap(vars({{ facets }}))
+    ggplot(aes(x = carat, y = after_stat(density), color = {{ color }})) +
+    geom_freqpoly(binwidth = binwidth) +
+    facet_wrap(vars({{ facets }}))
 }
 ```
 
 ### 
 
-In the code above the pipe is indented incorrectly. As you can see we recommend putting extra spaces inside of `{{ }}`. This makes it very obvious that something unusual is happening.
+As you can see we recommend putting extra spaces inside of `{{ }}`. This makes it very obvious that something unusual is happening.
 
 ## Summary
 ### 
