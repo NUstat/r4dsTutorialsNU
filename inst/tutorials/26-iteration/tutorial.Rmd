@@ -169,7 +169,11 @@ carat_histogram <- function(df) {
 ```
 
 ```{r, context = "server"}
-grade_server("grade")
+grade_server("grade",
+  exclude = c(
+    "save-your-work-1"
+  )
+)
 ```
 
 ```{r Name}
