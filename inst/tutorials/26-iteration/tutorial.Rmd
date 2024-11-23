@@ -2234,7 +2234,7 @@ grade_this_code()
 
 ### Exercise 1
 
-Type `write_csv()` in the empty code chunk below, hit "Submit Answer".
+Type `write_csv()` in the empty code chunk below, hit "Run Code".
 
 ```{r save-your-work-1, exercise = TRUE}
 
