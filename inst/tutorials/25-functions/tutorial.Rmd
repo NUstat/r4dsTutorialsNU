@@ -666,7 +666,7 @@ These numbers are generated from `rnorm()` which generates random numbers from a
 
 ### Exercise 6
 
-Start a pipe with `df` to `mutate()`, within `mutate()`, set all column names equal to `rscale01()` and pass in the name of the column as the argument. For example, `a = rescale01(a)`.
+Start a pipe with `df` to `mutate()`, within `mutate()`, set all column names equal to `rescale01()` and pass in the name of the column as the argument. For example, `a = rescale01(a)`.
 
 ```{r vector-functions-6, exercise = TRUE}
 
@@ -702,7 +702,7 @@ You might notice that the `rescale01()` function does some work way too many tim
 
 ### Exercise 7
 
-To avoid computing `min()` twice and `max()` once, we can use `range()` to calculate both the minimum and maximum values in a single step. Create a new function called `rscale02` by assigning `function(x)` to it. Insert the curly braces and, for the body, create a variable `rng` and set it to `range(x, na.rm = TRUE)`. Then, on a new line, calculate `(x - rng[1]) / (rng[2] - rng[1])`.
+To avoid computing `min()` twice and `max()` once, we can use `range()` to calculate both the minimum and maximum values in a single step. Create a new function called `rescale02` by assigning `function(x)` to it. Insert the curly braces and, for the body, create a variable `rng` and set it to `range(x, na.rm = TRUE)`. Then, on a new line, calculate `(x - rng[1]) / (rng[2] - rng[1])`.
 
 ```{r vector-functions-7, exercise = TRUE}
 
