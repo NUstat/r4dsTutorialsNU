@@ -346,14 +346,12 @@ Set the value as 3 and the list as list(a = 31, b = 32).
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r unnesting-1-hint-1, eval = FALSE}
 ... <- tribble(
   ~x, ~y,
   1, ...,
   ..., list(a = 21,...),
-  3, list(..., b = 32),
+  3, list(..., b = 32)
 )
 ```
 
@@ -395,8 +393,6 @@ Let's explore what `unnest_wider()` does, so start a pipe with `df1` to `unnest_
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r unnesting-3-hint-1, eval = FALSE}
 df1 |> 
   unnest_wider(...)
@@ -423,7 +419,7 @@ By default, the names of the new columns come exclusively from the names of the 
 
 ### 
 
-Compared to just passing in `y` in `unnest_wider()`, we can see the column name plus with the element name and that is how `unnest_wider()` works, now we will move into `unnest_longer()` which is more useful for data sample with different amount of data for record.
+Compared to just passing in `y` in `unnest_wider()`, we can see the column name plus with the element name and that is how `unnest_wider()` works, now we will move into `unnest_longer()` which is more useful for data with different amounts of data for records.
 
 ### Exercise 5
 
@@ -432,8 +428,6 @@ Start a pipe with `df2` to `unnest_longer()` and pass in `y` as the argument.
 ```{r unnesting-5, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r unnesting-5-hint-1, eval = FALSE}
 ... |> 
@@ -446,18 +440,22 @@ When each row contains an unnamed list, it’s most natural to put each element 
 
 ### Exercise 6
 
-But what happens if one of the elements is empty? To see what happens, let's first create another sample of data, so create a new variable `df6` and assign it to `tribble()`. Within `tribble()`, we will define the columns `~x` and `~y`. Now, to arrange the data in a specific order, follow these steps:
+But what happens if one of the elements is empty? To see what happens, let's first create another sample of data, so create a new tibble using `tribble()` and assign it to `df6`. 
 
-Set the value as `"a"` for `~x` and the list as list(1,2) for `~y`.
-Repeat the above steps as needed for the rest.
-Set the value as `"b"` and the list as list(3).
-Set the value as `"c"` and the list as list().
+Within `tribble()`, we will define the columns `~x` and `~y`. 
+
+Now, to arrange the data in a specific order, follow these steps:
+
+- Set the value as `"a"` for `~x` and the list as list(1,2) for `~y`.
+- Repeat the above steps as needed for the rest.
+- Set the value as `"b"` and the list as list(3).
+- Set the value as `"c"` and the list as list().
+
+Add `df6` on a newline, so it prints.
 
 ```{r unnesting-6, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r unnesting-6-hint-1, eval = FALSE}
 ... <- tribble(
@@ -480,8 +478,6 @@ Start a pipe with `df6` to `unnest_longer()` and pass in the `y` column as the a
 ```{r unnesting-7, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r unnesting-7-hint-1, eval = FALSE}
 ... |> 
@@ -511,11 +507,9 @@ We’ll start with `gh_repos`. This is a list that contains data about a collect
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r case-studies-1-hint-1, eval = FALSE}
 repos <- tibble(...= ...)
-reposS
+repos
 ```
 
 ### 
@@ -529,8 +523,6 @@ Since the lists are unnamed, we’ll start with `unnest_longer()` to put each ch
 ```{r case-studies-2, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r case-studies-2-hint-1, eval = FALSE}
 repos |>
@@ -657,8 +649,6 @@ Create variable `chars` and assign it to `tibble()`. within `tibble()`, set the 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r case-studies-8-hint-1, eval = FALSE}
 ... <- ...(json = ...)
 chars
@@ -675,8 +665,6 @@ Start a pipe with `chars` to `unnest_wider()` and pass in `json`.
 ```{r case-studies-9, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r case-studies-9-hint-1, eval = FALSE}
 ... |> 
@@ -709,7 +697,7 @@ This dataset contains also many list-columns, so let's now select columns where 
 
 ### Exercise 11
 
-Modify `select()` to select `id` only and select `id` only when `where(is.list)`.
+Modify `select()` to select `id` and columns that are lists using `where(is.list)`.
 
 ```{r case-studies-11, exercise = TRUE}
 
@@ -772,7 +760,7 @@ titles
 
 You could imagine creating a table like this for each of the list-columns, then using joins to combine them with the character data as you need it.
 
-Good work unnestign relational data. Next up we will unnest deeply nested data.
+Good work unnesting relational data. Next up we will unnest deeply nested data.
 
 ### Exercise 14
 
@@ -801,8 +789,6 @@ Start a pipe with `gmaps_cities` to `unnest_wider()` and pass in `json`.
 ```{r case-studies-15, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r case-studies-15-hint-1, eval = FALSE}
 gmaps_cities |>
@@ -860,13 +846,14 @@ Now we can see why two cities got two results: Washington matched both Washingto
 
 ### Exercise 18
 
-There are a few different places we could go from here. We might want to determine the exact location of the match, which is stored in the geometry list-column. Start a new pipe with `locations` to `select()` and we will select the following: `city`, `formatted_address`, and `geometry`. Then we will extend the pipe to `unnest_wider()` and pass in `geometry` to extend the list.
+There are a few different places we could go from here. We might want to determine the exact location of the match, which is stored in the geometry list-column. 
+
+Start a new pipe with `locations` to `select()` and we will select the following: `city`, `formatted_address`, and `geometry`. Then we will extend the pipe to `unnest_wider()` and pass in `geometry` to extend the list.
 
 ```{r case-studies-18, exercise = TRUE}
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r case-studies-18-hint, eval = FALSE}
 ... |> 
@@ -897,11 +884,11 @@ Continue the pipe and extend it from` unnest_wider()` to `unnest_wider()` again 
 
 ###
 
-Now we got he `lat` and `lng` of the location. Next we will extract the `bounds`.
+Now we got the `lat` and `lng` of the location. Next we will extract the `bounds`.
 
 ### Exercise 20
 
-To unnest the `bounds`, we first need to select the columns which we need, so after `unnest_wider(geometry)` start a pipe with `select()` and pass in `!location:viewport` which dosent select the columns from location to viewport. Then modify the `unnest_wider()` which was on the last line of code to have `bounds` as the arguement.
+To unnest the `bounds`, we first need to select the columns which we need, so after `unnest_wider(geometry)` start a pipe with `select()` and pass in `!location:viewport` which dosen't select the columns from location to viewport. Then modify the `unnest_wider()` which was on the last line of code to have `bounds` as the arguement.
 
 ```{r case-studies-20, exercise = TRUE}
 
@@ -980,7 +967,7 @@ If these case studies have whetted your appetite for more real-life rectangling,
 
 All of the case studies in the previous section were sourced from wild-caught JSON. JSON is short for javascript object notation and is the way that most web APIs return data. It’s important to understand it because while JSON and R’s data types are pretty similar, there isn’t a perfect 1-to-1 mapping, so it’s good to understand a bit about JSON if things go wrong.
 
-<!-- SOmehow add the theoretical stuff baout json -->
+<!-- Somehow add the theoretical stuff about json -->
 
 ### Exercise 1
 
@@ -992,8 +979,6 @@ Run `gh_users_json()` which gives you the path to the json file.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r json-1-hint-1, eval = FALSE}
 gh_users_json()
 ```
@@ -1004,13 +989,11 @@ Next up we will read the json file.
 
 ### Exercise 2
 
-Create a new variable `gh_user2` and assign it to `read_json()` function and pass in the `gh_users_json()` function as argument.
+Create a new data object called `gh_user2` by assigning it the result of the `read_json()` function with `gh_users_json()` function as its argument.
 
 ```{r json-2, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r json-2-hint-1, eval = FALSE}
 gh_users2 <- read_json(...)
@@ -1019,11 +1002,11 @@ gh_users2 <- read_json(...)
 ### 
 
 JSON is a simple format designed to be easily read and written by machines, not humans. It has six key data types. Four of them are scalars:
-1.Null Type : plays the same role as NA in R.
-2.String :  much like a string in R, but must always use double quotes.
-3.Number : similar to R’s numbers: they can use integer (e.g., 123), decimal (e.g., 123.45), or scientific (e.g., 1.23e3) notation. JSON doesn’t support `Inf`, `-Inf`, or `NaN`
-4.Boolean: similar to R’s `TRUE` and `FALSE`, but uses lowercase `true` and `false`.
 
+1. Null Type: plays the same role as NA in R.
+2. String:  much like a string in R, but must always use double quotes.
+3. Number: similar to R’s numbers: they can use integer (e.g., 123), decimal (e.g., 123.45), or scientific (e.g., 1. 23e3) notation. JSON doesn’t support `Inf`, `-Inf`, or `NaN`
+4. Boolean: similar to R’s `TRUE` and `FALSE`, but uses lowercase `true` and `false`.
 
 ### Exercise 3
 
@@ -1120,13 +1103,11 @@ Jsonlite has another important function called `fromJSON()`. We don’t use it h
 
 ### Exercise 8
 
-Now, let's transform the JSON to a list and store it within a tibble. Create a variable called `df3` by using `tibble()`. Within the call to `tibble()`, we will have a json column where `parse_json(json)` is set equal to `json`.
+Now, let's transform the JSON to a list and store it within a tibble. Create a variable called `df3` by using `tibble()`. Within the call to `tibble()`, we will have a json column where `parse_json(json)` is set equal to `json`. On a new line type `df3`, so the tibble prints out.
 
 ```{r json-8, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r json-8-hint-1, eval = FALSE}
 df3 <- tibble(... = parse_json(...))
@@ -1143,8 +1124,6 @@ To make the names and age visible, we will start a pipe with `df3` to `unnest_wi
 ```{r json-9, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r json-9-hint-1, eval = FALSE}
 df3 |> 
@@ -1165,8 +1144,6 @@ Run `json1` to explore the dataset.
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r json-10-hint-1, eval = FALSE}
 json1
 ```
@@ -1185,8 +1162,6 @@ Let's now parse the `json1` and put it in a tibble. Create a variable `df4` and 
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r json-11-hint-1, eval = FALSE}
 df4 <- ...(json ... list(parse_json(...)))
 ```
@@ -1204,8 +1179,6 @@ Start a pipe with `df4` to `unnest_wider()` and pass in `json1` as the argument 
 ```{r json-12, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r json-12-hint-1, eval = FALSE}
 ... |>
@@ -1261,7 +1234,7 @@ Alternatively, you can reach inside the parsed JSON and start with the bit that 
 
 To do it faster, all we had to is the following:
 
-```{r}
+```{r, echo=TRUE}
 df4 <- tibble(results = parse_json(json1)$results)
 df4 |> 
   unnest_wider(results)
