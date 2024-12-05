@@ -127,6 +127,13 @@ question_text(
 
 <!-- Maybe do some more exploration of the data at the start. Just diving into dplyr code makes things hard to follow. -->
 
+### Warning!
+
+We will be downloading a 9 gb data file in this reading tutorial. If you do not have more than 15 GB of storage on your computer, we suggest completing this reading tutorial on an alternative computer if at all possible. Otherwise, as you work through the materials make note that you weren't able to run things because you weren't able to download the data. 
+
+You'll want to complete this reading tutorial in one sitting otherwise you will have to download the large file again (which takes at least 5 mins). It is stored in a temporary folder while working on the reading tutotrial and when you quit R/RStudio the file will be deleted (freeing up your storage).
+
+***
 
 ## Introduction
 ### 
@@ -219,7 +226,7 @@ If so, we have a problem. We need the capabilities for at least "dataset" and "p
 
 If you have this problem, you should try to install the **arrow** package from source with:
 
-````
+````{verbatim, echo=TRUE}
 install.packages("arrow", type = "source", INSTALL_opts = "--no-lock")
 ````
 
@@ -325,6 +332,14 @@ paste0(tempdir(), "/seattle-library-checkouts.csv")
 We will download a dataset of item checkouts from Seattle public libraries, available [online](data.seattle.gov/Community/Checkouts-by-Title/tmmm-ytt6) and give it the name and location of this file. This dataset contains 41,389,465 rows that tell you how many times each book was checked out each month from April 2005 to October 2022.
 
 ### Exercise 8
+
+#### Warning!
+
+We will be downloading a 9 gb data file in this reading tutorial. If you do not have more than 15 GB of storage on your computer, we suggest completing this reading tutorial on an alternative computer if at all possible. Otherwise, as you work through the materials make note that you weren't able to run things because you weren't able to download the data. 
+
+You'll want to complete this reading tutorial in one sitting otherwise you will have to download the large file again (which takes at least 5 mins). It is stored in a temporary folder while working on the reading tutotrial and when you quit R/RStudio the file will be deleted (freeing up your storage).
+
+***
 
 In the R Console (not in an Exercise code block), run:
 
@@ -1022,7 +1037,7 @@ unlink(list.files(tempdir(), full.names = TRUE))
 ## Summary
 ### 
 
-This tutorial covered [Chapter 22: Arrow](https://r4ds.hadley.nz/arrow.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We learned about the [**arrow**](https://arrow.apache.org/docs/r/) package for working with [Apache Arrow](https://arrow.apache.org/), a cross-language development platform for in-memory and larger-than-memory data. Key functions included `[open_dataset()](https://arrow.apache.org/docs/r/reference/open_dataset.html)` and `[write_dataset()](https://arrow.apache.org/docs/r/reference/write_dataset.html)`.
+This tutorial covered [Chapter 22: Arrow](https://r4ds.hadley.nz/arrow.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We learned about the [**arrow**](https://arrow.apache.org/docs/r/) package for working with [Apache Arrow](https://arrow.apache.org/), a cross-language development platform for in-memory and larger-than-memory data. Key functions included [`open_dataset()`](https://arrow.apache.org/docs/r/reference/open_dataset.html) and [`write_dataset()`](https://arrow.apache.org/docs/r/reference/write_dataset.html).
 
 Read this **arrow** package [vignette](https://arrow.apache.org/docs/r/articles/dataset.html) for an another example of how to work with a large dataset.
  
