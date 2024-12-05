@@ -18,6 +18,7 @@ library(learnr)
 library(tutorial.helpers)
 library(tidyverse)
 library(rvest)
+
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -118,14 +119,15 @@ The "Web Scraping 101" [article](https://rvest.tidyverse.org/articles/rvest.html
 
 ### Exercise 2
 
-Look up the help page for the **rvest** package using the `help()` function. Don't forget to use the `package` argument.
+Look up the help page for the **rvest** package by running `help(package = "rvest")` in your command line. Copy/paste the title from the help page.  
 
-```{r web-scaping-basics-2, exercise = TRUE}
-
-```
-
-```{r web-scaping-basics-2-hint-1, eval = FALSE}
-help(package = "...")
+```{r web-scaping-basics-2}
+question_text(NULL,
+	answer(NULL, correct = TRUE),
+	allow_retry = TRUE,
+	try_again_button = "Edit Answer",
+	incorrect = NULL,
+	rows = 3)
 ```
 
 ### 
@@ -147,7 +149,7 @@ question_text(NULL,
 
 ### 
 
-As the DESCRIPTION file mentions, **rvest** is mostly supplying wrappers for the more lower level (but harder to use) **xml2** and **httr** packages. (As always, note how we, and everyone else uses the words "package" and "library" interchangeably.)
+As the DESCRIPTION file mentions, **rvest** is mostly supplying wrappers for the more lower level (but harder to use) **xml2** and **httr** packages --- as always, note how we, and everyone else uses the words "package" and "library" interchangeably.
 
 ### Exercise 4
 
@@ -229,7 +231,7 @@ html_2 |>
 
 ### 
 
-`html_elements()` pulls out all the elements that match the selector, which is provided to the `css` argument. "Elements" consist of a start tag (e.g. <p>), optional attributes (id='first'), an end tag4 (like </p>). The "contents" of an element are everything in between the start and end tag.
+`html_elements()` pulls out all the elements that match the selector, which is provided to the `css` argument. "Elements" consist of a start tag (e.g. `<p>`), optional attributes (`id='first'`), an end tag4 (like `</p>`). The "contents" of an element are everything in between the start and end tag.
 
 Since there are two elements with the "p" tag, where the "p" is for "paragraph," the result from `html_elements()` are those two elements. The element with the "h1" tag is not included.
 
@@ -285,8 +287,6 @@ html_3 <- minimal_html("
   ")
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r web-scaping-basics-10-hint-1, eval = FALSE}
 ...
 
@@ -304,8 +304,6 @@ Pipe `html_3` to `html_elements("li")` in order to make a vector where each elem
 ```{r web-scaping-basics-11, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r web-scaping-basics-11-hint-1, eval = FALSE}
 html_3 |> 
@@ -333,7 +331,7 @@ Continue the pipe to `html_element("b")`, which will pull out the elements from 
 
 ### 
 
-We are using clues in the html formatting --- bolding, in this case --- to determine a substantive issue, what are the names of the characters. Nothing guarantees that this two things are connected. They don't have to me! And, if the html document itself is sloppy or inconsistent, they won't be. 
+We are using clues in the html formatting --- bolding, in this case --- to determine a substantive issue, what are the names of the characters. Nothing guarantees that this two things are connected. They don't have to be! And, if the html document itself is sloppy or inconsistent, they won't be. 
 
 You need to look closely at your results as you build your pipe, step-by-step.
 
@@ -377,7 +375,6 @@ html_4 <- minimal_html("
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r web-scaping-basics-14-hint-1, eval = FALSE}
 ...
@@ -393,12 +390,9 @@ Note how the `<body>` section of the html_document begins with the `<table>` ele
 
 Pipe `html_4` to `html_element(".mytable")`
 
-
 ```{r web-scaping-basics-15, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r web-scaping-basics-15-hint-1, eval = FALSE}
 html_4 |> 
@@ -523,6 +517,8 @@ Continue the pipe with `html_text2()`. We almost always want to clean up the und
   html_...()
 ```
 
+###
+
 This character vector is the result we are looking for. 
 
 <!-- Add knowledge drop -->
@@ -564,14 +560,14 @@ tibble(title = section |> html_elements("h2") |> html_text2(),
 
 ### Exercise 6
 
-Consider [the highest rated movies](https://www.imdb.com/chart/top) on [IMDb](https://en.wikipedia.org/wiki/IMDb), the Internet Movie Database. The URL is `https://www.imdb.com/chart/top`. Pipe that URL (with quotation marks) to `read_html()`.
+Consider [the highest rated movies](https://www.imdb.com/chart/top) on [IMDb](https://en.wikipedia.org/wiki/IMDb), the Internet Movie Database. The URL is `https://web.archive.org/web/20200101054123/https://www.imdb.com/chart/top/`. Pipe that URL (with quotation marks) to `read_html()`.
 
 ```{r web-scaping-examples-6, exercise = TRUE}
 
 ```
 
 ```{r web-scaping-examples-6-hint-1, eval = FALSE}
-"https://www.imdb.com/chart/top" |> 
+"https://web.archive.org/web/20200101054123/https://www.imdb.com/chart/top/" |> 
   ...
 ```
 
@@ -582,7 +578,7 @@ Note that `read_html()` takes longer to run than the previous example because th
 
 ### Exercise 7
 
-The key element is a table, which is often the case with web scraping exercises. Continue the pipe to `html_element("table")`
+The key element is a table, which is often the case with web scraping exercises. Continue the pipe to `html_element(".chart")`.
 
 
 ```{r web-scaping-examples-7, exercise = TRUE}
@@ -645,7 +641,7 @@ Continue the pipe to a `select()` call which renames the second column to `rank_
 
 ### Exercise 10
 
-Continue the pipe with a call to `mutate()` which runs `str_squish()` on `rank_title_year`, assigning the result to `rank_title_year`. Modifying a variable "in place" like this is a common approach. We don't need to keep the original value around. 
+Continue the pipe with a call to `mutate()` which applies `str_squish()` on `rank_title_year`, assigning the result back to `rank_title_year`. Modifying a variable "in place" like this is a common approach. We don't need to keep the original value around. 
 
 
 ```{r web-scaping-examples-10, exercise = TRUE}
@@ -663,11 +659,11 @@ Continue the pipe with a call to `mutate()` which runs `str_squish()` on `rank_t
 
 ### 
 
-`[str_squish()](https://stringr.tidyverse.org/reference/str_trim.html)` removes whitespace at the start and end or a character variable, and replaces all internal whitespace with a single space.
+[`str_squish()`](https://stringr.tidyverse.org/reference/str_trim.html) removes whitespace at the start and end or a character variable, and replaces all internal whitespace with a single space.
 
 ### Exercise 11
 
-Continue the pipe with a call to `mutate()`, creating a new variable called `rank` which is the result of running `parse_number()` on `rank_title_year`.
+Modify the previous code by adding a second line within `mutate()` to create a new variable called `rank`, which is the result of running `parse_number()` on `rank_title_year`.
 
 ```{r web-scaping-examples-11, exercise = TRUE}
 
@@ -677,17 +673,20 @@ Continue the pipe with a call to `mutate()`, creating a new variable called `ran
 
 ```{r web-scaping-examples-11-hint-1, eval = FALSE}
 ... |> 
-  mutate(rank = parse_number(rank_title_year))
+  mutate(
+    rank_title_year = str_squish(rank_title_year),
+    rank = parse_number(rank_title_year)
+  )
 ```
 
 ### 
 
-This approach depends on the fact that `[parse_number()](https://readr.tidyverse.org/reference/parse_number.html)` grabs the first number it can find in the string. It ignores characters and numbers which come after.
+This approach depends on the fact that [`parse_number()`](https://readr.tidyverse.org/reference/parse_number.html) grabs the first number it can find in the string. It ignores characters and numbers which come after.
 
 
 ### Exercise 12
 
-Continue the pipe to `mutate()`, creating a new variable `title` which is the result of running `str_extract()` on `rank_title_year` with the pattern argument set to `"(?<=\\d\\.\\s)(.*)(?=\\s\\(\\d{4}\\))"`.
+Add a third line within `mutate()` to create a new variable called `title`, which is the result of running `str_extract()` on `rank_title_year` with the pattern argument set to `"(?<=\\d\\.\\s)(.*)(?=\\s\\(\\d{4}\\))"`.
 
 ```{r web-scaping-examples-12, exercise = TRUE}
 
@@ -697,8 +696,11 @@ Continue the pipe to `mutate()`, creating a new variable `title` which is the re
 
 ```{r web-scaping-examples-12-hint-1, eval = FALSE}
 ... |> 
-  mutate(title = str_extract(rank_title_year, 
-                             pattern = "(?<=\\d\\.\\s)(.*)(?=\\s\\(\\d{4}\\))"))
+  mutate(
+    rank_title_year = str_squish(rank_title_year),
+    rank = parse_number(rank_title_year),
+    title = str_extract(rank_title_year, "(?<=\\d\\.\\s)(.*)(?=\\s\\(\\d{4}\\))")
+  )
 ```
 
 ### 
@@ -731,14 +733,12 @@ Complete the pipe with a `select()` statement which keeps `rank`, `title` and `r
   select(
     rank_title_year = `Rank & Title`,
     rating = `IMDb Rating`
-) |> 
+  ) |> 
   mutate(
-    rank_title_year = str_squish(rank_title_year)
-) |> 
-  mutate(rank = parse_number(rank_title_year)) |>   
-  mutate(title = 
-           str_extract(rank_title_year, 
-                       pattern = "(?<=\\d\\.\\s)(.*)(?=\\s\\(\\d{4}\\))")) |> 
+    rank_title_year = str_squish(rank_title_year),
+    rank = parse_number(rank_title_year),
+    title = str_extract(rank_title_year, "(?<=\\d\\.\\s)(.*)(?=\\s\\(\\d{4}\\))")
+  ) |> 
   select(rank, title, rating)
 ```
 
