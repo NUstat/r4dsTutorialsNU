@@ -1,15 +1,17 @@
 ---
 title: Arrow
-author: David Kane
 tutorial:
   id: arrow
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 22: Arrow'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane-->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -91,8 +93,37 @@ query <- seattle_pq |>
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+## Information
+###
+
+```{r name}
+question_text(
+    "Name:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL
+    )
 ```
+
+```{r email}
+question_text(
+    "Email:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
+```
+
+```{r ID}
+question_text(
+    "netID (example: wwc9876):",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
+```
+
 
 <!-- Maybe do some more exploration of the data at the start. Just diving into dplyr code makes things hard to follow. -->
 

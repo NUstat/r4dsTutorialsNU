@@ -1,15 +1,17 @@
 ---
 title: Web scraping
-author: 'David Kane'
 tutorial:
   id: web-scraping
 output:
   learnr::tutorial:
     progressive: true
     allow_skip: true
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 24: Web scraping'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane-->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -50,7 +52,35 @@ html_4 <- minimal_html("
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+## Information
+###
+
+```{r name}
+question_text(
+    "Name:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL
+    )
+```
+
+```{r email}
+question_text(
+    "Email:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
+```
+
+```{r ID}
+question_text(
+    "netID (example: wwc9876):",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
 ```
 
 <!-- Perhaps mention the polite package. Or ethics and legalities? What about dynamic sites?  -->

@@ -1,15 +1,17 @@
 ---
 title: Spreadsheets
-author: David Kane
 tutorial:
   id: spreadsheets
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 20: Spreadsheets'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane-->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -17,6 +19,8 @@ library(tutorial.helpers)
 library(tidyverse)
 library(readxl)
 library(writexl)
+library(googlesheets4)
+
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -27,7 +31,35 @@ penguins_url <- "https://docs.google.com/spreadsheets/d/1aFu8lnD_g0yjF5O-K6SFgSE
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+## Information
+###
+
+```{r name}
+question_text(
+    "Name:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL
+    )
+```
+
+```{r email}
+question_text(
+    "Email:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
+```
+
+```{r ID}
+question_text(
+    "netID (example: wwc9876):",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
 ```
 
 ## Introduction
@@ -59,7 +91,7 @@ library(readxl)
 
 ### Exercise 2
 
-Look up the help page for the package by issuing this command: "?\``readxl-package`\`". Copy/paste the Description field from the help page.  
+After loading `readxl`, look up the help page for the package by running this command: <code>?\`readxl-package\`</code>. Copy/paste the Description field from the help page.  
 
 ```{r readingwriting-excel-2}
 question_text(NULL,
@@ -408,7 +440,7 @@ question_text(NULL,
 
 ### 
 
-You can create a brand new sheet with [`gs4_create()`](https://googlesheets4.tidyverse.org/reference/gs4_create.html) or write to an existing sheet with [`sheet_write()`](https://googlesheets4.tidyverse.org/articles/write-sheets.html) and friends.
+You can create a brand new sheet with [`gs4_create()`](https://googlesheets4.tidyverse.org/reference/gs4_create.html) or write to an existing sheet with [`sheet_write()`](https://googlesheets4.tidyverse.org/articles/write-sheets.html) and share with friends.
 
 ### Exercise 3
 

@@ -1,15 +1,17 @@
 ---
 title: Databases
-author: David Kane
 tutorial:
   id: databases
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 21: Databases'
 ---
+
+<!-- Modification of r4ds.tutorials author: David Kane-->
 
 ```{r setup, include = FALSE}
 library(learnr)
@@ -57,8 +59,37 @@ planes <- tbl(con_nyc, "planes")
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+## Information
+###
+
+```{r name}
+question_text(
+    "Name:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL
+    )
 ```
+
+```{r email}
+question_text(
+    "Email:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
+```
+
+```{r ID}
+question_text(
+    "netID (example: wwc9876):",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
+```
+
 
 <!-- Databases are tricky because nothing, including connection objects, last from one Exercise to another. So, we can either repeat code in every Exercise or we can set up a set of connection objects in the setup code chunk. We follow both approaches in different sections below. A good idea? -->
 

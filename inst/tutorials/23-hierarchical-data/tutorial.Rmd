@@ -1,23 +1,25 @@
 ---
 title: Hierarchical data
-author: Anish Bellamkonda and David Kane
 tutorial:
   id: hierarchical-data
 output:
   learnr::tutorial:
     progressive: yes
     allow_skip: yes
+    css: ["css/nu-theme.css"]
 runtime: shiny_prerendered
 description: 'Tutorial for Chapter 23: Hierarchical data'
 ---
+
+<!-- Modification of r4ds.tutorials authors: Anish Bellamkonda and David Kane-->
 
 ```{r setup, include = FALSE}
 library(learnr)
 library(tutorial.helpers)
 library(tidyverse)
-library(tidyverse)
 library(repurrrsive)
 library(jsonlite)
+
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(out.width = '90%')
 options(tutorial.exercise.timelimit = 60, 
@@ -77,7 +79,35 @@ locations <- gmaps_cities |>
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
 ```
 
-```{r info-section, child = system.file("child_documents/info_section.Rmd", package = "tutorial.helpers")}
+## Information
+###
+
+```{r name}
+question_text(
+    "Name:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL
+    )
+```
+
+```{r email}
+question_text(
+    "Email:",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
+```
+
+```{r ID}
+question_text(
+    "netID (example: wwc9876):",
+    answer(NULL, correct = TRUE),
+    allow_retry = TRUE,
+    try_again_button = "Edit Answer",
+    incorrect = NULL)
 ```
 
 ## Introduction
