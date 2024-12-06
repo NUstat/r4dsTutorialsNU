@@ -704,28 +704,28 @@ The labels are easier to read, but they are still misplaced. Within `geom_text()
 ```{r annotations-8-hint-1, eval = FALSE}
 ... +
   geom_text(
-      data = label_info,
-      mapping = aes(label = drive_type),
-      fontface = "bold",
-      size = 5, 
-      hjust = ..., 
-      ... = "bottom"
-    )
+    data = label_info,
+    mapping = aes(label = drive_type),
+    fontface = "bold",
+    size = 5, 
+    hjust = ..., 
+    ... = "bottom"
+  )
 ```
 
 ```{r annotations-8-solution, exercise.reveal_solution = FALSE}
 mpg |>   
   ggplot(aes(x = displ, y = hwy, color = drv)) +
-    geom_point(alpha = 0.3) +
-    geom_smooth(method = "loess", formula = y ~ x, se = FALSE) +
-    geom_text(
-      data = label_info,
-      mapping = aes(label = drive_type),
-      fontface = "bold",
-      size = 5, 
-      hjust = "right", 
-      vjust = "bottom"
-    )
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "loess", formula = y ~ x, se = FALSE) +
+  geom_text(
+    data = label_info,
+    mapping = aes(label = drive_type),
+    fontface = "bold",
+    size = 5, 
+    hjust = "right", 
+    vjust = "bottom"
+  )
 ```
 
 ```{r annotations-8-check}
@@ -754,17 +754,17 @@ Add `theme()` to the pipeline. Within `theme()`, add the argument `legend.positi
 ```{r annotations-9-solution, exercise.reveal_solution = FALSE}
 mpg |>   
   ggplot(aes(x = displ, y = hwy, color = drv)) +
-    geom_point(alpha = 0.3) +
-    geom_smooth(method = "loess", formula = y ~ x, se = FALSE) +
-    geom_text(
-      data = label_info,
-      mapping = aes(label = drive_type),
-      fontface = "bold",
-      size = 5, 
-      hjust = "right", 
-      vjust = "bottom"
-    ) +
-    theme(legend.position = "none")
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "loess", formula = y ~ x, se = FALSE) +
+  geom_text(
+    data = label_info,
+    mapping = aes(label = drive_type),
+    fontface = "bold",
+    size = 5, 
+    hjust = "right", 
+    vjust = "bottom"
+  ) +
+  theme(legend.position = "none")
 ```
 
 ```{r annotations-9-check}
@@ -800,16 +800,16 @@ Change `geom_text()` to `geom_label_repel()`. Remove the `hjust` and `vjust` arg
 ```{r annotations-10-solution, exercise.reveal_solution = FALSE}
 mpg |>   
   ggplot(aes(x = displ, y = hwy, color = drv)) +
-    geom_point(alpha = 0.3) +
-    geom_smooth(method = "loess", formula = y ~ x, se = FALSE) +
-    geom_label_repel(
-      data = label_info,
-      mapping = aes(label = drive_type),
-      fontface = "bold",
-      size = 5,
-      nudge_y = 2
-    ) +
-    theme(legend.position = "none")
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "loess", formula = y ~ x, se = FALSE) +
+  geom_label_repel(
+    data = label_info,
+    mapping = aes(label = drive_type),
+    fontface = "bold",
+    size = 5,
+    nudge_y = 2
+  ) +
+  theme(legend.position = "none")
 ```
 
 ```{r annotations-10-check}
@@ -849,7 +849,9 @@ This is a tibble of cars with either `hwy > 40` or `hwy > 20 & displ > 5`. In ot
 
 ### Exercise 12
 
-Before identifying these outliers in the graphic, we need to set up our initial plot. With a new pipeline, pipe `mpg` to `ggplot()`. Within this `ggplot()`, using `aes()`, map `x` to `displ` and `y` to `hwy`. Add `geom_point()` so that the data is displayed. 
+Before identifying these outliers in the graphic, we need to set up our initial plot. 
+
+With a new pipeline, pipe `mpg` to `ggplot()`. Within this `ggplot()`, using `aes()`, map `x` to `displ` and `y` to `hwy`. Add `geom_point()` so that the data is displayed. 
 
 ```{r annotations-12, exercise = TRUE}
 
@@ -993,8 +995,9 @@ mpg |>
 grade_this_code()
 ```
 
-We added a second layer of large, hollow points to further highlight the labelled points.
+###
 
+We added a second layer of large, hollow points to further highlight the labelled points.
 
 Another geom that can help annotate your plot is `geom_rect()`. You can use `geom_rect()` to draw a rectangle around points of interest. The boundaries of the rectangle are defined by aesthetics `xmin`, `xmax`, `ymin`, `ymax`. Alternatively, look into the [**ggforce**](https://ggforce.data-imaginist.com/) package, specifically [`geom_mark_hull()`](https://ggforce.data-imaginist.com/reference/geom_mark_hull.html), which allows you to annotate subsets of points with hulls.
 
@@ -1010,8 +1013,6 @@ Create a new variable called `trend_text` and set it to `"Larger engine sizes te
 ```{r annotations-16, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r annotations-16-hint-1, eval = FALSE}
 trend_text <- ...
@@ -1055,13 +1056,13 @@ grade_this_code()
 
 ### Exercise 18
 
-Now let's make use of this annotation within a plot. Create a new pipeline and pipe `mpg` to the `ggplot()` function. Within this function map `x` to `displ` and `y` to `hwy` using `aes()`. Add the `geom_point()` function to the pipeline.
+Now let's make use of this annotation within a plot. 
+
+Create a new pipeline and pipe `mpg` to the `ggplot()` function. Within this function map `x` to `displ` and `y` to `hwy` using `aes()`. Add the `geom_point()` function to the pipeline.
 
 ```{r annotations-18, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r annotations-18-hint-1, eval = FALSE}
 mpg |> 
@@ -1172,7 +1173,7 @@ In this section, we will learn about how to display plots more appropriately by 
 
 ### Exercise 1
 
-When you make a regular plot, **ggplot2* automatically adds scales for you. Let's make a simple plot to demonstrate this.
+When you make a regular plot, **ggplot2** automatically adds scales for you. Let's make a simple plot to demonstrate this.
 
 ### 
 
@@ -1257,7 +1258,7 @@ mpg |>
 ```{r scales-3-solution, exercise.reveal_solution = FALSE}
 mpg |> 
   ggplot(aes(x = displ, y = hwy, color = drv)) +
-    geom_point()
+  geom_point()
 ```
 
 ```{r scales-3-check}
@@ -1363,13 +1364,13 @@ You can also use breaks and labels to control the appearance of legends. For dis
 
 ### Exercise 7
 
-This time we will be using the **scales** package to create more efficient axis labels. Create a new pipeline and pipe `diamonds` to the `ggplot()` function. Within this function, pipe map `x` to `price` and `y` to `cut`. Add the `geom_boxplot()` function to the pipeline. Within this function add the `alpha` argument and set it to `0.05`. 
+This time we will be using the **scales** package to create more efficient axis labels. 
+
+Create a new pipeline and pipe `diamonds` to the `ggplot()` function. Within this function, pipe map `x` to `price` and `y` to `cut`. Add the `geom_boxplot()` function to the pipeline. Within this function add the `alpha` argument and set it to `0.05`. 
 
 ```{r scales-7, exercise = TRUE}
 
 ```
-
-<button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r scales-7-hint-1, eval = FALSE}
 diamonds |> 
@@ -1410,8 +1411,8 @@ Using your previous code, add the `scale_x_continuous()` function. Within this f
 ```{r scales-8-solution, exercise.reveal_solution = FALSE}
 diamonds |> 
   ggplot(aes(x = price, y = cut)) +
-    geom_boxplot(alpha = 0.05) +
-    scale_x_continuous(labels = scales::label_dollar())
+  geom_boxplot(alpha = 0.05) +
+  scale_x_continuous(labels = scales::label_dollar())
 ```
 
 ```{r scales-8-check}
@@ -1427,24 +1428,24 @@ If the **scales** package were already loaded with `library()`, then it would no
 
 ### Exercise 9
 
-Another handy label function is `label_percent()`. Create a new pipeline and pipe `diamonds` to the `ggplot()` function. Within this function, map `x` to `cut` and `fill` to `clarity`. Add the `geom_bar()` function. Within this function add the `position` argument and set it equal to `"fill"`.
+Another handy label function is `label_percent()`. 
+
+Create a new pipeline and pipe `diamonds` to the `ggplot()` function. Within this function, map `x` to `cut` and `fill` to `clarity`. Add the `geom_bar()` function. Within this function add the `position` argument and set it equal to `"fill"`.
 
 ```{r scales-9, exercise = TRUE}
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r scales-9-hint-1, eval = FALSE}
 diamonds |>
   ggplot(aes(x = ..., fill = ...)) +
-    geom_bar(... = "fill")
+  geom_bar(... = "fill")
 ```
 
 ```{r scales-9-solution, exercise.reveal_solution = FALSE}
 diamonds |>
   ggplot(aes(x = cut, fill = clarity)) +
-    geom_bar(position = "fill")
+  geom_bar(position = "fill")
 ```
 
 ```{r scales-9-check}
@@ -1496,12 +1497,9 @@ Type in `presidential` and hit "Run Code".
 
 ```
 
-<button onclick = "transfer_code(this)">Copy previous code</button>
-
 ```{r scales-11-hint-1, eval = FALSE}
 presidential
 ```
-
 
 ```{r scales-11-solution, exercise.reveal_solution = FALSE}
 presidential
@@ -1529,14 +1527,14 @@ Create a new pipeline and pipe `presidential` to the `mutate()` function. Within
 presidential |> 
   mutate(id = ...) |> 
   ggplot(aes(x = ..., ... = id)) +
-    geom_point()
+    eom_point()
 ```
 
 ```{r scales-12-solution, exercise.reveal_solution = FALSE}
 presidential |> 
-  mutate(id = row_number()) |> 
+  mutate(id = 33 + row_number()) |> 
   ggplot(aes(x = start, y = id)) +
-    geom_point()
+  geom_point()
 ```
 
 ```{r scales-12-check}
@@ -1545,7 +1543,7 @@ grade_this_code()
 
 ### 
 
-`id` is simply the number of the presidency is that row. Eisenhower is the first president, Kennedy the second, and so on.
+`id` is simply the number of the presidency is that row. Eisenhower was the 34th President (1st row in data), Kennedy was the 35th (2nd row in data), and so on.
 
 ### Exercise 13
 
@@ -1564,10 +1562,10 @@ Using your previous code, add the `geom_segment()` function. Within this functio
 
 ```{r scales-13-solution, exercise.reveal_solution = FALSE}
 presidential |> 
-  mutate(id = row_number()) |> 
+  mutate(id = 33 + row_number()) |> 
   ggplot(aes(x = start, y = id)) +
-    geom_point() +
-    geom_segment(aes(xend = end, yend = id))
+  geom_point() +
+  geom_segment(aes(xend = end, yend = id))
 ```
 
 ```{r scales-13-check}
@@ -1595,11 +1593,11 @@ Using your previous code, add the `scale_x_date()` function. Within this functio
 
 ```{r scales-14-solution, exercise.reveal_solution = FALSE}
 presidential |> 
-  mutate(id = row_number()) |> 
+  mutate(id = 33 + row_number()) |> 
   ggplot(aes(x = start, y = id)) +
-    geom_point() +
-    geom_segment(aes(xend = end, yend = id)) +
-    scale_x_date(name = NULL)
+  geom_point() +
+  geom_segment(aes(xend = end, yend = id)) +
+  scale_x_date(name = NULL)
 ```
 
 ```{r scales-14-check}
@@ -1627,11 +1625,11 @@ Using your previous code, within your call to the function `scale_x_date()`, add
 
 ```{r scales-15-solution, exercise.reveal_solution = FALSE}
 presidential |> 
-  mutate(id = row_number()) |> 
+  mutate(id = 33 + row_number()) |> 
   ggplot(aes(x = start, y = id)) +
-    geom_point() +
-    geom_segment(aes(xend = end, yend = id)) +
-    scale_x_date(name = NULL, breaks = presidential$start)
+  geom_point() +
+  geom_segment(aes(xend = end, yend = id)) +
+  scale_x_date(name = NULL, breaks = presidential$start)
 ```
 
 ```{r scales-15-check}
@@ -1654,20 +1652,24 @@ Using your previous code, within your call to the function `scale_x_date()`, add
 
 ```{r scales-16-hint-1, eval = FALSE}
 ... +
-      scale_x_date(name = NULL, 
-                   breaks = presidential$start,
-                   ... = "'%y")
+  scale_x_date(
+    name = NULL, 
+    breaks = presidential$start,
+    ... = "'%y"
+  )
 ```
 
 ```{r scales-16-solution, exercise.reveal_solution = FALSE}
-presidential |> 
-  mutate(id = row_number()) |> 
+presidential |>
+  mutate(id = 33 + row_number()) |>
   ggplot(aes(x = start, y = id)) +
-    geom_point() +
-    geom_segment(aes(xend = end, yend = id)) +
-    scale_x_date(name = NULL, 
-                 breaks = presidential$start,
-                 date_labels = "'%y")
+  geom_point() +
+  geom_segment(aes(xend = end, yend = id)) +
+  scale_x_date(
+    name = NULL,
+    breaks = presidential$start,
+    date_labels = "'%y"
+  )
 ```
 
 ```{r scales-16-check}
