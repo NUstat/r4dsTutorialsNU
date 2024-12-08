@@ -2021,7 +2021,7 @@ Using your previous code, add a scale function, `scale_color_brewer()` to the pi
 
 ```{r replacing-a-scale-8-solution, exercise.reveal_solution = FALSE}
 mpg |> 
-  ggplot((aes(x = displ, y = hwy))) +
+  ggplot(aes(x = displ, y = hwy)) +
     geom_point(aes(color = drv)) +
     scale_color_brewer(palette = "Set1")
 ```
@@ -2052,7 +2052,7 @@ Using your previous code, within your call to the `geom_point()` function, add t
 
 ```{r replacing-a-scale-9-solution, exercise.reveal_solution = FALSE}
 mpg |> 
-  ggplot((aes(x = displ, y = hwy))) +
+  ggplot(aes(x = displ, y = hwy)) +
     geom_point(aes(color = drv, shape = drv)) +
     scale_color_brewer(palette = "Set1")
 ```
