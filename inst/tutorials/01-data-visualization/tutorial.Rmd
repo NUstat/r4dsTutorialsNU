@@ -141,7 +141,14 @@ Run `?palmerpenguins` in the Console after loading in the package. After doing s
 
 ```{r introduction-4}
 question_text(NULL,
-	answer("Size measurements, clutch observations, and blood isotope ratios for adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Data were collected and made available by Dr. Kristen Gorman and the Palmer Station Long Term Ecological Research (LTER) Program.", correct = TRUE),
+	 # answer("Size measurements, clutch observations, and blood isotope ratios for adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Data were collected and made available by Dr. Kristen Gorman and the Palmer Station Long Term Ecological Research (LTER) Program.", correct = TRUE),
+	answer_fn(function(value){
+            if (
+              str_remove_all(tolower(value), "[[:space:]]") == "sizemeasurements,clutchobservations,andbloodisotoperatiosforadultforagingadélie,chinstrap,andgentoopenguinsobservedonislandsinthepalmerarchipelagonearpalmerstation,antarctica.datawerecollectedandmadeavailablebydr.kristengormanandthepalmerstationlongtermecologicalresearch(lter)program."
+              ) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) )
+                              }),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
