@@ -115,24 +115,24 @@ library(ggthemes)
 # But, to save space in the package so that we meet the CRAN 5mb guideline, we
 # use a version on Github.
 
-url <- "https://raw.githubusercontent.com/PPBDS/r4ds.tutorials/main/data-raw/portlandtemp.csv"
-
-portland_data <-
-  read_csv(url,
-    col_types = cols(
-      date = col_date(format = ""),
-      tmax = col_double(),
-      tmin = col_double()
-    )
-  ) |>
-  filter(date >= as.Date("1979-01-01")) |>
-  mutate(
-    yday = lubridate::yday(date),
-    year = lubridate::year(date),
-    recent_high = if_else(tmax > 100 & year == 2021,
-      TRUE, FALSE
-    )
-  )
+# url <- "https://raw.githubusercontent.com/PPBDS/r4ds.tutorials/main/data-raw/portlandtemp.csv"
+# 
+# portland_data <-
+#   read_csv(url,
+#     col_types = cols(
+#       date = col_date(format = ""),
+#       tmax = col_double(),
+#       tmin = col_double()
+#     )
+#   ) |>
+#   filter(date >= as.Date("1979-01-01")) |>
+#   mutate(
+#     yday = lubridate::yday(date),
+#     year = lubridate::year(date),
+#     recent_high = if_else(tmax > 100 & year == 2021,
+#       TRUE, FALSE
+#     )
+#   )
 
 months <-
   tibble(
@@ -143,51 +143,51 @@ months <-
     )
   )
 
-portland_graph <- ggplot(
-  data = portland_data,
-  mapping = aes(
-    x = yday,
-    y = tmax
-  )
-) +
-  geom_point(alpha = .05, size = .9) +
-  geom_point(
-    data = filter(
-      portland_data,
-      recent_high != FALSE
-    ),
-    mapping = aes(color = "#C1392B"),
-    alpha = 1,
-    size = 2.3
-  ) +
-  guides(color = "none") +
-  scale_x_continuous(
-    breaks = months$yday,
-    labels = months$label,
-    expand = c(.01, .01)
-  ) +
-  scale_y_continuous(
-    labels = function(x) paste0(x, "°F"),
-    breaks = seq(
-      from = 20,
-      to = 120,
-      by = 20
-    )
-  ) +
-  theme_minimal() +
-  labs(
-    x = NULL,
-    y = NULL,
-    title = "Daily maximum temperatures in Portland, 1979–2021",
-    caption = "Data: National Oceanic and Atmospheric Administration via Oregon Live. \nGraphic: Cédric Scherer."
-  ) +
-  theme(
-    plot.title = element_text(face = "bold"),
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
-    axis.line.x = element_line(linewidth = 0.2),
-    axis.ticks.x = element_line()
-  )
+# portland_graph <- ggplot(
+#   data = portland_data,
+#   mapping = aes(
+#     x = yday,
+#     y = tmax
+#   )
+# ) +
+#   geom_point(alpha = .05, size = .9) +
+#   geom_point(
+#     data = filter(
+#       portland_data,
+#       recent_high != FALSE
+#     ),
+#     mapping = aes(color = "#C1392B"),
+#     alpha = 1,
+#     size = 2.3
+#   ) +
+#   guides(color = "none") +
+#   scale_x_continuous(
+#     breaks = months$yday,
+#     labels = months$label,
+#     expand = c(.01, .01)
+#   ) +
+#   scale_y_continuous(
+#     labels = function(x) paste0(x, "°F"),
+#     breaks = seq(
+#       from = 20,
+#       to = 120,
+#       by = 20
+#     )
+#   ) +
+#   theme_minimal() +
+#   labs(
+#     x = NULL,
+#     y = NULL,
+#     title = "Daily maximum temperatures in Portland, 1979–2021",
+#     caption = "Data: National Oceanic and Atmospheric Administration via Oregon Live. \nGraphic: Cédric Scherer."
+#   ) +
+#   theme(
+#     plot.title = element_text(face = "bold"),
+#     panel.grid.minor = element_blank(),
+#     panel.grid.major.x = element_blank(),
+#     axis.line.x = element_line(linewidth = 0.2),
+#     axis.ticks.x = element_line()
+#   )
 
 ```
 
