@@ -102,8 +102,8 @@ Note the distinction between *Tidyverse* (capitalized and in italics) and **tidy
 ```{r reading-data-from-a-file-1-q}
 question_text(NULL,
         answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("documentationforpackage‘readr’version2.1.5")) {
+            if (str_remove_all(str_to_lower(value), " ") |> 
+                str_detect("documentationforpackage‘readr’version\\d.\\d.\\d") {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
 	allow_retry = TRUE,
