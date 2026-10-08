@@ -103,7 +103,7 @@ Note the distinction between *Tidyverse* (capitalized and in italics) and **tidy
 question_text(NULL,
         answer_fn(function(value){
             if (str_remove_all(str_to_lower(value), " ") |> 
-                str_detect("documentationforpackage‘readr’version\\d.\\d.\\d") {
+                str_detect("documentationforpackage‘readr’version\\d.\\d.\\d")) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
 	allow_retry = TRUE,
