@@ -26,7 +26,7 @@ library(gradethis)
 library(ggcheck)
 library(tutorialExtras)
 
-gradethis_setup(exercise.error.check.code = gradethis_error_checker)
+gradethis_setup()
 
 knitr::opts_chunk$set(echo = FALSE)
 options(
@@ -1080,9 +1080,15 @@ flights |>
 grade_this_code()
 ```
 
+```{r summaries-5-error-check}
+grade_this_code(
+  correct = "Good try, and this error is expected! `summarize()` must return exactly one value per group, but `dep_delay <= 60` produces one `TRUE` or `FALSE` for every row, so `summarize()` refuses it. That logical vector is exactly what we want to work with. In the next exercise we wrap it in a summary function so that `summarize()` gets back a single value."
+)
+```
+
 ###
 
-This should create a column called `is_delayed` that is `TRUE` when `dep_delay` is less than or equal to `60` and `FALSE` when it is over `60`. There should also be a warning since there should only be 1 value returned, but we did something that returned an output per row so `mutate()` should have been used. The point here is to see we have a column of `TRUE`s and `FALSE`s (a logical vector which we will apply some function to).
+This code throws an error, and that is the point. `dep_delay <= 60` returns one `TRUE` or `FALSE` for every flight: `TRUE` when `dep_delay` is less than or equal to `60` and `FALSE` when it is over `60`. But `summarize()` must return exactly 1 value per group, so it refuses a whole column of results. If we wanted to keep one value per row, `mutate()` would be the right verb. Here, the logical vector is something we will apply a summary function to.
 
 ### Exercise 6
 

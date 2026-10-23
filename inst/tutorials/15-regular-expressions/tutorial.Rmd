@@ -79,7 +79,14 @@ Run `stringr::fruit` in your console. What is the name of the first fruit?
 
 ```{r pattern-basics-1}
 question_text(NULL,
-	answer("apple", correct = TRUE),
+	# answer("apple", correct = TRUE),
+	answer_fn(function(value){
+            if (
+              str_remove_all(tolower(value), "[[:space:]'\"]") == "apple"
+              ) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) )
+                              }),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -119,7 +126,7 @@ grade_this_code()
 
 ### 
 
-`str_view()` will show only the elements of the string vector that match, surrounding each match with <>, and, where possible, highlighting the match in blue or by surrounding the match with `< >`.
+`str_view()` will show only the elements of the string vector that match, surrounding each match with `<>` (and highlighting it in blue where color is supported).
 
 
 ### Exercise 3
@@ -348,7 +355,7 @@ The `"apple|melon|nut"` pattern matches any fruit which contains one of the thre
 
 ### Exercise 11
 
-Run `str_view()` on `fruit` as the vector and `"aa|ee|ii|oo|uu"` as the pattern. his should find all the fruits with at least one repeated vowel.
+Run `str_view()` on `fruit` as the vector and `"aa|ee|ii|oo|uu"` as the pattern. This should find all the fruits with at least one repeated vowel.
 
 ```{r pattern-basics-11, exercise = TRUE}
 
@@ -405,7 +412,14 @@ In the Console, run `library(babynames)` and then look up the help page for the 
 
 ```{r key-functions-2}
 question_text(NULL,
-	answer("A data frame with five variables: year, sex, name, n and prop (n divided by total number of applicants in that year, which means proportions are of people of that sex with that name born in that year).", correct = TRUE),
+	# answer("A data frame with five variables: year, sex, name, n and prop (n divided by total number of applicants in that year, which means proportions are of people of that sex with that name born in that year).", correct = TRUE),
+	answer_fn(function(value){
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]\\u2018\\u2019'\"`]"), fixed("adataframewithfivevariables:year,sex,name,nandprop(ndividedbytotalnumberofapplicantsinthatyear,whichmeansproportionsareofpeopleofthatsexwiththatnameborninthatyear)"))
+              ) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) )
+                              }),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -414,7 +428,7 @@ question_text(NULL,
 
 ### 
 
-The definition of the `prop` variable is subtle, so makes sure you pay special attention to it.
+The definition of the `prop` variable is subtle, so make sure you pay special attention to it.
 
 
 ### Exercise 3
@@ -439,7 +453,7 @@ grade_this_code()
 
 ### 
 
-There are almost 2 millions rows! 
+There are almost 2 million rows! 
 
 ### Exercise 4
 
@@ -465,7 +479,7 @@ grade_this_code()
 
 ### 
 
-Most of the time, we admit the argument names (`string` and `pattern`) and simply rely on "positional mapping," meaning that `string` is always the first argument (and `pattern` the second) because that is how the function is defined.
+Most of the time, we omit the argument names (`string` and `pattern`) and simply rely on "positional mapping," meaning that `string` is always the first argument (and `pattern` the second) because that is how the function is defined.
 
 ### Exercise 5
 
@@ -554,7 +568,7 @@ grade_this_code()
 
 ###
 
-We need `wt = n` because we want to account for the role of `n` in indicating how many times, in a single year, a given names was used. Setting `sort = TRUE` arranges the data frame from the most to least number of times the name was used.
+We need `wt = n` because we want to account for the role of `n` in indicating how many times, in a single year, a given name was used. Setting `sort = TRUE` arranges the data frame from the most to least number of times the name was used.
 
 ### Exercise 8
 
@@ -586,7 +600,7 @@ The result indicates that about 0.8% of the `names` in `babynames` include the l
 
 ### Exercise 9
 
-We are interested in how this percentage has changed over time, so modify the code by adding `.by = year` to the class to `summarize()`.
+We are interested in how this percentage has changed over time, so modify the code by adding `.by = year` to the call to `summarize()`.
 
 ```{r key-functions-9, exercise = TRUE}
 
@@ -680,7 +694,7 @@ grade_this_code()
 
 ### 
 
-There are two "p"'s in "apple" but zero in "pear."
+There are two "p"s in "apple", none in "banana", and one in "pear."
 
 ### Exercise 12
 
@@ -710,7 +724,7 @@ For example, in "abababa", how many times will the pattern "aba" match? Regular 
 
 ### Exercise 13
 
-To better see this, apply `str_view()` to the string `"abababa"` while matching the pattern and `"aba"`.
+To better see this, apply `str_view()` to the string `"abababa"` and the pattern `"aba"`.
 
 ```{r key-functions-13, exercise = TRUE}
 
@@ -732,7 +746,7 @@ grade_this_code()
 
 ### 
 
-In other words, the "second" "aba" string, which relies on the second "a" in the first "aba" string, does not count because regular expressions, by default, are exclusive.
+In other words, the "second" "aba" string, which relies on the second "a" in the first "aba" string, does not count because regex matches, by default, do not overlap.
 
 
 ### Exercise 14
@@ -759,7 +773,7 @@ grade_this_code()
 
 ### 
 
-The reduces the almost 2 million entries to just the 100,000 or so unique names. Note how often the letter "a" appears in the first ten names.
+This reduces the almost 2 million entries to just the 100,000 or so unique names. Note how often the letter "a" appears in the first ten names.
 
 ### Exercise 15
 
@@ -830,7 +844,7 @@ grade_this_code()
 
 ### 
 
-This suffers from the same problem as `vowels`. The capital letter "A" is not in the set `aeiou`, so it is counted, incorrectly, as a consonant. Among, other approaches, we could fix this by:
+This suffers from the same problem as `vowels`. The capital letter "A" is not in the set `aeiou`, so it is counted, incorrectly, as a consonant. Among other approaches, we could fix this by:
 
 * Adding the upper case vowels to the character class: `str_count(name, "[aeiouAEIOU]")`.
 
@@ -878,7 +892,7 @@ This variety of approaches is pretty typical when working with strings — there
 
 As well as detecting and counting matches, we can also modify them with `str_replace()` and `str_replace_all()`. 
 
-Run `str_replace_all()` on with `string` equal to `c("apple", "pear", "banana")`, `pattern` equal to  `"[aeiou]"`, and `replacement` equal to `"-"`.
+Run `str_replace_all()` with `string` equal to `c("apple", "pear", "banana")`, `pattern` equal to  `"[aeiou]"`, and `replacement` equal to `"-"`.
 
 ```{r key-functions-18, exercise = TRUE}
 
@@ -910,7 +924,7 @@ We usually omit the argument names, so this code would normally be: `str_replace
 
 ### Exercise 19
 
-`str_remove()` and `str_remove_all()` are handy shortcuts for `str_replace(x, pattern, "")`. 
+`str_remove()` and `str_remove_all()` are handy shortcuts for `str_replace(x, pattern, "")` and `str_replace_all(x, pattern, "")`.
 
 Run `str_remove_all()` on `c("apple", "pear", "banana")` and `"[aeiou]"`.
 
@@ -934,7 +948,7 @@ grade_this_code()
 
 ### 
 
-These commands with the `_all` suffix just act on the *first* match in each element of the vector. Try `str_remove(c("apple", "pear", "banana"), "[aeiou]")` for an example.
+The versions *without* the `_all` suffix (`str_replace()`, `str_remove()`) act only on the *first* match in each element of the vector. Try `str_remove(c("apple", "pear", "banana"), "[aeiou]")` for an example.
 
 These functions are naturally paired with `mutate()` when doing data cleaning, and you’ll often apply them repeatedly to peel off layers of inconsistent formatting.
 
@@ -1173,7 +1187,7 @@ grade_this_code()
 
 ### 
 
-Note how we use `"^a"` with the `^` at the front of the pattern, indicating that "a" belongs at the start of the string, and `"a$`, with the `$` at the end of the pattern, indicating that "a" belongs at the end of the string.
+Note how we use `"^a"` with the `^` at the front of the pattern, indicating that "a" belongs at the start of the string, and `"a$"`, with the `$` at the end of the pattern, indicating that "a" belongs at the end of the string.
 
 ### Exercise 7
 

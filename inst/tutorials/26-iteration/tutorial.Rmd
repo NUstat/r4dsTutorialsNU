@@ -101,14 +101,14 @@ df_paired <- tibble(
 gapminder_1952 <- readxl::read_excel("data/gapminder/1952.xlsx")
 gapminder_1957 <- readxl::read_excel("data/gapminder/1957.xlsx")
 gapminder_1962 <- readxl::read_excel("data/gapminder/1962.xlsx")
-gapminder_1952 <- readxl::read_excel("data/gapminder/1967.xlsx")
-gapminder_1957 <- readxl::read_excel("data/gapminder/1972.xlsx")
-gapminder_1962 <- readxl::read_excel("data/gapminder/1977.xlsx")
-gapminder_1952 <- readxl::read_excel("data/gapminder/1982.xlsx")
-gapminder_1957 <- readxl::read_excel("data/gapminder/1987.xlsx")
-gapminder_1962 <- readxl::read_excel("data/gapminder/1992.xlsx")
-gapminder_1952 <- readxl::read_excel("data/gapminder/1997.xlsx")
-gapminder_1957 <- readxl::read_excel("data/gapminder/2002.xlsx")
+gapminder_1967 <- readxl::read_excel("data/gapminder/1967.xlsx")
+gapminder_1972 <- readxl::read_excel("data/gapminder/1972.xlsx")
+gapminder_1977 <- readxl::read_excel("data/gapminder/1977.xlsx")
+gapminder_1982 <- readxl::read_excel("data/gapminder/1982.xlsx")
+gapminder_1987 <- readxl::read_excel("data/gapminder/1987.xlsx")
+gapminder_1992 <- readxl::read_excel("data/gapminder/1992.xlsx")
+gapminder_1997 <- readxl::read_excel("data/gapminder/1997.xlsx")
+gapminder_2002 <- readxl::read_excel("data/gapminder/2002.xlsx")
 gapminder_2007 <- readxl::read_excel("data/gapminder/2007.xlsx")
 
 paths <- list.files("data/gapminder",
@@ -413,7 +413,7 @@ Copy and paste the previous code, then add `med_c = median(c)` and `med_d = medi
 df |>
   summarise(
     n = n(),
-    ... = ...length(),
+    ... = median(a),
     med_b = median(b),
     ... = ...,
     med_d = median(...)
@@ -565,7 +565,7 @@ grade_this_code()
 ```
 
 
-`sample(2, 10, replace = TRUE)` produces a vector of length 10, containing 1s and 2s at random. 
+`sample(1:2, 10, replace = TRUE)` produces a vector of length 10, containing 1s and 2s at random. 
 
 ### Exercise 2
 
@@ -813,7 +813,7 @@ grade_this_code()
 
 ### 
 
-Several of the results are NA because `median()` propagates the missing values in `df_miss`. If we want to ignore missing values, then we need to use the `na. rm = TRUE` argument to `median()`.
+Several of the results are NA because `median()` propagates the missing values in `df_miss`. If we want to ignore missing values, then we need to use the `na.rm = TRUE` argument to `median()`.
 
 
 ### Exercise 8
@@ -1007,7 +1007,7 @@ R applies the function in `list()` to every variable in the first argument to `a
 
 ### Exercise 12
 
-Add the argument ``n_miss = \(x) sum(is.na(x))` to the call inside of `list()`.
+Add the argument `n_miss = \(x) sum(is.na(x))` to the call inside of `list()`.
 
 ```{r selecting-columns-with-cols-12, exercise = TRUE}
 
@@ -1317,9 +1317,13 @@ df_miss |>
 grade_this_code()
 ```
 
+```{r column-names-7-error-check}
+grade_this_code(correct = "Good try, and this error is expected! With no arguments, `if_any()` tries to use every column of `df_miss` as a TRUE/FALSE condition, but these columns are numbers. We fix this in the next exercise.")
+```
+
 ### 
 
-`if_any()` is the same as using `|` in-between the arguments. Right now, it has no effect because we haven't provided any arguments.
+`if_any()` combines its conditions with `|`. With no arguments, it tries to treat every column as a TRUE/FALSE condition, and since `df_miss` has numeric columns you get an error. You will also see a warning that using `if_any()` without supplying `.cols` is deprecated. Next, we tell `if_any()` which columns to use and which function to apply.
 
 ### Exercise 8
 
@@ -1778,14 +1782,14 @@ Your code should look something like this:
 gapminder_1952 <- readxl::read_excel("data/gapminder/1952.xlsx")
 gapminder_1957 <- readxl::read_excel("data/gapminder/1957.xlsx")
 gapminder_1962 <- readxl::read_excel("data/gapminder/1962.xlsx")
-gapminder_1952 <- readxl::read_excel("data/gapminder/1967.xlsx")
-gapminder_1957 <- readxl::read_excel("data/gapminder/1972.xlsx")
-gapminder_1962 <- readxl::read_excel("data/gapminder/1977.xlsx")
-gapminder_1952 <- readxl::read_excel("data/gapminder/1982.xlsx")
-gapminder_1957 <- readxl::read_excel("data/gapminder/1987.xlsx")
-gapminder_1962 <- readxl::read_excel("data/gapminder/1992.xlsx")
-gapminder_1952 <- readxl::read_excel("data/gapminder/1997.xlsx")
-gapminder_1957 <- readxl::read_excel("data/gapminder/2002.xlsx")
+gapminder_1967 <- readxl::read_excel("data/gapminder/1967.xlsx")
+gapminder_1972 <- readxl::read_excel("data/gapminder/1972.xlsx")
+gapminder_1977 <- readxl::read_excel("data/gapminder/1977.xlsx")
+gapminder_1982 <- readxl::read_excel("data/gapminder/1982.xlsx")
+gapminder_1987 <- readxl::read_excel("data/gapminder/1987.xlsx")
+gapminder_1992 <- readxl::read_excel("data/gapminder/1992.xlsx")
+gapminder_1997 <- readxl::read_excel("data/gapminder/1997.xlsx")
+gapminder_2002 <- readxl::read_excel("data/gapminder/2002.xlsx")
 gapminder_2007 <- readxl::read_excel("data/gapminder/2007.xlsx")
 ```
 
@@ -1857,7 +1861,7 @@ The `map()` functions transform their input by applying a function to each eleme
 
 ### 
 
-The `map()` vector takes the format fo `map(x, f)`, it is a way to make good use of the `path` vector. 
+The `map()` function takes the format of `map(x, f)`, it is a way to make good use of the `path` vector. 
 
 ### Exercise 4
 
@@ -1995,7 +1999,7 @@ grade_this_code()
 
 ### 
 
-This combination of `map()` and `list_rbind()` allows all sporeasheet to be viewed at once and combined into one. Like what we did above with `n_max = 1`, you can also customize how many rows you want to see.
+This combination of `map()` and `list_rbind()` allows all spreadsheets to be viewed at once and combined into one. Like what we did above with `n_max = 1`, you can also customize how many rows you want to see.
 
 ### 
 
@@ -3313,7 +3317,7 @@ grade_this_code()
 
 ### 
 
-The first argument to `group_nest()`, `.key`, is the most important. The resulting tibble has two columns. The first is the same name as the grouping variable and includes the individual values. The second is always called `data`. It is a list column in which each element is a tibble with all the rows from `diamonds` which have the specified value of `clarity`.
+Here we pass the grouping variable, `clarity`, to `group_nest()`. The resulting tibble has two columns. The first is the same name as the grouping variable and includes the individual values. The second is always called `data`. It is a list column in which each element is a tibble with all the rows from `diamonds` which have the specified value of `clarity`.
 
 ### Exercise 3
 
@@ -3429,7 +3433,7 @@ write_csv(by_clarity$data[[1]], by_clarity$path[[1]])
 write_csv(by_clarity$data[[2]], by_clarity$path[[2]])
 write_csv(by_clarity$data[[3]], by_clarity$path[[3]])
 ...
-write_csv(by_clarity$by_clarity[[8]], by_clarity$path[[8]])
+write_csv(by_clarity$data[[8]], by_clarity$path[[8]])
 ```
 
 But that would be annoying, especially if there were hundreds of values for `clarity`. Type `?walk2` to the space below. Hit "Submit Answer".
@@ -3560,7 +3564,7 @@ grade_this_code()
 
 ### 
 
-This function will only work if the tibble which you pass in as the value for the `df` argument includes a column called `carot`. If it doesn't, you will get an error like "object 'carat' not found".
+This function will only work if the tibble which you pass in as the value for the `df` argument includes a column called `carat`. If it doesn't, you will get an error like "object 'carat' not found".
 
 
 ### Exercise 2

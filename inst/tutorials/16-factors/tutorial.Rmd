@@ -54,12 +54,12 @@ month_levels <- c(
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 )
 
-csv <- "
+csv <- I("
 month,value
 Feb,12
 Mar,56
 Feb,14
-Jan,12"
+Jan,12")
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
@@ -120,7 +120,7 @@ Look up the help page for **forcats** by entering `help(package = "forcats")` at
 
 ### 
 
-**forcats** provides tools for dealing with **cat**egorical variables --- and it’s an anagram of teh word "factors" --- using a wide range of helpers for working with factors.
+**forcats** provides tools for dealing with **cat**egorical variables --- and it’s an anagram of the word "factors" --- using a wide range of helpers for working with factors.
 
 ### Exercise 2
 
@@ -309,28 +309,13 @@ Run `fct(x2, levels = month_levels)`.
 ```
 
 ```{r factor-basics-9-solution, exercise.reveal_solution = FALSE}
-tryCatch(
-  fct(x2, levels = month_levels),
-  error = function(e) e$message
-)
+fct(x2, levels = month_levels)
 ```
 
 ```{r factor-basics-9-error-check}
-grade_this({
-  # custom checking code appears here
-  user_error = tryCatch(
-    .result,
-    error = function(e) e$message
-  ) |> 
-  as.character()
-  
-  error_check = 'All values of `x` must appear in `levels` or `na`\\nℹ Missing level: "Jam"'
-  
-  if (TRUE) {
-    pass(random_praise())
-  }
-  fail(random_encouragement())
-})
+grade_this_code(
+  correct = "Good work, and this error is expected! `fct()` refuses to silently turn \"Jam\" into `NA`."
+)
 ```
 
 ```{r factor-basics-9-check}
@@ -347,7 +332,7 @@ Your code should have produced an error:
 
 ```{verbatim, echo=TRUE}
 All values of `x` must appear in `levels` or `na`
-ℹ Missing level: "Jam
+ℹ Missing level: "Jam"
 ```
 
 This is a thorough error message. `"Jam"` is missing from the `levels`, which we defined in the `month_levels` variable.
@@ -523,7 +508,7 @@ grade_this_code()
 
 ### Exercise 17
 
-Change the value of `col_types` to `cols(month = "f"))`
+Change the value of `col_types` to `cols(month = "f")`
 
 ```{r factor-basics-17, exercise = TRUE}
 
@@ -845,7 +830,7 @@ grade_this_code()
 
 ### 
 
-Note that each argument (or variable creation step) in `summarize()` must be separated by a command. Alas, there are `NA` values present at least one person in every level of `relig`.
+Note that each argument (or variable creation step) in `summarize()` must be separated by a comma. Alas, there are `NA` values present for at least one person in every level of `relig`.
 
 
 ### Exercise 5
@@ -983,9 +968,9 @@ grade_this_code()
 
 It is hard to read this plot because there’s no overall pattern. We can improve it by reordering the levels of `relig` using `fct_reorder()`. `fct_reorder()` takes three arguments:
 
-* `f`, the factor whose levels you want to modify.
-* `x`, a numeric vector that you want to use to reorder the levels.
-* Optionally, `fun`, a function that’s used if there are multiple values of `x` for each value of `f`. The default value is median.
+* `.f`, the factor whose levels you want to modify.
+* `.x`, a numeric vector that you want to use to reorder the levels.
+* Optionally, `.fun`, a function that’s used if there are multiple values of `.x` for each value of `.f`. The default value is `median`.
 
 ### Exercise 8
 
@@ -1291,7 +1276,7 @@ grade_this_code()
 
 ### 
 
-Adding the `.by` argument allows us to sort the tibble by age for the mutate function.
+Adding `.by = age` computes `sum(n)` separately within each age, so `prop` is the proportion of each marital status within that age.
 
 ### Exercise 15
 
@@ -1460,7 +1445,7 @@ grade_this_code()
 
 ### 
 
-Rearranging the legend makes the plot easier to read because the legend colors now match the order of the lines on the far right of the plot. `fct_reorder2(f, x, y)` reorders the factor `f` by the `y` values associated with the largest `x` values.
+Rearranging the legend makes the plot easier to read because the legend colors now match the order of the lines on the far right of the plot. `fct_reorder2(.f, .x, .y)` reorders the factor `.f` by the `.y` values associated with the largest `.x` values.
 
 ## Modifying factor levels
 ### 

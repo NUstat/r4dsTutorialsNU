@@ -36,7 +36,7 @@ df <- tribble(
 )
 
 x <- c(1, 2, 3, 4, NA)
-ranktypes <- tibble(x = x)
+ranktypes <- tibble(x = c(1, 2, 2, 3, 4, NA))
 
 numbers <- tibble(id = 1:10)
 
@@ -255,7 +255,7 @@ grade_this_code()
 
 ### Exercise 2
 
-Let's count the number of planes of which departed from a certain destination. Pipe `flights` to the `count()` function. Within the call to `count()`, put an argument of `dest`.
+Let's count the number of flights to each destination. Pipe `flights` to the `count()` function. Within the call to `count()`, put an argument of `dest`.
 
 ```{r counts-2, exercise = TRUE}
 
@@ -475,7 +475,7 @@ Weighted counts are a common problem so count() has the `wt` argument that does 
 
 Now, count the number of cancelled flights or missing values of each destination. 
 
-With a new pipeline, pipe `flights` to the `summarize()` function. Within the call to `summarize()`, create a new variable called `n_cancelled` and set it equal to `sum(is.na(dep_time)`.
+With a new pipeline, pipe `flights` to the `summarize()` function. Within the call to `summarize()`, create a new variable called `n_cancelled` and set it equal to `sum(is.na(dep_time))`.
 
 ```{r counts-10, exercise = TRUE}
 
@@ -1953,7 +1953,7 @@ Note that the smallest values get the lowest ranks; use desc(x) to give the larg
 
 ### Exercise 3
 
-Now, use the function `min_rank()` taking `desc(x)` as its argument.
+Change `min_rank(x)` to `min_rank(desc(x))`.
 
 ```{r general-transformations-3, exercise = TRUE}
 x <- c(1, 2, 2, 3, 4, NA)
@@ -2000,7 +2000,7 @@ grade_this_code()
 
 ### 
 
-Right now, `ranktypes` is just a tibble of the vector `x`.
+Right now, `ranktypes` is just a tibble with one column, `x`, holding the same values as the vector `x` you created in Exercise 1: `c(1, 2, 2, 3, 4, NA)`.
 
 ### Exercise 5
 
@@ -2212,7 +2212,7 @@ grade_this_code()
 
 ### 
 
-When combined with %% or %/%, `row_number()`` can be a useful tool for dividing data into similarly sized groups
+When combined with %% or %/%, `row_number()` can be a useful tool for dividing data into similarly sized groups
 
 ### Exercise 12
 
@@ -2365,7 +2365,7 @@ grade_this_code()
 
 ### 
 
-`x == lag(x)` tells you when the current value changes. You can lead or lag by more than one position by using the second argument, `n`.
+`x == lag(x)` tells you when the current value is the same as the previous one. You can lead or lag by more than one position by using the second argument, `n`.
 
 ### Exercise 18
 
@@ -2565,7 +2565,7 @@ grade_this_code()
 
 ### 
 
-This keeps the first row from each repeated `x`.
+Without `by`, `slice_head(n = 1)` keeps only the first row of the whole data frame.
 
 ### Exercise 25
 
@@ -2592,6 +2592,10 @@ repetition |>
 ```{r general-transformations-25-check}
 grade_this_code()
 ```
+
+### 
+
+This keeps the first row from each run of repeated `x` values.
 
 ## Numeric summaries
 ### 
@@ -2962,7 +2966,7 @@ grade_this_code()
 
 ### 
 
-This plot compares the mean vs. the median departure delay (in minutes) for each destination. The median delay is always smaller than the mean delay because flights sometimes leave multiple hours late, but never leave multiple hours early. It is a scatterplot showing the differences of summarizing daily depature delay with median instead of mean.
+This plot compares the mean vs. the median departure delay (in minutes) for each day. The median delay is always smaller than the mean delay because flights sometimes leave multiple hours late, but never leave multiple hours early. It is a scatterplot showing the differences of summarizing daily departure delay with median instead of mean.
 
 ### Exercise 11
 
@@ -2992,7 +2996,7 @@ grade_this_code()
 
 ### 
 
-min() and max() will give you the largest and smallest values.
+min() and max() will give you the smallest and largest values.
 
 ### Exercise 12
 
@@ -3066,7 +3070,7 @@ For the flights data, we are looking at the 95% quantile of delays rather than t
 
 ### Exercise 14
 
-Create a new pipeline. Pipe `flights` to the `summarize()` function. Within the `summarize()` function, create a new variable `distance_sd` and set it to `IQR(distance)`.
+Create a new pipeline. Pipe `flights` to the `summarize()` function. Within the `summarize()` function, create a new variable `distance_iqr` and set it to `IQR(distance)`.
 
 ```{r numeric-summaries-14, exercise = TRUE}
 
@@ -3075,14 +3079,14 @@ Create a new pipeline. Pipe `flights` to the `summarize()` function. Within the 
 ```{r numeric-summaries-14-hint-1, eval = FALSE}
 flights |> 
   summarize(
-    distance_sd = ...
+    distance_iqr = ...
   )
 ```
 
 ```{r numeric-summaries-14-solution, exercise.reveal_solution = FALSE}
 flights |> 
   summarize(
-    distance_sd = IQR(distance)
+    distance_iqr = IQR(distance)
   )
 ```
 
@@ -3107,7 +3111,7 @@ Using the same pipe as above, create another variable, within the call to `summa
 ```{r numeric-summaries-15-hint-1, eval = FALSE}
 flights |> 
   summarize(
-    distance_sd = IQR(distance),
+    distance_iqr = IQR(distance),
     n = n()
   )
 ```
@@ -3115,7 +3119,7 @@ flights |>
 ```{r numeric-summaries-15-solution, exercise.reveal_solution = FALSE}
 flights |> 
   summarize(
-    distance_sd = IQR(distance),
+    distance_iqr = IQR(distance),
     n=n()
   )
 ```
@@ -3137,7 +3141,7 @@ Using your previous code, within your call to `summarize()` add the `.by` argume
 ```{r numeric-summaries-16-hint-1, eval = FALSE}
 flights |> 
   summarize(
-    distance_sd = IQR(distance),
+    distance_iqr = IQR(distance),
     n=n(),
     .by = ...
   )
@@ -3146,7 +3150,7 @@ flights |>
 ```{r numeric-summaries-16-solution, exercise.reveal_solution = FALSE}
 flights |> 
   summarize(
-    distance_sd = IQR(distance),
+    distance_iqr = IQR(distance),
     n=n(),
     .by = c(origin, dest)
   )
@@ -3158,7 +3162,7 @@ grade_this_code()
 
 ### Exercise 17
 
-Using the same pipe as above, add the `filter()` function to the pipeline. Within the `filter()` function add the argument `distance_sd > 0`.
+Using the same pipe as above, add the `filter()` function to the pipeline. Within the `filter()` function add the argument `distance_iqr > 0`.
 
 ```{r numeric-summaries-17, exercise = TRUE}
 
@@ -3169,7 +3173,7 @@ Using the same pipe as above, add the `filter()` function to the pipeline. Withi
 ```{r numeric-summaries-17-hint-1, eval = FALSE}
 flights |> 
   summarize(
-    distance_sd = IQR(distance),
+    distance_iqr = IQR(distance),
     n=n(),
     .by = c(origin, dest)) |> 
   filter(...)
@@ -3178,11 +3182,11 @@ flights |>
 ```{r numeric-summaries-17-solution, exercise.reveal_solution = FALSE}
 flights |> 
   summarize(
-    distance_sd = IQR(distance),
+    distance_iqr = IQR(distance),
     n=n(),
     .by = c(origin, dest)
   ) |>
-  filter(distance_sd > 0)
+  filter(distance_iqr > 0)
 ```
 
 ```{r numeric-summaries-17-check}
@@ -3199,7 +3203,7 @@ Describe the oddity.
 
 ```{r numeric-summaries-18}
 question_text(NULL,
-  message = "The distance between any two airports should be constant, obviously. Airports don't move! For some reason, the are distances between EGE, on one hand, and JFK/EWR on the other hand, are not always the same. That seems odd!",
+  message = "The distance between any two airports should be constant, obviously. Airports don't move! For some reason, the distances between EGE, on one hand, and JFK/EWR on the other hand, are not always the same. That seems odd!",
   answer_fn(function(value) {
     if (length(value) >= 1) {
       return(mark_as(TRUE))
@@ -3279,7 +3283,7 @@ Using the same pipe as above, add the `geom_freqpoly()` function to the pipeline
 ```{r numeric-summaries-21-hint-1, eval = FALSE}
 flights |> 
   filter(dep_delay < 120) |> 
-  ggplot(aes(x = dep_delay, group = interaction(day, month))) |> 
+  ggplot(aes(x = dep_delay, group = interaction(day, month))) + 
   geom_freqpoly(...)
 ```
 

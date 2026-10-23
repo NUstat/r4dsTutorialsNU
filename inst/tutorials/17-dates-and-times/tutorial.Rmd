@@ -84,7 +84,7 @@ question_text("Name:",
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn how to use the [**lubridate**](https://www.rdocumentation.org/packages/lubridate/versions/1.9.2) on the [**flights**](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf) data and how to use date and datetimes.
+This tutorial covers [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn how to use the [**lubridate**](https://lubridate.tidyverse.org) package on the [**flights**](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf) data and how to use date and datetimes.
 
 ## Creating date/times during import
 ### 
@@ -133,7 +133,7 @@ grade_this_code()
 
 ### 
 
-The above code printed a date. This is a tibbles which prints as `<date>`.
+The above code printed a date. In a tibble, a date column prints as `<date>`.
 
 ### Exercise 3
 
@@ -192,18 +192,18 @@ grade_this_code()
 
 ### Exercise 5
 
-Run `read_csv()` on `date2015_csv`.
+Run `read_csv()` on `I(date2015_csv)`. Wrapping the string in `I()` tells `read_csv()` that it is literal data rather than a file path.
 
 ```{r datetimes-import-5, exercise = TRUE}
 
 ```
 
 ```{r datetimes-import-5-hint-1, eval = FALSE}
-read_csv(...)
+read_csv(I(...))
 ```
 
 ```{r datetimes-import-5-solution, exercise.reveal_solution = FALSE}
-read_csv(date2015_csv)
+read_csv(I(date2015_csv))
 ```
 
 ```{r datetimes-import-5-check}
@@ -216,7 +216,7 @@ With `read_csv()` we are able to analyze the aspects of date and date-time with 
 
 ### Exercise 6
 
-Now we will use `col_types` to format the date in the `date2015_csv`. Set `col_types` to `cols(date = col_date("%m/%d/%y"))` in `read_csv()`.
+Now we will use `col_types` to format the date in the `date2015_csv`. Set `col_types` to `cols(date = col_date("%m/%d/%y"))` in `read_csv(I(date2015_csv))`.
 
 ```{r datetimes-import-6, exercise = TRUE}
 
@@ -225,11 +225,11 @@ Now we will use `col_types` to format the date in the `date2015_csv`. Set `col_t
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r datetimes-import-6-hint-1, eval = FALSE}
-read_csv(date2015_csv, ... = cols(date = col_date("%m/%d/%y")))
+read_csv(I(date2015_csv), ... = cols(date = col_date("%m/%d/%y")))
 ```
 
 ```{r datetimes-import-6-solution, exercise.reveal_solution = FALSE}
-read_csv(date2015_csv, col_types = cols(date = col_date("%m/%d/%y")))
+read_csv(I(date2015_csv), col_types = cols(date = col_date("%m/%d/%y")))
 ```
 
 ```{r datetimes-import-6-check}
@@ -242,7 +242,7 @@ With this we can see a tibble that formats our date in year/month/day format.
 
 ### Exercise 7
 
-Let's try a different format. Set `col_types` to cols(date = col_date("%d/%m/%y")) in `read_csv()`.
+Let's try a different format. Set `col_types` to `cols(date = col_date("%d/%m/%y"))` in `read_csv(I(date2015_csv))`.
 
 ```{r datetimes-import-7, exercise = TRUE}
 
@@ -251,11 +251,11 @@ Let's try a different format. Set `col_types` to cols(date = col_date("%d/%m/%y"
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r datetimes-import-7-hint-1, eval = FALSE}
-read_csv(date2015_csv, col_types = ...)
+read_csv(I(date2015_csv), col_types = ...)
 ```
 
 ```{r datetimes-import-7-solution, exercise.reveal_solution = FALSE}
-read_csv(date2015_csv, col_types = cols(date = col_date("%d/%m/%y")))
+read_csv(I(date2015_csv), col_types = cols(date = col_date("%d/%m/%y")))
 ```
 
 ```{r datetimes-import-7-check}
@@ -373,14 +373,14 @@ We can use the datetime features on pieces of data. We will use the datetime com
 
 ### 
 
-Let's make this line graph using `geom_point()`:
+Let's make this scatterplot using `geom_point()`:
 
 ```{r creating-datetimes-w}
 flight_grph <-
   flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
   drop_na() |>
@@ -427,7 +427,7 @@ Here we can see all of the flights from NYC to destinations in the United States
 
 ### Exercise 2
 
-Let's start a pipe with the `flights` data. Mutate the `flights` data to set `dep_time` to `make_datetime(year, month, day, dep_time)`.
+Let's start a pipe with the `flights` data. Mutate the `flights` data to set `dep_time` to `make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100)`. Since `dep_time` stores the time as HHMM (e.g., `517` is 5:17 am), `dep_time %/% 100` gives the hour and `dep_time %% 100` gives the minute.
 
 ```{r datetimes-comp-2, exercise = TRUE}
 
@@ -435,12 +435,12 @@ Let's start a pipe with the `flights` data. Mutate the `flights` data to set `de
 
 ```{r datetimes-comp-2-hint-1, eval = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(..., ..., ..., dep_time))
+  mutate(dep_time = make_datetime(..., ..., ..., dep_time %/% 100, dep_time %% 100))
 ```
 
 ```{r datetimes-comp-2-solution, exercise.reveal_solution = FALSE}
 flights |>
-  mutate(dep_time = make_datetime(year, month, day, dep_time))
+  mutate(dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100))
 ```
 
 ```{r datetimes-comp-2-check}
@@ -449,11 +449,11 @@ grade_this_code()
 
 ### 
 
-Here we are able to make a datetime for the departure time based on the `year`, `month`, `day` and the departure of each plane. When creating a a date/time from this sort of input, we use `make_date()` for dates, or `make_datetime()` for date-times.
+Here we are able to make a datetime for the departure time based on the `year`, `month`, `day`, and the departure hour and minute of each plane. When creating a date/time from this sort of input, we use `make_date()` for dates, or `make_datetime()` for date-times.
 
 ### Exercise 3
 
-Let's add to the `mutate()` and set `sched_dep_time` to `make_datetime(year, month, day, sched_dep_time)`.
+Let's add to the `mutate()` and set `sched_dep_time` to `make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)`.
 
 ```{r datetimes-comp-3, exercise = TRUE}
 
@@ -472,8 +472,8 @@ Let's add to the `mutate()` and set `sched_dep_time` to `make_datetime(year, mon
 ```{r datetimes-comp-3-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   )
 ```
 
@@ -507,8 +507,8 @@ Continue the pipe by adding `select()` for the `dep_delay`, `dep_time`, `sched_d
 ```{r datetimes-comp-4-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   ) |>
   select(dep_delay, dep_time, sched_dep_time)
 ```
@@ -539,8 +539,8 @@ Continue the pipe by adding `ggplot()` and in `aes()` set `x` to `sched_dep_time
 ```{r datetimes-comp-5-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
   ggplot(aes(
@@ -574,8 +574,8 @@ Let's plot this by adding `geom_point()`.
 ```{r datetimes-comp-6-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
   ggplot(aes(x = sched_dep_time,y = dep_time)) +
@@ -588,8 +588,7 @@ grade_this_code()
 
 ### 
 
-You should have recieved a warning message that says: Warning message:
-Removed 8255 rows containing missing values (`geom_point()`). We will solve this issue by using `drop_na()`.
+You should have received a warning message that says: Removed 8255 rows containing missing values or values outside the scale range (`geom_point()`). We will solve this issue by using `drop_na()`.
 
 ### Exercise 7
 
@@ -612,8 +611,8 @@ We want to add drop any null values from the three columns that we use. Continue
 ```{r datetimes-comp-7-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
   drop_na() |>
@@ -647,8 +646,8 @@ In `aes()` set `color` to `dep_delay`.
 ```{r datetimes-comp-8-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
   drop_na() |>
@@ -666,13 +665,13 @@ When we set `color` to `dep_delay` we are able to see how late flights were rega
 
 ### Exercise 9
 
-Finally we add the labels to the graph. Click "Run Answer" and the labels will be added.
+Finally we add the labels to the graph. Click "Submit Answer" and the labels will be added.
 
 ```{r datetimes-comp-9, exercise = TRUE}
 flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
   drop_na() |>
@@ -690,8 +689,8 @@ flights |>
 ```{r datetimes-comp-9-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
-    dep_time = make_datetime(year, month, day, dep_time),
-    sched_dep_time = make_datetime(year, month, day, sched_dep_time)
+    dep_time = make_datetime(year, month, day, dep_time %/% 100, dep_time %% 100),
+    sched_dep_time = make_datetime(year, month, day, sched_dep_time %/% 100, sched_dep_time %% 100)
   ) |>
   select(dep_delay, dep_time, sched_dep_time) |>
   drop_na() |>
@@ -1087,7 +1086,7 @@ Periods are time spans but don’t have a fixed length in seconds, instead they 
 
 ### Exercise 1
 
-The code below creates adn stores a datetime as `date2026`. It also displays/prints. Click "Submit Answer" to run the code.
+The code below creates and stores a datetime as `date2026`. It also displays/prints. Click "Submit Answer" to run the code.
 
 ```{r time-spans-periods-1, exercise = TRUE}
 date2026 <- ymd_hms("2026-03-08 01:00:00", tz = "America/New_York")
@@ -1459,7 +1458,7 @@ When we want to change the underlying instant in time we use `force_tz()`. Use t
 ## Summary
 ### 
 
-This tutorial covered [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to use the [**lubridate**](https://www.rdocumentation.org/packages/lubridate/versions/1.9.2) on the [**flights**](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf) data and how to use date and datetimes.
+This tutorial covered [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to use the [**lubridate**](https://lubridate.tidyverse.org) package on the [**flights**](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf) data and how to use date and datetimes.
 
 
 ## Get Grade

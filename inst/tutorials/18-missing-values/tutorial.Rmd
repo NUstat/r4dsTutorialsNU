@@ -495,7 +495,7 @@ grade_this_code()
 
 ###
 
-This yet again produces `NaN` because of its indeterminate result.
+This produces `NaN`, along with a "NaNs produced" warning, because the square root of a negative number is undefined for real numbers.
 
 ## Implicit missing values
 ###
@@ -968,7 +968,7 @@ grade_this_code()
 
 ###
 
-This dataset only contains non-smokers, but we know that smokers exist; the group of non-smoker is empty.
+This dataset only contains non-smokers, but we know that smokers exist; the group of smokers is empty.
 
 ### Exercise 4
 
@@ -1048,7 +1048,7 @@ grade_this_code()
 
 ###
 
-We encounter a similar issue before as `ggplot2` will also drop levels that don't have any values.
+We encountered a similar issue before: `ggplot2` will also drop levels that don't have any values.
 
 ### Exercise 7
 
@@ -1302,7 +1302,7 @@ grade_this_code()
 
 ###
 
-Note that `min()` produces `Inf` in the `yes` row because it is operated on an empty vector.
+Note that `min()` produces `Inf` in the `yes` row because it is operated on an empty vector. You will also see a warning that `min()` has no non-missing arguments. This is expected for an empty group, and `max()` will give a similar warning in the next exercise.
 
 ### Exercise 14
 
@@ -1339,7 +1339,7 @@ health |>
 # option 2 ----
 health |>
   group_by(smoker, .drop = FALSE) |>
-  summarize(
+  summarise(
     n = n(),
     mean_age = mean(age),
     min_age = min(age),
@@ -1394,11 +1394,11 @@ health |>
 # option 2 ----
 health |>
   group_by(smoker, .drop = FALSE) |>
-  summarize(
+  summarise(
     n = n(),
     mean_age = mean(age),
-    min_age = min(age), 
-    max_age = max(age), 
+    min_age = min(age),
+    max_age = max(age),
     sd_age = sd(age)
   )
 ```
@@ -1456,7 +1456,7 @@ grade_this_code()
 
 ###
 
-Not that this `length()` function returns 0 as it is an empty vector. There’s an important distinction between empty vectors, which have length 0, and missing values, each of which has length 1.
+Note that this `length()` function returns 0 as it is an empty vector. There’s an important distinction between empty vectors, which have length 0, and missing values, each of which has length 1.
 
 ### Exercise 18
 
@@ -1488,13 +1488,25 @@ health |>
 ```
 
 ```{r factors-and-empty-gr-18-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 health |>
   group_by(smoker) |>
   summarize(
     n = n(),
     mean_age = mean(age),
-    min_age = min(age), 
-    max_age = max(age), 
+    min_age = min(age),
+    max_age = max(age),
+    sd_age = sd(age)
+  )
+
+# option 2 ----
+health |>
+  group_by(smoker) |>
+  summarise(
+    n = n(),
+    mean_age = mean(age),
+    min_age = min(age),
+    max_age = max(age),
     sd_age = sd(age)
   )
 ```
@@ -1531,13 +1543,26 @@ health |>
 ```
 
 ```{r factors-and-empty-gr-19-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 health |>
   group_by(smoker) |>
   summarize(
     n = n(),
     mean_age = mean(age),
-    min_age = min(age), 
-    max_age = max(age), 
+    min_age = min(age),
+    max_age = max(age),
+    sd_age = sd(age)
+  ) |>
+  complete(smoker)
+
+# option 2 ----
+health |>
+  group_by(smoker) |>
+  summarise(
+    n = n(),
+    mean_age = mean(age),
+    min_age = min(age),
+    max_age = max(age),
     sd_age = sd(age)
   ) |>
   complete(smoker)

@@ -60,6 +60,7 @@ parties <- tibble(
   party = ymd(c("2022-01-10", "2022-04-04", "2022-07-11", "2022-10-03"))
 )
 
+set.seed(3)
 employees <- tibble(
   name = sample(babynames::babynames$name, 100),
   birthday = ymd("2022-01-01") + (sample(365, 100, replace = TRUE) - 1)
@@ -105,7 +106,7 @@ question_text("Name:",
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 20: Strings](https://r4ds.hadley.nz/joins.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. 
+This tutorial covers [Chapter 19: Joins](https://r4ds.hadley.nz/joins.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. 
 This chapter will introduce you to two important types of joins:
 Mutating joins, which add new variables to one data frame from matching observations in another.
 
@@ -782,7 +783,7 @@ If we compare both the tibbles we can see the difference in the `name` variable.
 
 ### Exercise 10
 
-As you might guess the primary action of a filtering join is to filter the rows. There are two types: semi-joins and anti-joins. Semi-joins keep all rows in x that have a match in y. For example, we could use a semi-join to filter the airports dataset to show just the origin airports.
+As you might guess the primary action of a filtering join is to filter the rows. There are two types: semi-joins and anti-joins. Semi-joins keep all rows in x that have a match in y. For example, we could use a semi-join to filter the airports dataset to show just the destination airports.
 
 Start a pipe with `airports` to `semi_join()` and for the table which we will join, pass in `flights2` and also pass in `join_by(faa == dest)` which will collect all the rows that match in both tibbles.
 
@@ -812,7 +813,7 @@ Compared to `semi_join()` , Anti joins are the opposite: they return all rows in
 
 Let's find missing rows in `airports`. That is, let's find the destination airports `flights2` that do not exist in `airports`. We can do this by using `anti_join()`. 
 
-First start a pipe with `flights2` to `anti_join()` which takes in `airports` as the joining tibble and we will tell it to join by `dest == faa`. Continue the pipe with `distint(dest)`, to see a list of airports that existed in `flights2` but not in `airports`.
+First start a pipe with `flights2` to `anti_join()` which takes in `airports` as the joining tibble and we will tell it to join by `dest == faa`. Continue the pipe with `distinct(dest)`, to see a list of airports that existed in `flights2` but not in `airports`.
  
 ```{r basic-joins-11, exercise = TRUE}
 
@@ -820,8 +821,8 @@ First start a pipe with `flights2` to `anti_join()` which takes in `airports` as
 
 ```{r basic-joins-11-hint-1, eval = FALSE}
 ... |> 
-  ...(airports, join_by(... == faa) |> 
-  distint(dest)
+  ...(airports, join_by(... == faa)) |> 
+  distinct(dest)
 ```
 
 ```{r basic-joins-11-solution, exercise.reveal_solution = FALSE}
@@ -836,7 +837,7 @@ grade_this_code()
 
 ### 
 
-We found four rows/airports that are missing from `airports` but not in `flights2`.
+We found four airports (BQN, SJU, STT, and PSE) that appear as destinations in `flights2` but are missing from `airports`.
 
 ### Exercise 12
 
@@ -1085,7 +1086,7 @@ While the first row in df1 only matches one row in df2, the second and third row
 
 ### Exercise 1
 
-Let's relax the restriction of equi joins and explore different criteria for matching rows. Before that, let's revisit a simplification we made earlier. In equi joins, the x keys and y keys are always equal, so we only display one key in the output. By requesting **dplyr** to keep both keys with `keep = TRUE`, we can modify the `inner_join()` code.
+Let's relax the restriction of equi joins and explore different criteria for matching rows. Before that, let's revisit a simplification we made earlier. In equi joins, the x keys and y keys are always equal, so we only display one key in the output. By requesting **dplyr** to keep both keys with `keep = TRUE`, we can modify the `left_join()` code.
 
 To join `x` with `y` using `left_join()`, start a pipe and specify `y` as the tibble to join. Use `key` as the joining criterion using `by` and include `keep = TRUE` to retain both keys.
 
@@ -1350,7 +1351,7 @@ There is, however, one problem with this approach: the folks with birthdays befo
 
 ### Exercise 12
 
-Like mentioned previously this approach only looks for birthdays after January 10th and leave out birthdays before January 10th. To demonstrate this, Copy the previous code and change the join from `left_join()` to `right_join()`.
+As mentioned previously, this approach can't match employees with birthdays before January 10th to a party. To see what happens to them, copy the previous code and change the join from `left_join()` to `right_join()`.
 
 ```{r nonequi-joins-12, exercise = TRUE}
 
@@ -1373,6 +1374,8 @@ grade_this_code()
 ```
 
 ### 
+
+`right_join()` keeps every row of `parties`, but drops any employee without a matching party. Notice that the output has fewer rows than `employees`: the employees with birthdays from January 1 to 9 have dropped out.
 
 To resolve that issue we’ll need to tackle the problem a different way, with overlap joins: the fourth type of non equi joins.
 

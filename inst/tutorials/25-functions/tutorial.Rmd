@@ -98,7 +98,7 @@ clean_number <- function(x) {
     str_remove_all("%") |>
     str_remove_all(",") |>
     str_remove_all(fixed("$")) |>
-    as.numeric(x)
+    as.numeric()
   if_else(is_pct, num / 100, num)
 }
 
@@ -301,7 +301,7 @@ grade_this_code()
 
 ### 
 
-The output you will get is null because the function is doing nothing and sever no purpose therefore R returns null.
+The output you will get is null because the function is doing nothing and serves no purpose therefore R returns null.
 
 ### Exercise 4
 
@@ -477,7 +477,7 @@ myfunc_3("abc")
 
 ### 
 
-We get the error that we are using a non-numeric argument to a binary operator and it's true since we can square a string.
+We get the error that we are using a non-numeric argument to a binary operator and it's true since we can't square a string.
 
 ### Exercise 11
 
@@ -588,7 +588,7 @@ Now that we have the name and the arguments set, let set up the body of the func
 
 ### Exercise 3
 
-Copy the previous code, and inside the curly braces pass in `(a - min(a, na.rm = TRUE)) / (max(a, na.rm = TRUE) - min(a, na.rm = TRUE))`, but make sure to change the `a` and `b` to `x`. 
+Copy the previous code, and inside the curly braces pass in `(a - min(a, na.rm = TRUE)) / (max(a, na.rm = TRUE) - min(a, na.rm = TRUE))`, but make sure to change every `a` to `x`. 
 
 ```{r vector-functions-3, exercise = TRUE}
 
@@ -800,7 +800,7 @@ clean_number <- function(x) {
     str_remove_all("%") |> 
     str_remove_all(",") |> 
     str_remove_all(fixed("$")) |> 
-    as.numeric(x)
+    as.numeric()
   
   if_else(is_pct, num / 100, num)
 }
@@ -984,7 +984,7 @@ grouped_mean <- function(df, group_var, mean_var){
     summarize(mean(mean_var))
 }
 
-# option 1 ----
+# option 2 ----
 grouped_mean <- function(df, group_var, mean_var){
   df |>
     group_by(group_var)|>
@@ -1062,7 +1062,7 @@ grade_this_code()
 
 ### 
 
-This time the code actually ran and returned `group_var` instead of `group` column. This is a what is called **indirenction**. Now to fix this, we need a mechanism to instruct `grouped_mean()` to interpret `group_var` and `mean_var` as containers holding the desired variables, rather than treating them as variable names themselves.
+This time the code actually ran and returned `group_var` instead of `group` column. This is a what is called **indirection**. Now to fix this, we need a mechanism to instruct `grouped_mean()` to interpret `group_var` and `mean_var` as containers holding the desired variables, rather than treating them as variable names themselves.
 
 ### Exercise 5
 
@@ -1596,7 +1596,7 @@ The reason we set `binwidth` to `NULL` is because the `binwidth` is a optional v
 
 ### Exercise 2
 
-Copying the previous code, within the curly braces of `function()`, start a new pipe with `df` to `ggplot()`. Within `aes()` in `ggplot()`, set `x` to `{{x}}`. Then add the `geom_histogram()` layer using `+` and set `binwidth = binwidth`.
+Copying the previous code, within the curly braces of `function()`, start a new pipe with `df` to `ggplot()`. Within `aes()` in `ggplot()`, set `x` to `{{ var }}`. Then add the `geom_histogram()` layer using `+` and set `binwidth = binwidth`.
 
 ```{r plot-functions-2, exercise = TRUE}
 
@@ -1615,7 +1615,7 @@ Copying the previous code, within the curly braces of `function()`, start a new 
 ```{r plot-functions-2-solution, exercise.reveal_solution = FALSE}
 histogram <- function(df, var, binwidth = NULL){
   df |>
-    ggplot(aes(x = {{x}}))+
+    ggplot(aes(x = {{ var }}))+
     geom_histogram(binwidth = binwidth)
 }
 ```
@@ -1626,7 +1626,7 @@ grade_this_code()
 
 ### 
 
-Now that we have the function ready and good to get, let's use it on datsets.
+Now that we have the function ready and good to get, let's use it on datasets.
 
 ### Exercise 3
 
@@ -1748,7 +1748,7 @@ grade_this_code()
 
 ### 
 
-Let's now add a straight lie and a smooth line.
+Let's now add a straight line and a smooth line.
 
 ### Exercise 7
 
@@ -2188,7 +2188,7 @@ R doesn’t care what your function or arguments are called but the names make a
 
 Generally, function names should be verbs, and arguments should be nouns. However, there are some exceptions. It is acceptable to use nouns if the function computes a well-known noun (e.g., "mean()" is preferred over "compute_mean()") or if it accesses a property of an object (e.g., "coef()" is preferred over "get_coefficients()"). Trust your judgment and feel free to rename a function if you come up with a better name later on.
 
-In next few exercises we will show you different examples for the names of functions. Below is one and to clarify I put a hashtag to comment it.
+In next few exercises we will show you different examples for the names of functions. Below is one.
 
 ```{r, eval=FALSE, echo=TRUE}
 f()

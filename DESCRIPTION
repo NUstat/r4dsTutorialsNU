@@ -1,6 +1,6 @@
 Package: r4dsTutorialsNU
 Title: Tutorials for "R for Data Science"
-Version: 0.2.0.9006
+Version: 0.2.0.9007
 Authors@R: 
     person(given = "David",
            family = "Kane",

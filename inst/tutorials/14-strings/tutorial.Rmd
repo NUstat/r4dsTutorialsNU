@@ -37,7 +37,7 @@ x1 <- c("one\ntwo", "one\ttwo", "\u00b5", "\U0001f604")
 
 set.seed(9)
 
-df <- tibble(name = c("Flora", "David", "Terra", NA))
+df <- tibble(name = c("Flora", "Preceptor", "Terra", NA))
 
 df1 <- tribble(
   ~name, ~fruit,
@@ -50,12 +50,6 @@ df1 <- tribble(
 )
 
 y <- c("Apple", "Banana", "Pear")
-
-x2 <- "text\nEl Ni\xf1o was particularly bad this year"
-
-x3 <- "text\n\x82\xb1\x82\xf1\x82\xc9\x82\xbf\x82\xcd"
-
-u <- c("\u00fc", "u\u0308")
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
@@ -83,7 +77,7 @@ question_text("Name:",
 ### 
 
 This tutorial covers [Chapter 14: Strings](https://r4ds.hadley.nz/strings.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. 
-You will learn about some of the power of the [**stringr**](https://stringr.tidyverse.org/) package: how to create, combine, and extract strings, and about some of the challenges you might face with non-English strings. Some important functions which we will learn include:
+You will learn about some of the power of the [**stringr**](https://stringr.tidyverse.org/) package: how to create, combine, and extract strings. Some important functions which we will learn include:
 [`str_c()`](https://stringr.tidyverse.org/reference/str_c.html),
 [`str_glue()`](https://stringr.tidyverse.org/reference/str_glue.html),
 [`str_flatten()`](https://stringr.tidyverse.org/reference/str_flatten.html),
@@ -524,7 +518,7 @@ grade_this_code()
 
 ### Exercise 2
 
-Copy previous code and change the argument to `str_c("Hello ", c("Precptor","Anish"))` and run it.
+Copy previous code and change the argument to `str_c("Hello ", c("Preceptor","Anish"))` and run it.
 
 ```{r creating-many-strings-from-dat-2, exercise = TRUE}
 
@@ -537,7 +531,7 @@ str_c(..., c(...))
 ```
 
 ```{r creating-many-strings-from-dat-2-solution, exercise.reveal_solution = FALSE}
-str_c("Hello ", c("Precptor","Anish"))
+str_c("Hello ", c("Preceptor","Anish"))
 ```
 
 ```{r creating-many-strings-from-dat-2-check}
@@ -594,7 +588,7 @@ grade_this_code()
 
 ### 
 
-the tibble has one column named "name." The first three rows contain the names "Flora," "David," and "Terra," respectively. However, the fourth row has an NA value, which typically represents missing or unknown data. 
+the tibble has one column named "name." The first three rows contain the names "Flora," "Preceptor," and "Terra," respectively. However, the fourth row has an NA value, which typically represents missing or unknown data. 
 
 ### Exercise 5
 
@@ -894,9 +888,9 @@ grade_this_code()
 
 ### 
 
-If you are wondering what `delim = ","` is, the `delim = ","` parameter is used to specify the delimiter character in functions that involve reading or writing delimited data files.
+If you are wondering what `delim = ","` is, `delim` is the string that separates the pieces of each value, here a comma. `separate_longer_delim()` splits each string at every comma and puts each piece in its own row.
 
-For example, when reading a CSV (Comma-Separated Values) file using the `read_csv()` function from the **readr** or **tidyverse** package, you can specify `delim = ","` to indicate that the values in the file are separated by commas. 
+The same idea appears when reading a delimited file with the `read_delim()` function from the **readr** package, where you can specify `delim = ","` to indicate that the values in the file are separated by commas. 
 
 ### Exercise 3
 
@@ -957,7 +951,7 @@ grade_this_code()
 
 Now you see that all the strings have been separated into one-digit integers, creating more rows to fit each integer into each row.
 
-In R, the `width = 1` parameter is used in functions that involve writing or formatting output to specify the width of the output field.
+Here, `width = 1` means each piece is 1 character long, so every digit ends up in its own row.
 
 ### Exercise 5
 
@@ -1354,9 +1348,9 @@ df8 <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
 
 df8 |> 
   separate_wider_delim(
-    cols = x...,
+    cols = x,
     delim = "-",
-    names = c("x", "y", "z")
+    names = c("x", "y", "z"),
     too_many = "..."
   )
 ```
@@ -1409,9 +1403,9 @@ df8 <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
 
 df8 |> 
   separate_wider_delim(
-    cols = x...,
+    cols = x,
     delim = "-",
-    names = c("x", "y", "z")
+    names = c("x", "y", "z"),
     too_many = "..."
   )
 ```
@@ -1463,9 +1457,9 @@ df8 <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
 
 df8 |> 
   separate_wider_delim(
-    cols = x...,
+    cols = x,
     delim = "-",
-    names = c("x", "y", "z")
+    names = c("x", "y", "z"),
     too_many = "..."
   )
 ```
@@ -1506,7 +1500,7 @@ The `x remainders` are merged into the final column.
 ## Letters
 ### 
 
-In this section, we'll introduce you to functions that allow you to work with the individual letters within a string. You'll learn how to find the length of a string, extract sub strings, and handle long strings in plots and tables.
+In this section, we'll introduce you to functions that allow you to work with the individual letters within a string. You'll learn how to find the length of a string and extract sub strings.
 
 ### Exercise 1
 
@@ -1636,7 +1630,7 @@ grade_this_code()
 
 ### 
 
-We see that there are a total count of 1,924,665 names used. Let's make the function more complex to find the distribution of lengths of baby names.
+We see that there are 1,924,665 rows (unique year/sex/name combinations). Let's make the function more complex to find the distribution of lengths of baby names.
 
 ### Exercise 6
 
@@ -1732,7 +1726,7 @@ grade_this_code()
 
 ### 
 
-Looks at the results, the most famous name is Francisco Javier, being used 123 times. Looking at the other names, Christopher looks similar is most of the other names.
+Looking at the results, the most common 15-letter name is Franciscojavier, used 123 times. Many of the other names, like Christopherjohn, are combinations of two names that were cut off at 15 characters.
 
 ### Exercise 9
 
@@ -1905,7 +1899,7 @@ When we ran the code, we see two new columns `first` and `last` which show the f
 ### 
 
 This tutorial covered [Chapter 14: Strings](https://r4ds.hadley.nz/strings.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. 
-You learned about some of the power of the [**stringr**](https://stringr.tidyverse.org/) package: how to create, combine, and extract strings, and about some of the challenges you might face with non-English strings. Some important functions which we learned include:
+You learned about some of the power of the [**stringr**](https://stringr.tidyverse.org/) package: how to create, combine, and extract strings. Some important functions which we learned include:
 [`str_c()`](https://stringr.tidyverse.org/reference/str_c.html),
 [`str_glue()`](https://stringr.tidyverse.org/reference/str_glue.html),
 [`str_flatten()`](https://stringr.tidyverse.org/reference/str_flatten.html),
