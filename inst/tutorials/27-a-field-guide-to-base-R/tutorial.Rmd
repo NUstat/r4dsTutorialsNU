@@ -280,7 +280,7 @@ x2[is.na(x2)]
 
 ### 
 
-This code prints out the missing values (the `NA`'s) stored inside `x2`. Unlike `filter()`, NA indicies will be included in the output as `NA`'s.
+This code prints out the missing values (the `NA`'s) stored inside `x2`. Because `is.na()` only ever returns `TRUE` or `FALSE`, this subset contains exactly the missing elements of `x2`.
 
 
 ### Exercise 8
@@ -325,7 +325,7 @@ In the code chunk below, copy the previous code and add `== 0`. Observe the outp
 
 As you can see, the output of this code is a series of `FALSE`'s and `TRUE`'s. This code goes through each integer (from 1 to 10) and checks whether that number (when divided by 2) has a remainder of 0 
 
-In general, if a number divided by 2 produces a remainder of 0, that means it perfectly divisible by 2, meaning that the number is even. This code checks whether each integer is *even*, outputting `TRUE` if it is perfectly divisble and `FALSE` if not.
+In general, if a number divided by 2 produces a remainder of 0, that means it is perfectly divisible by 2, meaning that the number is even. This code checks whether each integer is *even*, outputting `TRUE` if it is perfectly divisible and `FALSE` if not.
 
 
 ### Exercise 10
@@ -346,7 +346,7 @@ x2[x2 %% 2 == 0]
 
 ### 
 
-The `%%` operator is used to calculate the remainder of the division of two numbers. So, by placing `x2 %% 2 == 0` inside the brackets, the code will search through each element of `x2` and return all of the numbers with a remainder of 0 when divided by 2 (thus being an even number). And as mentioned previously, all `NA` indicies will be included in the output as `NA`
+The `%%` operator is used to calculate the remainder of the division of two numbers. So, by placing `x2 %% 2 == 0` inside the brackets, the code will search through each element of `x2` and return all of the numbers with a remainder of 0 when divided by 2 (thus being an even number). Note that `NA %% 2 == 0` is `NA`. Unlike `filter()`, which drops rows where the condition is `NA`, `[` returns an `NA` in the output for every `NA` in the logical vector.
 
 ### Exercise 11
 
@@ -368,7 +368,7 @@ x3["xyz"]
 
 ### 
 
-Along with sub-setting logical, character, and integer vectors, you can also subset nothing. For example, by running `x[]` on the code above, it'll just return the vector `x`.
+Along with sub-setting logical, character, and integer vectors, you can also subset nothing. For example, running `x3[]` on the code above will just return the whole vector `x3`.
 
 ### Exercise 12
 
@@ -384,6 +384,7 @@ df <- ...(
   y = ...("a", "e", "f"), 
   z = ...(3)
 )
+df
 ```
 
 ```{r subsetting-with-the-single-bra-12-test, include = FALSE}
@@ -392,13 +393,14 @@ df <- tibble(
   y = c("a", "e", "f"), 
   z = runif(3)
 )
+df
 ```
 
 ### 
 
 There are many ways to use `[` with data sets, but the most common way is to subset by selecting rows and columns, with the syntax `df[row, col]`.
 
-Also, the `runif` function is part of the Uniform Distribution set of functions. For more details type `?runif` in the console or go [here.](https://readr.tidyverse.org/articles/locales.html)
+Also, the `runif` function is part of the Uniform Distribution set of functions. For more details type `?runif` in the console or go [here](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Uniform.html).
 
 ### Exercise 13
 
@@ -420,7 +422,7 @@ df[1,2]
 
 ### 
 
-This extracts the element in the 1st row(contains first element for variables x, y and z), and in the 2nd column(variable x represents this column), which is the letter "a".
+This extracts the element in the 1st row (which contains the first element of variables `x`, `y`, and `z`) and the 2nd column (variable `y`), which is the letter "a". Because `df` is a tibble, the result is a 1 x 1 tibble rather than a single value.
 
 ### Exercise 14
 
@@ -449,7 +451,7 @@ As you can see, by leaving the first part of the subset blank (the part before t
 
 There's an important difference between tibbles and data frames when it comes to `[` . In the tutorials, we've mainly used tibbles, which are data frames, but tibbles tweak some behaviors to make your life a little easier. In most places, you can use "tibble" and "data frame" interchangeably, so when we want to draw particular attention to R's built-in data frame, we'll write data.frame.
 
-Create a data table with `data.frame()` and set `x` equal to all numbers 1 to 3.Then save the data frame into a variable named `df1`. Then create a tibble with `x` equaling numbers from 1 to 3. Then, save the tibble into `df2`. Lastly, display the data frame and tibble by typing the variables on two different lines.
+Create a data table with `data.frame()` and set `x` equal to all numbers 1 to 3. Then save the data frame into a variable named `df1`. Then create a tibble with `x` equaling numbers from 1 to 3. Then, save the tibble into `df2`. Then, display the data frame and tibble by typing the variables on two different lines. Lastly, extract column `x` from each one with `df1[, "x"]` and `df2[, "x"]`.
 
 ```{r subsetting-with-the-single-bra-15, exercise = TRUE}
 df1 <- data.frame(x = 1:3)
@@ -457,6 +459,9 @@ df2 <- tibble(x = 1:3)
 
 df1
 df2
+
+df1[, "x"]
+df2[, "x"]
 ```
 
 ```{r subsetting-with-the-single-bra-15-hint-1, eval = FALSE}
@@ -465,11 +470,14 @@ df2 <- tibble(x = ...:...)
 
 ...
 ...
+
+df1[, "..."]
+df2[, "..."]
 ```
 
 ### 
 
-If `df` is a data.frame, then `df[, cols]` will return a vector if `col` selects a single column and a data frame if it selects more than one column. If `df` is a tibble, then `[` will always return a tibble.
+As the last two lines show, if `df` is a data.frame, then `df[, cols]` will return a vector if `cols` selects a single column and a data frame if it selects more than one column. If `df` is a tibble, then `[` will always return a tibble.
 
 ### Exercise 16
 
@@ -489,6 +497,8 @@ df0
 ```
 
 ### 
+
+`letters` is a built-in R constant containing the 26 lower-case letters of the alphabet, so `letters[1:5]` is itself an example of subsetting with `[`.
 
 ### Exercise 17
 
@@ -542,8 +552,6 @@ df0[order(df0$x, df0$y), ]
 
 ### 
 
-$ is specialized for access by name.
-
 You can use `order(decreasing = TRUE)` to sort all columns in descending order or `-rank(col)` to sort columns in decreasing order individually.
 
 ### Exercise 19
@@ -572,7 +580,7 @@ df0[, c("x", "z")]
 
 `filter()`, `arrange()`, and `select()` are very useful functions that help organize data. You will use these functions quite often when analyzing data.
 
-## Subsetting with double brackes and a dollar sign
+## Subsetting with double brackets and a dollar sign
 ### 
 
 The single bracket operator, `[`, which selects many elements, is paired with the double bracket operator, `[[`, and `$`, which extract a single element. In this section, we'll show you how to use `[[` and `$` to pull columns out of data frames, discuss a couple more differences between data.frames and tibbles, and emphasize some important differences between `[` and `[[` when used with lists.
@@ -596,6 +604,8 @@ tb
 ```
 
 ### 
+
+We will use `tb` to compare the different ways of extracting a single column from a tibble.
 
 ### Exercise 2
 
@@ -671,12 +681,12 @@ The `$` can also be used to create new columns, which is the Base R equivalent o
 
 ```{r subsetting-with-double-brackes-5-hint-1, eval = FALSE}
 tb$z <- ... + ...
-tb$z
+tb
 ```
 
 ```{r subsetting-with-double-brackes-5-test, include = FALSE}
 tb$z <- tb$x + tb$y
-tb$z
+tb
 ```
 
 ### 
@@ -685,7 +695,7 @@ There are several other base R approaches to creating new columns including with
 
 ### Exercise 6
 
-Let's take a  glance at the **diamonds** package. 
+Let's take a glance at the `diamonds` data set from the **ggplot2** package. 
 
 Type `diamonds` in the code chunk below.
 
@@ -695,11 +705,11 @@ Type `diamonds` in the code chunk below.
 
 ### 
 
-Using `$` directly is convenient when performing quick summaries. Lets use this to calculate some values of the **diamonds** package.
+Using `$` directly is convenient when performing quick summaries. Let's use this to calculate some values of the `diamonds` data set.
 
 ### Exercise 7
 
-Lets find out the maximum carat in the **diamonds** package, using the `max()` function. In the code chunk below, type in `max()`. Inside the parenthesis, type in `diamonds$carat`. 
+Let's find out the maximum carat in the `diamonds` data set, using the `max()` function. In the code chunk below, type in `max()`. Inside the parenthesis, type in `diamonds$carat`. 
 
 ```{r subsetting-with-double-brackes-7, exercise = TRUE}
 
@@ -719,9 +729,9 @@ In this scenario, the code above would be the Base R equivalent of the `summariz
 
 ### Exercise 8
 
-The **dplyr** package also provides a base R equivalent for the double bracket operator, `[[`, and `$` called `pull()`. `pull()` takes either a variable name or variable position and returns just that column.
+The **dplyr** package also provides an equivalent of the double bracket operator, `[[`, and `$`, called `pull()`. `pull()` takes either a variable name or variable position and returns just that column.
 
-Let's replicate the code above, using `pull()`. Pipe the **diamonds** package to `pull()`, passing in `carat`. Then, create another pipe to the `max()` function.
+Let's replicate the code above, using `pull()`. Pipe the `diamonds` data set to `pull()`, passing in `carat`. Then, create another pipe to the `max()` function.
 
 ```{r subsetting-with-double-brackes-8, exercise = TRUE}
 
@@ -747,7 +757,7 @@ Just like the previous exercise, the code returns the maximum carat, which is `5
 
 An important difference between tibbles and data frames is that tibbles are much more strict when extracting columns with `$`.
 
-Create a data frame and set `x1` equal to `1`. Save th data frame in `df2`. Then on a new line type `df2$x` to extract a column from the data frame.
+Create a data frame and set `x1` equal to `1`. Save the data frame in `df2`. Then on a new line type `df2$x` to extract a column from the data frame.
 
 ```{r subsetting-with-double-brackes-9, exercise = TRUE}
 
@@ -789,7 +799,7 @@ tb2$x
 
 ### 
 
-Since there is no column named exactly `x1` in the tibble `tb2`, the code will print warning message and `NULL`. For this reason we sometimes joke that tibbles are lazy and surly: they do less and complain more.
+Since there is no column named exactly `x` in the tibble `tb2`, the code will print warning message and `NULL`. For this reason we sometimes joke that tibbles are lazy and surly: they do less and complain more.
 
 ### Exercise 11
 
@@ -800,8 +810,8 @@ Using the `list()` function, create a list.
 1. Set the first list element to `a`, which is equal to a range of integers from 1 to 3. 
 2. Set the second list element to `b`, which is equal to the string `"a string"`. 
 3. Set the third list element to `c`, which is equal to `pi`, and set the fourth list element to `d`, which is equal to another list containing `-1` and `-5`. 
-5. Then, assign the list `list1`. 
-6. Type `list1` on the next line to see the result.
+4. Then, assign the list `list1`.
+5. Type `list1` on the next line to see the result.
 
 ```{r subsetting-with-double-brackes-11, exercise = TRUE}
 
@@ -814,15 +824,17 @@ list1 <- ...(
   c = ..., 
   ... = list(-1, -5)
 )
+list1
 ```
 
 ```{r subsetting-with-double-brackes-11-test, include = FALSE}
 list1 <- list(
-  a.. = 1:3, 
+  a = 1:3, 
   b = "a string", 
   c = pi, 
   d = list(-1, -5)
 )
+list1
 ```
 
 ### 
@@ -847,7 +859,7 @@ str(list1[1:2])
 
 ### 
 
-As you can see, the code returns two lists: one list for `a` and one list for `b`. It doesn't matter how many elements you extract, the result will always be a list.
+As you can see, the code returns a single list with two elements, `a` and `b`. It doesn't matter how many elements you extract, the result will always be a list.
 
 ### Exercise 13
 
@@ -871,7 +883,7 @@ str(list1[[4]])
 
 ### 
 
-As you can see, the double bracket operator, `[[`, extracts all the components of column `d` in `list1`.
+As you can see, the double bracket operator, `[[`, extracts all the components of element `d` in `list1`.
 
 ### Exercise 14
 
@@ -893,7 +905,7 @@ str(list1$d)
 
 ### 
 
-With the `$` operator, instead of passing in the element's position (ex: 2nd element is position 2), we pass in the name of the column itself, which in this case is `d`.
+With the `$` operator, instead of passing in the element's position (ex: 2nd element is position 2), we pass in the name of the element itself, which in this case is `d`.
 
 
 The difference between `[` and `[[` is particularly important for lists because `[[` drills down into the list while `[` returns a new, smaller list. Click [here](https://r4ds.hadley.nz/base-r#fig-pepper) to see a visualization of the differences.
@@ -901,7 +913,7 @@ The difference between `[` and `[[` is particularly important for lists because 
 ## Apply family
 ### 
 
-In [Chapter 27](https://r4ds.hadley.nz/iteration.html), you learned tidyverse techniques for iteration like `dplyr::across()` and the map family of functions. In this section, you'll learn about their base equivalents, the **apply family**. In this context apply and map are synonyms because another way of saying "map a function over each element of a vector" is "apply a function over each element of a vector". Here we'll give you a quick overview of this family so you can recognize them in the wild.
+In [Chapter 26](https://r4ds.hadley.nz/iteration.html), you learned tidyverse techniques for iteration like `dplyr::across()` and the map family of functions. In this section, you'll learn about their base equivalents, the **apply family**. In this context apply and map are synonyms because another way of saying "map a function over each element of a vector" is "apply a function over each element of a vector". Here we'll give you a quick overview of this family so you can recognize them in the wild.
 
 ### Exercise 1
 
@@ -963,10 +975,12 @@ Lets find all the numeric columns in `df4`, using `sapply()`. In the code chunk 
 
 ```{r apply-family-4-hint-1, eval = FALSE}
 num_cols <- ...(df4, ...)
+num_cols
 ```
 
 ```{r apply-family-4-test, include = FALSE}
 num_cols <- sapply(df4, is.numeric)
+num_cols
 ```
 
 ### 
@@ -983,10 +997,12 @@ Now, lets transform each column with `lapply()` and then replace the original va
 
 ```{r apply-family-5-hint-1, eval = FALSE}
 df4[, ...] <- ...(df4[, ..., ... = FALSE], \(x) x * 2)
+df4
 ```
 
 ```{r apply-family-5-test, include = FALSE}
 df4[, num_cols] <- lapply(df4[, num_cols, drop = FALSE], \(x) x * 2)
+df4
 ```
 
 ### 
@@ -1020,7 +1036,7 @@ The distinction between `sapply()` and `vapply()` is really important when they'
 
 ### Exercise 7
 
-Another important member of the apply family is `tapply()` which computes a single grouped summary. Lets use this on the **diamonds** package. In the code chunk below, type in `diamonds` and press "Run Code".
+Another important member of the apply family is `tapply()` which computes a single grouped summary. Let's use this on the `diamonds` data set. In the code chunk below, type in `diamonds` and press "Run Code".
 
 ```{r apply-family-7, exercise = TRUE}
 
@@ -1136,11 +1152,11 @@ dir("data/gapminder", pattern = "\\.xlsx$")
 
 ### 
 
-This `pattern` argument ensures that only files which match the pattern are returned by `dir()`. In this case, the file names must end with ".xlsx". One of the two forward slashes is needed to "escape" the period, and second slash escapes the first slash. Using an R raw string, `r"(.xlsx)"`, would produce the same answer and probably be easier to interpret.
+This `pattern` argument ensures that only files which match the pattern are returned by `dir()`. In this case, the file names must end with ".xlsx". One of the two backslashes is needed to "escape" the period, and the second backslash escapes the first one. The `$` anchors the match to the end of the file name. Using an R raw string, `r"(\.xlsx$)"`, would produce the same answer and probably be easier to interpret.
 
 ### Exercise 4
 
-Add `TRUE` as the value for the `full.names` argument to the `dir("data/gapminder", , pattern = "\\.xlsx$")` command you used for the previous question.
+Add `TRUE` as the value for the `full.names` argument to the `dir("data/gapminder", pattern = "\\.xlsx$")` command you used for the previous question.
 
 ```{r for-loops-4, exercise = TRUE}
 
@@ -1223,11 +1239,11 @@ readxl::read_excel(path = paths[12])
 
 ### 
 
-Keep track of which name refers to what. `path` is the first argument in the `readxl()` function. `paths` is a character vector, which we created with `dir()`, of paths to the gapminder data.
+Keep track of which name refers to what. `path` is the first argument in the `read_excel()` function. `paths` is a character vector, which we created with `dir()`, of paths to the gapminder data.
 
 ### Exercise 8
 
-Use the `paths` object you created as the first argument to `map()`. Set the second argument to `readxl::read_excel()`.
+Use the `paths` object you created as the first argument to `map()`. Set the second argument to `readxl::read_excel` (the function itself, without parentheses).
 
 ```{r for-loops-8, exercise = TRUE}
 
@@ -1246,7 +1262,7 @@ Use the `paths` object you created as the first argument to `map()`. Set the sec
 
 ### 
 
-`map()` takes the function in the second argument and applies each to each element of the vector in the first argument, returning a list of the same length as the latter. The last element of the list is a tibble with 142 rows, the same object as we created when we applied `readxl::read_excel()` to the last element of `paths`.
+`map()` takes the function in the second argument and applies it to each element of the vector in the first argument, returning a list of the same length as the latter. The last element of the list is a tibble with 142 rows, the same object as we created when we applied `readxl::read_excel()` to the last element of `paths`.
 
 ### Exercise 9
 
@@ -1288,7 +1304,7 @@ Using the indices is important because it allows us to link to each position in 
 
 ### Exercise 11
 
-Add a `for()` loop below the code. The argument in the `()` after `for` should be `i in seq_along(paths)`. The code in the body of the `for()` loop should be `files.2[[i]] <- readxl::read_excel(paths[i])`. After trhe for loop, type `files.2` to print it.
+Add a `for()` loop below the code. The argument in the `()` after `for` should be `i in seq_along(paths)`. The code in the body of the `for()` loop should be `files.2[[i]] <- readxl::read_excel(paths[i])`. After the for loop, type `files.2` to print it.
 
 ```{r for-loops-11, exercise = TRUE}
 files.2 <- vector("list", length(paths))
@@ -1297,15 +1313,23 @@ files.2 <- vector("list", length(paths))
 ```
 
 ```{r for-loops-11-hint-1, eval = FALSE}
+files.2 <- vector("list", length(paths))
+
 for (... in seq_along(paths)) {
   ... <- readxl::read_excel(paths[...])
 }
+
+files.2
 ```
 
 ```{r for-loops-11-test, include = FALSE}
+files.2 <- vector("list", length(paths))
+
 for (i in seq_along(paths)) {
   files.2[[i]] <- readxl::read_excel(paths[i])
 }
+
+files.2
 ```
 
 ### 
@@ -1368,7 +1392,7 @@ There are two main types of base plot you'll see in the wild: scatterplots and h
 
 ### Exercise 1
 
-Run `?hist()` in the console and look at the **Descripton** section. CP/CR.
+Run `?hist()` in the console and read the **Description** section. Copy and paste the description.
 
 ```{r plots-1}
 question_text(NULL,
@@ -1381,7 +1405,7 @@ question_text(NULL,
 
 ### Exercise 2
 
-Lets use `hist()` and the **diamonds** package to create a histogram. In the code chunk below, type in `hist()`, passing in `diamonds$carat`.
+Let's use `hist()` and the `diamonds` data set to create a histogram. In the code chunk below, type in `hist()`, passing in `diamonds$carat`.
 
 ```{r plots-2, exercise = TRUE}
 
@@ -1424,7 +1448,7 @@ Note that base plotting functions work with vectors, so you need to pull columns
 ## Summary
 ### 
 
-This tutorial covered [Chapter 27: A field guide to base R](https://r4ds.hadley.nz/base-r) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. \`
+This tutorial covered [Chapter 27: A field guide to base R](https://r4ds.hadley.nz/base-r) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
 
 In this tutorial, you have learned:
 
