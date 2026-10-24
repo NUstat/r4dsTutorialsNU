@@ -16,6 +16,13 @@
 #'   instead, with a message asking the student to remove the trailing comma.
 #'   `[` and `[[` calls are left alone, because `df[1, ]` is not a trailing
 #'   comma.
+#' * **magrittr pipes.** gradethis 0.2.14 mistakes the string `"."` for the
+#'   magrittr placeholder when it rewrites `%>%`, so a correct answer such as
+#'   `df %>% separate_wider_delim(x, delim = ".", ...)` is rejected. This
+#'   function rewrites `lhs %>% f(...)` as `f(lhs, ...)` (or puts `lhs` in place
+#'   of a bare `.` argument) before comparing, the same way R's parser already
+#'   handles `|>`. Students who use `%>%` are graded the same as students who
+#'   use `|>`.
 #'
 #' Only the copies of the code used for grading are changed. The student's
 #' code still runs exactly as typed.
@@ -50,13 +57,13 @@ grade_this_code <- function(...) {
       )(check_env))
     }
 
-    check_env[[".user_code"]] <- standardise_color_args(check_env[[".user_code"]])
+    check_env[[".user_code"]] <- standardise_code(check_env[[".user_code"]])
     if (!is.null(check_env[[".solution_code"]])) {
-      check_env[[".solution_code"]] <- standardise_color_args(check_env[[".solution_code"]])
+      check_env[[".solution_code"]] <- standardise_code(check_env[[".solution_code"]])
     }
     solutions <- check_env[[".solution_code_all"]]
     if (!is.null(solutions)) {
-      solutions[] <- lapply(solutions, standardise_color_args)
+      solutions[] <- lapply(solutions, standardise_code)
       check_env[[".solution_code_all"]] <- solutions
     }
 
@@ -118,9 +125,44 @@ find_trailing_comma <- function(code) {
   NULL
 }
 
-# Rename `color` to `colour` inside argument names. Returns the code unchanged
-# when there is nothing to rename or it does not parse.
-standardise_color_args <- function(code) {
+# Rewrite magrittr pipes as the calls they stand for: `lhs %>% f(a)` becomes
+# `f(lhs, a)`, `lhs %>% f(a, .)` becomes `f(a, lhs)`, and `lhs %>% f` becomes
+# `f(lhs)`. Inner pipes are rewritten first, so chains work. Braced or
+# parenthesised right-hand sides are left alone.
+unpipe_magrittr <- function(x) {
+  if (!is.call(x)) {
+    return(x)
+  }
+  for (i in seq_along(x)) {
+    if (!is_empty_arg(x[[i]]) && is.call(x[[i]])) {
+      x[[i]] <- unpipe_magrittr(x[[i]])
+    }
+  }
+  if (!identical(x[[1]], as.name("%>%")) || length(x) != 3) {
+    return(x)
+  }
+  lhs <- x[[2]]
+  rhs <- x[[3]]
+  if (is.symbol(rhs)) {
+    return(as.call(list(rhs, lhs)))
+  }
+  if (!is.call(rhs) || identical(rhs[[1]], as.name("{")) || identical(rhs[[1]], as.name("("))) {
+    return(x)
+  }
+  if (length(rhs) > 1) {
+    is_dot <- vapply(2:length(rhs), function(i) identical(rhs[[i]], as.name(".")), logical(1))
+    if (any(is_dot)) {
+      rhs[[which(is_dot)[1] + 1]] <- lhs
+      return(rhs)
+    }
+  }
+  as.call(c(list(rhs[[1]], lhs), as.list(rhs)[-1]))
+}
+
+# Prepare code for comparison: rewrite magrittr pipes, then rename `color` to
+# `colour` inside argument names. Returns the code unchanged when there is
+# nothing to change or it does not parse.
+standardise_code <- function(code) {
   exprs <- parse_code(code)
   if (is.null(exprs)) {
     return(code)
@@ -129,6 +171,13 @@ standardise_color_args <- function(code) {
   walk <- function(x) {
     if (!is.call(x)) {
       return(x)
+    }
+    if (identical(x[[1]], as.name("%>%"))) {
+      x <- unpipe_magrittr(x)
+      changed <<- TRUE
+      if (!is.call(x)) {
+        return(x)
+      }
     }
     nm <- names(x)
     if (!is.null(nm) && any(grepl("color", nm, fixed = TRUE))) {

@@ -33,6 +33,13 @@ crash and report a grading problem. This function marks such code wrong
 instead, with a message asking the student to remove the trailing comma.
 \code{[} and \code{[[} calls are left alone, because \code{df[1, ]} is not a trailing
 comma.
+\item \strong{magrittr pipes.} gradethis 0.2.14 mistakes the string \code{"."} for the
+magrittr placeholder when it rewrites \verb{\%>\%}, so a correct answer such as
+\code{df \%>\% separate_wider_delim(x, delim = ".", ...)} is rejected. This
+function rewrites \code{lhs \%>\% f(...)} as \code{f(lhs, ...)} (or puts \code{lhs} in place
+of a bare \code{.} argument) before comparing, the same way R's parser already
+handles \verb{|>}. Students who use \verb{\%>\%} are graded the same as students who
+use \verb{|>}.
 }
 
 Only the copies of the code used for grading are changed. The student's
