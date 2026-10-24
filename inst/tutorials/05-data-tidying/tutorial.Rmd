@@ -17,12 +17,13 @@ description: 'Tutorial for Chapter 5: Data tidying'
 library(learnr)
 library(tidyverse)
 library(tutorial.helpers)
-library(babynames)
-library(socviz)
 library(gradethis)
 library(tutorialExtras)
 
 gradethis_setup()
+
+# Use this package's grade_this_code(), which works around two gradethis grading bugs
+grade_this_code <- r4dsTutorialsNU::grade_this_code
 
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
@@ -43,12 +44,6 @@ cms_pivoted <- cms_patient_experience |>
   pivot_wider(id_cols = starts_with("org"), 
             names_from = measure_cd,
             values_from = prf_rate)
-
-# For plots
-
-car_names <- c(`f` = "Front Wheel Drive",
-               `4` = "4 Wheel Drive",
-               `r` = "Rear Wheel Drive")
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
@@ -208,7 +203,7 @@ question("Which of the rules for tidy data is violated by `table3`?",
 
 ### 
 
-Each of the cells in the `rate` column are not a single observation. They are `population` divided by `cases`, so in order for the data to be considered tidy, we would need to separate those columns.
+Each of the cells in the `rate` column are not a single observation. They are `cases` divided by `population`, so in order for the data to be considered tidy, we would need to separate those columns.
 
 ### Exercise 5
 
@@ -420,7 +415,7 @@ The rules of tidy data might seem so obvious that you wonder if you’ll ever en
 
 ### Exercise 1
 
-For this section, we will need to use the `billboard` dataset. Type and run `billboard` in the box below
+For this section, we will need to use the `billboard` dataset. Type and run `billboard` in the box below.
 
 ```{r lengthening-data-1, exercise = TRUE}
 
@@ -506,7 +501,7 @@ grade_this_code()
 
 ### Exercise 4
 
-Now we need to get rid of all the NA's in the dataset. We can do this by using `values_drop_na = TRUE` inside `pivot_longer()`
+Now we need to get rid of all the NA's in the dataset. We can do this by using `values_drop_na = TRUE` inside `pivot_longer()`.
 
 ```{r lengthening-data-4, exercise = TRUE}
 
@@ -575,7 +570,7 @@ With `mutate()` we can convert character strings to numbers. This way of using `
 
 ### Exercise 6
 
-Assign this mutated dataset to `billboard_longer`, using `<-`
+Assign this mutated dataset to `billboard_longer`, using `<-`.
 
 ```{r lengthening-data-6, exercise = TRUE}
 
@@ -585,7 +580,7 @@ Assign this mutated dataset to `billboard_longer`, using `<-`
 
 ```{r lengthening-data-6-hint-1, eval = FALSE}
 billboard_longer <- billboard |>
-  pivot_longer(...) +
+  pivot_longer(...) |>
   ...
 ```
 
@@ -612,7 +607,7 @@ Now, we need to learn about what we need to do with the really long datasets tha
 
 ### 
 
-For this section, we'll be using the dataset `cms_patient_experience`, a patient experiences dataset from the Centers of Medicare and Medicaid Services. 
+For this section, we'll be using the dataset `cms_patient_experience`, a patient experiences dataset from the Centers for Medicare and Medicaid Services. 
 
 
 ### Exercise 1
@@ -622,10 +617,9 @@ In the Console, look up the help page for `cms_patient_experience` by using `?` 
 ```{r widening-data-1-q}
 question_text(NULL,
          answer_fn(function(value){
-            if (str_remove_all(
-              str_remove_all(str_to_lower(value), " "), 
-              "\n") %in% 
-                c("cms_patient_experiencecms_patient_care")) {
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "cms_patient_experiencecms_patient_care")
+              ) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
 	allow_retry = TRUE,
@@ -695,15 +689,15 @@ grade_this_code()
 
 ###
 
-From this we can see that there are 6 distinct row that repeat within our data frame and also that `measure_title` uniquely identifies each `measure_cd`.
+From this we can see that there are 6 distinct rows that repeat within our data frame and also that `measure_title` uniquely identifies each `measure_cd`.
 
 ###
 
-We want to tidy this data frame by making each `measure_cd` it's own column with the value set to `prf_rate`.
+We want to tidy this data frame by making each `measure_cd` its own column with the value set to `prf_rate`.
 
 ### Exercise 4
 
-`pivot_wider()` includes many of the same arguments as `pivot_longer()`. Remember how we used `names_to` and `values_to` to make more columns from all the extra rows? Well, for `pivot_wider()`, we just have to do the opposite. We will use `names_to` and `values_to` to add more columns to this dataset.
+`pivot_wider()` includes many of the same arguments as `pivot_longer()`. Remember how we used `names_to` and `values_to` to make more rows from all the extra columns? Well, for `pivot_wider()`, we just have to do the opposite. We will use `names_from` and `values_from` to add more columns to this dataset.
 
 ###
 
@@ -742,7 +736,7 @@ This data looks a little bit tidier, but there are still repeated rows in `org_n
 
 ###
 
-Let's tell `pivot_wider` to uniquely identify the rows in every column (getting rid of duplicates). The columns we need to target are `org_pac_id` and `org_nm`. We can tell `pivot_wider()` to target these rows by adding `id_cols = starts_with("org")` to `pivot_wider()`.
+Let's tell `pivot_wider` to uniquely identify the rows in every column (getting rid of duplicates). The columns we need to target are `org_pac_id` and `org_nm`. We can tell `pivot_wider()` to target these columns by adding `id_cols = starts_with("org")` to `pivot_wider()`.
 
 ```{r widening-data-5, exercise = TRUE}
 
@@ -770,7 +764,7 @@ grade_this_code()
 
 ### 
 
-This will get rid of any duplicate rows in the columns that start with "org'. And as we can see, there are many duplicates. `id_cols` cut the row count from 500 to 95.
+This will get rid of any duplicate rows in the columns that start with "org". And as we can see, there are many duplicates. `id_cols` cut the row count from 500 to 95.
 
 
 ## Summary

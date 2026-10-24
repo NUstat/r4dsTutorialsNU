@@ -1,6 +1,6 @@
 Package: r4dsTutorialsNU
 Title: Tutorials for "R for Data Science"
-Version: 0.2.0.9007
+Version: 0.2.0.9008
 Authors@R: 
     person(given = "David",
            family = "Kane",
@@ -17,7 +17,6 @@ Description: When assigned "R for Data Science" (Wickham, Çetinkaya-Rundel,
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Imports:
     tutorial.helpers,
     tutorialExtras,
@@ -57,10 +56,11 @@ Suggests:
     writexl,
     Lahman
 Config/testthat/edition: 3  
-Remotes:  
+Remotes: 
     PPBDS/tutorial.helpers,
     NUstat/tutorialExtras,
     rstudio/gradethis,
     rstudio/ggcheck
 BugReports: https://github.com/NUstat/r4dsTutorialsNU/issues
 URL: https://NUstat.github.io/r4dsTutorialsNU/, https://github.com/NUstat/r4dsTutorialsNU
+Config/roxygen2/version: 8.1.0

@@ -23,6 +23,9 @@ library(tutorialExtras)
 
 gradethis_setup()
 
+# Use this package's grade_this_code(), which works around two gradethis grading bugs
+grade_this_code <- r4dsTutorialsNU::grade_this_code
+
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(out.width = '90%')
 options(tutorial.exercise.timelimit = 60, 
@@ -76,10 +79,11 @@ R has several systems for making graphs, but **ggplot2** is one of the most eleg
 quiz(
   caption = "",
   question_text("What is one of the fundamental building blocks of ggplot2?",
+          # original: str_remove_all(str_to_lower(value), " ") %in% c("aestheticmappings", "geometricobjects")
           answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("aestheticmappings", 
-                  "geometricobjects")) {
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "aes|geom")
+              ) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
            allow_retry = TRUE)
@@ -144,7 +148,7 @@ question_text(NULL,
 	 # answer("Size measurements, clutch observations, and blood isotope ratios for adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Data were collected and made available by Dr. Kristen Gorman and the Palmer Station Long Term Ecological Research (LTER) Program.", correct = TRUE),
 	answer_fn(function(value){
             if (
-              str_remove_all(tolower(value), "[[:space:]]") == "sizemeasurements,clutchobservations,andbloodisotoperatiosforadultforagingadélie,chinstrap,andgentoopenguinsobservedonislandsinthepalmerarchipelagonearpalmerstation,antarctica.datawerecollectedandmadeavailablebydr.kristengormanandthepalmerstationlongtermecologicalresearch(lter)program."
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "sizemeasurements,clutchobservations,andbloodisotoperatiosforadultforagingad.lie,chinstrap,andgentoopenguinsobservedonislandsinthepalmerarchipelagonearpalmerstation,antarctica.datawerecollectedandmadeavailablebydr.kristengormanandthepalmerstationlongtermecologicalresearch\\(lter\\)program")
               ) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) )
@@ -359,21 +363,23 @@ quiz(
            allow_retry = TRUE,
            random_answer_order = TRUE),
   question_text("Name another aesthetic that we could map species to.",
+           # original: str_remove_all(str_to_lower(value), " ") %in% c("shape", "size", "alpha", "fill", "linetype")
            answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("shape", "size", "alpha", "fill", "linetype")) {
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "shape|size|alpha|fill|linetype")
+              ) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
-           allow_retry = TRUE,
-           random_answer_order = TRUE),
+           allow_retry = TRUE),
   question_text("What does the `'lm'` value for `method` stand for?",
+           # original: str_remove_all(str_to_lower(value), " ") %in% c("linearmodel")
            answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("linearmodel")) {
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "linearmodel|linearregression")
+              ) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
-           allow_retry = TRUE,
-           random_answer_order = TRUE)
+           allow_retry = TRUE)
 )
 ```
 
@@ -419,7 +425,7 @@ grade_this_code()
 
 ### Exercise 6
 
-Now that we have the data points, lets add the title, subtitle, and labels. Copy the previous code, add a new layer using `+` and run `labs()`. Within labs, set `title` equal to `"Body mass and flipper length"`, `subtitle` equal to `"Dimensions for Adelie, Chinstrap, and Gentoo Penguins"`, `x` equal to `"Flipper length (mm)"`, and `y` equal to `"Body mass (g)"`.
+Now that we have the data points, let's add the title, subtitle, and labels. Copy the previous code, add a new layer using `+` and run `labs()`. Within labs, set `title` equal to `"Body mass and flipper length"`, `subtitle` equal to `"Dimensions for Adelie, Chinstrap, and Gentoo Penguins"`, `x` equal to `"Flipper length (mm)"`, and `y` equal to `"Body mass (g)"`.
 
 ```{r first-steps-6, exercise = TRUE}
 
@@ -552,7 +558,7 @@ At this point we have recreated the initial plot we were aiming for:
 intro_p
 ```
 
-However, we could improve the color palette to be colorblind safe by adding the `scale_color_colorblind()` function from the `ggthemes` package. This is a useful tool to have in order to potentially increase audience accessibility for graphics that we construct or to assist those that might have colorblindness to visually explore data. 
+However, we could improve the color palette to be colorblind safe by adding the `scale_color_colorblind()` function from the `ggthemes` package. Copy the previous code and add `scale_color_colorblind()` as a new layer at the end, using `+`. This is a useful tool to have in order to potentially increase audience accessibility for graphics that we construct or to assist those that might have colorblindness to visually explore data. 
 
 ```{r first-steps-9, exercise = TRUE}
 
@@ -630,20 +636,20 @@ A distribution of a variable allows us to observe the possible values of a varia
 quiz(
   caption = "",
   question_text("Name a layer you could add to visualize a single categorical variable.",
+                # original: str_remove_all(str_to_lower(value), " ") %in% c("geom_bar()", "geom_bar", "geom_col()", "geom_col")
                 answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("geom_bar()", 
-                  "geom_bar", "geom_col()", "geom_col")) {
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "geom_bar|geom_col")
+              ) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
            allow_retry = TRUE),
   question_text("Name a layer you could add to visualize a single continuous numerical variable.",
+                # original: str_remove_all(str_to_lower(value), " ") %in% c("geom_histogram()", "geom_histogram", "geom_density()", "geom_density")
                 answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("geom_histogram()", 
-                  "geom_histogram", 
-                  "geom_density()",
-                  "geom_density")) {
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "geom_histogram|geom_density|geom_freqpoly|geom_boxplot|geom_dotplot")
+              ) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
            allow_retry = TRUE)
@@ -680,7 +686,7 @@ By default, `geom_bar()` counts the number of observations in each category.
 
 ### Exercise 3
 
-Let's extend our knowledge to find the proportion of each penguins `species` on each `island`.
+Let's extend our knowledge to find the number of each penguin `species` on each `island`.
 
 To integrate another categorical variable, set `fill` to `species` within `aes()` in `ggplot()`.
 
@@ -708,7 +714,7 @@ grade_this_code()
 
 ### Exercise 4
 
-Sometimes it is more beneficial to look at percentages. To find the percentages of each penguins species on each island, run `position = "fill"` within `geom_bar()`.
+Sometimes it is more beneficial to look at proportions. To find the proportion of each penguin species on each island, set `position = "fill"` within `geom_bar()`.
 
 ```{r vis-dist-4, exercise = TRUE}
 
@@ -810,7 +816,7 @@ grade_this_code()
 ```{r vis-dist-7-q}
 quiz(
   caption = "",
-  question_text("In your own words what is the difference between bins and binwidth.",
+  question_text("In your own words what is the difference between bins and binwidth?",
           answer_fn(function(value){
                               if(length(value) >= 1 ) {
                                 return(mark_as(TRUE))
@@ -825,7 +831,7 @@ quiz(
 
 ### Exercise 8
 
-An alternate way to visualize the distributions of data on a continuous variable is to use `geom_density()`, which is smoothed-out-version of a histogram.
+An alternate way to visualize the distributions of data on a continuous variable is to use `geom_density()`, which is a smoothed-out version of a histogram.
 
 Create a density plot that displays the distribution of body mass.
 
@@ -916,7 +922,7 @@ To visualize the relationship between a numerical and a categorical variable we 
 knitr::include_graphics("images/EDA-boxplot.png")
 ```
 
-Box plots are a type of data visualization that summarize the distribution of a continuous variable using five key statistics: minimum, lower quartile (Q1), median, upper quartile (Q3), and maximum. The box itself in the plot represents the middle 50% of the data, with the median shown as a horizontal line inside the box. The whiskers extend from the box to show the range of the data, and individual data points that fall outside of the whiskers are shown as individual points (outliers).
+Box plots are a type of data visualization that summarize the distribution of a continuous variable. The box itself in the plot spans the interquartile range (IQR), from the 25th percentile (Q1) to the 75th percentile (Q3), so it represents the middle 50% of the data, with the median shown as a horizontal line inside the box. The whiskers extend from the box to the farthest data point that is not an outlier (within 1.5 times the IQR of the box), and individual data points that fall outside of the whiskers are shown as individual points (outliers).
 
 ### 
 
@@ -963,9 +969,9 @@ quiz(
 
 ### Exercise 2
 
-Previously, we saw that we can define a `title`, `x`, `y` label within the `labs()` function. There are other functions, such as `ggtitle()`, `xlab()`, and `ylab()` that can be used to modify specific plot labels without affecting others. It's important to choose the appropriate function for your needs depending on the level of customization you require.
+Previously, we saw that we can define a `title`, `x`, and `y` label within the `labs()` function. You may also see the functions `ggtitle()`, `xlab()`, and `ylab()` in older code. These are superseded shortcuts: they still work, but **ggplot2** now recommends setting all plot labels with `labs()`.
 
-Copy the previous plot, then add `ggtitle()` to define the title as `"Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis"`; followed by `xlab()` to define the x label as `"Species"`; followed by the `ylab()` to define the y label as `"Body Mass (g)"`.
+Copy the previous plot, then add `labs()`. Within `labs()`, set `title` equal to `"Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis"`, `x` equal to `"Species"`, and `y` equal to `"Body Mass (g)"`.
 
 ```{r vis-relation-2, exercise = TRUE}
 
@@ -975,18 +981,22 @@ Copy the previous plot, then add `ggtitle()` to define the title as `"Body Mass 
 
 ```{r vis-relation-2-hint-1, eval = FALSE}
 ... +
-  ggtitle("...") +
-  xlab("...") +
-  ylab("...")
+  labs(
+    title = "...",
+    x = "...",
+    y = "..."
+  )
 
 ```
 
 ```{r vis-relation-2-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = species, y = body_mass_g)) +
   geom_boxplot() +
-  ggtitle("Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis") +
-  xlab("Species") +
-  ylab("Body Mass (g)")
+  labs(
+    title = "Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis",
+    x = "Species",
+    y = "Body Mass (g)"
+  )
 ```
 
 ```{r vis-relation-2-check}
@@ -996,9 +1006,9 @@ grade_this_code()
 
 ### Exercise 3
 
-Let’s extend our knowledge by copying the previous plot and add the following arguments:
+Let’s extend our knowledge by copying the previous plot and adding the following arguments:
 
-The number of observations can play an important impact on the variability of a distribution. We cannot currently determine if the number of observations within each species are similar or different. Set the `varwidth` argument within `geom_boxplot()` to `TRUE` to have the width of the boxes proportional to the square root of the number of observations.
+The number of observations can have an important impact on the variability of a distribution. We cannot currently determine if the number of observations within each species are similar or different. Set the `varwidth` argument within `geom_boxplot()` to `TRUE` to have the width of the boxes proportional to the square root of the number of observations.
 
 Sometimes it is useful to change the color of the outliers to make them easier to distinguish. Set the `outlier.color` argument within `geom_boxplot()` to "red".
 
@@ -1019,9 +1029,11 @@ Sometimes it is useful to change the color of the outliers to make them easier t
 ```{r vis-relation-3-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = species, y = body_mass_g)) +
   geom_boxplot(varwidth = TRUE, outlier.color = "red") +
-  ggtitle("Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis") +
-  xlab("Species") +
-  ylab("Body Mass (g)")
+  labs(
+    title = "Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis",
+    x = "Species",
+    y = "Body Mass (g)"
+  )
 ```
 
 ```{r vis-relation-3-check}
@@ -1078,7 +1090,7 @@ grade_this_code()
 
 ### Exercise 5
 
-To facet your plot by a single variable, run `facet_wrap()`. The first argument of `facet_wrap()` is `island`, which you create with `~` followed by the variable name. The variable that you pass to `facet_wrap()` should be categorical.
+To facet your plot by a single variable, run `facet_wrap()`. The first argument of `facet_wrap()` is a formula, which you create with `~` followed by the variable name (here, `island`). The variable that you pass to `facet_wrap()` should be categorical.
 
 
 ```{r vis-relation-5, exercise = TRUE}

@@ -24,6 +24,9 @@ library(tutorialExtras)
 
 gradethis_setup()
 
+# Use this package's grade_this_code(), which works around two gradethis grading bugs
+grade_this_code <- r4dsTutorialsNU::grade_this_code
+
 knitr::opts_chunk$set(echo = FALSE)
 options(
   tutorial.exercise.timelimit = 60,
@@ -47,7 +50,7 @@ stocks <- tibble(
 health <- tibble(
   name   = c("Ikaia", "Oletta", "Leriah", "Dashay", "Tresaun"),
   smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
+  age    = c(34, 88, 75, 47, 56)
 )
 
 ```
@@ -898,7 +901,7 @@ Submit this code to assign a tibble to `health`.
 health <- tibble(
   name   = c("Ikaia", "Oletta", "Leriah", "Dashay", "Tresaun"),
   smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
+  age    = c(34, 88, 75, 47, 56)
 )
 ```
 
@@ -906,7 +909,7 @@ health <- tibble(
 health <- tibble(
   name   = c("Ikaia", "Oletta", "Leriah", "Dashay", "Tresaun"),
   smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
+  age    = c(34, 88, 75, 47, 56)
 )
 ```
 
@@ -916,7 +919,7 @@ grade_this_code()
 
 ###
 
-Recall from Chapter 17 that factors are used for categorical variables, variables that have a fixed and known set of possible values.
+Recall from Chapter 16 that factors are used for categorical variables, variables that have a fixed and known set of possible values.
 
 ### Exercise 2
 
@@ -1138,7 +1141,7 @@ grade_this_code()
 
 ###
 
-Note that we **strongly** urge you to avoid using `group_by()` and instead use the `.by` argument in `summarize()`, but it is necessary in this case.
+We usually prefer the `.by` argument in `summarize()` because its grouping applies only to that one verb, so it can't carry over and cause unexpected results later. However, `.by` only creates groups that appear in the data and has no `.drop` argument, so this is a case where we need `group_by(.drop = FALSE)`.
 
 ### Exercise 10
 

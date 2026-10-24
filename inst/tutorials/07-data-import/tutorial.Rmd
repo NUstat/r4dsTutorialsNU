@@ -23,6 +23,9 @@ library(tutorialExtras)
 
 gradethis_setup()
 
+# Use this package's grade_this_code(), which works around two gradethis grading bugs
+grade_this_code <- r4dsTutorialsNU::grade_this_code
+
 knitr::opts_chunk$set(echo = FALSE)
 options(tutorial.exercise.timelimit = 60, 
         tutorial.storage = "local") 
@@ -42,16 +45,16 @@ students2 <- students |>
 # write_csv(students2, "data/students2.csv") 
 #write_rds(students2, "inst/tutorials/07-data-import/data/students2.rds")
 
-simple_csv <- "
+simple_csv <- I("
   x
   10
   .
   20
-  30"
+  30")
 
-another_csv <- "
+another_csv <- I("
 x,y,z
-1,2,3"
+1,2,3")
 
 tbl_1 <- tibble(John = 1 , Aliya = 2, Maxilla = 3)
 ```
@@ -90,7 +93,7 @@ This tutorial covers [Chapter 7: Data import](https://r4ds.hadley.nz/data-import
 
 This section provides practical advice for handling features like column names, types, and missing data. 
 
-Note the distinction between *Tidyverse* (capitalized and in italics) and **tidyverse** (no capitalization and in bold). The latter refers to an actual R package, the one which we use almost every time we use R. The latter has a more [general meaning](https://www.tidyverse.org/):
+Note the distinction between *Tidyverse* (capitalized and in italics) and **tidyverse** (no capitalization and in bold). The latter refers to an actual R package, the one which we use almost every time we use R. The former has a more [general meaning](https://www.tidyverse.org/):
 
 > The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures.
 
@@ -102,8 +105,8 @@ Note the distinction between *Tidyverse* (capitalized and in italics) and **tidy
 ```{r reading-data-from-a-file-1-q}
 question_text(NULL,
         answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") |> 
-                str_detect("documentationforpackage‘readr’version\\d.\\d.\\d")) {
+            if (str_remove_all(str_to_lower(value), "[[:space:]]") |>
+                str_detect("documentationforpackage.?readr.?version\\d+\\.\\d+\\.\\d+")) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) ) }),
 	allow_retry = TRUE,
@@ -263,7 +266,7 @@ However sometimes, a data set will have several weirdly named variables. In that
 
 ### 
 
-The **janitor** package also has a function called `remove_empty()` to remove empty spaces, `remove_constant()` to remove columns of constant values, and many more. 
+The **janitor** package also has a function called `remove_empty()` to remove empty rows and columns, `remove_constant()` to remove columns of constant values, and many more. 
 
 ###
 
@@ -289,7 +292,7 @@ grade_this_code()
 
 ### 
 
-`clean_names()` not only fixes the *non-syntactic* names like `Full Name`; it also cleans up any variable name which does not follow the standard approach of, first, no capitalization and, second, using underscores as a word seperator. Note how `favourite.food` becomes `favourite_food` and `mealPlan` becomes `meal_plan`
+`clean_names()` not only fixes the *non-syntactic* names like `Full Name`; it also cleans up any variable name which does not follow the standard approach of, first, no capitalization and, second, using underscores as a word separator. Note how `favourite.food` becomes `favourite_food` and `mealPlan` becomes `meal_plan`.
 
 
 ### Exercise 7
@@ -377,7 +380,7 @@ grade_this_code()
 
 ### 
 
-A new function here is `if_else()`, which has three arguments. The first argument `test` should be a logical vector. The result will contain the value of the second argument, `yes`, when test is `TRUE`, and the value of the third argument, `no`, when it is `FALSE`. Here we’re saying if `age` is the character string `"five"`, make it `5`, and if not leave it as `age`. 
+A new function here is `if_else()`, which has three arguments. The first argument `condition` should be a logical vector. The result will contain the value of the second argument, `true`, when `condition` is `TRUE`, and the value of the third argument, `false`, when it is `FALSE`. Here we’re saying if `age` is the character string `"five"`, make it `"5"`, and if not leave it as `age`.
 
 ### Exercise 9
 
@@ -531,7 +534,7 @@ grade_this_code()
 
 ### 
 
-The argument `skip` is used to skip rows, but to skip columns, you can use the `col_only()` function as the argument to `col_types` in order to read in only the columns which you want. 
+The argument `skip` is used to skip rows, but to skip columns, you can use the `cols_only()` function as the argument to `col_types` in order to read in only the columns which you want. 
 
 ### Exercise 13
 
@@ -662,21 +665,21 @@ A CSV file doesn’t contain any information about the type of each variable (i.
 
 ### Exercise 1
 
-In this tutorial, we will make use of the "quotation trick" which allows `read_csv()` and related functions to read data directly from a quoted string, rather than a file. As an example, run this code by clicking "Submit Answer":
+In this tutorial, we will make use of the "quotation trick" which allows `read_csv()` and related functions to read data directly from a quoted string, rather than a file. We wrap the string in `I()` so `read_csv()` treats it as the data itself, not as a file path. Since **readr** 2.2.0, leaving out `I()` gives a deprecation warning. As an example, run this code by clicking "Submit Answer":
 
 
 ```{r controlling-column-types-1, exercise = TRUE}
-read_csv("
+read_csv(I("
   a, b, c
   1, 2, 3
-")
+"))
 ```
 
 ```{r controlling-column-types-1-solution, exercise.reveal_solution = FALSE}
-read_csv("
+read_csv(I("
   a, b, c
   1, 2, 3
-")
+"))
 ```
 
 ```{r controlling-column-types-1-check}
@@ -731,26 +734,26 @@ The first row is just treated as a column name by `read_csv()`. It does not use 
 
 ### Exercise 3
 
-The most common way column detection fails is that a column contains unexpected values, resulting in a character column instead of a more specific type. One of the most common causes for this is a missing value, recorded using something other than the `NA` that **readr** expects. Press "Submit Answer".
+The most common way column detection fails is that a column contains unexpected values, resulting in a character column instead of a more specific type. One of the most common causes for this is a missing value, recorded using something other than the `NA` that **readr** expects. Press "Submit Answer". (Because we wrap the string in `I()` when we create `simple_csv`, `read_csv(simple_csv)` treats it as literal data.)
 
 ```{r controlling-column-types-3, exercise = TRUE}
-simple_csv <- "
+simple_csv <- I("
   x
   10
   .
   20
-  30"
+  30")
 
 read_csv(simple_csv)
 ```
 
 ```{r controlling-column-types-3-solution, exercise.reveal_solution = FALSE}
-simple_csv <- "
+simple_csv <- I("
   x
   10
   .
   20
-  30"
+  30")
 
 read_csv(simple_csv)
 ```
@@ -876,21 +879,21 @@ It’s also possible to override the default column by switching from `list()` t
 Consider an object called `another_csv` defined below.
 
 ```{r comment = '', echo = TRUE, eval = FALSE}
-another_csv <- "
+another_csv <- I("
   x,y,z
   1,2,3
-"
+")
 ```
 
 ###
 
-Use `read_csv()` on `another_csv` with the `col_types` argument set to `cols(.default = col_character()`.
+Use `read_csv()` on `another_csv` with the `col_types` argument set to `cols(.default = col_character())`.
 
 ```{r controlling-column-types-7-setup}
-another_csv <- "
+another_csv <- I("
 x,y,z
 1,2,3
-"
+")
 ```
 
 ```{r controlling-column-types-7, exercise = TRUE}
@@ -927,7 +930,7 @@ Here are the other 5 column types from **readr**.
 
 ### Exercise 8
 
-Another useful helper is `cols_only()` which will read in only the columns you specify. Run `read_csv()` on `another_csv` with the `col_types` argument set to `cols_only(x = col_character()`.
+Another useful helper is `cols_only()` which will read in only the columns you specify. Run `read_csv()` on `another_csv` with the `col_types` argument set to `cols_only(x = col_character())`.
 
 
 ```{r controlling-column-types-8, exercise = TRUE}
@@ -1514,7 +1517,7 @@ This workflow is very common. First, we interactively add code, line-by-line, to
 
 ### Exercise 2
 
-Type `students2` and hit Submit Code. This will produce the same output as `print(students2)`. That is, hitting Return on an R object is the same thing as explicitly printing that object.
+Type `students2` and hit Submit Answer. This will produce the same output as `print(students2)`. That is, hitting Return on an R object is the same thing as explicitly printing that object.
 
 ```{r writing-to-a-file-2, exercise = TRUE}
 
@@ -1534,7 +1537,7 @@ grade_this_code()
 
 ### 
 
-`students2` has been cleaned up from the original "students.csv", most importantly in terms the variable names. Note that `mean_plan` is a `<fct>`, meaning a factor.
+`students2` has been cleaned up from the original "students.csv", most importantly in terms of the variable names. Note that `meal_plan` is a `<fct>`, meaning a factor.
 
 ### Exercise 3
 
@@ -1593,7 +1596,7 @@ grade_this_code()
 
 Note that variable type information is lost when you save to CSV because you’re starting over by reading from a plain text file again. `meal_plan` is now `<chr>`, meaning a character variable.
 
-This makes CSVs a little unreliable for caching interim results --- you need to recreate the column specification every time you load in. There are two main alternative: `write_rds()` with`read_rds()` and `write_parquet()`.
+This makes CSVs a little unreliable for caching interim results --- you need to recreate the column specification every time you load in. There are two main alternatives: `write_rds()` with `read_rds()` and `write_parquet()`.
 
 ### Exercise 5
 
@@ -1610,8 +1613,8 @@ This time use `write_rds()` to write the contents of the `students2` object to a
 
 ```{r writing-to-a-file-5-hint-1, eval = FALSE}
 write_rds(
-  x = ..., 
-  ... = "data/students2.csv"
+  x = ...,
+  ... = "data/students2.rds"
 )
 ```
 
@@ -1653,7 +1656,7 @@ Datasets are just one example of what we can store in a rds file. We can also st
 
 ###
 
-`write_rds()` and `read_rds()` are not the best approach for working with large data sets. In that case, use the functions `write_parquet()` and  `read_parquet()` from the [**arrow**](https://arrow.apache.org/) package.
+`write_rds()` and `read_rds()` are not the best approach for working with large data sets. In that case, use the functions `write_parquet()` and  `read_parquet()` from the [**arrow**](https://arrow.apache.org/docs/r/) package.
 
 ###
 
@@ -1662,7 +1665,7 @@ Parquet tends to be much faster than RDS and is usable outside of R, but does re
 ## Data entry
 ### 
 
-Sometimes you’ll need to assemble a tibble “by hand” doing a little data entry in your R script. There are two useful functions to help you do this which differ in whether you layout the tibble by columns (`tibble()`) or by rows (`tribble()`).
+Sometimes you’ll need to assemble a tibble “by hand” doing a little data entry in your R script. There are two useful functions to help you do this which differ in whether you lay out the tibble by columns (`tibble()`) or by rows (`tribble()`).
 
 ### Exercise 1
 
@@ -1727,7 +1730,7 @@ grade_this_code()
 ```
 ### 
 
-The difference between the name `tibble()` and the name `tribble()` is one letter: *r*. The *r* stands for **r**ows since `tribble()` allows you to type in the data by row.
+The difference between the name `tibble()` and the name `tribble()` is one letter: *r*. `tribble()` is short for **tr**ansposed t**ibble**, which is why it lets you type in the data row by row instead of column by column.
 
 ## Summary
 ### 

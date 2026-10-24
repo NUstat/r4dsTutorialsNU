@@ -18,9 +18,11 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,  r: 'release'}
+          # r: renv uses the R version recorded in renv.lock, so a new R release
+          # cannot break renv::restore() before the lockfile is updated.
+          - {os: macos-latest,   r: 'renv'}
+          - {os: windows-latest, r: 'renv'}
+          - {os: ubuntu-latest,  r: 'renv'}
           
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -42,6 +44,10 @@ jobs:
           sudo apt-get install -y libproj-dev
           sudo apt-get install -y libgdal-dev
           sudo apt-get install -y libssl-dev
+          # System libraries needed by the packages in renv.lock, from
+          # renv::sysreqs(source = "lockfile", distro = "ubuntu:24.04").
+          # The Posit Package Manager binaries load these at install time.
+          sudo apt-get install -y cmake git gsfonts libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgit2-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libpng-dev libtiff-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make zlib1g-dev
 
       - name: Install system dependencies (macOS)
         if: runner.os == 'macOS'
@@ -53,9 +59,15 @@ jobs:
         if: runner.os == 'Windows'
         run: Rscript -e 'options(pkgType = "win.binary"); writeLines("options(pkgType = \"win.binary\")", "~/.Rprofile")'
 
+      # Posit Package Manager on Linux and Windows, where it serves binaries of
+      # the versions in renv.lock. On macOS, renv restores from the CRAN
+      # repository in renv.lock instead: Package Manager has no macOS binaries
+      # for some of these versions, and renv 1.3 will not fall back to source
+      # for a Package Manager repository.
       - uses: r-lib/actions/setup-r@v2
         with:
-          use-public-rspm: true
+          r-version: ${{ matrix.config.r }}
+          use-public-rspm: ${{ runner.os != 'macOS' }}
 
       # The default value of the cache-version is 1, which just uses what is there. If
       # you want to rebuild the cache, set this to >1.

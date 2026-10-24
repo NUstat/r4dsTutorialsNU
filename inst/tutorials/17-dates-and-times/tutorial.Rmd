@@ -24,6 +24,9 @@ library(tutorialExtras)
 
 gradethis_setup()
 
+# Use this package's grade_this_code(), which works around two gradethis grading bugs
+grade_this_code <- r4dsTutorialsNU::grade_this_code
+
 knitr::opts_chunk$set(echo = FALSE)
 options(
   tutorial.exercise.timelimit = 240,
@@ -84,12 +87,12 @@ question_text("Name:",
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn how to use the [**lubridate**](https://lubridate.tidyverse.org) package on the [**flights**](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf) data and how to use date and datetimes.
+This tutorial covers [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn how to use the [**lubridate**](https://lubridate.tidyverse.org) package on the [**flights**](https://nycflights13.tidyverse.org/) data and how to use date and datetimes.
 
 ## Creating date/times during import
 ### 
 
-In this chapter we are going to focus on dates and date-times as R doesn’t have a native class for storing times. If you need one, you can use the hms package. `hms()` stands for **h**our, **m**inute, **s**econd.   
+In this chapter we are going to focus on dates and date-times as R doesn’t have a native class for storing times. If you need one, you can use the hms package. Its `hms::hms()` stands for **h**our, **m**inute, **s**econd (with tidyverse loaded, a bare `hms()` is lubridate's period parser).   
 
 ### Exercise 1
 
@@ -321,7 +324,7 @@ When using these three formats we need to identify the order in which year, mont
 
 ### Exercise 3
 
-Besides this we can also force the creation of a date-time by supplying a timezone. In `ymd()` set `tz` to `"EST"`.
+Besides this we can also force the creation of a date-time by supplying a timezone. In `ymd()` set `tz` to `"UTC"`.
 
 ```{r datetimes-strings-3, exercise = TRUE}
 
@@ -334,7 +337,7 @@ ymd("2017-01-31", tz = ...)
 ```
 
 ```{r datetimes-strings-3-solution, exercise.reveal_solution = FALSE}
-ymd("2017-01-31", tz = "EST")
+ymd("2017-01-31", tz = "UTC")
 ```
 
 ```{r datetimes-strings-3-check}
@@ -919,7 +922,39 @@ grade_this_code()
 
 ### 
 
-You can use rounding to show the distribution of flights across the course of a day by computing the difference between `dep_time` and the earliest instant of that day
+You can use rounding to show the distribution of flights across the course of a day by computing the difference between `dep_time` and the earliest instant of that day.
+
+### Exercise 4
+
+The x-axis of that plot shows seconds since midnight, which is hard to read, and you may have seen a message that **ggplot2** does not know how to pick a scale for an object of type `<difftime>`. Copy the previous code and wrap the subtraction inside `mutate()` in `hms::as_hms()`, so that `dep_hour` becomes a time of day.
+
+```{r datetime-rounding-4, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r datetime-rounding-4-hint-1, eval = FALSE}
+flights_dt |>
+  mutate(dep_hour = ...(dep_time - floor_date(dep_time, "day"))) |>
+  ggplot(aes(x = dep_hour)) +
+  geom_freqpoly(binwidth = 60 * 30)
+```
+
+```{r datetime-rounding-4-solution, exercise.reveal_solution = FALSE}
+flights_dt |>
+  mutate(dep_hour = hms::as_hms(dep_time - floor_date(dep_time, "day"))) |>
+  ggplot(aes(x = dep_hour)) +
+  geom_freqpoly(binwidth = 60 * 30)
+```
+
+```{r datetime-rounding-4-check}
+grade_this_code()
+```
+
+### 
+
+Now the x-axis shows clock times such as `04:00:00` and `08:00:00`, and the message is gone. An **hms** object stores a time of day, which **ggplot2** knows how to label. The **hms** package is installed with the tidyverse but not loaded by `library(tidyverse)`, so we call it as `hms::as_hms()`.
 
 ## Date-time modifying components
 ### 
@@ -970,7 +1005,7 @@ grade_this_code()
 
 ### 
 
-With the `ymd_hms()` functions we can automatically assign the Universal Coordinated Time Zone (UTC) to the parsed date.
+With the `ymd_hms()` functions we can automatically assign the Coordinated Universal Time (UTC) to the parsed date.
 
 ###
 
@@ -1104,7 +1139,7 @@ grade_this_code()
 
 ### 
 
-Unlike above where we specified `tz` as `"EST"` or `"UTC"`. We can use `"America/New_York"` to specify that we are working in `"EST"`.
+Above we used `"UTC"`. For local time, use an IANA name like `"America/New_York"`, which switches between EST and EDT for daylight saving time.
 
 ### Exercise 2
 
@@ -1458,7 +1493,7 @@ When we want to change the underlying instant in time we use `force_tz()`. Use t
 ## Summary
 ### 
 
-This tutorial covered [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to use the [**lubridate**](https://lubridate.tidyverse.org) package on the [**flights**](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf) data and how to use date and datetimes.
+This tutorial covered [Chapter 17: Dates and times](https://r4ds.hadley.nz/datetimes.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned how to use the [**lubridate**](https://lubridate.tidyverse.org) package on the [**flights**](https://nycflights13.tidyverse.org/) data and how to use date and datetimes.
 
 
 ## Get Grade

@@ -58,33 +58,11 @@ list1 <- list(
   d = list(-1, -5)
 )
 
-L <- list(15, 16, 17, 18, 19)
-
-L2 <- list(4, 16, 25, 49, 64)
-
 df4 <- tibble(a = 1, b = 2, c = "a", d = "b", e = 4)
-
-tb4 <- tibble(
-  col1 = list(1, 2, 3, 4),
-  col2 = list(11, 12, 13, 14)
-)
 
 num_cols <- sapply(df4, is.numeric)
 
-# DK: Delete objects we don't use.
-
-save_data <- vector(mode = "list" , length = length(tb4))
-indexes <- seq_along(tb4)
-
-# DK: I had some real annoyance with code like map(paths, readxl::read_excel).
-# This works fine if you just Run Document locally. But it fails with R CMD
-# check with an error about "Error in `exists(dbname)`: first argument has
-# length > 1". Could not solve! Adding purrr:: in this set up chunk worked. Not
-# sure what is going on. Perhaps a different map() function is called. But
-# tidyverse_conflicts() does not show any problems.
-
 paths <- dir("data/gapminder", pattern = "\\.xlsx$", full.names = TRUE)
-files <- purrr::map(paths, readxl::read_excel)
 
 files.2 <- vector("list", length(paths))
 for(i in seq_along(paths)){
@@ -130,7 +108,7 @@ question_text(
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 27: A field guide to base R](https://r4ds.hadley.nz/base-r) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
+This tutorial covers [Chapter 27: A field guide to base R](https://r4ds.hadley.nz/base-R.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
 
 In this chapter, we'll focus on four big topics: subsetting with `[`, subsetting with `[[` and `$`, the *apply* family of functions, and `for` loops. To finish off, we'll briefly discuss two essential plotting functions. 
 
@@ -908,7 +886,7 @@ str(list1$d)
 With the `$` operator, instead of passing in the element's position (ex: 2nd element is position 2), we pass in the name of the element itself, which in this case is `d`.
 
 
-The difference between `[` and `[[` is particularly important for lists because `[[` drills down into the list while `[` returns a new, smaller list. Click [here](https://r4ds.hadley.nz/base-r#fig-pepper) to see a visualization of the differences.
+The difference between `[` and `[[` is particularly important for lists because `[[` drills down into the list while `[` returns a new, smaller list. Click [here](https://r4ds.hadley.nz/base-R.html#fig-pepper) to see a visualization of the differences.
 
 ## Apply family
 ### 
@@ -1254,8 +1232,11 @@ Use the `paths` object you created as the first argument to `map()`. Set the sec
 ```
 
 ```{r for-loops-8-test, include = FALSE}
-# Not sure why including this test makes for an error. Code does work for
-# students. So, just leaving it commented out for now.
+# This test stays commented out because it errors under R CMD check with
+# "Error in `exists(dbname)`: first argument has length > 1". The likely cause:
+# when the maps package (loaded by tutorial 09) is attached in the same R
+# session, `map()` resolves to maps::map() instead of purrr::map(). Students are
+# not affected. Writing purrr::map() avoids the problem.
 
 # map(paths, readxl::read_excel)
 ```
@@ -1354,7 +1335,7 @@ do.call(rbind, files.2)
 
 ### 
 
-Functions from the **purrr** package have largely replaced `do.call()` in modern R code.
+In the tidyverse, `purrr::list_rbind()` does the same job: `list_rbind(files.2)` (you used it in [Chapter 26](https://r4ds.hadley.nz/iteration.html)).
 
 ### Exercise 13
 
@@ -1448,7 +1429,7 @@ Note that base plotting functions work with vectors, so you need to pull columns
 ## Summary
 ### 
 
-This tutorial covered [Chapter 27: A field guide to base R](https://r4ds.hadley.nz/base-r) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
+This tutorial covered [Chapter 27: A field guide to base R](https://r4ds.hadley.nz/base-R.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
 
 In this tutorial, you have learned:
 

@@ -24,6 +24,9 @@ library(tutorialExtras)
 
 gradethis_setup()
 
+# Use this package's grade_this_code(), which works around two gradethis grading bugs
+grade_this_code <- r4dsTutorialsNU::grade_this_code
+
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(out.width = '90%')
 options(tutorial.exercise.timelimit = 60, 
@@ -250,7 +253,7 @@ flights |>
 
 ## ggplot2
 
-The `+` operator follows the same formatting as the pipe `|>`
+The `+` operator follows the same formatting as the pipe `|>`.
 
 ###
 
@@ -334,7 +337,14 @@ quiz(
        random_answer_order = TRUE,
        allow_retry = TRUE),
   question_text("What package provides a quick and easy way to improve the quality of poorly styled code?",
-       answer("styler", correct = TRUE),
+       # answer("styler", correct = TRUE),
+       answer_fn(function(value){
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "styler")
+              ) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) )
+                              }),
        allow_retry = TRUE)
 )
 ```
