@@ -28,6 +28,9 @@ library(tutorialExtras)
 
 gradethis_setup()
 
+# Use this package's grade_this_code(), which works around two gradethis grading bugs
+grade_this_code <- r4dsTutorialsNU::grade_this_code
+
 knitr::opts_chunk$set(echo = FALSE)
 options(
   tutorial.exercise.timelimit = 60,
@@ -1667,7 +1670,7 @@ This should output `#> [1] NA    NA    NA    NA    "+ve" "+ve" "+ve" NA` because
 
 ### Exercise 11
 
-For example, we could use `case_when()` to provide some human readable labels for the arrival delay. Your gratitude for having the code written for you is much appreciated. Click `Submit code`.
+For example, we could use `case_when()` to provide some human readable labels for the arrival delay. Your gratitude for having the code written for you is much appreciated. Click "Submit Answer".
 
 ```{r conditional-transfor-11, exercise = TRUE}
 flights |>
@@ -1678,7 +1681,7 @@ flights |>
       arr_delay < -15 ~ "early",
       abs(arr_delay) <= 15 ~ "on time",
       arr_delay < 60 ~ "late",
-      arr_delay < Inf ~ "very late",
+      arr_delay < Inf ~ "very late"
     ),
     .keep = "used"
   )
@@ -1693,7 +1696,7 @@ flights |>
       arr_delay < -15 ~ "early",
       abs(arr_delay) <= 15 ~ "on time",
       arr_delay < 60 ~ "late",
-      arr_delay < Inf ~ "very late",
+      arr_delay < Inf ~ "very late"
     ),
     .keep = "used"
   )

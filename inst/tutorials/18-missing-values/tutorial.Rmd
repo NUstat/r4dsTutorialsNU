@@ -24,6 +24,9 @@ library(tutorialExtras)
 
 gradethis_setup()
 
+# Use this package's grade_this_code(), which works around two gradethis grading bugs
+grade_this_code <- r4dsTutorialsNU::grade_this_code
+
 knitr::opts_chunk$set(echo = FALSE)
 options(
   tutorial.exercise.timelimit = 60,
@@ -47,7 +50,7 @@ stocks <- tibble(
 health <- tibble(
   name   = c("Ikaia", "Oletta", "Leriah", "Dashay", "Tresaun"),
   smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
+  age    = c(34, 88, 75, 47, 56)
 )
 
 ```
@@ -898,7 +901,7 @@ Submit this code to assign a tibble to `health`.
 health <- tibble(
   name   = c("Ikaia", "Oletta", "Leriah", "Dashay", "Tresaun"),
   smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
+  age    = c(34, 88, 75, 47, 56)
 )
 ```
 
@@ -906,7 +909,7 @@ health <- tibble(
 health <- tibble(
   name   = c("Ikaia", "Oletta", "Leriah", "Dashay", "Tresaun"),
   smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
+  age    = c(34, 88, 75, 47, 56)
 )
 ```
 
