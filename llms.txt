@@ -90,5 +90,10 @@ in multiple sittings. Once you have completed a tutorial, follow the
 instructions on the tutorial `Submit` page and, if you’re a student,
 submit your answers as instructed.
 
-# 
+# Package index
+
+## All functions
+
+- [`grade_this_code()`](https://NUstat.github.io/r4dsTutorialsNU/reference/grade_this_code.md)
+  : Grade exercise code, working around two gradethis bugs
 

@@ -23,3 +23,8 @@ Useful links:
 
 **Maintainer**: David Kane <dave.kane@gmail.com>
 ([ORCID](https://orcid.org/0000-0002-6660-3934)) \[copyright holder\]
+
+Authors:
+
+- David Kane <dave.kane@gmail.com>
+  ([ORCID](https://orcid.org/0000-0002-6660-3934)) \[copyright holder\]
