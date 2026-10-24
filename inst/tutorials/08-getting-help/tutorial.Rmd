@@ -57,17 +57,17 @@ grade_button_ui(id = "grade")
 ### 
 
 
-This tutorial covers material from [Chapter 8 Workflow: getting help](https://r4ds.hadley.nz/workflow-help.html) in [*R for Data Science (2e)*](https://r4ds.hadley.nz/quarto.html) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. This tutorial will give you a basic understanding of how to search for help and create reproducible examples. The most important lesson is to make extensive use of generative artificial intelligence, generally via large language models (LLMs) like [ChatGPT](https://chat.openai.com/) or [Bard](https://bard.google.com/chat).
+This tutorial covers material from [Chapter 8 Workflow: getting help](https://r4ds.hadley.nz/workflow-help.html) in [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. This tutorial will give you a basic understanding of how to search for help and create reproducible examples. The most important lesson is to make extensive use of generative artificial intelligence, generally via large language models (LLMs) like [ChatGPT](https://chatgpt.com/) or [Gemini](https://gemini.google.com/).
 
 
 ## AI
 ###
 
-Before 2023, the most common approaches to seeking help with R code involved web searches and regular expressions. Those approaches can still be useful, which is why we explain them in the sections which follow. But, the rise of generative artificial intelligence, usually via large language models (LLMs) like [ChatGPT](https://chat.openai.com/) or [Bard](https://bard.google.com/chat), has radically changed how most skilled programmers seek help. We now ask the AI. Some tips for doing so include:
+Before 2023, the most common approaches to seeking help with R code involved web searches and reproducible examples. Those approaches can still be useful, which is why we explain them in the sections which follow. But, the rise of generative artificial intelligence, usually via large language models (LLMs) like [ChatGPT](https://chatgpt.com/) or [Gemini](https://gemini.google.com/), has radically changed how most skilled programmers seek help. We now ask the AI. Some tips for doing so include:
 
 * Show the AI the code which is giving you trouble. The best approach for doing so is probably a reproducible example, as discussed below. But just copying/pasting from your editor will also work well.
 
-* Ask the AI to solve the problem you have, rather than simply showing it the code which is giving you trouble. It's answer may be better than the initial approach which you attempted.
+* Ask the AI to solve the problem you have, rather than simply showing it the code which is giving you trouble. Its answer may be better than the initial approach which you attempted.
 
 ###
 
@@ -109,7 +109,7 @@ Google is particularly useful for error messages. If you get an error message an
 
 ### Exercise 2
 
-Adding package names like “tidyverse” or “ggplot2” will help narrow down the results to code that will feel more familiar to you. Consider “how to make a boxplot in R” vs. “how to make a boxplot in R with ggplot2”. Copy the URL for top result to this new search.
+Adding package names like “tidyverse” or “ggplot2” will help narrow down the results to code that will feel more familiar to you. Consider “how to make a boxplot in R” vs. “how to make a boxplot in R with ggplot2”. Copy the URL for the top result of this new search.
 
 ```{r google-is-your-friend-2}
 question_text(NULL,
@@ -133,9 +133,9 @@ If Google doesn’t help, try [Stack Overflow](https://stackoverflow.com/). Star
 
 ### Exercise 3
 
-Another useful forum is [RStudio Community](https://community.rstudio.com/) which is also known as Posit Community, consistent with the renaming of the RStudio *company* as Posit. 
+Another useful forum is [Posit Community](https://forum.posit.co/), formerly known as RStudio Community, consistent with the renaming of the RStudio *company* as Posit.
 
-Copy/paste the URL for the most recent topic (the one after the default "Welcome to the RStudio Community!").
+Copy/paste the URL for the most recent topic (the one after the pinned "Welcome to the Posit Community!").
 
 ```{r google-is-your-friend-3}
 question_text(NULL,
@@ -160,7 +160,7 @@ It's basically like Stack Overflow but specifically focused on R.
 
 ### Exercise 4
 
-The documentation for R is excellent. You can access it with using either `?` or the `help()` command. Run `help(geom_point)` in the Console, then copy-paste the "Description" section into the space below.
+The documentation for R is excellent. You can access it using either `?` or the `help()` command. Run `help(geom_point)` in the Console, then copy-paste the "Description" section into the space below.
 
 ```{r google-is-your-friend-4}
 question_text(NULL,
@@ -178,7 +178,7 @@ question_text(NULL,
 )
 ```
 
-Sometimes, you may need to use a double question mark --- `??function_name` --- if the function is part of a package you don't have loaded. RStudio will prompt you to try `??` if `?` doesn't work. 
+Sometimes, you may need to use a double question mark --- `??function_name` --- if the function is part of a package you don't have loaded. R will prompt you to try `??` if `?` doesn't work.
 
 
 ## Making a reprex
@@ -192,13 +192,13 @@ If your googling doesn’t find anything useful, it’s a really good idea to pr
 
 First, we need to make a **reproducible example**.
 
-So let's go over [creating our own question](https://reprex.tidyverse.org/articles/articles/learn-reprex.html) and posting it to Posit Community, with the correct context.
+So let's go over [creating our own question](https://reprex.tidyverse.org/articles/learn-reprex.html) and posting it to Posit Community, with the correct context.
 
 Open a new R Script file. This R Script should be in your current R project folder. Save your R Script file and name it `example_reprex.R`.
 
 ###
 
-It is a good idea to restart R with `Command/Ctrl + Shift + 0`. This will unload any currently loaded libraries and ensuring that you are starting from scratch.
+It is a good idea to restart R with `Cmd + Shift + 0` (Mac) or `Ctrl + Shift + F10` (Windows). This will unload any currently loaded libraries and ensure that you are starting from scratch.
 
 ###
 
@@ -209,13 +209,13 @@ Type the following lines of code into your R Script
 
 ###
 
-**This code will fail** when you press "Run Code."
+**This code will fail** when you run it.
 
 ###
 
 As you can see, there is an error about us not loading **tidyverse** and as such not having the `ggplot()` function available in our R script.
 
-This is why its important to include any necessary libraries in your example or people trying to help you will be missing key components of your code.
+This is why it's important to include any necessary libraries in your example or people trying to help you will be missing key components of your code.
 
 ###
 
@@ -225,13 +225,20 @@ Then run the code and **paste the first line of the error message below**.
 
 ```{r making-a-reprex-1}
 question_text(NULL,
-  answer_fn(function(value) {
-    if (str_remove_all(str_to_lower(value), " ") %in%
-      str_to_lower(c("Errorin`geom_col()`:", "Errorin`geom_col()`"))) {
-      return(mark_as(TRUE))
-    }
-    return(mark_as(FALSE))
-  }),
+  # answer_fn(function(value) {
+  #   if (str_remove_all(str_to_lower(value), " ") %in%
+  #     str_to_lower(c("Errorin`geom_col()`:", "Errorin`geom_col()`"))) {
+  #     return(mark_as(TRUE))
+  #   }
+  #   return(mark_as(FALSE))
+  # }),
+  answer_fn(function(value){
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]\\u2018\\u2019\\u201c\\u201d'\"`]"), fixed("erroringeom_col"))
+              ) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) )
+                              }),
   correct = "submitted",
   allow_retry = TRUE,
   try_again_button = "Edit Answer",
@@ -259,7 +266,14 @@ Run `data()` in your console and copy and paste the name of the first dataset th
 
 ```{r making-a-reprex-2}
 question_text(NULL,
-	answer("AirPassengers", correct = TRUE),
+	# answer("AirPassengers", correct = TRUE),
+	answer_fn(function(value){
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]\\u2018\\u2019\\u201c\\u201d'\"`]"), "airpassengers|lakers")
+              ) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) )
+                              }),
 	allow_retry = TRUE,
 	try_again_button = "Edit Answer",
 	incorrect = NULL,
@@ -269,6 +283,8 @@ question_text(NULL,
 ### 
 
 All of these datasets are built into R, so people can easily help you when looking at your reproducible example. Notice that if you keep scrolling down the "R data sets" page, you will eventually see `mtcars`.
+
+(If **tidyverse** is loaded, the list starts with the datasets from the tidyverse packages, such as `lakers` from **lubridate**. The datasets that come with R itself, starting with `AirPassengers`, appear further down.)
 
 ###
 
@@ -290,7 +306,7 @@ Now let's create a reprex. Select all the text in your `example_reprex.R` Script
 
 ### 
 
-Click "Render Reprex". Under "Where is reprex source?" select "current selection". Under "Target venue", make sure "Github or Stack Overflow" is chosen. Also make sure "Preview HTML" is selected.
+Click "Render reprex...". Under "Where is reprex source?" select "current selection". Under "Target venue", make sure "GitHub or Stack Overflow" is chosen. Also make sure "Preview HTML" is selected.
 
 Then click Render.
 
@@ -400,7 +416,7 @@ question_text(NULL,
 ## Summary
 ### 
 
-This tutorial covered material from [Chapter 8 Workflow: getting help](https://r4ds.hadley.nz/workflow-help.html) in [*R for Data Science (2e)*](https://r4ds.hadley.nz/quarto.html) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. This tutorial gave you a basic understanding of how to search for help and create reproducible examples. The most important lesson was to make extensive use of generative artificial intelligence, generally via large language models (LLMs) like [ChatGPT](https://chat.openai.com/) or [Bard](https://bard.google.com/chat).
+This tutorial covered material from [Chapter 8 Workflow: getting help](https://r4ds.hadley.nz/workflow-help.html) in [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. This tutorial gave you a basic understanding of how to search for help and create reproducible examples. The most important lesson was to make extensive use of generative artificial intelligence, generally via large language models (LLMs) like [ChatGPT](https://chatgpt.com/) or [Gemini](https://gemini.google.com/).
 
 
 Once you are finished:

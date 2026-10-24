@@ -225,7 +225,7 @@ question_text("Name:",
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 10: Exploratory data analysis](https://r4ds.hadley.nz/eda.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We will be making use of the [**ggplot2**](https://ggplot2.tidyverse.org/) and the [**dplyr**](https://dplyr.tidyverse.org/) packages to learn about variation and patterns. 
+This tutorial covers [Chapter 10: Exploratory data analysis](https://r4ds.hadley.nz/EDA.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We will be making use of the [**ggplot2**](https://ggplot2.tidyverse.org/) and the [**dplyr**](https://dplyr.tidyverse.org/) packages to learn about variation and patterns. 
 
 Some key commands include [`coord_cartesian()`](https://ggplot2.tidyverse.org/reference/coord_cartesian.html), [`geom_freqpoly()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html), [`fct_reorder()`](https://forcats.tidyverse.org/reference/fct_reorder.html), [`geom_tile()`](https://ggplot2.tidyverse.org/reference/geom_tile.html), and [`geom_count()`](https://ggplot2.tidyverse.org/reference/geom_count.html). 
 
@@ -363,7 +363,7 @@ Some valuable questions to ask yourself when dealing with variation are the foll
 
 ### Exercise 4
 
-Let's explore the distribution of carat for smaller diamonds. Since this is likely a group of diamonds we will want to explore more closely, we should create a dataset if its own. Start with the `diamonds` dataset and pipe it into `filter()` set to keep only diamonds with carats less than 3. Store this resulting dataset as `smaller`. 
+Let's explore the distribution of carat for smaller diamonds. Since this is likely a group of diamonds we will want to explore more closely, we should create a dataset of its own. Start with the `diamonds` dataset and pipe it into `filter()` set to keep only diamonds with carats less than 3. Store this resulting dataset as `smaller`. 
 
 ```{r variation-4, exercise = TRUE}
 
@@ -452,7 +452,7 @@ grade_this_code()
 
 ###
 
-It's important to try a variety of different `binwidth` (or `bin`) values when using a histogram to find an appropriate setting.
+It's important to try a variety of different `binwidth` (or `bins`) values when using a histogram to find an appropriate setting.
 
 ### Exercise 7
 
@@ -907,7 +907,7 @@ grade_this_code()
 
 ### Exercise 7
 
-Right now `sched_dep_time` is currently in `HHMM` or `HMM` format. That is, `H` refers to hours after midnight and then `MM` the number of minutes after the hour. We need to transform `sched_dep_time` to better format, and in this case, changing it to the number of hours after midnight seems to be best. Thee following instructions help with this. 
+Right now `sched_dep_time` is currently in `HHMM` or `HMM` format. That is, `H` refers to hours after midnight and then `MM` the number of minutes after the hour. We need to transform `sched_dep_time` to better format, and in this case, changing it to the number of hours after midnight seems to be best. The following instructions help with this.
 
 Within `mutate()`, create:
 
@@ -976,7 +976,7 @@ Now that the data has been appropriately transformed, add `ggplot()` to the pipe
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r unusual-values-8-hint-1, eval = FALSE}
-... + 
+... |>
   ggplot(aes(x = ...))
 ```
 
@@ -1075,7 +1075,7 @@ grade_this_code()
 
 ### Exercise 11
 
-Fianlly, add `labs()` to the pipeline and set the `title`, `subtitle`, `x` axis title, `y` axis title, and `color` label as follows (order of entry matters for grading):
+Finally, add `labs()` to the pipeline and set the `title`, `subtitle`, `x` axis title, `y` axis title, and `color` label as follows (order of entry matters for grading):
 
 - `title = "Frequency of Cancelled and Non-cancelled Flights for Scheduled Flights"`
 - `subtitle = "There are a lot of non-cancelled flights at 3 PM"`,
@@ -1134,7 +1134,7 @@ If variation describes the behavior within a variable, covariation describes the
 
 ### Exercise 1
 
-First, let's explore how the price of a diamond varies with its quality (measured by cut)
+First, let's explore how the price of a diamond varies with its quality (measured by cut).
 
 With a new pipeline, pipe `diamonds` to `ggplot()` and set the `x` argument to the variable `price`. 
 
@@ -1268,7 +1268,7 @@ Within the `ggplot()` layer's `aes()`, set the `y` argument to `after_stat(densi
 
 ```{r covariation-5-hint-1, eval = FALSE}
 diamonds |> 
-  ggplot(aes(x = price, y = ...) + 
+  ggplot(aes(x = price, y = ...)) +
   geom_freqpoly(
     mapping = aes(color = cut), 
     binwidth = 500, 
@@ -1412,7 +1412,6 @@ Since we have long variable names, `geom_boxplot()` will work better if you flip
 mpg |> 
   ggplot(aes(y = fct_reorder(class, hwy, median), ... = ...)) +
   geom_boxplot()
-  ...
 ```
 
 ```{r covariation-9-solution, exercise.reveal_solution = FALSE}
@@ -1546,7 +1545,7 @@ Add `ggplot()` to the pipeline, using `aes()`, with `x` set to `color` and `y` s
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r covariation-with-two-categoric-3-hint-1, eval = FALSE}
-... + 
+... |>
   ggplot(aes(x = color, y = ...))
 ```
 
@@ -1579,8 +1578,8 @@ To the pipeline, add `geom_tile()`, within which using `aes()`, setting the `fil
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r covariation-with-two-categoric-4-hint-1, eval = FALSE}
-... + 
-  geom_tile()
+... +
+  geom_tile(aes(fill = ...))
 ```
 
 ```{r covariation-with-two-categoric-4-solution, exercise.reveal_solution = FALSE}
@@ -1607,7 +1606,7 @@ For this section we will use the `smaller` dataset which if you recall is a subs
 
 ### Exercise 1
 
-You’ve already seen one great way to visualize the covariation between two numerical variables: draw a scatterplot with `geom_point()`. You can see covariation as a pattern in the points. Pipe `smaller` into `ggplot()`, using `aes(x = carat, y = price))` as the value for `mapping`. Add `geom_point()` at the end.
+You’ve already seen one great way to visualize the covariation between two numerical variables: draw a scatterplot with `geom_point()`. You can see covariation as a pattern in the points. Pipe `smaller` into `ggplot()`, using `aes(x = carat, y = price)` as the value for `mapping`. Add `geom_point()` at the end.
 
 ```{r covariation-with-two-numerical-1, exercise = TRUE}
 
@@ -1684,9 +1683,15 @@ smaller |>
 ```
 
 ```{r covariation-with-two-numerical-3-solution, exercise.reveal_solution = FALSE}
-smaller |> 
+# option 1 ----
+smaller |>
   ggplot(aes(x = carat, y = price)) +
     geom_bin2d()
+
+# option 2 ----
+smaller |>
+  ggplot(aes(x = carat, y = price)) +
+    geom_bin_2d()
 ```
 
 ```{r covariation-with-two-numerical-3-check}
@@ -1727,7 +1732,7 @@ grade_this_code()
 
 ### 
 
-Not a particularly informative plot! We need to change `carat` from a continuous numeric variable to a category variable, each value of which would cover a range of `carat`.
+Not a particularly informative plot! We need to change `carat` from a continuous numeric variable to a categorical variable, each value of which would cover a range of `carat`. You may also see a warning that "Orientation is not uniquely specified when both the x and y aesthetics are continuous." This is expected: with two continuous variables, **ggplot2** cannot tell which axis the boxplot should run along, so it picks `x`. The warning is harmless, and you will see it again in the next exercise. **ggplot2** also suggests adding a `group` aesthetic, which is exactly what we do next.
 
 
 ### Exercise 5
@@ -1884,7 +1889,7 @@ grade_this_code()
 
 ### 
 
-We will be using `diamonds3`, with these two new variables,  to make a model that predicts `log_price` from `log_carat` and then computes the residuals (the difference between the predicted value and the actual value).
+We will be using `diamonds3`, with these two new variables,  to make a model that predicts `log_price` from `log_carat` and then computes the residuals (the difference between the actual value and the predicted value).
 
 ### Exercise 4
 
@@ -1936,7 +1941,7 @@ grade_this_code()
 
 ### 
 
-The functon [`linear_reg()`](https://parsnip.tidymodels.org/reference/linear_reg.html) defines a model that can predict numeric values from predictors using a linear function. This function can fit regression models. There are different ways to fit this model, and the method of estimation is chosen by setting the model `engine`.
+The function [`linear_reg()`](https://parsnip.tidymodels.org/reference/linear_reg.html) defines a model that can predict numeric values from predictors using a linear function. This function can fit regression models. There are different ways to fit this model, and the method of estimation is chosen by setting the model `engine`.
 
 ### Exercise 6
 
@@ -2097,7 +2102,7 @@ A boxplot is the best way to see the relationship between the type of diamond cu
 ## Summary
 ### 
 
-This tutorial covered [Chapter 10: Exploratory data analysis](https://r4ds.hadley.nz/eda.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We made use of the [**ggplot2**](https://ggplot2.tidyverse.org/) and the [**dplyr**](https://dplyr.tidyverse.org/) packages to learn about variation and patterns. Some key commands included [`coord_cartesian()`](https://ggplot2.tidyverse.org/reference/coord_cartesian.html), [`geom_freqpoly()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html), [`fct_reorder()`](https://forcats.tidyverse.org/reference/fct_reorder.html), [`geom_tile()`](https://ggplot2.tidyverse.org/reference/geom_tile.html), and [`geom_count()`](https://ggplot2.tidyverse.org/reference/geom_count.html).
+This tutorial covered [Chapter 10: Exploratory data analysis](https://r4ds.hadley.nz/EDA.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. We made use of the [**ggplot2**](https://ggplot2.tidyverse.org/) and the [**dplyr**](https://dplyr.tidyverse.org/) packages to learn about variation and patterns. Some key commands included [`coord_cartesian()`](https://ggplot2.tidyverse.org/reference/coord_cartesian.html), [`geom_freqpoly()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html), [`fct_reorder()`](https://forcats.tidyverse.org/reference/fct_reorder.html), [`geom_tile()`](https://ggplot2.tidyverse.org/reference/geom_tile.html), and [`geom_count()`](https://ggplot2.tidyverse.org/reference/geom_count.html).
 
 
 ## Get Grade

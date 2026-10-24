@@ -61,7 +61,7 @@ grade_button_ui(id = "grade")
 
 This tutorial covers the [Introduction](https://r4ds.hadley.nz/intro.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. 
 
-The tutorials are provide multiple choice questions to check student understanding and code chunks to practice coding along with the associated chapter. This chapter has very little R code. So, in the spirit of getting started, we include some of our own. 
+The tutorials provide multiple choice questions to check student understanding and code chunks to practice coding along with the associated chapter. This chapter has very little R code. So, in the spirit of getting started, we include some of our own. 
 
 In this tutorial, we will only work within the Exercise Code Blocks. However, you can also put the code commands into the Console tab in the lower left pane of RStudio. 
 
@@ -207,7 +207,7 @@ question_text(NULL,
 	# answer("A dataset containing the prices and other attributes of almost 54,000 diamonds. The variables are as follows:", correct = TRUE),
 	answer_fn(function(value){
             if (
-              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "adatasetcontainingthepricesandotherattributesofalmost54,000diamonds.thevariablesareasfollows:") 
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "adatasetcontainingthepricesandotherattributesofalmost54,?000diamonds")
               ) {
                  return(mark_as(TRUE))}
                  return(mark_as(FALSE) )
@@ -251,7 +251,6 @@ grade_this_code()
 
 
 ### Exercise 2
-### 
 
 Data frames, also referred to as "tibbles", are spreadsheet-type data sets. 
 
@@ -369,7 +368,7 @@ grade_this_code()
 
 ### 
 
-`glimpse()` displays columns running down the page and the data running across across. Note how the "type" of each variable is listed next to the variable name. For example, `price` is listed as `<int>`, meaning that it is an integer variable.
+`glimpse()` displays columns running down the page and the data running across. Note how the "type" of each variable is listed next to the variable name. For example, `price` is listed as `<int>`, meaning that it is an integer variable.
 
 `view()` is another useful function, but, because it is interactive, we should not use it within a tutorial. 
 

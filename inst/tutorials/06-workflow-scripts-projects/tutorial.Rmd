@@ -57,7 +57,7 @@ grade_button_ui(id = "grade")
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 6 Workflow: scripts and projects](https://r4ds.hadley.nz/workflow-style.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn two essential tools for organizing your code: scripts and projects.
+This tutorial covers [Chapter 6 Workflow: scripts and projects](https://r4ds.hadley.nz/workflow-scripts.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You will learn two essential tools for organizing your code: scripts and projects.
 
 
 ## Scripts
@@ -94,7 +94,7 @@ Helpful resources can be found [here](https://support.microsoft.com/en-us/office
 
 ###
 
-Save the file into this new folder. Name it `script-1.R`. (Note that R will provide the `.R` suffix, so you only need to type `script-1`.) 
+Save the file into this new folder. Name it `script-1.R`. (Note that RStudio will provide the `.R` suffix, so you only need to type `script-1`.) 
 
 ###
 
@@ -111,11 +111,11 @@ In your `script-1.R` file load `tidyverse` at the top of the document.
 
 ###
 
-You should **NEVER** include install.packages() in a script you share.
+You should **NEVER** include `install.packages()` in a script you share.
 
 ###
 
-Create a plot using the `mpg` dataset, add `aes()` with the `x` argument set to `drv`, and add `geom_bar()`
+Create a plot using the `mpg` dataset, add `aes()` with the `x` argument set to `drv`, and add `geom_bar()`.
 
 ###
 
@@ -123,7 +123,7 @@ The key to using the script editor effectively is to memorize one of the most im
 
 ###
 
-Place your cursor in your plot code and click `Cmd/Ctrl + Enter` to run the code.
+Place your cursor in your plot code and press `Cmd/Ctrl + Enter` to run the code.
 
 
 ### Exercise 1
@@ -228,7 +228,7 @@ Click "Create Project."
 
 Now that you have read all the directions, we can go through the steps.
 
-But note that, when you create the new project **You will need to restart the tutorial**. Your R session will be located in this new project. For the rest of this tutorial, we will be working in `r4ds_tutorials`.
+But note that, when you create the new project **you will need to restart the tutorial**. Your R session will be located in this new project. For the rest of this tutorial, we will be working in `r4ds_tutorials`.
 
 ### 
 
@@ -269,7 +269,7 @@ Going forward it is good practice to make sure you are always working in a proje
 
 ###
 
-We recommend opening RStudio by using your `.Rproj` file within the project folder. Navigate to your project directory on your computer and double click the .Rproj file shown below to open RStudio
+We recommend opening RStudio by using your `.Rproj` file within the project folder. Navigate to your project directory on your computer and double-click the `.Rproj` file shown below to open RStudio.
 
 
 ```{r}
@@ -305,7 +305,7 @@ question_text("Are you currently working in an R Project?",
 
 ### 
 
-This tutorial covered [Chapter 6 Workflow: scripts and projects](https://r4ds.hadley.nz/workflow-style.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned two essential tools for organizing your code: scripts and projects.
+This tutorial covered [Chapter 6 Workflow: scripts and projects](https://r4ds.hadley.nz/workflow-scripts.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. You learned two essential tools for organizing your code: scripts and projects.
 
 Once you are finished:
 

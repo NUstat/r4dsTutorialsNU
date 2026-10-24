@@ -579,7 +579,7 @@ grade_this_code()
 
 ### 
 
-Using `alpha` helps, first, to highlight where the data is densest and, second, to lessen the business of the plot, the better to allow space for labels.
+Using `alpha` helps, first, to highlight where the data is densest and, second, to lessen the busyness of the plot, the better to allow space for labels.
 
 ### Exercise 5
 
@@ -666,7 +666,7 @@ We have control over how our labels look. Within your call to `geom_text()`, set
     data = label_info, 
     aes(label = drive_type), 
     fontface = ...,
-    ... = 5,
+    ... = 5
   )
 ```
 
@@ -689,7 +689,7 @@ grade_this_code()
 
 ### 
 
-The `fontface` and `size` arguments we can customize the look of the text labels. In this case, these arguments make the labels larger than the rest of the text on the plot and bolded.
+With the `fontface` and `size` arguments, we can customize the look of the text labels. In this case, these arguments make the labels larger than the rest of the text on the plot and bolded.
 
 ### Exercise 8
 
@@ -968,7 +968,13 @@ Add another call to `geom_point()`. Set `data` equal to `potential_outliers`, `c
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r annotations-15-hint-1, eval = FALSE}
-
+... +
+  geom_point(
+    data = ...,
+    color = "red",
+    size = ...,
+    shape = ...
+  )
 ```
 
 ```{r annotations-15-solution, exercise.reveal_solution = FALSE}
@@ -1032,7 +1038,7 @@ To demonstrate using `annotate()`, let’s create some text to add to our plot. 
 
 ### Exercise 17
 
-Using your previous code, create a new pipeline and pipe `trend_text` with the `str_wrap()` function. Within this function add an argument called `width` and set it to `30`. 
+Using your previous code, pipe the text string `"Larger engine sizes tend to have lower fuel economy."` to the `str_wrap()` function, still assigning the result to `trend_text`. Within `str_wrap()` add an argument called `width` and set it to `30`.
 
 ```{r annotations-17, exercise = TRUE}
 
@@ -1135,10 +1141,10 @@ Using your previous code, within your most recent call to the `annotate()` funct
 ```{r annotations-20-hint-1, eval = FALSE}
 ... +
   annotate(
+    label = ...,
     geom = ...,
-    x = ..., 
+    x = ...,
     y = ...,
-    label = ..., 
     hjust = ...,
     color = ...
   )
@@ -1169,7 +1175,7 @@ Annotation is a powerful tool for communicating main takeaways and interesting f
 ## Scales
 ### 
 
-In this section, we will learn about how to display plots more appropriately by using scales. The most common use of the **scales** package is to customize the appearance of axis and legend labels. Use a `break_*` function to control how breaks are generated from the limits, and a `label_*` function to control how breaks are turned in to labels.
+In this section, we will learn about how to display plots more appropriately by using scales. The most common use of the **scales** package is to customize the appearance of axis and legend labels. Use a `break_*` function to control how breaks are generated from the limits, and a `label_*` function to control how breaks are turned into labels.
 
 ### Exercise 1
 
@@ -1328,7 +1334,7 @@ grade_this_code()
 
 ###
 
-You can use labels in the same way (a character vector the same length as breaks), but you can also set it to NULL to suppress the labels altogether. This can be useful for maps, or for publishing plots where you do want to share the absolute numbers.
+You can use labels in the same way (a character vector the same length as breaks), but you can also set it to NULL to suppress the labels altogether. This can be useful for maps, or for publishing plots where you can't share the absolute numbers.
 
 ### Exercise 6
 
@@ -1366,7 +1372,7 @@ You can also use breaks and labels to control the appearance of legends. For dis
 
 This time we will be using the **scales** package to create more efficient axis labels. 
 
-Create a new pipeline and pipe `diamonds` to the `ggplot()` function. Within this function, pipe map `x` to `price` and `y` to `cut`. Add the `geom_boxplot()` function to the pipeline. Within this function add the `alpha` argument and set it to `0.05`. 
+Create a new pipeline and pipe `diamonds` to the `ggplot()` function. Within this function, map `x` to `price` and `y` to `cut`. Add the `geom_boxplot()` function to the pipeline. Within this function add the `alpha` argument and set it to `0.05`. 
 
 ```{r scales-7, exercise = TRUE}
 
@@ -1391,7 +1397,7 @@ grade_this_code()
 
 ### 
 
-Using `alpha` to adjust the transparency of individual data points is almost always a good idea if you have thousands of obervations.
+Using `alpha` to adjust the transparency of individual data points is almost always a good idea if you have thousands of observations.
 
 ### Exercise 8
 
@@ -1409,10 +1415,17 @@ Using your previous code, add the `scale_x_continuous()` function. Within this f
 ```
 
 ```{r scales-8-solution, exercise.reveal_solution = FALSE}
-diamonds |> 
+# option 1 ----
+diamonds |>
   ggplot(aes(x = price, y = cut)) +
   geom_boxplot(alpha = 0.05) +
   scale_x_continuous(labels = scales::label_dollar())
+
+# option 2 ----
+diamonds |>
+  ggplot(aes(x = price, y = cut)) +
+  geom_boxplot(alpha = 0.05) +
+  scale_x_continuous(labels = label_dollar())
 ```
 
 ```{r scales-8-check}
@@ -1474,11 +1487,19 @@ diamonds |>
 ```
 
 ```{r scales-10-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 diamonds |>
   ggplot(aes(x = cut, fill = clarity)) +
     geom_bar(position = "fill") +
-    scale_y_continuous(name = "Percentage", 
+    scale_y_continuous(name = "Percentage",
                        labels = scales::label_percent())
+
+# option 2 ----
+diamonds |>
+  ggplot(aes(x = cut, fill = clarity)) +
+    geom_bar(position = "fill") +
+    scale_y_continuous(name = "Percentage",
+                       labels = label_percent())
 ```
 
 ```{r scales-10-check}
@@ -1487,7 +1508,7 @@ grade_this_code()
 
 ###
 
-Either `label_percent()` or `label_percent`, without the parantheses, will work. `labels` is looking for a function, so only the function name is needed. You don't need to explicitly call the function yourself.
+Don't forget the parentheses in `label_percent()`. `labels` is looking for a function that turns the breaks into labels, and calling `label_percent()` creates that function for you. If you leave off the parentheses, as in `labels = label_percent`, **ggplot2** stops with the error "`breaks` and `labels` have different lengths."
 
 ### Exercise 11
 
@@ -1515,7 +1536,7 @@ The dataset, `presidential` gives the names of each president, the start and end
 
 ### Exercise 12
 
-Create a new pipeline and pipe `presidential` to the `mutate()` function. Within this function, create a new variable `id` and set it equal to `33` plus `row_number()`. Add the `ggplot()` function to the pipeline. Within this function, map `x` to `start` and `y` to `id` using `aes()`. Add the `geom_point()` function to the pipeline
+Create a new pipeline and pipe `presidential` to the `mutate()` function. Within this function, create a new variable `id` and set it equal to `33` plus `row_number()`. Add the `ggplot()` function to the pipeline. Within this function, map `x` to `start` and `y` to `id` using `aes()`. Add the `geom_point()` function to the pipeline.
 
 ```{r scales-12, exercise = TRUE}
 
@@ -1527,7 +1548,7 @@ Create a new pipeline and pipe `presidential` to the `mutate()` function. Within
 presidential |> 
   mutate(id = ...) |> 
   ggplot(aes(x = ..., ... = id)) +
-    eom_point()
+    geom_point()
 ```
 
 ```{r scales-12-solution, exercise.reveal_solution = FALSE}
@@ -1543,7 +1564,7 @@ grade_this_code()
 
 ### 
 
-`id` is simply the number of the presidency is that row. Eisenhower was the 34th President (1st row in data), Kennedy was the 35th (2nd row in data), and so on.
+`id` is simply the number of the presidency in that row. Eisenhower was the 34th President (1st row in data), Kennedy was the 35th (2nd row in data), and so on.
 
 ### Exercise 13
 
@@ -1689,7 +1710,7 @@ In this section we will learn how to adjust the placement of the legend and how 
 
 First create a new ggplot object called `base`. 
 
-Assign `base` as the dataset `mpg` piped to the `ggplot()` function. Within the `aes()` for this function map `x` to `displ` and `y` to `hwy`.  Add `geom_point()` with `aes(color = class)`
+Assign `base` as the dataset `mpg` piped to the `ggplot()` function. Within the `aes()` for this function map `x` to `displ` and `y` to `hwy`.  Add `geom_point()` with `aes(color = class)`.
 
 ```{r legend-layout-1, exercise = TRUE}
 
@@ -1805,11 +1826,11 @@ This fixes our previous problem. If your plot is short and wide, place the legen
 ## Replacing a Scale
 ### 
 
-Instead of just tweaking the details a little, you can instead replace the scale altogether. There are two types of scales you’re mostly likely to want to switch out: continuous position scales and color scales. Fortunately, the same principles apply to all the other aesthetics, so once you’ve mastered position and color, you’ll be able to quickly pick up other scale replacements.
+Instead of just tweaking the details a little, you can instead replace the scale altogether. There are two types of scales you’re most likely to want to switch out: continuous position scales and color scales. Fortunately, the same principles apply to all the other aesthetics, so once you’ve mastered position and color, you’ll be able to quickly pick up other scale replacements.
 
 ### Exercise 1
 
-We will be working with the familiar `diamonds` dataset. As a reminder of whats in the dataset, type `diamonds` and hit "Submit Answer".
+We will be working with the familiar `diamonds` dataset. As a reminder of what's in the dataset, type `diamonds` and hit "Submit Answer".
 
 ```{r replacing-a-scale-1, exercise = TRUE}
 
@@ -1986,7 +2007,7 @@ Start a new pipeline with `mpg` piped into the `ggplot()` function. Within this 
 ```
 
 ```{r replacing-a-scale-7-hint-1, eval = FALSE}
-,,, +
+... +
   geom_point(aes(color = ...))
 ```
 
@@ -2067,7 +2088,7 @@ The ColorBrewer scales are documented online at https://colorbrewer2.org/ and ma
 
 ### Exercise 10
 
-- Start a new pipeline with the dataset `presidential`piped into the `mutate()` function. 
+- Start a new pipeline with the dataset `presidential` piped into the `mutate()` function.
 - Within the `mutate()` function, create a new variable called `id` and set it equal to `33` plus `row_number()`. 
 - Add the `ggplot()` function to the pipeline and map `x` to `start`, `y` to `id`, and `color` to `party`. 
 - Add `geom_point()`.
@@ -2077,8 +2098,8 @@ The ColorBrewer scales are documented online at https://colorbrewer2.org/ and ma
 ```
 
 ```{r replacing-a-scale-10-hint-1, eval = FALSE}
-presidential |> 
-  mutate(id = 33 + ...) +
+presidential |>
+  mutate(id = 33 + ...) |>
   ...
 ```
 
@@ -2364,7 +2385,7 @@ grade_this_code()
 
 ###
 
-One way to zoom in on a plot is to decrease the range of the data which is plotted. The "problem" with this approach is that only this data is used in geom's like `geom_smooth()`. This is probably not what you want. Subsetting the data has affected the `x` and `y` scales as well as the smooth curve.
+One way to zoom in on a plot is to decrease the range of the data which is plotted. The "problem" with this approach is that only this data is used in geoms like `geom_smooth()`. This is probably not what you want. Subsetting the data has affected the `x` and `y` scales as well as the smooth curve.
 
 ### Exercise 3
 
@@ -2634,7 +2655,7 @@ It’s possible to control individual components of each theme, like the size an
 
 ### Exercise 6
 
-Using `labs()`, set `title` to `"Larger engine sizes tend to have lower fuel economy"`and `caption` to `"Source: https://fueleconomy.gov"`.
+Using `labs()`, set `title` to `"Larger engine sizes tend to have lower fuel economy"` and `caption` to `"Source: https://fueleconomy.gov"`.
 
 ```{r themes-6, exercise = TRUE}
 ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
@@ -2721,7 +2742,7 @@ ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
   ) +
   theme(
     legend.position = "inside",
-    legend.position.inside = c(0.6, 0.7),
+    legend.position.inside = c(0.6, 0.7)
   )
 ```
 
@@ -2780,7 +2801,7 @@ ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
     legend.position = "inside",
     legend.position.inside = c(0.6, 0.7),
     legend.direction = "horizontal",
-    legend.box.background = ...,
+    legend.box.background = ...
   )
 ```
 
@@ -2832,7 +2853,7 @@ ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
     legend.position = "inside",
     legend.position.inside = c(0.6, 0.7),
     legend.direction = "horizontal",
-    legend.box.background = element_rect(color = "black")
+    legend.box.background = element_rect(color = "black"),
     plot.title = ...
   )
 ```
@@ -2937,7 +2958,7 @@ grade_this_code()
 
 ### 
 
-The theme elements that control the position of the title and the caption are `plot.title.position` and `plot.caption.position`, respectively. In the this plot these are set to `"plot"` to indicate these elements are aligned to the entire plot area, instead of the plot panel (the default).
+The theme elements that control the position of the title and the caption are `plot.title.position` and `plot.caption.position`, respectively. In this plot these are set to `"plot"` to indicate these elements are aligned to the entire plot area, instead of the plot panel (the default).
 
 The `plot.caption` argument with value `element_text(hjust = 0)` places the caption flush left. It would otherwise be right-aligned by default. 
 
@@ -2961,7 +2982,7 @@ So far we talked about how to create and modify a single plot. What if you have 
 
 ### Exercise 1
 
-We have created several plots (`p1` through `p8`) for you to use in these exercises. Type `p1` and hit "Submit Answer".
+We have created several plots (`p1` through `p5`) for you to use in these exercises. Type `p1` and hit "Submit Answer".
 
 ```{r layout-1, exercise = TRUE}
 
@@ -3120,7 +3141,7 @@ By default plot guides (like legends) will be put on the side as with regular pl
 
 ### Exercise 7
 
-None of our plots, by design, include a legend because we want a single legend for the entire diplay. We also want a single title. 
+By design, `p1`, `p2`, and `p5` do not include a legend, and `p3` and `p4` share the same legend, because we want a single legend for the entire display. We also want a single title.
 
 To add this, we need to use the **patchwork** function `plot_annotation()`. Add it to our plot, setting the `title` argument to `"City and highway mileage for cars with different drive trains"` and the `caption` argument to `"Source: https://fueleconomy.gov"`. 
 

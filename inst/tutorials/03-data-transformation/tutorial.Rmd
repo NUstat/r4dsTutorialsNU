@@ -103,8 +103,13 @@ flights
 ```
 
 ```{r rows-1-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
 library(nycflights13)
 flights
+
+# option 2 ----
+library(nycflights13)
+print(flights)
 ```
 
 ```{r rows-1-check}
@@ -121,12 +126,19 @@ grade_this_code()
 quiz(
   caption = "",
   question_text("What function provides an easy way to print the data such that you see all variables and variable types which is particularly useful for large datasets?",
+          # answer_fn(function(value){
+          #   if (str_remove_all(str_to_lower(value), " ") %in%
+          #       c("glimpse",
+          #         "glimpse()")) {
+          #        return(mark_as(TRUE))}
+          #        return(mark_as(FALSE) ) }),
           answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("glimpse", 
-                  "glimpse()")) {
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "glimpse")
+              ) {
                  return(mark_as(TRUE))}
-                 return(mark_as(FALSE) ) }),
+                 return(mark_as(FALSE) )
+                              }),
            allow_retry = TRUE)
 )
 ```
@@ -137,19 +149,26 @@ quiz(
 quiz(
   caption = "",
   question_text("What function allows you to keep rows based on the values of a column?",
+          # answer_fn(function(value){
+          #   if (str_remove_all(str_to_lower(value), " ") %in%
+          #       c("filter",
+          #         "filter()")) {
+          #        return(mark_as(TRUE))}
+          #        return(mark_as(FALSE) ) }),
           answer_fn(function(value){
-            if (str_remove_all(str_to_lower(value), " ") %in% 
-                c("filter", 
-                  "filter()")) {
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "filter")
+              ) {
                  return(mark_as(TRUE))}
-                 return(mark_as(FALSE) ) }),
+                 return(mark_as(FALSE) )
+                              }),
            allow_retry = TRUE)
 )
 ```
 
 ###
 
-The pipe, ` |>`, takes the thing on its left and passes it along to the function on its right.
+The pipe, `|>`, takes the thing on its left and passes it along to the function on its right.
 
 ###
 
@@ -179,9 +198,9 @@ grade_this_code()
 
 ### 
 
-The easiest way to pronounce the pipe is “then”. So, in words we would describe the above code as "flights then print."
+The easiest way to pronounce the pipe is “then”. So, in words we would describe the above code as "flights then filter."
 
-Note that only `r scales::comma(nrow(nycflights13::flights |> filter(dep_delay > 120)))` rows remain after we filter for such a long departure delay. Why do we only see 1,000 rows here? Because Quarto, by default, only keeps 1,000 rows for display purposes.
+Note that only `r scales::comma(nrow(nycflights13::flights |> filter(dep_delay > 120)))` rows remain after we filter for such a long departure delay. Why do we only see 1,000 rows here? Because R Markdown, by default, only keeps 1,000 rows for display purposes.
 
 ### Exercise 3
 
@@ -212,7 +231,7 @@ grade_this_code()
 
 ### 
 
-It is often useful to, temporarily add a simple function to the end of a pipe to confirm that the resulting tibble is what we expect it to be. Then, we remove that function and go back to working on the pipe.
+It is often useful to temporarily add a simple function to the end of a pipe to confirm that the resulting tibble is what we expect it to be. Then, we remove that function and go back to working on the pipe.
 
 
 ### Exercise 4
@@ -261,7 +280,7 @@ quiz(
        answer(htmltools::img(src="images/common_error_5.png", height = 50, width = 250)),
        random_answer_order = TRUE,
        allow_retry = TRUE),
-  question("Which of the following will only include flights that departed on February or March.",
+  question("Which of the following will only include flights that departed in February or March.",
        answer(htmltools::img(src="images/common_error_or_1.png", height = 50, width = 250)),
        answer(htmltools::img(src="images/common_error_or_2.png", height = 50, width = 250)),
        answer(htmltools::img(src="images/common_error_or_3.png", height = 50, width = 250), correct = TRUE),
@@ -280,7 +299,7 @@ When you run `filter()`, **dplyr** executes the filtering operation, creating a 
 
 ###
 
-Create a new object, `jan1` which is the result of filtering `flights` to just including flights from January 1. In other words, put `jan1 <- ` in front of the code for Exercise 3 (`flights |> filter(month == 1 & day == 1)`).
+Create a new object, `jan1` which is the result of filtering `flights` to just including flights from January 1. In other words, put `jan1 <- ` in front of the code for Exercise 4 (`flights |> filter(month == 1 & day == 1)`).
 
 ```{r rows-5, exercise = TRUE}
 
@@ -473,7 +492,7 @@ grade_this_code()
 
 ### 
 
-In modern code, arguments to **dplyr** functions are proceeded with dots, `.`, in order to help distinguish them from variable names. But, `count()` is an older function, so its arguments, like `sort`, do not have a dot in front. 
+In modern code, arguments to **dplyr** functions are preceded with dots, `.`, in order to help distinguish them from variable names. But, `count()` is an older function, so its arguments, like `sort`, do not have a dot in front. 
 
 
 ## Columns
@@ -513,7 +532,7 @@ flights |>
     )
 ```
 
-``` {r columns-1-solution, exercise.reveal_solution = FALSE}
+```{r columns-1-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(gain = dep_delay - arr_delay,
          speed = distance / air_time * 60)
@@ -545,7 +564,7 @@ flights |>
   )
 ```
 
-``` {r columns-2-solution, exercise.reveal_solution = FALSE}
+```{r columns-2-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
     gain = dep_delay - arr_delay,
@@ -599,7 +618,7 @@ flights |>
   )
 ```
 
-``` {r columns-3-solution, exercise.reveal_solution = FALSE}
+```{r columns-3-solution, exercise.reveal_solution = FALSE}
 flights |>
   mutate(
     gain = dep_delay - arr_delay,
@@ -615,6 +634,13 @@ grade_this_code()
 ### 
 
 The four allowed values for `.keep` are `"all"`, `"used"`, `"unused"`, and `"none"`. From the `mutate()` [help page](https://dplyr.tidyverse.org/reference/mutate.html):
+
+> Control which columns from `.data` are retained in the output. Grouping columns and columns created by `...` are always kept.
+>
+> * `"all"` retains all columns from `.data`. This is the default.
+> * `"used"` retains only the columns used in `...` to create new columns. This is useful for checking your work, as it displays inputs and outputs side-by-side.
+> * `"unused"` retains only the columns *not* used in `...` to create new columns. This is useful if you generate new columns, but no longer need the columns used to generate them.
+> * `"none"` doesn't retain any extra columns from `.data`. Only the grouping variables and columns created by `...` are kept.
 
 
 ### Exercise 4
@@ -633,7 +659,7 @@ flights |>
   select(...)
 ```
 
-``` {r columns-4-solution, exercise.reveal_solution = FALSE}
+```{r columns-4-solution, exercise.reveal_solution = FALSE}
 flights |>
   select(year, month, day)
 ```
@@ -657,7 +683,7 @@ flights |>
   select(year:...)
 ```
 
-``` {r columns-5-solution, exercise.reveal_solution = FALSE}
+```{r columns-5-solution, exercise.reveal_solution = FALSE}
 flights |>
   select(year:day)
 ```
@@ -694,7 +720,7 @@ flights |>
   select(...)
 ```
 
-``` {r columns-6-solution, exercise.reveal_solution = FALSE}
+```{r columns-6-solution, exercise.reveal_solution = FALSE}
 flights |>
   select(where(is.character))
 ```
@@ -753,7 +779,7 @@ flights |>
   select(tail_num = ...)
 ```
 
-``` {r columns-7-solution, exercise.reveal_solution = FALSE}
+```{r columns-7-solution, exercise.reveal_solution = FALSE}
 flights |>
   select(tail_num = tailnum)
 ```
@@ -781,7 +807,7 @@ flights |>
   rename(...)
 ```
 
-``` {r columns-8-solution, exercise.reveal_solution = FALSE}
+```{r columns-8-solution, exercise.reveal_solution = FALSE}
 flights |>
   rename(tail_num = tailnum)
 ```
@@ -811,7 +837,7 @@ flights |>
   ...(time_hour, air_time, .after = ...)
 ```
 
-``` {r columns-9-solution, exercise.reveal_solution = FALSE}
+```{r columns-9-solution, exercise.reveal_solution = FALSE}
 flights |>
   relocate(time_hour, air_time, .after = day)
 ```
@@ -844,7 +870,7 @@ The standard rhythm of good data science is to examine the result of each functi
 ```
 
 ```{r the-pipe-1-hint-1, eval = FALSE}
-If you use `=` instead of `==`, R will give you a warning. One equal sign is for *assignment*. Two equal signs are for *comparisons*. Remember that variable names, like `dest` are not quoted while the values of those variables, like `IAH` are quoted.
+If you use `=` instead of `==`, R will give you an error. One equal sign is for *assignment*. Two equal signs are for *comparisons*. Remember that variable names, like `dest` are not quoted while the values of those variables, like `"ORD"` are quoted.
 ```
 
 ```{r the-pipe-1-hint-2, eval = FALSE}
@@ -855,7 +881,7 @@ flights |>
   arrange(desc(...))
 ```
 
-``` {r the-pipe-1-solution, exercise.reveal_solution = FALSE}
+```{r the-pipe-1-solution, exercise.reveal_solution = FALSE}
 flights |> 
   filter(dest == "ORD") |> 
   mutate(gain = dep_delay - arr_delay) |>
@@ -890,9 +916,14 @@ flights |>
   summarize(mean(...))
 ```
 
-``` {r groups-1-solution, exercise.reveal_solution = FALSE}
-flights |> 
+```{r groups-1-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
+flights |>
   summarize(mean(dep_delay))
+
+# option 2 ----
+flights |>
+  summarise(mean(dep_delay))
 ```
 
 ```{r groups-1-check}
@@ -922,9 +953,14 @@ flights |>
   summarize(mean(dep_delay, ... = TRUE))
 ```
 
-``` {r groups-2-solution, exercise.reveal_solution = FALSE}
-flights |> 
+```{r groups-2-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
+flights |>
   summarize(mean(dep_delay, na.rm = TRUE))
+
+# option 2 ----
+flights |>
+  summarise(mean(dep_delay, na.rm = TRUE))
 ```
 
 ```{r groups-2-check}
@@ -933,7 +969,7 @@ grade_this_code()
 
 ### 
 
-Again, we have a tibble as the result. Tibbes in and tibbles out is a fundamental pattern in the *Tidyverse*. The value is `r mean(flights$dep_delay, na.rm = TRUE)`. Note, however, that the name of the variable, the one column name in our tibble, is `mean(dep_delay, na.rm = TRUE)`. (To refer to this variable name, since it includes spaces and other weird characters, we have to use backticks.) 
+Again, we have a tibble as the result. Tibbles in and tibbles out is a fundamental pattern in the *Tidyverse*. The value is `r mean(flights$dep_delay, na.rm = TRUE)`. Note, however, that the name of the variable, the one column name in our tibble, is `mean(dep_delay, na.rm = TRUE)`. (To refer to this variable name, since it includes spaces and other weird characters, we have to use backticks.) 
 
 The reason for this weirdness is that we did not provide a variable name into which `summarize()` could place the result, so it used the name of the command. 
 
@@ -955,9 +991,16 @@ flights |>
   )
 ```
 
-``` {r groups-3-solution, exercise.reveal_solution = FALSE}
-flights |> 
+```{r groups-3-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
+flights |>
   summarize(
+    delay = mean(dep_delay, na.rm = TRUE)
+  )
+
+# option 2 ----
+flights |>
+  summarise(
     delay = mean(dep_delay, na.rm = TRUE)
   )
 ```
@@ -988,8 +1031,15 @@ flights |>
 ```
 
 ```{r groups-4-solution, exercise.reveal_solution = FALSE}
-flights |> 
+# option 1 ----
+flights |>
   summarize(
+    delay = mean(dep_delay, na.rm = TRUE),
+    .by = month)
+
+# option 2 ----
+flights |>
+  summarise(
     delay = mean(dep_delay, na.rm = TRUE),
     .by = month)
 ```
@@ -999,7 +1049,7 @@ grade_this_code()
 ```
 ### 
 
-Note the weird sort order. By default, `summarize()` uses the character sort order of the `.by` variable. 
+Note the weird sort order. With `.by`, `summarize()` keeps the groups in the order in which they first appear in the data, and `flights` itself is sorted in a weird way: month 1, then months 10, 11, and 12, then months 2 through 9.
 
 ### Exercise 5
 
@@ -1021,8 +1071,17 @@ flights |>
 ```
 
 ```{r groups-5-solution, exercise.reveal_solution = FALSE}
-flights |> 
+# option 1 ----
+flights |>
   summarize(
+    delay = mean(dep_delay, na.rm = TRUE),
+    n = n(),
+    .by = month
+  )
+
+# option 2 ----
+flights |>
+  summarise(
     delay = mean(dep_delay, na.rm = TRUE),
     n = n(),
     .by = month
@@ -1039,7 +1098,7 @@ Note that the letter `n` does two completely different things in this code. Firs
 
 ### Exercise 6
 
-There are five handy functions, all part of the [`slice_*()`](https://dplyr.tidyverse.org/reference/slice.html) family, that allow you extract specific rows. Pipe `flights` to `slice_head(n = 3)`.
+There are five handy functions, all part of the [`slice_*()`](https://dplyr.tidyverse.org/reference/slice.html) family, that allow you to extract specific rows. Pipe `flights` to `slice_head(n = 3)`.
 
 ```{r groups-6, exercise = TRUE}
 
@@ -1141,7 +1200,7 @@ grade_this_code()
 
 ### 
 
-Since `dep_delay` is in minutes, the most delayed flights were up to 20 hours delayed. Looking at extreme values is always important. For example, a single data error could have significantly affected the average calculations we did above.
+Since `dep_delay` is in minutes, the most delayed flights were up to almost 22 hours delayed. Looking at extreme values is always important. For example, a single data error could have significantly affected the average calculations we did above.
 
 
 ### Exercise 10
@@ -1174,7 +1233,7 @@ Are there really flights that take off 30 minutes early? Maybe? Again, data scie
 
 ### Exercise 11
 
-Most of the `slice_*()` functions also take a `by` (or `.by`) argument. Pipe `flights` to `slice_min()`, setting `order_by` to `dep_delay`, `n` to equal `1` and `by` to `origin`. This will get the individual flight, from each origin airport, with the smallest delay.
+Most of the `slice_*()` functions also take a `by` argument. Pipe `flights` to `slice_min()`, setting `order_by` to `dep_delay`, `n` to equal `1` and `by` to `origin`. This will get the individual flight, from each origin airport, with the smallest delay.
 
 ```{r groups-11, exercise = TRUE}
 
@@ -1198,7 +1257,7 @@ grade_this_code()
 
 ### 
 
-Why does `slice_min()` take `by` but summarize take `.by`? It is a quirk of the evolution of these functions. Don't worry about it. If you use the wrong one, R will provide a gentle reminder.
+Why does `slice_min()` take `by` but `summarize()` take `.by`? It is a quirk of the evolution of these functions. Don't worry about it. If you use `.by` in a `slice_*()` function, R will give you an error that reminds you to use `by` instead. If you use `by` in `summarize()`, the error is more confusing, because `summarize()` thinks you are trying to create a new column called `by`.
 
 
 ### 

@@ -76,7 +76,6 @@ Assign `2 * 8` to the variable `x`.
 
 ```{r coding-basics-1-hint-1, eval = FALSE}
 ___ <- __ * ___
-x
 ```
 
 ```{r coding-basics-1-solution, exercise.reveal_solution = FALSE}
@@ -114,11 +113,13 @@ grade_this_code()
 
 ###
 
-The shortcut key for running a single line of code is `Command/Ctrl + Enter`. 
+The shortcut key for running a single line of code in RStudio is `Command/Ctrl + Enter`.
 
 * `Command/Ctrl + Enter` will run just the code at the LINE in which the cursor is located. This is probably the single most commonly used shortcut key because it is very handy to execute your code line-by-line.
 
 * `Command/Ctrl + Shift + Enter` will run ALL the code in the code chunk.
+
+In the exercise boxes of these tutorials, both shortcuts work like the "Run Code" button: they run ALL the code in the box, or only the code you have highlighted.
 
 ### Exercise 3
 
@@ -187,7 +188,7 @@ even / 2
 
 ```{r coding-basics-5-check}
 grade_this({
-  if (identical(.result, c(1, 2, 3, 4))) {
+  if (isTRUE(all.equal(.result, c(1, 2, 3, 4)))) {
     pass("Great work!")
   }
   fail()
@@ -205,7 +206,14 @@ Answer the following set of questions.
 quiz(
   caption = "",
   question_text("What is the operator that creates a comment in a code chunk?",
-       answer(c("#"), correct = TRUE),
+       # answer(c("#"), correct = TRUE),
+       answer_fn(function(value){
+            if (
+              str_detect(str_remove_all(tolower(value), "[[:space:]]"), "#|hash|pound")
+              ) {
+                 return(mark_as(TRUE))}
+                 return(mark_as(FALSE) )
+                              }),
        allow_retry = TRUE),
   question("Comments should...",
        answer("explain why something is happening in your code", correct = TRUE),
@@ -303,7 +311,7 @@ grade_this_code()
 
 ### Exercise 3
 
-Copy the previous code chunk and store the vector as the variable `my_seq`. Then on the next line take the `sum` of `my_seq`
+Copy the previous code chunk and store the vector as the variable `my_seq`. Then on the next line take the `sum` of `my_seq`.
 
 ```{r calling_fun-3, exercise = TRUE}
 

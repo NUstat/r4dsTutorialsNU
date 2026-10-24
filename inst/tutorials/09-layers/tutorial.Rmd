@@ -233,9 +233,10 @@ grade_this_code()
 When class is mapped to shape, we get two warnings:
 
 ````
-1: The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate; you have 7. Consider specifying shapes manually if you must have them.
+1: The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate
+ℹ you have requested 7 values. Consider specifying shapes manually if you need that many of them.
 
-2: Removed 62 rows containing missing values (geom_point()).
+2: Removed 62 rows containing missing values or values outside the scale range (`geom_point()`).
 ````
  
 ### 
@@ -342,7 +343,7 @@ Here, the color doesn’t convey information about a variable, but only changes 
 
 * The name of a color as a character string, e.g., color = "blue".
 * The size of a point in mm, e.g., size = 1.
-* The shape of a point as a number, e.g, shape = 1. 
+* The shape of a point as a number, e.g., shape = 1.
 
 ## Geometric objects
 ### 
@@ -385,7 +386,7 @@ grade_this_code()
 
 <!-- ### -->
 
-This plot contain the same `x` variable, the same `y` variable, and describes the same data as our scatterplot in the last section. But the plots are not identical. Each plot uses a different geometric object, geom, to represent the data.
+This plot contains the same `x` variable, the same `y` variable, and describes the same data as our scatterplot in the last section. But the plots are not identical. Each plot uses a different geometric object, geom, to represent the data.
 
 ### 
 
@@ -435,7 +436,7 @@ By explicitly defining the `method` and `formula` in your code the message goes 
 
 ### 
 
-The `se`, which stands for "standard error," determines whether or not error bars around the line are included. By default, the value of `se` is `TRUE`. We set it to `FALSE` here in order to make the graphic less cluttered.
+The `se`, which stands for "standard error," determines whether or not a confidence band around the line is included. By default, the value of `se` is `TRUE`. We set it to `FALSE` here in order to make the graphic less cluttered.
 
 
 ### Exercise 3
@@ -500,13 +501,13 @@ Notice that this plot contains two geoms in the same graph.
 
 ### Exercise 5
 
-The `aes()` values cascade across all the geom's, unless and until we change them ourselves. 
+The `aes()` values cascade across all the geoms, unless and until we change them ourselves. 
 
 Notice that `geom_point()` simply ignores `linetype` because that is not a valid aesthetic for a point.
 
 It would be more appropriate to define `linetype` locally within the `geom_smooth()` call (instead of globally).
 
-Set `linetype = drv` in `aes()` from within `geom_smooth()`. 
+Remove `linetype = drv` from the `aes()` in the `ggplot()` call, and instead set `linetype = drv` in `aes()` from within `geom_smooth()`.
 
 ```{r geometric-objects-5, exercise = TRUE}
 
@@ -541,7 +542,7 @@ Many geoms, like `geom_smooth()`, use a single geometric object to display multi
 
 ### Exercise 6
 
-The explore the use of the `group` aesthetic, begin with our standard plot, which uses just `aes(x = displ, y = hwy)` in the call to `ggplot()` and just `method = 'loess'`,  `formula = 'y ~ x'`, and `se = FALSE` in the call to `geom_smooth()`.
+To explore the use of the `group` aesthetic, begin with our standard plot, which uses just `aes(x = displ, y = hwy)` in the call to `ggplot()` and just `method = 'loess'`,  `formula = 'y ~ x'`, and `se = FALSE` in the call to `geom_smooth()`.
 
 ```{r geometric-objects-6, exercise = TRUE}
 
@@ -582,8 +583,8 @@ Add `aes(group = drv)` to the call to `geom_smooth()`.
 ```{r geometric-objects-7-hint-1, eval = FALSE}
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth(
-    mapping = ...(group = ...)
-    method = 'loess', 
+    mapping = ...(group = ...),
+    method = 'loess',
     formula = 'y ~ x',
     se = FALSE
   )
@@ -739,7 +740,18 @@ Add a third call to `geom_point()`, setting `data` equal to `mpg |> filter(class
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r geometric-objects-11-hint-1, eval = FALSE}
-
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_point(
+    data = mpg |> filter(class == "2seater"),
+    color = "red"
+  ) +
+  geom_point(
+    ... = mpg |> filter(class == "2seater"),
+    color = ...,
+    shape = ...,
+    size = ...
+  )
 ```
 
 ```{r geometric-objects-11-solution, exercise.reveal_solution = FALSE}
@@ -768,7 +780,7 @@ We need the two extra calls to `geom_point()` because the first one makes the ce
 
 Geoms are the fundamental building blocks of ggplot2. You can completely transform the look of your plot by changing its geom, and different geoms can reveal different features of your data. 
 
-Make a new plot by hitting "Submit Anwser".
+Make a new plot by hitting "Submit Answer".
 
 ```{r geometric-objects-12, exercise = TRUE}
 ggplot(mpg, aes(x = hwy)) +
@@ -974,7 +986,7 @@ The `diamonds` dataset contains information on about 54,000 diamonds, including 
 
 1. Pipe `diamonds` into `ggplot()`. (Recall, instead of passing in `diamonds` as the first argument to `ggplot()`, we can "pipe" it in with the `|>` symbol.)
 
-2. Add `aes(x = cut)` to the class to `ggplot()`.
+2. Add `aes(x = cut)` to the call to `ggplot()`.
 
 3. Add `geom_bar()` as the geom. Don't forget the `+` after the call to `ggplot()`.
 
@@ -1070,7 +1082,10 @@ Add `geom_bar(stat = 'identity')` to the pipeline.
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r statistical-transformations-4-hint-1, eval = FALSE}
-
+diamonds |>
+  count(cut) |>
+  ggplot(aes(x = cut, y = n)) +
+  ...(stat = 'identity')
 ```
 
 ```{r statistical-transformations-4-solution, exercise.reveal_solution = FALSE}
@@ -1119,11 +1134,11 @@ To find the possible variables that can be computed by the stat, look for the se
 
 ###
 
-Setting `group`, is used to override the default grouping of `cut`. If we did not set this argument it would instead set each proportion to 1 (or 100% ) because the proportion of Fair in Fair is 1 (or 100%), etc.
+Setting `group` is used to override the default grouping of `cut`. If we did not set this argument it would instead set each proportion to 1 (or 100%) because the proportion of Fair in Fair is 1 (or 100%), etc.
 
 ### Exercise 6
 
-You might want to draw greater attention to the statistical transformation in your code. For example, you might use stat_summary(), which summarizes the y values for each unique x value, to draw attention to the summary that you’re computing. Hit "Submit Answer".
+You might want to draw greater attention to the statistical transformation in your code. For example, you might use `stat_summary()`, which summarizes the y values for each unique x value, to draw attention to the summary that you’re computing. Hit "Submit Answer".
 
 ```{r statistical-transformations-6, exercise = TRUE}
 ggplot(diamonds) + 
@@ -1256,7 +1271,7 @@ grade_this_code()
 
 ### 
 
-`position = "identity"` will place each object exactly where it falls in the context of the graph. This is not very useful for bars, because it overlaps them. To see that overlapping we either need to make the bars slightly transparent by setting alpha to a small value.
+`position = "identity"` will place each object exactly where it falls in the context of the graph. This is not very useful for bars, because it overlaps them. To see that overlapping we either need to make the bars slightly transparent by setting `alpha` to a small value, or completely transparent by setting `fill = NA`.
 
 ### 
 
@@ -1264,7 +1279,7 @@ The identity position adjustment is more useful for 2d geoms, like points, where
 
 ### Exercise 4
 
-`position = "fill"` works like stacking, but makes each set of stacked bars the same height. Use the code from the exercise, but remove the alpha argument and replace `"identity"` with `"fill"`.
+`position = "fill"` works like stacking, but makes each set of stacked bars the same height. Use the code from the previous exercise, but remove the `alpha` argument and replace `"identity"` with `"fill"`.
 
 ```{r position-adjustments-4, exercise = TRUE}
 
@@ -1373,7 +1388,7 @@ grade_this_code()
 
 ### 
 
-The **maps** package includes the area of each matching region in the map is computed, and regions which match the same element of regions have their areas combined. Each region is assumed planar, with vertices specified by the x and y components of the map object.
+The **maps** package contains outlines of countries, states, and other regions. The **ggplot2** function `map_data()` turns one of these outlines into a data frame of longitude and latitude points, which you can plot with `geom_polygon()`. Note that **maps** has its own `map()` function, which masks `purrr::map()` once **maps** is loaded.
 
 ### Exercise 2
 
