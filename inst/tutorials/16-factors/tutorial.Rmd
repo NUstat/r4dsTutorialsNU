@@ -787,7 +787,7 @@ grade_this_code()
 
 ### 
 
-The result is a tibble with one row for each level of `relig`. (Older R code will often use the `group_by()` function when calculating statistics for each level of a factor. You should avoid this approach. Use the `.by` argument to `summarize()` and similar functions.)
+The result is a tibble with one row for each level of `relig`. (R4DS and much existing code use the `group_by()` function when calculating statistics for each level of a factor, and `group_by()` is still fully supported. In this course, however, we use the `.by` argument to `summarize()` and similar functions, because the grouping applies only to that one function call, so it can't carry over to later steps and cause unexpected results.)
 
 ### Exercise 4
 
@@ -1831,7 +1831,7 @@ Read the documentation to learn about [`fct_lump_min()`](https://forcats.tidyver
 ## Ordered factors
 ### 
 
-Ordered factors, created with `ordered()`, imply a strict ordering and equal distance between levels: the first level is “less than” the second level by the same amount that the second level is “less than” the third level, and so on.
+Ordered factors, created with `ordered()`, imply a strict ordering between levels, but don't specify anything about the magnitude of the differences between the levels. You use ordered factors when you know the levels are ranked, but there's no precise numerical ranking.
 
 ### Exercise 1
 
@@ -1851,14 +1851,21 @@ grade_this_code()
 
 ### 
 
-You can recognize ordered factors when printing because they use `<` between the factor levels. We don't recommend using ordered factors unless you have a compelling reason for doing so.
+You can recognize ordered factors when printing because they use `<` between the factor levels.
+
+Ordered factors behave very much like regular factors. There are only two places where you might notice different behavior:
+
+* If you map an ordered factor to `color` or `fill` in **ggplot2**, it defaults to a viridis color scale (`scale_color_viridis_d()`/`scale_fill_viridis_d()`), which implies a ranking.
+* If you use an ordered predictor in a linear model, it uses "polynomial contrasts."
+
+Correctly distinguishing between regular and ordered factors isn't central to this book. However, some fields (particularly the social sciences) use ordered factors extensively, and there it's important to identify them correctly so that analysis packages can offer the appropriate behavior.
 
 ## Summary
 ### 
 
 This tutorial covered [Chapter 16: Factors](https://r4ds.hadley.nz/factors.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. [**forcats**](https://forcats.tidyverse.org/) is the core *Tidyverse* package for working with categorical variables, called "factors" in R. Key commands include [`fct()`](https://forcats.tidyverse.org/reference/fct.html) for creating factors, [`fct_reorder()`](https://forcats.tidyverse.org/reference/fct_reorder.html) for changing the order of the levels, and [`fct_recode()`](https://forcats.tidyverse.org/reference/fct_recode.html) for recoding factors.
 
-If you want to learn more about factors, read "[Wrangling categorical data in R](https://peerj.com/preprints/3163/))" by Amelia McNamara and Nicholas Horton.   
+If you want to learn more about factors, read "[Wrangling categorical data in R](https://peerj.com/preprints/3163/)" by Amelia McNamara and Nicholas Horton.   
 
 
 ## Get Grade

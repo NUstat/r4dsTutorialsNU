@@ -17,8 +17,6 @@ description: 'Tutorial for Chapter 5: Data tidying'
 library(learnr)
 library(tidyverse)
 library(tutorial.helpers)
-library(babynames)
-library(socviz)
 library(gradethis)
 library(tutorialExtras)
 
@@ -46,12 +44,6 @@ cms_pivoted <- cms_patient_experience |>
   pivot_wider(id_cols = starts_with("org"), 
             names_from = measure_cd,
             values_from = prf_rate)
-
-# For plots
-
-car_names <- c(`f` = "Front Wheel Drive",
-               `4` = "4 Wheel Drive",
-               `r` = "Rear Wheel Drive")
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}

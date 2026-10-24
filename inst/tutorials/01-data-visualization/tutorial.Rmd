@@ -922,7 +922,7 @@ To visualize the relationship between a numerical and a categorical variable we 
 knitr::include_graphics("images/EDA-boxplot.png")
 ```
 
-Box plots are a type of data visualization that summarize the distribution of a continuous variable using five key statistics: minimum, lower quartile (Q1), median, upper quartile (Q3), and maximum. The box itself in the plot represents the middle 50% of the data, with the median shown as a horizontal line inside the box. The whiskers extend from the box to the farthest data point that is not an outlier (within 1.5 times the IQR of the box), and individual data points that fall outside of the whiskers are shown as individual points (outliers).
+Box plots are a type of data visualization that summarize the distribution of a continuous variable. The box itself in the plot spans the interquartile range (IQR), from the 25th percentile (Q1) to the 75th percentile (Q3), so it represents the middle 50% of the data, with the median shown as a horizontal line inside the box. The whiskers extend from the box to the farthest data point that is not an outlier (within 1.5 times the IQR of the box), and individual data points that fall outside of the whiskers are shown as individual points (outliers).
 
 ### 
 
@@ -969,9 +969,9 @@ quiz(
 
 ### Exercise 2
 
-Previously, we saw that we can define a `title`, `x`, `y` label within the `labs()` function. There are other functions, such as `ggtitle()`, `xlab()`, and `ylab()` that can be used to modify specific plot labels without affecting others. It's important to choose the appropriate function for your needs depending on the level of customization you require.
+Previously, we saw that we can define a `title`, `x`, and `y` label within the `labs()` function. You may also see the functions `ggtitle()`, `xlab()`, and `ylab()` in older code. These are superseded shortcuts: they still work, but **ggplot2** now recommends setting all plot labels with `labs()`.
 
-Copy the previous plot, then add `ggtitle()` to define the title as `"Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis"`; followed by `xlab()` to define the x label as `"Species"`; followed by the `ylab()` to define the y label as `"Body Mass (g)"`.
+Copy the previous plot, then add `labs()`. Within `labs()`, set `title` equal to `"Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis"`, `x` equal to `"Species"`, and `y` equal to `"Body Mass (g)"`.
 
 ```{r vis-relation-2, exercise = TRUE}
 
@@ -981,18 +981,22 @@ Copy the previous plot, then add `ggtitle()` to define the title as `"Body Mass 
 
 ```{r vis-relation-2-hint-1, eval = FALSE}
 ... +
-  ggtitle("...") +
-  xlab("...") +
-  ylab("...")
+  labs(
+    title = "...",
+    x = "...",
+    y = "..."
+  )
 
 ```
 
 ```{r vis-relation-2-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = species, y = body_mass_g)) +
   geom_boxplot() +
-  ggtitle("Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis") +
-  xlab("Species") +
-  ylab("Body Mass (g)")
+  labs(
+    title = "Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis",
+    x = "Species",
+    y = "Body Mass (g)"
+  )
 ```
 
 ```{r vis-relation-2-check}
@@ -1025,9 +1029,11 @@ Sometimes it is useful to change the color of the outliers to make them easier t
 ```{r vis-relation-3-solution, exercise.reveal_solution = FALSE}
 ggplot(penguins, aes(x = species, y = body_mass_g)) +
   geom_boxplot(varwidth = TRUE, outlier.color = "red") +
-  ggtitle("Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis") +
-  xlab("Species") +
-  ylab("Body Mass (g)")
+  labs(
+    title = "Body Mass Distribution of Palmer Penguins by Species:\nA Boxplot Analysis",
+    x = "Species",
+    y = "Body Mass (g)"
+  )
 ```
 
 ```{r vis-relation-3-check}

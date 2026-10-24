@@ -2454,7 +2454,7 @@ grade_this_code()
 
 ### 
 
-But how do we go from that logical vector to something that we can `group_by()`? `cumsum()` comes to the rescue here.
+But how do we go from that logical vector to something we can group by? `cumsum()` comes to the rescue here.
 
 ### Exercise 21
 
@@ -3479,9 +3479,13 @@ grade_this_code()
 
 As the names suggest, the summary functions are typically paired with `summarize()`. However, because of the recycling rules, they can also be usefully paired with `mutate()`
 
+###
+
+The `.by` argument applies only to the verb it is in, so you repeat it in each verb that needs the grouping. This is what makes `.by` predictable: the grouping can't leak into later verbs.
+
 ### Exercise 28
 
-Using the same pipe as above, add the `filter()` function to the pipeline. Within the `filter()` function, add the argument `y %in% c(1, max(y))`.
+Using the same pipe as above, add the `filter()` function to the pipeline. Within the `filter()` function, add the argument `y %in% c(1, max(y))` and set the `.by` argument to `c(year, month, day)`, so that `max(y)` is the last rank within each day.
 
 ```{r numeric-summaries-28, exercise = TRUE}
 
@@ -3491,15 +3495,15 @@ Using the same pipe as above, add the `filter()` function to the pipeline. Withi
 
 ```{r numeric-summaries-28-hint-1, eval = FALSE}
 flights |> 
-  mutate(y = min_rank(sched_dep_time), .by = c(year, month, day)) |> 
-  filter(...)
+  mutate(y = min_rank(sched_dep_time), .by = c(year, month, day)) |>
+  filter(y %in% c(1, max(y)), .by = ...)
 ```
 
 ```{r numeric-summaries-28-solution, exercise.reveal_solution = FALSE}
 flights |> 
   mutate(y=min_rank(sched_dep_time),
          .by = c(year, month, day)) |>
-  filter(y %in% c(1, max(y)))
+  filter(y %in% c(1, max(y)), .by = c(year, month, day))
 ```
 
 ```{r numeric-summaries-28-check}
@@ -3509,7 +3513,7 @@ grade_this_code()
 
 ### 
 
-Extracting values at positions is complementary to filtering on ranks. Filtering gives you all variables, with each observation in a separate row.
+Extracting values at positions is complementary to filtering on ranks. Filtering gives you all variables, with each observation in a separate row: here 1,195 rows, the first and last scheduled departures of each of the 365 days (ties give some days more than two rows).
 
 ## Summary
 ### 

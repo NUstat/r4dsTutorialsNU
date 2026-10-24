@@ -919,7 +919,7 @@ grade_this_code()
 
 ###
 
-Recall from Chapter 17 that factors are used for categorical variables, variables that have a fixed and known set of possible values.
+Recall from Chapter 16 that factors are used for categorical variables, variables that have a fixed and known set of possible values.
 
 ### Exercise 2
 
@@ -1141,7 +1141,7 @@ grade_this_code()
 
 ###
 
-Note that we **strongly** urge you to avoid using `group_by()` and instead use the `.by` argument in `summarize()`, but it is necessary in this case.
+We usually prefer the `.by` argument in `summarize()` because its grouping applies only to that one verb, so it can't carry over and cause unexpected results later. However, `.by` only creates groups that appear in the data and has no `.drop` argument, so this is a case where we need `group_by(.drop = FALSE)`.
 
 ### Exercise 10
 

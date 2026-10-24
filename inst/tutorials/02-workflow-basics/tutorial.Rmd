@@ -116,11 +116,11 @@ grade_this_code()
 
 ###
 
-The shortcut key for running a single line of code in RStudio is `Command/Ctrl + Enter`.
+The shortcut key for running the current line of code in RStudio is `Command/Ctrl + Enter`.
 
-* `Command/Ctrl + Enter` will run just the code at the LINE in which the cursor is located. This is probably the single most commonly used shortcut key because it is very handy to execute your code line-by-line.
+* `Command/Ctrl + Enter` will run the LINE in which the cursor is located or, if that line is part of a statement that spans several lines (such as a pipeline), the complete statement. This is probably the single most commonly used shortcut key because it is very handy to execute your code statement-by-statement.
 
-* `Command/Ctrl + Shift + Enter` will run ALL the code in the code chunk.
+* `Command/Ctrl + Shift + Enter` will run ALL the code in the current code chunk of an R Markdown or Quarto document. In an R script, it runs the whole file.
 
 In the exercise boxes of these tutorials, both shortcuts work like the "Run Code" button: they run ALL the code in the box, or only the code you have highlighted.
 

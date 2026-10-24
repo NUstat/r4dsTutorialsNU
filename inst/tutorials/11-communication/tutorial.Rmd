@@ -23,7 +23,6 @@ library(patchwork)
 library(gradethis)
 library(ggcheck)
 library(tutorialExtras)
-library(socviz)
 
 gradethis_setup()
 
@@ -120,7 +119,7 @@ question_text("Name:",
 ## Introduction
 ### 
 
-This tutorial covers [Chapter 11: Communication](https://r4ds.hadley.nz/communication.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. In this tutorial we will be making use of three packages associated with [**ggplot2**](https://ggplot2.tidyverse.org/): [**scales**](https://scales.r-lib.org/), [**ggrepel**](https://ggrepel.slowkow.com), and [**patchwork**](https://patchwork.data-imaginist.com). Key commands include [`quote()`](https://rdrr.io/r/base/substitute.html) which simply returns its argument and [`geom_label_repel()`](https://rdrr.io/cran/ggrepel/man/geom_text_repel.html) which adds text directly to the plot.
+This tutorial covers [Chapter 11: Communication](https://r4ds.hadley.nz/communication.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. In this tutorial we will be making use of three packages associated with [**ggplot2**](https://ggplot2.tidyverse.org/): [**scales**](https://scales.r-lib.org/), [**ggrepel**](https://ggrepel.slowkow.com), and [**patchwork**](https://patchwork.data-imaginist.com). Key commands include [`quote()`](https://rdrr.io/r/base/substitute.html) which simply returns its argument and [`geom_label_repel()`](https://ggrepel.slowkow.com/reference/geom_text_repel.html) which adds text directly to the plot.
 
 ## Labels
 ### 
@@ -1178,7 +1177,7 @@ Annotation is a powerful tool for communicating main takeaways and interesting f
 ## Scales
 ### 
 
-In this section, we will learn about how to display plots more appropriately by using scales. The most common use of the **scales** package is to customize the appearance of axis and legend labels. Use a `break_*` function to control how breaks are generated from the limits, and a `label_*` function to control how breaks are turned into labels.
+In this section, we will learn about how to display plots more appropriately by using scales. The most common use of the **scales** package is to customize the appearance of axis and legend labels. Use the `breaks_*()` functions to control how breaks are generated from the limits, and the `label_*()` functions to control how breaks are turned into labels.
 
 ### Exercise 1
 
@@ -1404,7 +1403,7 @@ Using `alpha` to adjust the transparency of individual data points is almost alw
 
 ### Exercise 8
 
-Using your previous code, add the `scale_x_continuous()` function. Within this function add the `labels` argument and set it equal to the `scales::label_dollar()` function.
+Using your previous code, add the `scale_x_continuous()` function. Within this function add the `labels` argument and set it equal to the `scales::label_currency()` function.
 
 ```{r scales-8, exercise = TRUE}
 
@@ -1422,9 +1421,21 @@ Using your previous code, add the `scale_x_continuous()` function. Within this f
 diamonds |>
   ggplot(aes(x = price, y = cut)) +
   geom_boxplot(alpha = 0.05) +
-  scale_x_continuous(labels = scales::label_dollar())
+  scale_x_continuous(labels = scales::label_currency())
 
 # option 2 ----
+diamonds |>
+  ggplot(aes(x = price, y = cut)) +
+  geom_boxplot(alpha = 0.05) +
+  scale_x_continuous(labels = label_currency())
+
+# option 3 ----
+diamonds |>
+  ggplot(aes(x = price, y = cut)) +
+  geom_boxplot(alpha = 0.05) +
+  scale_x_continuous(labels = scales::label_dollar())
+
+# option 4 ----
 diamonds |>
   ggplot(aes(x = price, y = cut)) +
   geom_boxplot(alpha = 0.05) +
@@ -1437,9 +1448,9 @@ grade_this_code()
 
 ### 
 
-The `labels` argument coupled with labeling functions from the **scales** package is also useful for formatting numbers as currency, percent, etc. The plot shows default labeling with `label_dollar()`, which adds a dollar sign as well as a thousand separator comma. 
+The `labels` argument coupled with labeling functions from the **scales** package is also useful for formatting numbers as currency, percent, etc. The plot shows default labeling with `label_currency()`, which adds a dollar sign as well as a thousand separator comma. You may see the older name, `label_dollar()`, in *R for Data Science* and in older code; it is now superseded by `label_currency()`.
 
-If the **scales** package were already loaded with `library()`, then it would not have been necessary to use the double colon notation, as in `scales::label_dollar()`. Just `label_dollar()` would have produced the same result.
+If the **scales** package were already loaded with `library()`, then it would not have been necessary to use the double colon notation, as in `scales::label_currency()`. Just `label_currency()` would have produced the same result.
 
 
 ### Exercise 9
@@ -2368,15 +2379,15 @@ mpg |>
   geom_smooth()
 
 ## option 2 ----
-mpg %>%
-  filter(displ >= 5, displ <= 6) %>%
+mpg |>
+  filter(displ >= 5, displ <= 6) |>
   ggplot(aes(x = displ, y = hwy)) +
   geom_point(aes(color = drv)) +
   geom_smooth() 
 
 ## option 3 ----
-mpg %>%
-  filter(between(displ, 5, 6)) %>%
+mpg |>
+  filter(between(displ, 5, 6)) |>
   ggplot(aes(x = displ, y = hwy)) +
   geom_point(aes(color = drv)) +
   geom_smooth() 
@@ -3258,7 +3269,7 @@ Note the use of the `&` operator here instead of the usual `+`. This is because 
 ## Summary
 ### 
 
-This tutorial covered [Chapter 11: Communication](https://r4ds.hadley.nz/communication.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. In this tutorial we made use of three packages associated with [**ggplot2**](https://ggplot2.tidyverse.org/): [**scales**](https://scales.r-lib.org/), [**ggrepel**](https://ggrepel.slowkow.com), and [**patchwork**](https://patchwork.data-imaginist.com). Key commands included [`quote()`](https://rdrr.io/r/base/substitute.html) which simply returns its argument and [`geom_label_repel()`](https://rdrr.io/cran/ggrepel/man/geom_text_repel.html) which adds text directly to the plot. 
+This tutorial covered [Chapter 11: Communication](https://r4ds.hadley.nz/communication.html) from [*R for Data Science (2e)*](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. In this tutorial we made use of three packages associated with [**ggplot2**](https://ggplot2.tidyverse.org/): [**scales**](https://scales.r-lib.org/), [**ggrepel**](https://ggrepel.slowkow.com), and [**patchwork**](https://patchwork.data-imaginist.com). Key commands included [`quote()`](https://rdrr.io/r/base/substitute.html) which simply returns its argument and [`geom_label_repel()`](https://ggrepel.slowkow.com/reference/geom_text_repel.html) which adds text directly to the plot. 
 
 [*ggplot2: Elegant Graphics for Data Analysis (3e)*](https://ggplot2-book.org/) by Hadley Wickham, Danielle Navarro, and Thomas Lin Pedersen is the best source for all the details about making beautiful graphics with **ggplot2**.
 

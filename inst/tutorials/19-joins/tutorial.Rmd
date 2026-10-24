@@ -121,7 +121,7 @@ You will also learn about basic joins, keys, foreign keys and more which is basi
 ## Keys
 ### 
 
-To understand joins, you need to first understand how two tables can be connected through a pair of keys, within each table. In this section, you’ll learn about the two types of key and see examples of both in the datasets of the [**nycflights13**](https://www.rdocumentation.org/packages/nycflights13/versions/1.0.1) package. You’ll also learn how to check that your keys are valid, and what to do if your table lacks a key.
+To understand joins, you need to first understand how two tables can be connected through a pair of keys, within each table. In this section, you’ll learn about the two types of key and see examples of both in the datasets of the [**nycflights13**](https://nycflights13.tidyverse.org/) package. You’ll also learn how to check that your keys are valid, and what to do if your table lacks a key.
 
 ### Exercise 1
 
@@ -387,7 +387,7 @@ grade_this_code()
 
 ### 
 
-We should be getting no records when we run the code since the table has no NULL values, if there were any then `is.na()` would display them.
+We should be getting no records when we run the code since the table has no missing (`NA`) values, if there were any then `is.na()` would display them.
 
 ### Exercise 11
 
@@ -1089,9 +1089,9 @@ While the first row in df1 only matches one row in df2, the second and third row
 
 ### Exercise 1
 
-Let's relax the restriction of equi joins and explore different criteria for matching rows. Before that, let's revisit a simplification we made earlier. In equi joins, the x keys and y keys are always equal, so we only display one key in the output. By requesting **dplyr** to keep both keys with `keep = TRUE`, we can modify the `left_join()` code.
+Let's relax the restriction of equi joins and explore different criteria for matching rows. Before that, let's revisit a simplification we made earlier. In equi joins, the x keys and y keys are always equal, so we only display one key in the output. By requesting **dplyr** to keep both keys with `keep = TRUE`, we can see both keys in the output of an `inner_join()` that uses `join_by()`.
 
-To join `x` with `y` using `left_join()`, start a pipe and specify `y` as the tibble to join. Use `key` as the joining criterion using `by` and include `keep = TRUE` to retain both keys.
+To join `x` with `y` using `inner_join()`, start a pipe and specify `y` as the tibble to join. Use `join_by(key == key)` as the joining criterion and include `keep = TRUE` to retain both keys.
 
 ```{r nonequi-joins-1, exercise = TRUE}
 
@@ -1099,12 +1099,12 @@ To join `x` with `y` using `left_join()`, start a pipe and specify `y` as the ti
 
 ```{r nonequi-joins-1-hint-1, eval = FALSE}
 x |> 
-  left_join(..., ... = "key", keep = ...)
+  inner_join(..., join_by(... == ...), keep = ...)
 ```
 
 ```{r nonequi-joins-1-solution, exercise.reveal_solution = FALSE}
 x |> 
-  left_join(y, by = "key", keep = TRUE)
+  inner_join(y, join_by(key == key), keep = TRUE)
 ```
 
 ```{r nonequi-joins-1-check}

@@ -203,7 +203,7 @@ grade_this_code()
 
 The easiest way to pronounce the pipe is “then”. So, in words we would describe the above code as "flights then filter."
 
-Note that only `r scales::comma(nrow(nycflights13::flights |> filter(dep_delay > 120)))` rows remain after we filter for such a long departure delay. Why do we only see 1,000 rows here? Because R Markdown, by default, only keeps 1,000 rows for display purposes.
+Note that only `r scales::label_comma()(nrow(nycflights13::flights |> filter(dep_delay > 120)))` rows remain after we filter for such a long departure delay. Why do we only see 1,000 rows here? Because R Markdown, by default, only keeps 1,000 rows for display purposes.
 
 ### Exercise 3
 
@@ -1263,17 +1263,116 @@ grade_this_code()
 Why does `slice_min()` take `by` but `summarize()` take `.by`? It is a quirk of the evolution of these functions. Don't worry about it. If you use `.by` in a `slice_*()` function, R will give you an error that reminds you to use `by` instead. If you use `by` in `summarize()`, the error is more confusing, because `summarize()` thinks you are trying to create a new column called `by`.
 
 
-### 
+###
 
-Note that `.by` is a relatively new addition to **dplyr** functions. In the past, to calculate group statistics you needed to issue the `group_by()` command in the pipe before the call to `summarize()`. Example:
+`.by` was added in **dplyr** 1.1.0 and has been stable since **dplyr** 1.2.0. This course uses `.by` because its grouping applies only to the one verb it appears in, so it can't carry over to later steps of the pipe and cause unexpected results.
 
-````
-flights |> 
-  group_by(month) |> 
-  summarize(delay = mean(dep_delay, na.rm = TRUE))
-````
+###
 
-Using `.by` is a much better approach. Never use `group_by()` unless you have a really good reason to do so.
+However, `group_by()` is still fully supported and very common. You will see it in *R for Data Science* and in later tutorials. Unlike `.by`, the grouping created by `group_by()` persists across all the later verbs in the pipe until you remove it with `ungroup()`.
+
+### Exercise 12
+
+Pipe `flights` to `group_by(month)`. Then continue the pipe with `glimpse()`.
+
+```{r groups-12, exercise = TRUE}
+
+```
+
+```{r groups-12-hint-1, eval = FALSE}
+flights |>
+  group_by(...) |>
+  ...()
+```
+
+```{r groups-12-solution, exercise.reveal_solution = FALSE}
+flights |>
+  group_by(month) |>
+  glimpse()
+```
+
+```{r groups-12-check}
+grade_this_code()
+```
+
+###
+
+`group_by()` doesn't change the data, but `glimpse()` now shows the line `Groups: month [12]`. This means that every later verb in the pipe will work "by month," until the grouping is removed.
+
+### Exercise 13
+
+Replace `glimpse()` with `summarize()`. Within the call to `summarize()`, create a variable `avg_delay` equal to `mean(dep_delay, na.rm = TRUE)`.
+
+```{r groups-13, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r groups-13-hint-1, eval = FALSE}
+flights |>
+  group_by(month) |>
+  summarize(... = mean(dep_delay, na.rm = TRUE))
+```
+
+```{r groups-13-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
+flights |>
+  group_by(month) |>
+  summarize(avg_delay = mean(dep_delay, na.rm = TRUE))
+
+# option 2 ----
+flights |>
+  group_by(month) |>
+  summarise(avg_delay = mean(dep_delay, na.rm = TRUE))
+```
+
+```{r groups-13-check}
+grade_this_code()
+```
+
+###
+
+These are the same averages as in Exercise 4, but now the months are sorted from 1 to 12: `group_by()` sorts the groups, while `.by` keeps them in the order in which they first appear in the data. With only one grouping variable, `summarize()` also drops the grouping, so the result is an ordinary tibble.
+
+### Exercise 14
+
+The grouping from `group_by()` stays with the data until you remove it with `ungroup()`. Pipe `flights` to `group_by(year, month, day)`, then to `ungroup()`, and then to `summarize()`, creating `avg_delay` equal to `mean(dep_delay, na.rm = TRUE)`.
+
+```{r groups-14, exercise = TRUE}
+
+```
+
+<button onclick = "transfer_code(this)">Copy previous code</button>
+
+```{r groups-14-hint-1, eval = FALSE}
+flights |>
+  group_by(year, month, day) |>
+  ...() |>
+  summarize(avg_delay = mean(dep_delay, na.rm = TRUE))
+```
+
+```{r groups-14-solution, exercise.reveal_solution = FALSE}
+# option 1 ----
+flights |>
+  group_by(year, month, day) |>
+  ungroup() |>
+  summarize(avg_delay = mean(dep_delay, na.rm = TRUE))
+
+# option 2 ----
+flights |>
+  group_by(year, month, day) |>
+  ungroup() |>
+  summarise(avg_delay = mean(dep_delay, na.rm = TRUE))
+```
+
+```{r groups-14-check}
+grade_this_code()
+```
+
+###
+
+You get a single row back because **dplyr** treats all the rows in an ungrouped data frame as belonging to one group. Without `ungroup()`, the grouping from `group_by()` would still be in place, and you would get 365 rows, one for each day.
 
 
 ## Summary

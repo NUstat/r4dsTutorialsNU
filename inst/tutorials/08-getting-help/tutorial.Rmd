@@ -359,11 +359,11 @@ question_text(NULL,
 
 ### 
 
-This makes it much easier to create a reprex automatically, but it doesn't allow you to set the source. It's only going to pull the code from the clipboard, so make sure to double-check your reprex before you start to do anything.
+This makes it much easier to create a reprex automatically. By default, `reprex()` reads the code from the clipboard, but you can also pass it a file, e.g. `reprex(input = "example_reprex.R")`. Either way, make sure to double-check your reprex before you start to do anything.
 
 See [here](https://www.garrickadenbuie.com/blog/shrtcts-reprex-to-issue/) to learn more about reprex, its features, and some shortcuts. 
 
-[This video](https://reprex.tidyverse.org/articles/learn-reprex.html) is another very useful resource.
+[This article](https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html) is another very useful resource.
 
 ###
 

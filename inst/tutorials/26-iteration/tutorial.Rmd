@@ -34,6 +34,9 @@ options(
   tutorial.storage = "local"
 )
 
+# Silence duckdb's message about where it stores extensions and secrets
+options(duckdb.home = tempdir())
+
 df <- tibble(
   a = rnorm(10),
   b = rnorm(10),
@@ -79,14 +82,6 @@ summarize_means <- function(df, summary_vars = where(is.numeric)) {
       n = n()
     )
 }
-
-long <- df |>
-  pivot_longer(a:d) |>
-  group_by(name) |>
-  summarize(
-    median = median(value),
-    mean = mean(value)
-  )
 
 df_paired <- tibble(
   a_val = rnorm(10),
@@ -674,7 +669,7 @@ grade_this_code()
 
 ### 
 
-Grouping columns (`grp` here) are not included in `across()`, because they're automatically reserved by `summarise()`. There are 2 selection techniques that are particularly useful for `across()`: `everything()` and `where()`.
+Grouping columns (`grp` here) are not included in `across()`, because they're automatically preserved by `summarise()`. There are 2 selection techniques that are particularly useful for `across()`: `everything()` and `where()`.
 
 `everything()` selects every (non-grouping) column.
 
@@ -1298,7 +1293,7 @@ grade_this_code()
 
 ### Exercise 7
 
-Add `if_any()` to the call to `filter()`
+Add `if_any(a:d)` to the call to `filter()`
 
 ```{r column-names-7, exercise = TRUE}
 
@@ -1307,13 +1302,13 @@ Add `if_any()` to the call to `filter()`
 <button onclick = "transfer_code(this)">Copy previous code</button>
 
 ```{r column-names-7-hint-1, eval = FALSE}
-df_miss |> 
-  filter(...())
+df_miss |>
+  filter(...(a:d))
 ```
 
 ```{r column-names-7-solution, exercise.reveal_solution = FALSE}
-df_miss |> 
-  filter(if_any())
+df_miss |>
+  filter(if_any(a:d))
 ```
 
 ```{r column-names-7-check}
@@ -1321,16 +1316,16 @@ grade_this_code()
 ```
 
 ```{r column-names-7-error-check}
-grade_this_code(correct = "Good try, and this error is expected! With no arguments, `if_any()` tries to use every column of `df_miss` as a TRUE/FALSE condition, but these columns are numbers. We fix this in the next exercise.")
+grade_this_code(correct = "Good try, and this error is expected! Without a function, `if_any()` tries to use the columns `a` through `d` themselves as TRUE/FALSE conditions, but these columns are numbers. We fix this in the next exercise.")
 ```
 
-### 
+###
 
-`if_any()` combines its conditions with `|`. With no arguments, it tries to treat every column as a TRUE/FALSE condition, and since `df_miss` has numeric columns you get an error. You will also see a warning that using `if_any()` without supplying `.cols` is deprecated. Next, we tell `if_any()` which columns to use and which function to apply.
+`if_any()` combines its conditions with `|`. Without a function, it tries to treat each selected column as a TRUE/FALSE condition, and since `a` through `d` are numeric you get an error. Next, we tell `if_any()` which function to apply to each column.
 
 ### Exercise 8
 
-Add `a:d` and `is.na`, separated by a comma, to the function `if_any()`.
+Add `is.na` as a second argument to `if_any()`, after `a:d`.
 
 ```{r column-names-8, exercise = TRUE}
 
@@ -1584,7 +1579,7 @@ grade_this_code()
 
 What did you notice about this table? It's too wide and hence hard to compare values.
 
-There's a way to compute the same values by pivoting longer and then summarizing.
+Pivoting longer with `pivot_longer()` is an alternative to working with many columns at once. It is especially handy when columns come in groups, such as values paired with weights. Let's look at an example.
 
 ### Exercise 7
 
@@ -1972,7 +1967,7 @@ grade_this_code()
 
 ### 
 
-`n_max = 1` allows us to peak at the first few rows of the data.
+`n_max = 1` allows us to peek at the first few rows of the data.
 
 ### Exercise 8
 
@@ -2164,7 +2159,7 @@ grade_this_code()
 
 ### 
 
-The argument `names_to` gives the name of the variable that will be created from the data stored in the column names
+The argument `names_to` tells `list_rbind()` to add a new column, here called `year`, that holds the names of the list elements, which are the file names like `"1952.xlsx"`.
 
 ### Exercise 14
 
@@ -2983,7 +2978,7 @@ grade_this_code()
 
 ### 
 
-Other databases might allow us to load Excel files directly. With **duckdb**, however, we’re going to have to do it “by hand”. Learning to do it by hand will also help you when you have a bunch of CSVs and the database that you’re working with doesn’t have one function that will load them all in.
+**duckdb** has a handy function, `duckdb_read_csv()`, that can load many CSV files into the database in one call. Our gapminder files are Excel spreadsheets, not CSVs, so we’re going to load them “by hand”. Learning to do it by hand also teaches you the general pattern of `dbCreateTable()` plus `dbAppendTable()`, which will help you when the database that you’re working with doesn’t have one function that will load all your files in.
 
 ### Exercise 3
 

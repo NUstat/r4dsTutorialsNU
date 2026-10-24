@@ -20,7 +20,6 @@ library(tidyverse)
 library(ggridges)
 library(maps)
 library(gradethis)
-library(ggcheck)
 library(tutorialExtras)
 
 gradethis_setup()
@@ -35,14 +34,6 @@ options(
 )
 
 nz <- map_data("nz")
-
-polling_data <- read_csv("data/vis4_polling_data.csv",
-  col_types = cols(
-    createddate = col_date(),
-    approval_type = col_character(),
-    rate = col_double()
-  )
-)
 ```
 
 ```{r copy-code-chunk, child = system.file("child_documents/copy_button.Rmd", package = "tutorial.helpers")}
@@ -944,7 +935,7 @@ By default each of the facets share the same scale and range for x and y axes. T
 
 ### Exercise 3
 
-Setting the scales argument in a faceting function to "free" will allow for different axis scales across both rows and columns, `"free_x"` will allow for different scales across rows, and `"free_y"` will allow for different scales across columns.
+Setting the scales argument in a faceting function to `"free_x"` will allow for different scales of x-axis across columns, `"free_y"` will allow for different scales on y-axis across rows, and `"free"` will allow both.
 
 Add `scales = "free_y"` to the call to `facet_grid()`. Don't forget the comma after `drv ~ cyl`.
 
@@ -1104,6 +1095,10 @@ grade_this_code()
 ### 
 
 The result is the same as the much-more-straight-forward usage of `geom_bar()` which we created above.
+
+###
+
+`geom_col()` is the shorthand for `geom_bar(stat = "identity")`: it uses the values in the data as the heights of the bars.
 
 ### Exercise 5
 
@@ -1432,7 +1427,7 @@ We don’t have the space to discuss maps extensively in this tutorial but you c
 
 ### Exercise 3
 
-`coord_quickmap()` sets the aspect ratio correctly for geographic maps. This is very important if you’re plotting spatial data with **ggplot2**. Add `coord_quickmap()` to the `ggplot()` call from the previous question.
+`coord_quickmap()` sets the aspect ratio correctly for geographic maps. This is very important if you’re plotting spatial data with **ggplot2**. Note that **ggplot2** now marks `coord_quickmap()` as superseded by `coord_sf()`, which needs the **sf** package. Add `coord_quickmap()` to the `ggplot()` call from the previous question.
 
 ```{r coordinate-systems-3, exercise = TRUE}
 
@@ -1465,7 +1460,7 @@ grade_this_code()
 
 ### Exercise 4
 
-`coord_polar()` uses polar coordinates. Polar coordinates reveal an interesting connection between a bar chart and a Coxcomb chart.
+`coord_radial()` uses polar coordinates. Polar coordinates reveal an interesting connection between a bar chart and a Coxcomb chart. You will still see the older `coord_polar()` in R4DS and in older code, but **ggplot2** now marks it as superseded by `coord_radial()`.
 
 Consider this bar chart of the `diamonds` dataset that shows the count of each `clarity`.
 
@@ -1481,7 +1476,7 @@ ggplot(data = diamonds) +
 
 ###
 
-Add on `coord_polar()` to the end of the plot, don't forget to use the `+` operator.
+Add on `coord_radial(expand = FALSE)` to the end of the plot, don't forget to use the `+` operator. Setting `expand = FALSE` removes the small hole in the center and the padding that `coord_radial()` adds by default.
 
 ```{r coordinate-systems-4, exercise = TRUE}
 ggplot(data = diamonds) + 
@@ -1503,16 +1498,37 @@ ggplot(data = diamonds) +
     width = 1
   ) + 
   theme(aspect.ratio = 1) +
-  ...()
+  ...(expand = ...)
 ```
 
 ```{r coordinate-systems-4-solution, exercise.reveal_solution = FALSE}
-ggplot(data = diamonds) + 
+# option_1 ----
+ggplot(data = diamonds) +
   geom_bar(
-    mapping = aes(x = clarity, fill = clarity), 
+    mapping = aes(x = clarity, fill = clarity),
     show.legend = FALSE,
     width = 1
-  ) + 
+  ) +
+  theme(aspect.ratio = 1) +
+  coord_radial(expand = FALSE)
+
+# option_2 ----
+ggplot(data = diamonds) +
+  geom_bar(
+    mapping = aes(x = clarity, fill = clarity),
+    show.legend = FALSE,
+    width = 1
+  ) +
+  theme(aspect.ratio = 1) +
+  coord_radial()
+
+# option_3 ----
+ggplot(data = diamonds) +
+  geom_bar(
+    mapping = aes(x = clarity, fill = clarity),
+    show.legend = FALSE,
+    width = 1
+  ) +
   theme(aspect.ratio = 1) +
   coord_polar()
 ```

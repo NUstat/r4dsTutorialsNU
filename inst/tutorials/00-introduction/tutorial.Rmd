@@ -82,13 +82,16 @@ Each question allows 3 attempts without penalty. After the third attempt a 10% d
 quiz(
   caption = "",
   question_rank("In a typical data science project what is the typical workflow order?",
-           answer(c("tidy your data", "wrangle your data", "visualize your data", "model your data", "communicate your data"), correct = TRUE),
+           answer(c("import your data", "tidy your data", "transform your data", "visualize your data", "model your data", "communicate your data"), correct = TRUE),
            allow_retry = TRUE,
            #random_answer_order = TRUE,
            options = sortable_options())
 )
 ```
 
+### 
+
+Together, tidying and transforming are called *wrangling* because getting your data in a form that’s natural to work with often feels like a fight!
 
 ## How this book is organized
 ### 
@@ -134,7 +137,7 @@ quiz(
 ## Prerequisites
 ### 
 
-If you are running this tutorial, then you probably already know about R and RStudio. If, for some reason you don't, this [Getting Started chapter](https://ppbds.github.io/primer/getting-started.html) is the best place to start.
+If you are running this tutorial, then you probably already know about R and RStudio. If, for some reason you don't, the [Prerequisites section](https://r4ds.hadley.nz/intro.html#prerequisites) of *R for Data Science (2e)* is the best place to start.
 
 This book will use many packages. Install all the necessary packages by simply copying/pasting this code in the Console of RStudio.
 

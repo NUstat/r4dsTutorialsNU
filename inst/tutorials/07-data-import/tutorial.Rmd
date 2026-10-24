@@ -665,7 +665,7 @@ A CSV file doesn’t contain any information about the type of each variable (i.
 
 ### Exercise 1
 
-In this tutorial, we will make use of the "quotation trick" which allows `read_csv()` and related functions to read data directly from a quoted string, rather than a file. Since **readr** 2.2.0, we wrap such a string in `I()`, which tells `read_csv()` that the string is the data itself rather than the path to a file. As an example, run this code by clicking "Submit Answer":
+In this tutorial, we will make use of the "quotation trick" which allows `read_csv()` and related functions to read data directly from a quoted string, rather than a file. We wrap the string in `I()` so `read_csv()` treats it as the data itself, not as a file path. Since **readr** 2.2.0, leaving out `I()` gives a deprecation warning. As an example, run this code by clicking "Submit Answer":
 
 
 ```{r controlling-column-types-1, exercise = TRUE}
@@ -1656,7 +1656,7 @@ Datasets are just one example of what we can store in a rds file. We can also st
 
 ###
 
-`write_rds()` and `read_rds()` are not the best approach for working with large data sets. In that case, use the functions `write_parquet()` and  `read_parquet()` from the [**arrow**](https://arrow.apache.org/) package.
+`write_rds()` and `read_rds()` are not the best approach for working with large data sets. In that case, use the functions `write_parquet()` and  `read_parquet()` from the [**arrow**](https://arrow.apache.org/docs/r/) package.
 
 ###
 
@@ -1730,7 +1730,7 @@ grade_this_code()
 ```
 ### 
 
-The difference between the name `tibble()` and the name `tribble()` is one letter: *r*. The *r* stands for **r**ows since `tribble()` allows you to type in the data by row.
+The difference between the name `tibble()` and the name `tribble()` is one letter: *r*. `tribble()` is short for **tr**ansposed t**ibble**, which is why it lets you type in the data row by row instead of column by column.
 
 ## Summary
 ### 
