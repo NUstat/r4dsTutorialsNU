@@ -1,9 +1,9 @@
-# Grade exercise code, working around two gradethis bugs
+# Grade exercise code, working around gradethis bugs
 
 A drop-in replacement for
 [`gradethis::grade_this_code()`](https://rstudio.github.io/gradethis/reference/grade_this_code.html),
-used by the tutorials in this package. It changes two things before the
-code comparison:
+used by the tutorials in this package. It changes these things before
+the code comparison:
 
 ## Usage
 
@@ -40,6 +40,19 @@ A grading function, like the one returned by
   code wrong instead, with a message asking the student to remove the
   trailing comma. `[` and `[[` calls are left alone, because `df[1, ]`
   is not a trailing comma.
+
+- **Repeated argument names.** When a call repeats an argument name a
+  different number of times than the solution does, such as the same
+  line twice inside `fct_recode()`, gradethis 0.2.14 means to mark it
+  wrong, but it crashes and reports a grading problem whenever that call
+  sits inside another call, as in `mutate(x = fct_recode(...))`. And
+  when the count is right, gradethis checks only the first argument with
+  that name, so a mistake in the third `"Other" = ` line of
+  `fct_recode()` is marked correct. This function checks the count and
+  every value itself, and marks code wrong with a message naming the
+  argument to fix. Names the solution repeats, such as `age` twice in
+  `mutate()`, are fine when the student's code repeats them the same
+  way.
 
 - **magrittr pipes.** gradethis 0.2.14 mistakes the string `"."` for the
   magrittr placeholder when it rewrites `%>%`, so a correct answer such
