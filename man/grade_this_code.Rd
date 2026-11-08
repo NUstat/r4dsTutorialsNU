@@ -2,7 +2,7 @@
 % Please edit documentation in R/grade_this_code.R
 \name{grade_this_code}
 \alias{grade_this_code}
-\title{Grade exercise code, working around two gradethis bugs}
+\title{Grade exercise code, working around gradethis bugs}
 \usage{
 grade_this_code(...)
 }
@@ -16,7 +16,7 @@ A grading function, like the one returned by
 }
 \description{
 A drop-in replacement for \code{\link[gradethis:grade_this_code]{gradethis::grade_this_code()}}, used by the
-tutorials in this package. It changes two things before the code
+tutorials in this package. It changes these things before the code
 comparison:
 }
 \details{
@@ -33,6 +33,17 @@ crash and report a grading problem. This function marks such code wrong
 instead, with a message asking the student to remove the trailing comma.
 \code{[} and \code{[[} calls are left alone, because \code{df[1, ]} is not a trailing
 comma.
+\item \strong{Repeated argument names.} When a call repeats an argument name a
+different number of times than the solution does, such as the same line
+twice inside \code{fct_recode()}, gradethis 0.2.14 means to mark it wrong, but
+it crashes and reports a grading problem whenever that call sits inside
+another call, as in \code{mutate(x = fct_recode(...))}. And when the count is
+right, gradethis checks only the first argument with that name, so a
+mistake in the third \verb{"Other" = } line of \code{fct_recode()} is marked
+correct. This function checks the count and every value itself, and marks
+code wrong with a message naming the argument to fix. Names the solution
+repeats, such as \code{age} twice in \code{mutate()}, are fine when the student's
+code repeats them the same way.
 \item \strong{magrittr pipes.} gradethis 0.2.14 mistakes the string \code{"."} for the
 magrittr placeholder when it rewrites \verb{\%>\%}, so a correct answer such as
 \code{df \%>\% separate_wider_delim(x, delim = ".", ...)} is rejected. This

@@ -1,7 +1,7 @@
-#' Grade exercise code, working around two gradethis bugs
+#' Grade exercise code, working around gradethis bugs
 #'
 #' A drop-in replacement for [gradethis::grade_this_code()], used by the
-#' tutorials in this package. It changes two things before the code
+#' tutorials in this package. It changes these things before the code
 #' comparison:
 #'
 #' * **`color` arguments.** gradethis 0.2.14 rejects a correct answer when an
@@ -16,6 +16,17 @@
 #'   instead, with a message asking the student to remove the trailing comma.
 #'   `[` and `[[` calls are left alone, because `df[1, ]` is not a trailing
 #'   comma.
+#' * **Repeated argument names.** When a call repeats an argument name a
+#'   different number of times than the solution does, such as the same line
+#'   twice inside `fct_recode()`, gradethis 0.2.14 means to mark it wrong, but
+#'   it crashes and reports a grading problem whenever that call sits inside
+#'   another call, as in `mutate(x = fct_recode(...))`. And when the count is
+#'   right, gradethis checks only the first argument with that name, so a
+#'   mistake in the third `"Other" = ` line of `fct_recode()` is marked
+#'   correct. This function checks the count and every value itself, and marks
+#'   code wrong with a message naming the argument to fix. Names the solution
+#'   repeats, such as `age` twice in `mutate()`, are fine when the student's
+#'   code repeats them the same way.
 #' * **magrittr pipes.** gradethis 0.2.14 mistakes the string `"."` for the
 #'   magrittr placeholder when it rewrites `%>%`, so a correct answer such as
 #'   `df %>% separate_wider_delim(x, delim = ".", ...)` is rejected. This
@@ -46,18 +57,31 @@ grade_this_code <- function(...) {
   checker <- gradethis::grade_this_code(...)
 
   function(check_env) {
-    comma_call <- find_trailing_comma(check_env[[".user_code"]])
+    user_code <- check_env[[".user_code"]]
+    solutions <- check_env[[".solution_code_all"]]
+    if (is.null(solutions)) {
+      solutions <- check_env[[".solution_code"]]
+    }
+
+    message <- NULL
+    comma_call <- find_trailing_comma(user_code)
     if (!is.null(comma_call)) {
-      check_env[[".__trailing_comma_message"]] <- paste0(
+      message <- paste0(
         "Your call to `", comma_call, "()` ends with a comma right before ",
         "the closing parenthesis. Remove that trailing comma and try again."
       )
+    } else if (length(solutions) > 0) {
+      message <- find_repeated_names(user_code, unlist(solutions), check_env)
+    }
+    if (!is.null(message)) {
+      # fail() runs its message through glue, so escape any braces
+      check_env[[".__problem_message"]] <- gsub("([{}])", "\\1\\1", message)
       return(gradethis::grade_this(
-        gradethis::fail(get(".__trailing_comma_message"), hint = FALSE)
+        gradethis::fail(get(".__problem_message"), hint = FALSE)
       )(check_env))
     }
 
-    check_env[[".user_code"]] <- standardise_code(check_env[[".user_code"]])
+    check_env[[".user_code"]] <- standardise_code(user_code)
     if (!is.null(check_env[[".solution_code"]])) {
       check_env[[".solution_code"]] <- standardise_code(check_env[[".solution_code"]])
     }
@@ -123,6 +147,129 @@ find_trailing_comma <- function(code) {
     }
   }
   NULL
+}
+
+# Every call in the code, nested calls included, as a list.
+all_calls <- function(code) {
+  calls <- list()
+  walk <- function(x) {
+    if (!is.call(x)) {
+      return()
+    }
+    calls[[length(calls) + 1]] <<- x
+    for (i in seq_along(x)) {
+      if (!is_empty_arg(x[[i]]) && is.call(x[[i]])) {
+        walk(x[[i]])
+      }
+    }
+  }
+  for (expr in parse_code(code)) {
+    walk(expr)
+  }
+  calls
+}
+
+# Name of the function a call uses, without any `pkg::` prefix.
+call_name <- function(x) {
+  fn <- x[[1]]
+  if (is.call(fn) && length(fn) == 3 && is.symbol(fn[[1]]) &&
+      as.character(fn[[1]]) %in% c("::", ":::")) {
+    fn <- fn[[3]]
+  }
+  paste(deparse(fn), collapse = "")
+}
+
+# Message for the first argument name that the user's code repeats, inside some
+# call, without matching a call to the same function in the solutions, or
+# NULL. A match has the same number of arguments with that name, and each
+# value matches one of them, in any order (gradethis checks the order later).
+#
+# gradethis 0.2.14 handles repeated names badly in two ways. Its
+# detect_name_problems() passes the enclosing call and argument to
+# detect_duplicate_names() in the wrong order, which crashes when the count
+# differs and the call is nested inside another. And when the count is right,
+# it compares only the first argument with each name, so a wrong value in a
+# later one, such as the third `"Other" = ` in fct_recode(), passes.
+find_repeated_names <- function(user_code, solutions, env) {
+  solution_calls <- unlist(lapply(solutions, all_calls), recursive = FALSE)
+  for (x in all_calls(user_code)) {
+    fn <- call_name(x)
+    nm <- arg_names(x)
+    for (name in unique(nm[duplicated(nm) & nzchar(nm)])) {
+      user_args <- as.list(x)[nm == name]
+      expected <- lapply(
+        Filter(function(s) identical(call_name(s), fn), solution_calls),
+        function(s) as.list(s)[arg_names(s) == name]
+      )
+      shown <- if (identical(make.names(name), name)) name else paste0('"', name, '"')
+
+      n_user <- length(user_args)
+      if (!n_user %in% lengths(expected)) {
+        advice <- if (all(lengths(expected) < n_user)) {
+          "but it needs fewer. Check whether you repeated a line or misspelled an argument name."
+        } else {
+          "but it needs more. Check whether you left one out."
+        }
+        return(paste0(
+          "Your call to `", fn, "()` has ", n_user, " arguments named `", shown,
+          "`, ", advice
+        ))
+      }
+
+      unmatched <- lapply(
+        expected[lengths(expected) == n_user],
+        function(s) unmatched_arg(user_args, s, env)
+      )
+      if (any(vapply(unmatched, is.null, logical(1)))) {
+        next
+      }
+      value <- paste(deparse(unmatched[[1]][[1]], width.cutoff = 500L), collapse = " ")
+      wrong <- if (nchar(value) <= 60) {
+        paste0("the argument `", shown, " = ", value, "` is")
+      } else {
+        paste0("one of the arguments named `", shown, "` is")
+      }
+      return(paste0(
+        "In your call to `", fn, "()`, ", wrong, " wrong or repeated. ",
+        "Check each argument named `", shown, "`."
+      ))
+    }
+  }
+  NULL
+}
+
+# The first user argument that matches none of the solution arguments, each
+# solution argument matching at most once, wrapped in a list (the argument
+# itself may be NULL). Returns NULL when every user argument has a match.
+unmatched_arg <- function(user_args, solution_args, env) {
+  for (u in user_args) {
+    hit <- Position(function(s) same_code(u, s, env), solution_args)
+    if (is.na(hit)) {
+      return(list(u))
+    }
+    solution_args <- solution_args[-hit]
+  }
+  NULL
+}
+
+# Whether two expressions are the same code by gradethis's standards, so that
+# `if_else(x, "a", "b")` matches `if_else(x, true = "a", false = "b")`. When
+# gradethis cannot compare them, they count as the same, leaving the decision
+# to the full comparison that runs afterwards.
+same_code <- function(a, b, env) {
+  if (identical(a, b)) {
+    return(TRUE)
+  }
+  feedback <- tryCatch(
+    gradethis::code_feedback(
+      paste(deparse(a, width.cutoff = 500L), collapse = "\n"),
+      paste(deparse(b, width.cutoff = 500L), collapse = "\n"),
+      user_env = env,
+      solution_env = env
+    ),
+    error = function(e) NULL
+  )
+  is.null(feedback)
 }
 
 # Rewrite magrittr pipes as the calls they stand for: `lhs %>% f(a)` becomes

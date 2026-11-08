@@ -24,7 +24,7 @@ library(tutorialExtras)
 
 gradethis_setup()
 
-# Use this package's grade_this_code(), which works around two gradethis grading bugs
+# Use this package's grade_this_code(), which works around gradethis grading bugs
 grade_this_code <- r4dsTutorialsNU::grade_this_code
 
 knitr::opts_chunk$set(echo = FALSE)
